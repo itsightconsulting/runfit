@@ -270,8 +270,17 @@ function exceptionCheckDuplicateKeyConstraint(xhr, csMessage){
 }
 
 function exception(xhr, errorName) {
-    console.log(xhr);
     const sCode = xhr['status'];
+
+    if(sCode === 0 && xhr.readyState === 0){
+        $.smallBox({
+            content: "<i class='fa fa-fw fa-exclamation-triangle'></i><i>Ups, parece que se ha perdido su conexión a internet. Compruébela y vuelva a intentarlo."+ "</i>",
+            color: "#8a6d3b",
+            iconSmall: "fa fa-warning fa-2x fadeInRight animated",
+            timeout: 10000,
+        });
+        return;
+    }
 
     if(sCode === 405){
         if(xhr.responseText && xhr.responseText.startsWith("<!DOCTYPE html>")){
@@ -1133,7 +1142,7 @@ function setFechaChat(fecha){
     if(areEqualsYear){
         const areEquals = checkDateAreEquals(hoy, fechaChat);
         return areEquals ? time.slice(0, time.lastIndexOf(':')) : date.substr(0, 5);
-    }else{
+    } else {
         return date.trim();
     }
 }
@@ -1145,3 +1154,19 @@ function checkDateAreEquals(f1, f2){
 function checkDateAreEqualsYear(f1, f2){
     return f1.getFullYear() === f2.getFullYear();
 }
+
+(function recurrentChatNotif(){
+    /*setInterval(()=>{
+        fetch(`${_ctx}gestion/chat/refresh/notificacion`,
+            {
+                headers : {
+                    csrf_frk_header: token
+                }
+            }).then(res=>{
+                updateChatNotificaciones()
+            }).catch(
+                err=>{
+
+            })
+    }, /!*60**!/15000/!**30*!/);*/
+})();

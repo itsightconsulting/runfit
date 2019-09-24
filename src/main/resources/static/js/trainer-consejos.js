@@ -31,12 +31,11 @@ $(function () {
      btnEditarConsejoAudio.click(editarConsejoAudioEvent);
      btnTipoConsejoRegistro.click(seleccionTipoConsejoEvent);
      btnAudiosList.click(function(){
-
-            currentTipoConsejoConsulta = 2
+            currentTipoConsejoConsulta = 2;
             generarListaAudios(LISTA_FAVORITOS_AUDIO);
      });
      btnPostsList.click(function(){
-            currentTipoConsejoConsulta = 1
+            currentTipoConsejoConsulta = 3;
             generarListaTextos(LISTA_FAVORITOS_TEXTO);
      });
      btnActualizarConsejoTxt.click(actualizarConsejoTextoEvent);
@@ -115,7 +114,8 @@ function ejecutarContenidoMultimediaEvent(e){
     const inpClasses = input.classList;
     
     if(inpClasses.contains("voice"))
-    { mostrarReproductorAudio(input); // muestra y reproduce audio
+    {
+        mostrarReproductorAudio(input); // muestra y reproduce audio
     }else if(inpClasses.contains("text")){
       abrirMdlVerConsejoTxt(e);
     }
@@ -255,8 +255,7 @@ function subirChangeEvent() {
     $(".input-ghost").change(function () {
         let file;
         if ((file = this.files[0])) {
-            let obUrl;
-            if (file.name === 'mp3') {
+            if (file.name.includes('mp3') || file.name.includes('mpeg')) {
                 objUrl = URL.createObjectURL(file);
                 document.getElementById('Tiempo').setAttribute('src', objUrl);
                 document.getElementById('Tiempo2').setAttribute('src', objUrl);
@@ -285,7 +284,7 @@ function obtenerData(flag) {
             console.log(data);
             if(data != null){
                 $.each(data,function (i,item) {
-                    if(item.tipo === 1){
+                    if(item.tipo === 2){
                         LISTA_FAVORITOS_AUDIO.push(item);
                     } else if(item.tipo === 3) {
                         LISTA_FAVORITOS_TEXTO.push(item);
@@ -366,7 +365,6 @@ function generarListaAudios(listaAudios) {
     if(listaAudios.length > 0) {
 
        $.each(listaAudios, function (i, item) {
-
             const duracionArr = item.duracion.split(':');
             let itemAudio = `  <li> <img class="material voice svg" data-id="${item.id}" data-media="${item.rutaWeb}" src="/img/iconos/icon_microfono.svg"> 
                                 <a class="edit-audio" data-id="${item.id}" data-titulo="${item.titulo}"> <span>${item.titulo}</span></a> 
@@ -376,9 +374,7 @@ function generarListaAudios(listaAudios) {
                           </li>
                          `;
             ulConsejos.append(itemAudio);
-
-        });
-
+       });
     }else{
         const mensajeNoData = htmlStringToElement(`<span class="msj-no-data"> Su lista de consejos en formato clip de audio se encuentra vacía. </span> `);
         ulConsejos.parent().append(mensajeNoData);
@@ -389,7 +385,6 @@ function generarListaAudios(listaAudios) {
 }
 
 function generarListaTextos(listaTextos) {
-    debugger
     tipoConsejoRegistro = 1;
     ulConsejos.html("");
     $('#inpSearch').val("");
@@ -606,11 +601,10 @@ function registrarMultimedia(id) {
     //const tipo = $(".abtn-multimedia.btn-success").attr("data-id");
 
     if (files != null) {
-        debugger
         const inpTitulo = id > 0 ? $('#mdlAudioTitulo').val()  : $('#inpTitulo').val();
-        var data = new FormData();
-        data.append("multimedia", files);
-        data.append("id", id);
+        var data = {};
+        data.extensionAudio = files.type.split("/")[1];
+        data.id = id;
         let params = {};
         params.id = id;
         params.tipo = tipoConsejoRegistro;
@@ -618,36 +612,20 @@ function registrarMultimedia(id) {
         params.duracion = TIEMPO;
         params.titulo = inpTitulo;
         params.descripcion = inpTitulo;
-        data.append("postString", JSON.stringify(params));
+        data.postString = JSON.stringify(params);
 
-      $.ajax({
+        $.ajax({
             type: 'POST',
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
             url: _ctx + 'gestion/consejo/upload/audio',
             data: data,
-            contentType: false,
-            processData: false,
-            xhr: function () {
-                var myXhr = $.ajaxSettings.xhr();
-                if (myXhr.upload) {
-                    myXhr.upload.addEventListener('progress', progress, false);
-                }
-                return myXhr;
-            },
-            success: function (data, textStatus) {
-
-                console.log("lalaal",tipoConsejoRegistro);
-                subirAudio(data,id);
-
-
-            },
-            error: function (xhr) {
-                exception(xhr);
-            },
-            complete: function () {
-               $('#registrar-audio-frm').reset();
-               $('#actualizar-audio-frm').reset();
-               obtenerData(tipoConsejoRegistro);
-
+            dataType: 'json',
+            blockLoading: true,
+            noOne: false,
+            success: function (data) {
+                setTimeout(() => {
+                    subirAudio(data,id, tipoConsejoRegistro);
+                }, 350);
                 if(id > 0){
                     $("#mdlTxtTitulo").val("");
                     $("#mdlTxtDescripcion").val("");
@@ -659,12 +637,13 @@ function registrarMultimedia(id) {
                     $("#tDescripcion").val("");
                     $('#mdlAgregarConsejo').modal("hide");
                     $.smallBox({content: "<i class='fa fa-child'></i> <i>Se registró satisfactoriamente...!</i>",});
-
                 }
-
-            }
+            },
+            error: function (xhr) {
+                exception(xhr);
+            },
+            complete: function () {}
         });
-
     }else{
         if(tipoConsejoRegistro == 1) {
 
@@ -687,7 +666,7 @@ function registrarMultimedia(id) {
                 url: _ctx + 'gestion/consejo/upload/text',
                 dataType: "json",
                 data: params,
-                success: function (data, textStatus) {
+                success: function () {
 
                     if(id > 0){
                        $("#mdlTxtTitulo").val("");
@@ -709,8 +688,8 @@ function registrarMultimedia(id) {
                 },
                 complete: function () {
                     obtenerData(tipoConsejoRegistro);
-                    $('#registrar-texto-frm').reset();
-                    $('#actualizar-texto-frm').reset();
+                    $('#registrar-texto-frm').trigger('reset');
+                    $('#actualizar-texto-frm').trigger('reset');
 
                 }
             });
@@ -719,11 +698,10 @@ function registrarMultimedia(id) {
     }
 }
 
-function subirAudio(d,id) {
+function subirAudio(d,id, tipoConsejoRegistro) {
 
-    const dataRes = JSON.parse(d);
-    const rdmUUID = dataRes.rdm;
-    const audioId = dataRes.res;
+    const rdmUUID = d.rdm;
+    const audioId = d.res;
     const audio = id > 0 ? $(".input-ghost").get(1) : $(".input-ghost").get(0);
 
     var data = new FormData();
@@ -737,8 +715,6 @@ function subirAudio(d,id) {
         data: data,
         contentType: false,
         processData: false,
-        blockLoading: true,
-        noOne: false,
         xhr: function () {
             var myXhr = $.ajaxSettings.xhr();
             if (myXhr.upload) {
@@ -747,22 +723,15 @@ function subirAudio(d,id) {
             return myXhr;
         },
         success: function (data) {
-            console.log(data);
-            // $.smallBox({});
         },
         error: function (xhr) {
             exception(xhr);
         },
-        complete: function (xhr) {
-            /*      if(xhr.status === 200){
-                      listarRegistros();
-                      irListado($index);
-                  }
-                  $('#frm_registro input').removeAttr('readonly', true);
-                  $('#frm_registro button').removeAttr('disabled', true);
-      */
+        complete: function () {
+            obtenerData(tipoConsejoRegistro);
+            $('#registrar-audio-frm').trigger('reset');
+            $('#actualizar-audio-frm').trigger('reset');
         }
-
     });
 }
 
