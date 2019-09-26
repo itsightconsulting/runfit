@@ -453,6 +453,7 @@ $(function() {
     checkBoxes();
     activeItems();
     HorizontalEnum_EntrenaCorrectamente();
+    scrollSidebar();
 })
 
 function remarcarPaginaVisitada(){
@@ -581,6 +582,12 @@ function getCookiePb(cname) {
         }
     }
     return "";
+}
+
+function scrollSidebar() {
+    $(window).on("load",function(){
+        $(".sidebar").mCustomScrollbar();
+    });
 }
 
 
