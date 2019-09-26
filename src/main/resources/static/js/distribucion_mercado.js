@@ -2422,7 +2422,6 @@ function graficoServiciosUsados(  totalServicios, dataServicio){
                 xAlign: 'center',
                 xPadding: 25,
                 yPadding: 15,
-                xPadding: 45,
                 _bodyAlign: 'center',
                 _footerAlign: 'center',
                 mode: 'nearest',
