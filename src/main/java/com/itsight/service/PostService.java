@@ -30,8 +30,5 @@ public interface PostService extends BaseService<Post, Integer>  {
 
     boolean verificarExisteFav(Integer id, Integer clienteId);
 
-    RefUpload guardarAudio(MultipartFile file, int id, Post post);
-
-    String subirAudioAws(MultipartFile file, Integer id, String uuid, String extension) throws CustomValidationException;
-
+    RefUpload guardarAudio(int id, Post post, String extensionAudio);
 }

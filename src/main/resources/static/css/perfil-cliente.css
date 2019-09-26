@@ -4,44 +4,44 @@
 }
 @font-face {
     font-family: GothamHTF-Bold;
-    src: url(../fonts/GothamHTF-Bold.otf); }
+    src: url(/fonts/GothamHTF-Bold.otf); }
 
 @font-face {
     font-family: GothamHTF-Book;
-    src: url(../fonts/GothamHTF-Book.otf); }
+    src: url(/fonts/GothamHTF-Book.otf); }
 
 @font-face {
     font-family: GothamHTF-Light;
-    src: url(../fonts/GothamHTF-Light.otf); }
+    src: url(/fonts/GothamHTF-Light.otf); }
 
 @font-face {
     font-family: Gotham-Black;
-    src: url(../fonts/Gotham-Black.ttf)
+    src: url(/fonts/Gotham-Black.ttf)
 }
 
 @font-face {
     font-family: Gotham-HTF-Bold;
-    src: url(../fonts/Gotham-HTF-Bold.ttf)
+    src: url(/fonts/Gotham-HTF-Bold.ttf)
 }
 
 @font-face {
     font-family: Gotham-HTF-Black-Italic;
-    src: url(../fonts/Gotham-HTF-Black-Italic.ttf)
+    src: url(/fonts/Gotham-HTF-Black-Italic.ttf)
 }
 
 @font-face {
     font-family: Gotham-HTF-Black;
-    src: url(../fonts/Gotham-HTF-Black.ttf)
+    src: url(/fonts/Gotham-HTF-Black.ttf)
 }
 
 @font-face {
     font-family: Gotham-HTF-Book;
-    src: url(../fonts/Gotham-HTF-Book.ttf)
+    src: url(/fonts/Gotham-HTF-Book.ttf)
 }
 
 @font-face {
     font-family: Gotham-HTF-Medium;
-    src: url(../fonts/Gotham-HTF-Medium.ttf)
+    src: url(/fonts/Gotham-HTF-Medium.ttf)
 }
 
 .container{
@@ -758,7 +758,7 @@ img.tibial {
 }
 
 .rango.bg-slide {
-    background: url(../../img/public/slider.png) center no-repeat;
+    background: url(/img/public/slider.png) center no-repeat;
     background-size: contain;
     height: 30px
 }

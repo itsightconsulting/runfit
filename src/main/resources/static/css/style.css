@@ -1,30 +1,30 @@
 @font-face {
   font-family: Montserrat-Medium;
-  src: url(../fonts/Montserrat-Medium.otf); }
+  src: url(/fonts/Montserrat-Medium.otf); }
 
 @font-face {
   font-family: Montserrat-Bold;
-  src: url(../fonts/Montserrat-Bold.otf); }
+  src: url(/fonts/Montserrat-Bold.otf); }
 
 @font-face {
   font-family: Montserrat-Regular;
-  src: url(../fonts/Montserrat-Regular.otf); }
+  src: url(/fonts/Montserrat-Regular.otf); }
 
 @font-face {
   font-family: Montserrat-Light;
-  src: url(../fonts/Montserrat-Light.otf); }
+  src: url(/fonts/Montserrat-Light.otf); }
 
 @font-face {
   font-family: GothamHTF-Bold;
-  src: url(../fonts/GothamHTF-Bold.otf); }
+  src: url(/fonts/GothamHTF-Bold.otf); }
 
 @font-face {
   font-family: GothamHTF-Book;
-  src: url(../fonts/GothamHTF-Book.otf); }
+  src: url(/fonts/GothamHTF-Book.otf); }
 
 @font-face {
   font-family: GothamHTF-Light;
-  src: url(../fonts/GothamHTF-Light.otf); }
+  src: url(/fonts/GothamHTF-Light.otf); }
 
 body, html {
   background-color: #2a242c;
@@ -114,7 +114,7 @@ span.text_green {
     height: 35px;
     border-radius: 15px;
     border: none;
-    background: url(../img/search.png) no-repeat;
+    background: url(/img/search.png) no-repeat;
     background-color: #fff;
     background-position-y: 8px;
     background-position-x: 12px;
@@ -511,10 +511,10 @@ a.fav:hover .svg, a.fav.selected .svg {
     color: #a8fa00;
     font-family: GothamHTF-Light; }
   .datepicker_inline .bootstrap-datetimepicker-widget table thead tr th.prev {
-    background: url("../img/arrow-left.png") no-repeat center;
+    background: url(/img/arrow-left.png) no-repeat center;
     background-size: contain;}
   .datepicker_inline .bootstrap-datetimepicker-widget table thead tr th.next {
-    background: url("../img/arrow-right.png") no-repeat center;
+    background: url(/img/arrow-right.png) no-repeat center;
       background-size: contain;}
   .datepicker_inline .bootstrap-datetimepicker-widget table thead tr:last-child th {
     padding: 40px 5px 8px; }
@@ -929,7 +929,7 @@ section.ritmos_tiempo .box_tiempo {
     text-align: center; }
     #carousel-semanal .owl-nav .owl-prev {
       outline: none;
-      background: url(../img/arrow-left.png) no-repeat center;
+      background: url(/img/arrow-left.png) no-repeat center;
       font-size: 0;
       width: 44px;
       height: 44px;
@@ -937,7 +937,7 @@ section.ritmos_tiempo .box_tiempo {
       background-size: contain; }
     #carousel-semanal .owl-nav .owl-next {
       outline: none;
-      background: url(../img/arrow-right.png) no-repeat center;
+      background: url(/img/arrow-right.png) no-repeat center;
       font-size: 0;
       width: 44px;
       height: 44px;
@@ -1191,7 +1191,7 @@ section.ritmos_tiempo .box_tiempo {
       display: inline-block;
       width: 220px;
       height: 100%;
-      background: url(../img/ejercicio.png) no-repeat center;
+      background: url(/img/ejercicio.png) no-repeat center;
       background-size: cover; }
     .material-diario .material .content_text {
       display: inline-block;
@@ -1239,7 +1239,7 @@ section.ritmos_tiempo .box_tiempo {
     .resultado_material ul li .card .video {
       width: 100%;
       height: 148px;
-      background: url(../img/video.png) no-repeat center;
+      background: url(/img/video.png) no-repeat center;
       position: relative;
       background-size: cover; }
       .resultado_material ul li .card .video .svg {
@@ -1379,7 +1379,7 @@ section.ritmos_tiempo .box_tiempo {
     .content-videoteca .owl-carousel .owl-item .item {
       width: 100%;
       height: 100%;
-      background: url(../img/videoteca.png) no-repeat center;
+      background: url(/img/videoteca.png) no-repeat center;
       background-size: cover;
         -webkit-box-shadow: inset 0px 0px 300px 200px rgba(0,0,0,0.7);
         -moz-box-shadow: inset 0px 0px 300px 200px rgba(0,0,0,0.7);
@@ -1419,7 +1419,7 @@ section.ritmos_tiempo .box_tiempo {
     text-align: center; }
     .content-videoteca .owl-carousel .owl-nav .owl-prev {
       outline: none;
-      background: url(../img/arrow-left.png) no-repeat center;
+      background: url(/img/arrow-left.png) no-repeat center;
       font-size: 0;
       width: 44px;
       height: 44px;
@@ -1427,7 +1427,7 @@ section.ritmos_tiempo .box_tiempo {
       background-size: contain; }
     .content-videoteca .owl-carousel .owl-nav .owl-next {
       outline: none;
-      background: url(../img/arrow-right.png) no-repeat center;
+      background: url(/img/arrow-right.png) no-repeat center;
       font-size: 0;
       width: 44px;
       height: 44px;
@@ -1449,12 +1449,12 @@ section.ritmos_tiempo .box_tiempo {
       appearance: none;
       width: 76px;
       height: 19px;
-      background: url("../img/slider.png") no-repeat;
+      background: url(/img/slider.png) no-repeat;
       cursor: pointer; }
     .slider-container .range-slider::-moz-range-thumb {
       width: 76px;
       height: 19px;
-      background: url("../img/slider.png") no-repeat;
+      background: url(/img/slider.png) no-repeat;
       cursor: pointer; }
 
 section h4 {

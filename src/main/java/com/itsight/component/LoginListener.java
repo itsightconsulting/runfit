@@ -95,9 +95,11 @@ public class LoginListener implements ApplicationListener<InteractiveAuthenticat
                     if(e.getNombre().equals(CONTROL_ENTRENAMIENTO.name())) {
                         response.addCookie(createCookie(GLL_CONTROL_ENTRENAMIENTO.name(), e.getValor()));
                     }
+
                     if(e.getNombre().equals(CONTROL_REP_VIDEO.name())){
                         response.addCookie(createCookie(GLL_CONTROL_REP_VIDEO.name(), e.getValor()));
                     }
+
                     if(e.getNombre().equals(NOTIFICACION_CHAT.name())){
                         response.addCookie(createCookie(GLL_NOTIFICACION_CHAT.name(), e.getValor()));
                     }

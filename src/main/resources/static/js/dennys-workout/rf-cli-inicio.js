@@ -97,6 +97,7 @@ function principalesEventosClickRutina(e){
 function clickEventListenerNavTabs(e){
 
     const input = e.target;
+
     if(input.tagName === "path"){
         e.stopPropagation();
         let svg = searchSvgTraversing(input);

@@ -8,10 +8,7 @@ import com.itsight.domain.dto.RefUpload;
 import com.itsight.service.PostService;
 import com.itsight.util.Enums;
 import com.itsight.util.Utilitarios;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -19,23 +16,15 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.UUID;
 
 import static com.itsight.util.Enums.ResponseCode.EXITO_GENERICA;
-import static com.itsight.util.Enums.ResponseCode.EX_GENERIC;
+import static com.itsight.util.Enums.ResponseCode.EX_NULL_POINTER;
 import static com.itsight.util.Utilitarios.jsonResponse;
 
 @Controller
 @RequestMapping("/gestion/consejo")
 public class PostController {
-
-    private static final Logger LOGGER = LogManager.getLogger(PostController.class);
-
-    @Value("${main.repository}")
-    private String mainRoute;
 
     private PostService postService;
 
@@ -45,10 +34,10 @@ public class PostController {
 
     @RequestMapping(value = "/upload/audio", method = RequestMethod.POST)
     public @ResponseBody
-    String guardarArchivo(@RequestPart MultipartFile multimedia,
-                          @RequestParam Integer id,
+    String guardarArchivo(@RequestParam Integer id,
                           @RequestParam String postString,
-                          HttpSession session) throws IOException {
+                          @RequestParam String extensionAudio,
+                          HttpSession session) throws IOException, CustomValidationException {
 
         int trainerId = Integer.parseInt(session.getAttribute("id").toString());
         PostDTO postDto = new ObjectMapper().readValue(postString, PostDTO.class);
@@ -57,13 +46,12 @@ public class PostController {
 
         post.setTrainer(trainerId);
 
-        if (multimedia != null) {
-            RefUpload refUpload = postService.guardarAudio(multimedia, id, post);
-
+        RefUpload refUpload = postService.guardarAudio(id, post, extensionAudio);
+        if(refUpload != null){
             return jsonResponse(String.valueOf(refUpload.getId()),
                     refUpload.getUuid().toString());
         }
-        return EX_GENERIC.get();
+        throw new CustomValidationException("Algo ha salido mal, intentelo nuevamente", EX_NULL_POINTER.get());
     }
 
     @RequestMapping(value = "/upload/aws/{rdmUUID}", method = RequestMethod.POST)
@@ -72,7 +60,7 @@ public class PostController {
             @RequestPart(value = "audio", required = true) MultipartFile audio,
             @RequestParam(value = "audioId", required = true) Integer audioId,
             @PathVariable(name = "rdmUUID") String uuid) throws CustomValidationException {
-        return Utilitarios.jsonResponse(postService.subirAudioAws(audio, audioId, uuid, null));
+        return Utilitarios.jsonResponse(postService.subirFile(audio, audioId, uuid, null));
     }
 
     @RequestMapping(value = "/upload/text", method = RequestMethod.POST)
