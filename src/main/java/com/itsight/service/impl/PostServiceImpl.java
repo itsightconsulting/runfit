@@ -162,73 +162,41 @@ public class PostServiceImpl extends BaseServiceImpl<PostRepository> implements 
 
 
     @Override
-    public RefUpload guardarAudio(MultipartFile file, int id, Post post) {
-        if (!file.isEmpty()) {
-            try {
-                int trainerId = post.getTrainer().getId();
+    public RefUpload guardarAudio(int id, Post post, String extensionAudio) {
+        try {
+            String extension = "." + extensionAudio;
+            RefUpload fileUpload = new RefUpload();
 
-                String[] splitNameFile = file.getOriginalFilename().split("\\.");
-                String extension = "." + splitNameFile[splitNameFile.length - 1];
-                RefUpload fileUpload = new RefUpload();
-
-                if(id == 0) {
-                    fileUpload.setExtFile(extension);
-                    post.setRutaWeb(fileUpload.getUuid() + fileUpload.getExtFile());
-                    post.setUuid(fileUpload.getUuid());
-                    post.setFlagActivo(true);
-                    post.setLstDetalle(new ArrayList<>());
-                    // Pasando la imagen  o archivo desde la web hacia el servidor en donde se guardará en la ruta especificada en la instacia nueva de File creada
-                    Post p = repository.save(post);
-                    fileUpload.setId(p.getId());
-                }else{
-                    Post currentPost = repository.findById(id).orElse(null);
-                    currentPost.setLstDetalle(new ArrayList<>());
-                    currentPost.setPeso(post.getPeso());
-                    currentPost.setDuracion(post.getDuracion());
-                    currentPost.setTitulo(post.getTitulo());
-                    currentPost.setDescripcion(post.getDescripcion());
-                    Post p = repository.saveAndFlush(currentPost);
-                    fileUpload.setId(p.getId());
-                    fileUpload.setUuid(p.getUuid());
-                }
-                return fileUpload;
-    /*            } else {
-                    Post qPost = repository.findById(id).orElse(null);
-                    //  Utilitarios.createDirectory(fullPath);
-                    //            fullPath += "/" + uuid + extension;
-
-                    //       File nuevoFile = new File(fullPath);
-
-                    // Agregando la ruta a la base de datos
-                    qPost.setRutaWeb("/" + trainerId + "/" + uuid + extension);
-                    //        qPost.setTitulo(nombrefile);
-                    qPost.setTipo(post.getTipo());
-                    qPost.setDuracion(post.getDuracion());
-                    qPost.setPeso(post.getPeso());
-
-                    // Pasando la imagen  o archivo desde la web hacia el servidor en donde se guardará en la ruta especificada en la instacia nueva de File creada
-                    //         file.transferTo(nuevoFile);
-                    repository.saveAndFlush(qPost);
-                }
-                //       LOGGER.info("> ROUTE: " + fullPath);
-            } catch (Exception e) {
-                e.printStackTrace();
+            if(id == 0) {
+                fileUpload.setExtFile(extension);
+                post.setRutaWeb(fileUpload.getUuid() + fileUpload.getExtFile());
+                post.setUuid(fileUpload.getUuid());
+                post.setFlagActivo(true);
+                post.setLstDetalle(new ArrayList<>());
+                // Pasando la imagen  o archivo desde la web hacia el servidor en donde se guardará en la ruta especificada en la instacia nueva de File creada
+                Post p = repository.save(post);
+                fileUpload.setId(p.getId());
+            }else{
+                Post currentPost = repository.findById(id).orElse(null);
+                currentPost.setLstDetalle(new ArrayList<>());
+                currentPost.setPeso(post.getPeso());
+                currentPost.setDuracion(post.getDuracion());
+                currentPost.setTitulo(post.getTitulo());
+                currentPost.setDescripcion(post.getDescripcion());
+                Post p = repository.saveAndFlush(currentPost);
+                fileUpload.setId(p.getId());
+                fileUpload.setUuid(p.getUuid());
             }
-        } else {
-            LOGGER.info("> Isn't a file");
-        }
-
-    */
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            return fileUpload;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return null;
     }
 
     @Override
-    public String subirAudioAws(MultipartFile file, Integer id, String uuid, String extension) throws CustomValidationException {
+    public String subirFile(MultipartFile file, Integer id, String uuid, String extension) throws CustomValidationException {
         boolean success = uploadImageToAws3(file, new AwsStresPOJO(aws3accessKey, aws3secretKey, aws3region, aws3PostBucket, "audio/"+id+"/", uuid, extension), LOGGER);
         if(success){
             return SUCCESS_SUBIDA_IMG.get();

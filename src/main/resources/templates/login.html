@@ -86,7 +86,7 @@
             <div class="actions">
                 <button class="btn-login" id="btn-login" type="submit">INGRESAR</button>
                 <button class="btn-face" type="button"
-                onclick="javascript: window.location.href = 'https://ec2-18-191-219-0.us-east-2.compute.amazonaws.com:8090/oauth2/authorize/facebook?redirect_uri=http://ec2-18-191-219-0.us-east-2.compute.amazonaws.com/oauth2/redirect'">INGRESA CON FACEBOOK</button>
+                onclick="javascript:loginByFacebook()">INGRESA CON FACEBOOK</button>
                 <a id="btn-nuevo" class="btn-nuevo" href="javascript:goRegister()">SOY NUEVO</a>
             </div>
         </form>
@@ -165,7 +165,6 @@
 <script th:src="@{/js/plugin/jquery-validate/jquery.validate.min.js}+'?'+${version}"></script>
 <script th:src="@{/js/public/login.js}+'?'+${version}"></script>
 
-
 <script>
     const ssoLogin = document.getElementById('SsoLogin');
 
@@ -236,8 +235,12 @@
         passField.attr('type', 'text');
     }, function() {
         passField.attr('type', 'password');
-    })
+    });
 
+    function loginByFacebook(){
+        const base = document.location.origin;
+        window.location.href = `${base.replace('http:','https:')+':8081'}/oauth2/authorize/facebook?redirect_uri=${base}/oauth2/redirect`;
+    }
 
 </script>
 

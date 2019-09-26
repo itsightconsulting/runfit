@@ -43,6 +43,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                                      "/postulacion/**",
                                      "/gestion/cliente/validacion-correo",
                                      "/gestion/cliente/validacion-username",
+                                     "/oauth2/redirect**",//Spring social(FB|GMAIL)
                                      "/login*",
                                      "/rest/**")
                 .permitAll();
