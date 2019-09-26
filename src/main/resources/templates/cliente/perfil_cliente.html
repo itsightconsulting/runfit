@@ -2297,20 +2297,27 @@
             document.querySelector('#DesHerDisOrCondCol').parentElement.classList.remove('hidden');
             $('#DesHerDisOrCondCol').val(sa.desHerDisOrCondCol);
         }
-        const padVarios = sa.desPadVarios.split("|");
-        padVarios.forEach(e=>{
-            document.querySelector('input[name="DesPadVarios"][value="'+e.trim()+'"]').checked = true;
-        });
-        const arrContactosEmergencia = (sa.contactosEmergencia).split("|");
-        arrContactosEmergencia.forEach((e, ix)=>{
-            if(arrContactosEmergencia.length>1 && ix>0){
-                $('#NuevoContacto').click();
-            }
-            const arrNomMov = e.split("_");
-            const nombre = arrNomMov[0], movil = arrNomMov[1];
-            document.querySelectorAll('.inp-cont-emer')[ix+(ix)].value = nombre;
-            document.querySelectorAll('.inp-cont-emer')[ix+ix+1].value = movil;
-        });
+
+        if(sa.desPadVarios) {
+
+            const padVarios = sa.desPadVarios.split("|");
+
+            padVarios.forEach(e => {
+                document.querySelector('input[name="DesPadVarios"][value="' + e.trim() + '"]').checked = true;
+            });
+        }
+        if(sa.contactosEmergencia) {
+            const arrContactosEmergencia = (sa.contactosEmergencia).split("|");
+            arrContactosEmergencia.forEach((e, ix) => {
+                if (arrContactosEmergencia.length > 1 && ix > 0) {
+                    $('#NuevoContacto').click();
+                }
+                const arrNomMov = e.split("_");
+                const nombre = arrNomMov[0], movil = arrNomMov[1];
+                document.querySelectorAll('.inp-cont-emer')[ix + (ix)].value = nombre;
+                document.querySelectorAll('.inp-cont-emer')[ix + ix + 1].value = movil;
+            });
+        }
         document.querySelector('#HistorialDeportivoAnt').value = sa.historialDeportivoAnt;
         document.querySelector('#HistorialDeportivoAct').value = sa.historialDeportivoAct;
         document.querySelector('#FrecuenciaCardiaca').value = ca.frecuenciaCardiaca;

@@ -2,6 +2,7 @@ package com.itsight.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.*;
 import com.itsight.domain.dto.*;
@@ -115,7 +116,7 @@ public class RutinaPlantillaController {
     @PreAuthorize("hasRole('ROLE_TRAINER')")
     @PostMapping(value = "/agregar")
     public @ResponseBody
-    String nuevo(@RequestBody RutinaPlantillaDTO rutinaPlantilla) {
+    String nuevo(@RequestBody RutinaPlantillaDTO rutinaPlantilla) throws CustomValidationException {
 
         //RutinaPlantillaDTO es un arreglo multidimensional que se diferencia del original en la propiedad lista de semanas
         //RutinaPlantillaDTO -> semanas | RutinaPlantilla > lstSemana
@@ -124,9 +125,7 @@ public class RutinaPlantillaController {
     //   objRp.setTrainer(userId);
         //Instanciando lista de semanas
 
-        rutinaPlantillaService.agregarRutinaPrediseñada(rutinaPlantilla);
-
-        return ResponseCode.REGISTRO.get();
+        return rutinaPlantillaService.agregarRutinaPrediseñada(rutinaPlantilla);
     }
 
     @PreAuthorize("hasRole('ROLE_TRAINER')")

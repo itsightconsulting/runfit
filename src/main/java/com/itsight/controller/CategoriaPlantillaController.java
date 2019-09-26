@@ -1,6 +1,7 @@
 package com.itsight.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.itsight.advice.CustomValidationException;
 import com.itsight.domain.CategoriaPlantilla;
 import com.itsight.domain.dto.CategoriaPlantillaDTO;
 import com.itsight.service.CategoriaPlantillaProcedureInvoker;
@@ -34,12 +35,10 @@ public class CategoriaPlantillaController {
     @PostMapping(value = "/agregar")
     public @ResponseBody
     String agregarCategoria(
-            @ModelAttribute @Valid CategoriaPlantilla categoriaPlantilla, BindingResult bindingResult) throws JsonProcessingException {
+            @ModelAttribute @Valid CategoriaPlantilla categoriaPlantilla) throws CustomValidationException {
 
-        if(!bindingResult.hasErrors())
-            return categoriaPlantillaService.agregarCategoriaPlantilla(categoriaPlantilla);
+         return categoriaPlantillaService.agregarCategoriaPlantilla(categoriaPlantilla);
 
-        return Enums.ResponseCode.EX_VALIDATION_FAILED.get();
     }
 
     @PutMapping(value = "/actualizar")

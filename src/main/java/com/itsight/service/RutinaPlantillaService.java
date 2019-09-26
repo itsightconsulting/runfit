@@ -1,5 +1,6 @@
 package com.itsight.service;
 
+import com.itsight.advice.CustomValidationException;
 import com.itsight.domain.RutinaPlantilla;
 import com.itsight.domain.dto.RutinaPlantillaDTO;
 import com.itsight.generic.BaseService;
@@ -12,7 +13,7 @@ public interface RutinaPlantillaService extends BaseService<RutinaPlantilla, Int
     List<RutinaPlantilla> listarPorFiltroPT(Integer trainerId);
 
 */
-   String agregarRutinaPrediseñada(RutinaPlantillaDTO rutinaPlantillaDTO);
+   String agregarRutinaPrediseñada(RutinaPlantillaDTO rutinaPlantillaDTO) throws CustomValidationException;
 
    String actualizarRutinaPrediseñada(RutinaPlantillaDTO rutinaPlantillaDTO);
 

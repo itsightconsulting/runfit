@@ -7,6 +7,7 @@ import com.itsight.domain.dto.ClienteDTO;
 import com.itsight.domain.dto.ConfiguracionClienteDTO;
 import com.itsight.domain.dto.QueryParamsDTO;
 import com.itsight.domain.dto.ResPaginationDTO;
+import com.itsight.domain.pojo.ServicioPOJO;
 import com.itsight.domain.pojo.TycClientePOJO;
 import com.itsight.domain.pojo.UsuarioPOJO;
 import com.itsight.service.*;
@@ -35,15 +36,23 @@ public class ClienteController extends BaseController {
 
     private RedFitnessService redFitnessService;
 
+    private ServicioProcedureInvoker servicioProcedureInvoker;
+
+    private ServicioService servicioService;
+
     @Autowired
     public ClienteController(ClienteService clienteService,
                              SecUserProcedureInvoker secUserProcedureInvoker,
                              ClienteProcedureInvoker clienteProcedureInvoker,
-                             RedFitnessService redFitnessService) {
+                             RedFitnessService redFitnessService,
+                             ServicioProcedureInvoker servicioProcedureInvoker,
+                             ServicioService servicioService) {
         this.clienteService = clienteService;
         this.secUserProcedureInvoker = secUserProcedureInvoker;
         this.clienteProcedureInvoker = clienteProcedureInvoker;
         this.redFitnessService = redFitnessService;
+        this.servicioProcedureInvoker = servicioProcedureInvoker;
+        this.servicioService = servicioService;
     }
 
     @GetMapping(value = "/videoteca")
@@ -132,6 +141,21 @@ public class ClienteController extends BaseController {
         return lstDistribucionCliente;
     }
 
+    @GetMapping(value = "/servicio/trainer/top/obtener")
+    public @ResponseBody List<ServicioPOJO> getTopServiciosClientexTrainer(@RequestParam Integer id){
+
+        List<ServicioPOJO> lstServicio = servicioProcedureInvoker.getTopServiciobyTrainerId(id);
+
+        return lstServicio;
+    }
+
+    @GetMapping(value = "/servicio/trainer/total/obtener")
+    public @ResponseBody int getTotalClientesServiciosxTrainer(@RequestParam Integer id){
+
+        Integer total = servicioService.getTotalClientesByTrainerId(id);
+
+        return total;
+    }
 
 
     @GetMapping(value = "/get/tyc/servicios")

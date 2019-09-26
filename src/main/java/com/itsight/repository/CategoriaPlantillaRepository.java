@@ -5,6 +5,8 @@ import com.itsight.domain.dto.CategoriaPlantillaDTO;
 import com.itsight.domain.dto.RedFitCliDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.query.Procedure;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,5 +20,7 @@ public interface CategoriaPlantillaRepository extends JpaRepository<CategoriaPla
     @Query("SELECT NEW com.itsight.domain.dto.CategoriaPlantillaDTO(C.id,C.nombre, C.tipo,C.favorito) FROM CategoriaPlantilla C WHERE C.trainer.id= ?1 AND C.tipo = ?2")
     List<CategoriaPlantillaDTO> findCategoriasByTrainerIdAndTipo(Integer trainerId, int tipoRutina);
 
+    @Procedure(name = "fn_validacion_nombre_categoria")
+    Boolean findNombreCategPlantExiste(@Param("_nom_cat") String nombre , @Param("_trainer_id") Integer trainerId , @Param("_tipo") Integer tipo );
 
 }

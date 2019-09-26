@@ -38,7 +38,36 @@ import java.util.UUID;
                 }
             )
         }
-    )
+    ),
+    @SqlResultSetMapping(name = "resultMappingTopServiciosTrainer",
+        classes = {
+             @ConstructorResult(
+                 targetClass = ServicioPOJO.class,
+                 columns = {
+                    @ColumnResult(name = "trainerid"),
+                    @ColumnResult(name = "trainerNombre"),
+                    @ColumnResult(name = "servicioNombre"),
+                    @ColumnResult(name = "servicioId"),
+                    @ColumnResult(name = "qtyClientes"),
+                    @ColumnResult(name = "qtyHombre"),
+                    @ColumnResult(name = "qtyMujer")
+                 }
+                )
+                }),
+
+        @SqlResultSetMapping(name = "resultMappingTopServiciosByTrainerId",
+                classes = {
+                        @ConstructorResult(
+                                targetClass = ServicioPOJO.class,
+                                columns = {
+                                        @ColumnResult(name = "id"),
+                                        @ColumnResult(name = "nombre"),
+                                        @ColumnResult(name = "qtyClientes"),
+                                        @ColumnResult(name = "qtyHombre"),
+                                        @ColumnResult(name = "qtyMujer")
+                                }
+                        )
+                })
 })
 @NamedNativeQueries({
         @NamedNativeQuery(name = "Servicio.findAllByTrainerId",

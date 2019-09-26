@@ -13,6 +13,9 @@ const selectYear = document.getElementById('graphYearFilter');
 let cantidadUsuarios;
 let distribucionDepartamento = [];
 let distribucionDistritos = [];
+let serviciosTop = [];
+let totalClientesServicio;
+
 
 $( function(){
     init();
@@ -20,12 +23,15 @@ $( function(){
 
 function init(){
 
+
+    Chart.plugins.unregister(ChartDataLabels);
+
     checkBoxasRadioButtons();
     checkBoxLocalizacionChangeEvent();
 
     obtenerDataEstadisticas();
 
-    if(selectYear) {
+    if(selectYear){
         selectYear.addEventListener('change', selectYearEventListener);
     }
 }
@@ -65,19 +71,34 @@ function obtenerDataEstadisticas(){
                 setGraficosEdadFem(dataNoDuplFem);
                 setGraficosEdadMasc(dataNoDuplMasc);
 
-                setGraficoServicios(dataNoDuplicados);
+           //     setGraficoServicios(dataNoDuplicados);
 
                 if(perfil === 1) //Trainer
                 {
+
+
                     const hrServicios = document.querySelector('.hr-servicios');
                     const dvServicios = document.querySelector('.dv-servicios');
+                    dvServicios.style.paddingTop = '200px';
+                    dvServicios.style.paddingBottom = '150px';
 
-                    dvServicios.style.paddingTop = '300px';
                     hrServicios.parentNode.removeChild(hrServicios);
                     dvCanalVenta.parentNode.removeChild(dvCanalVenta);
+                    obtenerInformacionTopServicios();
 
                 }else{
+
+                    if(!getParamFromURL('trId'))
+                    {
+                        obtenerInformacionTopServiciosPlataforma();
+
+
+                    }else {
+                        obtenerInformacionTopServicios();
+                    }
+
                     setGraficoCanalVenta(dataNoDuplicados);
+
                 }
 
                 setGraficosCondFisMasc(dataNoDuplMasc);
@@ -86,7 +107,6 @@ function obtenerDataEstadisticas(){
                 setGraficosServiciosVentaTemporada(data)
                 obtenerInformacionDistribucionDistritosLima();
                 obtenerInformacionDistribucionDepartamentos();
-
 
             }else{
 
@@ -185,6 +205,107 @@ function obtenerInformacionDistribucionDistritosLima(){
     });
 }
 
+function obtenerInformacionTopServicios(){
+
+    let id;
+    id =  perfil != 1 ?  getParamFromURL('trId') : null;
+
+    let url = perfil === 1 ? "gestion/trainer/servicio/top/obtener"
+        :  "gestion/cliente/servicio/trainer/top/obtener?id="+id;
+
+    $.ajax({
+        type: "GET",
+        url: _ctx + url,
+        blockLoading: true,
+        success: function(data){
+
+            serviciosTop = data;
+
+            obtenerTotalClientesServicioxTrainer();
+        },
+        error : (xhr) => {
+
+        },
+        complete: ()=>{
+
+        }
+    });
+}
+
+function obtenerTotalClientesServicioxTrainer(){
+
+    let id;
+    id =  perfil != 1 ?  getParamFromURL('trId') : null;
+
+    let url = perfil === 1 ? "gestion/trainer/servicio/total/obtener"
+        :  "gestion/cliente/servicio/trainer/total/obtener?id="+id;
+
+    $.ajax({
+        type: "GET",
+        url: _ctx + url,
+        blockLoading: true,
+        success: function(data){
+
+            totalClientesServicio = data;
+
+            graficoServiciosUsados(totalClientesServicio, serviciosTop);
+            //generarGraficoServiciosTrainer(totalClientesServicio,serviciosTop);
+        },
+        error : (xhr) => {
+
+        },
+        complete: ()=>{
+
+        }
+    });
+}
+
+function obtenerTotalClientesServicioPlataforma(){
+
+    let url = "gestion/distribucion-mercado/servicio/total/obtener";
+
+    $.ajax({
+        type: "GET",
+        url: _ctx + url,
+        blockLoading: true,
+        success: function(data){
+
+            totalClientesServicio = data;
+            graficoServiciosUsados(totalClientesServicio, serviciosTop);
+        },
+        error : (xhr) => {
+
+        },
+        complete: ()=>{
+
+        }
+    });
+}
+
+
+function obtenerInformacionTopServiciosPlataforma(){
+
+    let url = "gestion/distribucion-mercado/servicio/obtener";
+
+    $.ajax({
+        type: "GET",
+        url: _ctx + url,
+        blockLoading: true,
+        success: function(data){
+          serviciosTop = data;
+          obtenerTotalClientesServicioPlataforma();
+        },
+        error : (xhr) => {
+
+        },
+        complete: ()=>{
+
+        }
+    });
+}
+
+
+
 function checkBoxasRadioButtons(){
 
 
@@ -220,7 +341,6 @@ function checkBoxLocalizacionChangeEvent() {
 
 function getEdad(fechaNacimiento){
 
-    console.log(fechaNacimiento);
     const fechaNac = parseFromStringToDate2(fechaNacimiento) ;
     return new Date().getFullYear() - fechaNac.getFullYear();
 }
@@ -270,7 +390,7 @@ function setGraficoServicios(dataNoDuplicados){
     let arrTipoServicio = dataNoDuplicados.map(({predeterminadaFichaId}) => predeterminadaFichaId);
     let graphTipoServicioData =  getDataGraficoTipoServicio(arrTipoServicio);
 
-    graficoServiciosUsados(graphTipoServicioData);
+  //graficoServiciosUsados(graphTipoServicioData);
     generarNombreServiciosDOM();
     setDataServicioDistrSexo(dataNoDuplicados,graphTipoServicioData);
 
@@ -300,8 +420,6 @@ function setGraficosServiciosVentaTemporada(data){
 
     const dataGraficoFem = getDataServicioPorTemporada(dataFechaTemporadaFem, aniosArr[0] );
     const dataGraficoMasc = getDataServicioPorTemporada(dataFechaTemporadaMasc, aniosArr[0] );
-
-    console.log(data);
 
     graficoBarraVentaServiciosTemporada(dataGraficoFem,dataGraficoMasc);
 
@@ -433,7 +551,7 @@ function graficoCondFisicaBasicaMasc(arr) {
                         opts = this._chart.config.options;
 
                     var img = new Image();
-                    img.src = '/img/iconos/icon_male.svg';
+                    img.src = '/img/iconos-trainers/icon-male-body.png';
                     ctx.drawImage(img,centerX -10,centerY - 25, 20,50);
 
                     ctx.beginPath();
@@ -485,7 +603,7 @@ function graficoCondFisicaBasicaMasc(arr) {
                 labels: ["Básica"],
                 datasets: [{
                     data: [-1],
-                    backgroundColor: 'grey',
+                    backgroundColor: '#666077',
                     borderColor: 'transparent',
                 }],
             },
@@ -497,7 +615,7 @@ function graficoCondFisicaBasicaMasc(arr) {
                     labels: {
                         // This more specific font property overrides the global property
                         fontColor: 'white',
-                        fontFamily: 'GothamHTF-Book',
+                        fontFamily: 'Gotham-HTF-Book',
                     }
                 },
                 title: {
@@ -520,7 +638,7 @@ function graficoCondFisicaBasicaMasc(arr) {
                 labels: ["Básica","Otros"],
                 datasets: [{
                     data: [arr[0] , total - arr[0]],
-                    backgroundColor: ['#00b5f7', '#756d77'],
+                    backgroundColor: ['#00b5f7', '#666077'],
                     borderColor: 'transparent',
                 }],
             },
@@ -532,7 +650,7 @@ function graficoCondFisicaBasicaMasc(arr) {
                     labels: {
                         // This more specific font property overrides the global property
                         fontColor: 'white',
-                        fontFamily: 'GothamHTF-Book',
+                        fontFamily: 'Gotham-HTF-Book',
                     }
                 },
                 title: {
@@ -620,7 +738,7 @@ function graficoCondFisicaMedioMasc(arr){
 
 
                     var img = new Image();
-                    img.src = '/img/iconos/icon_male.svg';
+                    img.src = '/img/iconos-trainers/icon-male-body.png';
                     ctx.drawImage(img,centerX -10,centerY - 25, 20,50);
 
                     ctx.beginPath();
@@ -672,7 +790,7 @@ function graficoCondFisicaMedioMasc(arr){
                 labels: ["Medio"],
                 datasets: [{
                     data: [-1],
-                    backgroundColor: 'grey',
+                    backgroundColor: '#666077',
                     borderColor: 'transparent',
                 }],
             },
@@ -684,7 +802,7 @@ function graficoCondFisicaMedioMasc(arr){
                     labels: {
                         // This more specific font property overrides the global property
                         fontColor: 'white',
-                        fontFamily: 'GothamHTF-Book',
+                        fontFamily: 'Gotham-HTF-Book',
                     }
                 },
                 title: {
@@ -708,7 +826,7 @@ function graficoCondFisicaMedioMasc(arr){
                 labels: ["Medio", "Otros"],
                 datasets: [{
                     data: [arr[1], total - arr[1]],
-                    backgroundColor: ['#00b5f7', '#756d77'],
+                    backgroundColor: ['#00b5f7', '#666077'],
                     hoverBackgroundColor: ["#2C42CA", "#7A6D64"],
                     borderColor: 'transparent',
                 }],
@@ -721,7 +839,7 @@ function graficoCondFisicaMedioMasc(arr){
                     labels: {
                         // This more specific font property overrides the global property
                         fontColor: 'white',
-                        fontFamily: 'GothamHTF-Book',
+                        fontFamily: 'Gotham-HTF-Book',
                     }
                 },
                 title: {
@@ -805,7 +923,7 @@ function graficoCondFisicaAvanzadoMasc(arr){
 
 
                     var img = new Image();
-                    img.src = '/img/iconos/icon_male.svg';
+                    img.src = '/img/iconos-trainers/icon-male-body.png';
                     ctx.drawImage(img,centerX -10,centerY - 25, 20,50);
 
                     ctx.beginPath();
@@ -857,7 +975,7 @@ function graficoCondFisicaAvanzadoMasc(arr){
                 labels: ["Avanzado"],
                 datasets: [{
                     data: [-1],
-                    backgroundColor: 'grey',
+                    backgroundColor: '#666077',
                     borderColor: 'transparent',
                 }],
             },
@@ -869,7 +987,7 @@ function graficoCondFisicaAvanzadoMasc(arr){
                     labels: {
                         // This more specific font property overrides the global property
                         fontColor: 'white',
-                        fontFamily: 'GothamHTF-Book',
+                        fontFamily: 'Gotham-HTF-Book',
                     }
                 },
                 title: {
@@ -889,7 +1007,7 @@ function graficoCondFisicaAvanzadoMasc(arr){
                 labels: ["Avanzado","Otros"],
                 datasets: [{
                     data: [arr[2] , total - arr[2]],
-                    backgroundColor: ['#00b5f7', '#756d77'],
+                    backgroundColor: ['#00b5f7', '#666077'],
                     hoverBackgroundColor:  ["#2C42CA", "#7A6D64"],
                     borderColor: 'transparent',
                 }],
@@ -902,7 +1020,7 @@ function graficoCondFisicaAvanzadoMasc(arr){
                     labels: {
                         // This more specific font property overrides the global property
                         fontColor: 'white',
-                        fontFamily: 'GothamHTF-Book',
+                        fontFamily: 'Gotham-HTF-Book',
                     }
                 },
                 title: {
@@ -986,13 +1104,12 @@ function graficoCondFisicaBasicaFem(arr){
                         eA = vm.endAngle,
                         opts = this._chart.config.options;
 
-
                     var img = new Image();
-                    img.src = '/img/iconos/icon_female.svg';
-                    ctx.drawImage(img,centerX -15,centerY - 25, 30,50);
-
+                    img.src = '/img/iconos-trainers/icon-female-body.png';
+                    ctx.drawImage(img,centerX -10,centerY - 25, 20,50);
 
                     ctx.beginPath();
+
 
                     ctx.arc(vm.x, vm.y, vm.outerRadius, sA, eA);
                     ctx.arc(vm.x, vm.y, vm.innerRadius, eA, sA, true);
@@ -1054,7 +1171,7 @@ function graficoCondFisicaBasicaFem(arr){
                     labels: {
                         // This more specific font property overrides the global property
                         fontColor: 'white',
-                        fontFamily: 'GothamHTF-Book',
+                        fontFamily: 'Gotham-HTF-Book',
                     }
                 },
                 title: {
@@ -1092,7 +1209,7 @@ function graficoCondFisicaBasicaFem(arr){
                     labels: {
                         // This more specific font property overrides the global property
                         fontColor: 'white',
-                        fontFamily: 'GothamHTF-Book',
+                        fontFamily: 'Gotham-HTF-Book',
                     }
                 },
                 title: {
@@ -1179,8 +1296,8 @@ function graficoCondFisicaMedioFem(arr){
 
 
                     var img = new Image();
-                    img.src = '/img/iconos/icon_female.svg';
-                    ctx.drawImage(img,centerX -15,centerY - 25, 30,50);
+                    img.src = '/img/iconos-trainers/icon-female-body.png';
+                    ctx.drawImage(img,centerX -10,centerY - 25, 20,50);
 
 
                     ctx.beginPath();
@@ -1244,7 +1361,7 @@ function graficoCondFisicaMedioFem(arr){
                     labels: {
                         // This more specific font property overrides the global property
                         fontColor: 'white',
-                        fontFamily: 'GothamHTF-Book',
+                        fontFamily: 'Gotham-HTF-Book',
                     }
                 },
                 title: {
@@ -1279,7 +1396,7 @@ function graficoCondFisicaMedioFem(arr){
                     labels: {
                         // This more specific font property overrides the global property
                         fontColor: 'white',
-                        fontFamily: 'GothamHTF-Book',
+                        fontFamily: 'Gotham-HTF-Book',
                     }
                 },
                 title: {
@@ -1371,8 +1488,8 @@ function graficoCondFisicaAvanzadoFem(arr){
 
 
                     var img = new Image();
-                    img.src = '/img/iconos/icon_female.svg';
-                    ctx.drawImage(img,centerX -15,centerY - 25, 30,50);
+                    img.src = '/img/iconos-trainers/icon-female-body.png';
+                    ctx.drawImage(img,centerX -10,centerY - 25, 20,50);
 
                     ctx.beginPath();
 
@@ -1435,7 +1552,7 @@ function graficoCondFisicaAvanzadoFem(arr){
                     labels: {
                         // This more specific font property overrides the global property
                         fontColor: 'white',
-                        fontFamily: 'GothamHTF-Book',
+                        fontFamily: 'Gotham-HTF-Book',
                     }
                 },
                 title: {
@@ -1469,7 +1586,7 @@ function graficoCondFisicaAvanzadoFem(arr){
                     labels: {
                         // This more specific font property overrides the global property
                         fontColor: 'white',
-                        fontFamily: 'GothamHTF-Book',
+                        fontFamily: 'Gotham-HTF-Book',
                     }
                 },
                 title: {
@@ -1561,8 +1678,8 @@ function graficoDistribucionEdadFemenino(ageRangesValues){
 
 
                     var img = new Image();
-                    img.src = '/img/iconos-trainers/icon_female_body.svg';
-                    ctx.drawImage(img,centerX -15,centerY - 25, 30,50);
+                    img.src = '/img/iconos-trainers/icon-female-body.png';
+                    ctx.drawImage(img,centerX -10,centerY - 25, 20,50);
 
                     ctx.beginPath();
 
@@ -1625,7 +1742,7 @@ function graficoDistribucionEdadFemenino(ageRangesValues){
                     labels: {
                         // This more specific font property overrides the global property
                         fontColor : 'white',
-                        fontFamily : 'GothamHTF-Book',
+                        fontFamily : 'Gotham-HTF-Book',
                     }
                 },
                 title: {
@@ -1666,7 +1783,7 @@ function graficoDistribucionEdadFemenino(ageRangesValues){
                     labels: {
                         // This more specific font property overrides the global property
                         fontColor : 'white',
-                        fontFamily : 'GothamHTF-Book',
+                        fontFamily : 'Gotham-HTF-Book',
                     }
                 },
                 title: {
@@ -1745,9 +1862,8 @@ function graficoDistribucionEdadMasculino(ageRangesValues){
                         opts = this._chart.config.options;
 
                     var img = new Image();
-                    img.src = '/img/iconos/icon_male.svg';
-                    ctx.drawImage(img,centerX -10,centerY - 25, 25,50);
-
+                    img.src = '/img/iconos-trainers/icon-male-body.png';
+                    ctx.drawImage(img,centerX -10,centerY - 25, 20,50);
                     ctx.beginPath();
 
                     ctx.arc(vm.x, vm.y, vm.outerRadius, sA, eA);
@@ -1809,7 +1925,7 @@ function graficoDistribucionEdadMasculino(ageRangesValues){
                     labels: {
                         // This more specific font property overrides the global property
                         fontColor : 'white',
-                        fontFamily : 'GothamHTF-Book',
+                        fontFamily : 'Gotham-HTF-Book',
                     }
                 },
                 title: {
@@ -1850,7 +1966,7 @@ function graficoDistribucionEdadMasculino(ageRangesValues){
                 labels: {
                     // This more specific font property overrides the global property
                     fontColor : 'white',
-                    fontFamily : 'GothamHTF-Book',
+                    fontFamily : 'Gotham-HTF-Book',
                 }
             },
             title: {
@@ -2003,7 +2119,7 @@ function graficoCanalesUsados(dataCanales){
         datasets: [
             {
                 data: dataCanales,
-                backgroundColor: "#ff8402"
+                backgroundColor: "#ff5320"
             }
         ]
     };
@@ -2028,8 +2144,8 @@ function graficoCanalesUsados(dataCanales){
                     ticks:{
                         callback: function(value,index){return porcentajes[index]+ " %"},
                         fontSize: 13,
-                        fontColor: "#ff8402",
-                        fontFamily: "GothamHTF-Book"
+                        fontColor: "#ff5320",
+                        fontFamily: "Gotham-HTF-Book"
                     },
                     gridLines: {
                         display:false,
@@ -2222,31 +2338,138 @@ function setDataServicioDistrSexo(data, graphGeneralData){
 }
 
 
-function graficoServiciosUsados(dataServicio){
+function graficoServiciosUsados(  totalServicios, dataServicio){
 
-    let dataLength = dataServicio.reduce( (a,b) => a+b);
-    let porcentajes = dataServicio.map( e => Math.round((e/dataLength)*100));
+
+    let porcentajes = dataServicio.map( e => Math.round((e.qtyClientes/totalServicios)*100));
+
+    let suma = porcentajes.reduce(  (a,b) => a+b);
+
+    porcentajes= suma === 100 ? porcentajes : roundedPercentage( porcentajes, 100);
+
+    let porcentajesHombre = roundedPercentage((dataServicio.map( e => ((e.qtyHombre/e.qtyClientes)*100))),100);
+    let porcentajesMujer = roundedPercentage((dataServicio.map( e => ((e.qtyMujer/e.qtyClientes)*100))) , 100 );
 
 
     //GraficoCanalesUsados
     var ctx = document.getElementById("GraficoServiciosUsados").getContext("2d");
+
     var data = {
-        labels: serviciosTipos,
+        labels: perfil !==1 && !getParamFromURL('trId') ? dataServicio.map( e => e.trainerNombres) : dataServicio.map( e => e.nombre),
         datasets: [
             {
-                data: dataServicio,
+                data:  dataServicio.map( e => (e.qtyClientes)),
                 backgroundColor: "#e04c51"
             }
         ]
     };
 
-    const myBarChartHoriz = new Chart(ctx, {
-        type: 'horizontalBar',
-        data: data,
-        options: {
-            barValueSpacing: 5,
-            barDatasetSpacing: 5,
 
+    let options;
+
+    if(perfil !==1 && !getParamFromURL('trId')){
+        options= {
+            scales: {
+                xAxes: [{
+                    ticks: {
+                        display: false
+                    },
+                    gridLines: {
+                        display: false,
+                        drawBorder: false
+                    },
+                    categoryPercentage: 1.0,
+                    barPercentage: 1.0
+                }],
+                yAxes: [{
+                    barThickness: 15,
+                    ticks: {
+                        fontSize: "13",
+                        fontFamily: "Gotham-HTF-Book",
+                        padding: 35,
+                        fontColor:'#9B999C'
+                    },
+                    gridLines: {
+                        display: false,
+                        drawBorder: false
+                    },
+                    categoryPercentage: 1.0,
+                    barPercentage: 1.0
+                }, {
+                    type: 'category',
+                    offset: true,
+                    position: 'right',
+                    ticks: {
+                        fontSize: 13,
+                        fontFamily: "GothamHTF-Book",
+                        fontColor:'#9B999C',
+                        callback: function (value, index, values) {
+                            return (String(porcentajesHombre[index]).length == 2 ? '' : ' ') + '  ' + porcentajesHombre[index] + '%       ' + porcentajesMujer[index] + '%'
+                        }
+                    },
+                    gridLines: {
+                        display: false,
+                        drawBorder: false
+                    }
+                }]
+            },
+            hover: {
+                mode: 'nearest',
+                intersect: true
+            },
+            tooltips: {
+                yAlign: 'bottom',
+                xAlign: 'center',
+                xPadding: 25,
+                yPadding: 15,
+                xPadding: 45,
+                _bodyAlign: 'center',
+                _footerAlign: 'center',
+                mode: 'nearest',
+                callbacks: {
+                    title: function (tooltipItem, data) {
+                        return 'Servicio : ' + dataServicio[tooltipItem[0]['index']].nombre + '( ID: ' + dataServicio[tooltipItem[0]['index']].id  +')';
+                    },
+                    label: function (tooltipItem, data) {
+                        return 'Cantidad : ' + data['datasets'][0]['data'][tooltipItem['index']];
+                    },
+                    footer: function (tooltipItem, data) {
+                        return '(Trainer ID : ' + dataServicio[tooltipItem[0]['index']].trainerId  + ')' ;
+                    }
+                  },
+                displayColors: false,
+                titleFontSize: 14,
+                bodyFontSize: 13,
+                footerFontSize:12
+                },
+                layout: {
+                    padding: {
+                        left: 60
+                    }
+                },
+                legend: {
+                    position: 'bottom',
+                    display: false
+                },
+                plugins: {
+                    datalabels: {
+                        anchor: 'start',
+                        align: 'start',
+                        color: '#e04c51',
+                        font: {
+                            weight: 'bold',
+                            size: 13,
+                            family: "Gotham-HTF-Book"
+                        },
+                        formatter: function (value, context) {
+                            return porcentajes[context.dataIndex] + '%';
+                        }
+                    }
+                }
+        }
+    }else{
+
+        options= {
             scales: {
                 xAxes: [{
                     ticks: {
@@ -2262,10 +2485,10 @@ function graficoServiciosUsados(dataServicio){
                 yAxes: [{
                     barThickness : 15,
                     ticks:{
-                        callback: function(value,index){return porcentajes[index]+ " %"},
-                        fontSize: 13,
-                        fontColor: "#e04c51",
-                        fontFamily: "GothamHTF-Book"
+                        fontSize: "13",
+                        fontFamily: "Gotham-HTF-Book",
+                        display:true,
+                        padding: 35
                     },
                     gridLines: {
                         display:false,
@@ -2273,6 +2496,21 @@ function graficoServiciosUsados(dataServicio){
                     },
                     categoryPercentage: 1.0,
                     barPercentage: 1.0
+                }, {
+                    type: 'category',
+                    offset: true,
+                    position: 'right',
+                    ticks: {
+                        fontSize:13,
+                        fontFamily: "Gotham-HTF-Book",
+                        callback: function (value, index, values) {
+                            return (String(porcentajesHombre[index]).length == 2 ? '' :' ')  +'  '+ porcentajesHombre[index] + '%       '+ porcentajesMujer[index] + '%'
+                        }
+                    },
+                    gridLines: {
+                        display: false,
+                        drawBorder: false
+                    }
                 }]
             },
             hover: {
@@ -2281,18 +2519,45 @@ function graficoServiciosUsados(dataServicio){
             },
             tooltips: {
                 mode: 'nearest'
-            },  layout: {
+            },
+            layout: {
                 padding: {
-                    right: 15  //set that fits the best
+                    left: 60
                 }
             },
             legend:{
                 position: 'bottom',
                 display: false
+            },
+            plugins: {
+                datalabels:{
+                    anchor: 'start',
+                    align: 'start',
+                    color: '#e04c51',
+                    font: {
+                        weight: 'bold',
+                        size: 13,
+                        family:"Gotham-HTF-Book"
+                    },
+                    formatter: function(value, context) {
+                        return porcentajes[context.dataIndex] + '%';
+                    }
+                }
             }
 
         }
+
+    }
+
+    const myBarChartHoriz = new Chart(ctx, {
+        type: 'horizontalBar',
+        plugins: [ChartDataLabels],
+        data: data,
+        options: options
     });
+
+    Chart.defaults.global.tooltips.titleAlign = 'center';
+    Chart.defaults.global.tooltips.bodyAlign = 'center';
     Chart.elements.Rectangle.prototype.draw = function() {
 
         var ctx = this._chart.ctx;
@@ -2448,10 +2713,10 @@ function graficoDistribucionLocalizacion(dataLocalizacion, porcentajes, tipo){
     let canv = document.createElement('canvas');
     canv.id = 'graficoDistribucionLocalizacion';
 
-    if(porcentajes.length < 12){
+    if(porcentajes.length < 6){
         canv.height= 200;
     }else{
-        canv.height= 400;
+        canv.height= 470;
     }
 
     parentDv.appendChild(canv)
@@ -2496,8 +2761,8 @@ function graficoDistribucionLocalizacion(dataLocalizacion, porcentajes, tipo){
                     barThickness : 15,
                     ticks:{
                         fontSize: 13,
-                        fontColor: "#756d77",
-                        fontFamily: "GothamHTF-Book"
+                        fontColor: "#9B999C",
+                        fontFamily: "Gotham-HTF-Book"
                     },
                     gridLines: {
                         display:false,
@@ -2512,7 +2777,7 @@ function graficoDistribucionLocalizacion(dataLocalizacion, porcentajes, tipo){
                     ticks: {
                         fontColor: '#a8fa00',
                         fontSize:13,
-                        fontFamily: "GothamHTF-Bold",
+                        fontFamily: "Gotham-HTF-Bold",
                         padding: 65,
                         callback: function (value, index, values) {
                             return porcentajes[index] + '%'
@@ -2529,7 +2794,8 @@ function graficoDistribucionLocalizacion(dataLocalizacion, porcentajes, tipo){
                 intersect: true
             },
             tooltips: {
-                mode: 'nearest'
+                mode: 'nearest',
+                intersect: true
             },  layout: {
                 padding: {
                     right: 15  //set that fits the best
@@ -2565,7 +2831,7 @@ function graficoDistribucionLocalizacion(dataLocalizacion, porcentajes, tipo){
                     ticks: {
                         fontSize: 13,
                         fontColor: "#756d77",
-                        fontFamily: "GothamHTF-Book"
+                        fontFamily: "Gotham-HTF-Book"
                     },
                     gridLines: {
                         display: false,
@@ -2774,6 +3040,7 @@ function generarNombreServiciosDOM(){
 
 
     const dvServicio = $('.nombre-servicio');
+/*
 
     serviciosTipos.map( function(element) {
             let nombreServicio  = htmlStringToElement(`<p>${element}</p>`)  ;
@@ -2781,7 +3048,9 @@ function generarNombreServiciosDOM(){
 
         }
     );
+*/
 }
+
 
 
 

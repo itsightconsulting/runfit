@@ -14,11 +14,7 @@
   <th:block th:insert="html-commons/in/left-panel::fg-menu-desk"></th:block>
   <th:block th:insert="html-commons/in/left-panel::fg-menu-mob"></th:block>
 
-    <style>
 
-
-
-    </style>
 
     <div id="main-content">
       <div id="wrapper">
@@ -38,16 +34,24 @@
         </div>
         <div class="container">
           <div class="slider-container">
-            <input class="range-slider" type="range" id="range" value="0" name="range" min="0" step="1" max="7">
+            <input class="range-slider" type="range" id="range" value="0" name="range" min="0" step="1" max="4">
           </div>
           <section class="favoritos">
-            <h4 class="text-left" ><img class="svg" src="/img/iconos/icon_heart.svg">mis favoritos</h4>
+            <h4 class="text-left" ><img class="svg" src="/img/iconos/icon_heart.svg">mis favoritos
+              <div class="input-group">
+                <input class="form-control" type="text" id="inpBuscadorFav">
+                <div class="input-group-btn">
+                  <button class="btn btn-default" type="submit">BUSCAR</button>
+                </div>
+              </div>
+            </h4>
             <div class="resultado_material">
               <ul class="row">
 
               </ul>
             </div>
-            <div class="text-center" id="iconArrowMoreFav"><a data-toggle="collapse" data-target="#moreFav"><img class="svg moreview" src="/img/iconos/icon_flecha2.svg"></a></div>
+            <div class="text-center" id="iconArrowMoreFav">
+            <a data-toggle="collapse" data-target="#moreFav"><img class="svg moreview arrow" src="/img/iconos/icon_flecha2.svg"></a></div>
             <div class="collapse" id="moreFav">
               <div class="resultado_material">
                 <ul class="row">
@@ -59,7 +63,7 @@
             <hr>
           </section>
           <section class="busqueda">
-            <h4 class="text-left" id="grupoVideoTitle"> <span > estiramientos</span> <img class="svg" src="/img/iconos/icon_flecha2.svg">
+            <h4 class="text-left" id="grupoVideoTitle"> <span > estiramientos</span> <!-- <img class="svg" src="/img/iconos/icon_flecha2.svg"> -->
               <div class="input-group">
                 <input class="form-control" type="text" id="inpBuscador">
                 <div class="input-group-btn">
@@ -92,10 +96,12 @@
   const ulFavoritosGrupo = document.querySelector('section.favoritos .resultado_material ul');
   const dvArrowMoreFav = document.querySelector('section.favoritos #iconArrowMoreFav ');
   const dvMoreFav = document.querySelector('section.favoritos #moreFav');
+  const dvGrupoVideo = document.querySelector('section.busqueda .resultado_material');
   const dvResultadoFavoritos = document.querySelector('section.favoritos .resultado_material');
-
   const ulOtrosFavoritosGrupo = document.querySelector('section.favoritos #moreFav ul');
   const inpBuscador = document.getElementById('inpBuscador');
+  const inpBuscadorFav = document.getElementById('inpBuscadorFav');
+
   let currentVideosxGrupo;
   const favIcon = document.querySelectorAll('.fav');
   let currentFavoritos;
@@ -123,6 +129,8 @@
    //  obtenerVideosxGrupo(0) //tipo 0 => Nuevo grupo video
    //  $(dvCarousel).on('click', '.item', grupoVideoClickEvent);
        inpBuscador.addEventListener("input", buscadorEvent);
+      inpBuscadorFav.addEventListener("input", buscadorFavEvent);
+
       $(dvCarousel).on('changed.owl.carousel', seleccionGrupoEvent);
       $(body).on('click','.fav',favoritoEvent);
 
@@ -140,7 +148,7 @@
       success : (result) => {
 
         poblarCarouselCategorias(result);
-
+        $('.range-slider').prop('max', result.length - 1);
       },
       error: (xhr) =>{
 
@@ -275,10 +283,11 @@
     $('section.favoritos p').text("");
     if(dataVideos.length > 0){
       const videosFav =  dataVideos.reverse();
+      dvMoreFav.style.display = '';
+
 
       if(dataVideos.length <= 3){
         dvArrowMoreFav.style.display = 'none';
-        dvMoreFav.style.display = 'none';
       }else{
         dvArrowMoreFav.style.display = 'block';
       }
@@ -287,7 +296,6 @@
                 `https://s3-us-west-2.amazonaws.com/rf-media-rutina/video/${element.id + "/" + element.thumbnail + ".jpg"}` :
                 "";
         const setThumbnailStyle = thumbnail ? `style="background: url(${thumbnail})"` : "";
-
         const videoElement = htmlStringToElement(`
                                  <li class="col-md-4 col-sm-6 col-xs-6">
                                     <div class="card">
@@ -301,53 +309,80 @@
 
         if (index <= 2) {
           ulFavoritosGrupo.appendChild(videoElement);
-
         }  else {
           ulOtrosFavoritosGrupo.appendChild(videoElement);
         }})
-
     }else{
-
       dvArrowMoreFav.style.display = 'none';
       dvMoreFav.style.display = 'none';
-
       const mensaje = htmlStringToElement(`<p class="text-center" style="color:#ffffff">No cuenta aún con videos favoritos </p>`)
       dvResultadoFavoritos.appendChild(mensaje);
-
     }
 
-
-
     svgFillEvent();
+  }
+
+  function grupoVideoClickEvent(e){
+
+    const input = e.target;
+    const parentInputClasses = input.parentElement.classList // apunta al elemento div en el que cual owl carousel aloja el item
+
+    if(parentInputClasses.contains('center')){
+      const grupoVideoId = input.getAttribute("data-grupo-id");
+      currentGrupoVideoId = grupoVideoId;
+      ulVideosGrupo.innerHTML ="";
+      obtenerVideosxGrupo(0);
+    }
 
   }
 
-    function grupoVideoClickEvent(e){
+  function buscadorEvent(filterInp){
 
-      const input = e.target;
-      const parentInputClasses = input.parentElement.classList // apunta al elemento div en el que cual owl carousel aloja el item
+    if(filterInp.data) {
+      let filterText = inpBuscador.value.toUpperCase();
+      const filteredData = currentVideosxGrupo.filter( (el) => el.nombre.toUpperCase().indexOf(filterText) > -1);
+      ulVideosGrupo.innerHTML ="";
 
-      if(parentInputClasses.contains('center')){
-        const grupoVideoId = input.getAttribute("data-grupo-id");
-        currentGrupoVideoId = grupoVideoId;
-        ulVideosGrupo.innerHTML ="";
-        obtenerVideosxGrupo(0);
-      }
-
-    }
-
-    function buscadorEvent(filterInp){
-
-      if(filterInp.data) {
-        let filterText = inpBuscador.value.toUpperCase();
-        const filteredData = currentVideosxGrupo.filter( (el) => el.nombre.toUpperCase().indexOf(filterText) > -1);
-        ulVideosGrupo.innerHTML ="";
+      if(filteredData.length > 0) {
         poblarDvVideosxGrupo(filteredData);
       }else{
-        ulVideosGrupo.innerHTML ="";
-        poblarDvVideosxGrupo(currentVideosxGrupo);
+        const mensajeNoResultado = $(dvGrupoVideo).find('.mensaje-no-resultados')[0];
+        !mensajeNoResultado ?  '' : $(mensajeNoResultado).remove()
+        const mensaje = htmlStringToElement(`<p class="text-center mensaje-no-resultados" style="color:#ffffff">No se encontraron resultados para su búsqueda</p>`)
+        dvGrupoVideo.appendChild(mensaje);
       }
+    }else{
+      ulVideosGrupo.innerHTML ="";
+      poblarDvVideosxGrupo(currentVideosxGrupo);
     }
+  }
+
+
+  function buscadorFavEvent(filterInp){
+
+    if(filterInp.data) {
+      let filterText = inpBuscadorFav.value.toUpperCase();
+      const filteredData = currentFavoritos.filter( (el) => el.nombre.toUpperCase().indexOf(filterText) > -1);
+      ulFavoritosGrupo.innerHTML ="";
+      ulOtrosFavoritosGrupo.innerHTML ="";
+
+       if(filteredData.length > 0) {
+         poblarDvVideosFavoritosxCliente(filteredData);
+       }else{
+         dvArrowMoreFav.style.display = 'none';
+         dvMoreFav.style.display = 'none';
+         const mensajeNoResultado = $(dvResultadoFavoritos).find('.mensaje-no-resultados')[0];
+         !mensajeNoResultado ?  '' : $(mensajeNoResultado).remove()
+         const mensaje = htmlStringToElement(`<p class="text-center mensaje-no-resultados" style="color:#ffffff">No se encontraron resultados para su búsqueda</p>`)
+         dvResultadoFavoritos.appendChild(mensaje);
+       }
+
+    }else{
+      ulFavoritosGrupo.innerHTML ="";
+      ulOtrosFavoritosGrupo.innerHTML ="";
+      poblarDvVideosFavoritosxCliente(currentFavoritos);
+    }
+  }
 
 
   function agregarVideoAFavoritos(videoId){

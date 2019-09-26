@@ -2,6 +2,8 @@ package com.itsight.service.impl;
 
 import com.itsight.domain.dto.QueryParamsDTO;
 import com.itsight.domain.dto.TrainerQueryDTO;
+import com.itsight.domain.pojo.ClienteFitnessPOJO;
+import com.itsight.domain.pojo.ServicioPOJO;
 import com.itsight.domain.pojo.TrainerFichaPOJO;
 import com.itsight.domain.pojo.UsuarioPOJO;
 import com.itsight.service.TrainerProcedureInvoker;
@@ -52,4 +54,6 @@ public class TrainerProcedureInvokerImpl implements TrainerProcedureInvoker {
         storedProcedureQuery.setParameter(10, query.getOffset());
         return storedProcedureQuery.getResultList();
     }
+
+
 }

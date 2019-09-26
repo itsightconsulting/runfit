@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -223,7 +224,10 @@ public class RutinaServiceImpl extends BaseServiceImpl<RutinaRepository> impleme
         BeanUtils.copyProperties(rutinaDto.getControl(), rc);
         BeanUtils.copyProperties(rutinaDto, nueRutina);
         nueRutina.setCliente(runneId);
-        nueRutina.setNombre("Rutina con fecha "+ new Date().toString());
+
+        //seteando nombre por default con la fecha de creacion
+        nueRutina.setNombre("Rutina con fecha de inicio "+ new SimpleDateFormat("dd-MM-yyyy").format(rutinaDto.getFechaInicio()));
+
         nueRutina.setRedFitness(redFitId);
         nueRutina.setControl(rc);
         //Instanciando lista de semanas

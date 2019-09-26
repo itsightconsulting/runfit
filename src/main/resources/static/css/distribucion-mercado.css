@@ -91,11 +91,15 @@ p.fem-age-prom, strong.fem-porc,p.fem-porc-age{
 }
 
 .svg.fem{
-    fill: #FF00EB
+    fill: #FF00EB;
 }
 
-p.masc-age-prom, strong.masc-porc, p.masc-porc-age, .svg.masc{
+p.masc-age-prom, strong.masc-porc, p.masc-porc-age {
     color: #00b5f7;
+}
+
+.svg.masc{
+    fill: #00b5f7;
 }
 
 .graph strong {
@@ -168,20 +172,32 @@ p.masc-age-prom, strong.masc-porc, p.masc-porc-age, .svg.masc{
 .nombre-canal p{
     margin-bottom: 15px;
     font-size: 12.5px;
+    font-family: Gotham-HTF-Book;
+    color: #9B999C;
 }
 
+.canal-porc-sexo{
+    padding-left: 20px;
+}
+
+.canal-porc-sexo p{
+    font-family: Gotham-HTF-Book;
+    color: #9B999C;
+    font-size: 12.5px;
+
+}
+
+.fx-pad-porc-sexo{
+    padding-left: 7px;
+}
 
 .canal-graph{
   padding-top: 30px;
 }
 
-.canal-porc-sexo p{
-  font-size: 12.5px;
-  color: #c2ccac;
-}
-
 .canal-porc-sexo svg , .tipo-servicio-porc svg{
   height: 35px;
+  fill: #e04c51!important;
 }
 
 .canal-porc-sexo div, .tipo-servicio-porc div{
@@ -220,7 +236,7 @@ p.masc-age-prom, strong.masc-porc, p.masc-porc-age, .svg.masc{
 
 .canal-venta-title, .tipo-servicio-title{
   margin-bottom: 20px;
-  padding-left: 40px;
+  padding-left: 33px;
   color: #ffffff;
   font-size: 18px;
   font-family: GothamHTF-Bold;
@@ -334,6 +350,10 @@ select{
     margin-bottom: 24px;
 }
 
+.tipo-servicio-porc{
+    float: right;
+}
+
 .tipo-servicio-porc p{
     color: #c2ccac;
     font-size: 13px
@@ -343,9 +363,11 @@ select{
     padding-top: 22px;
 }
 
-.div-graf-row-2 svg{
-   padding-left: 3px;
+.tipo-servicio-porc svg{
+    width: 44px;
+    fill: #e04c51!important
 }
+
 
 .dv-ventas-servicios{
    padding-top: 40px;
@@ -379,7 +401,7 @@ canvas{
 }
 .svg.mapa {
     fill: #ffffff;
-    height: 80px;
+    height: 93px;
     float:right;
     display:inline-block;
     padding-right:40px;
@@ -455,6 +477,11 @@ canvas{
     margin-right: 25px;
 }
 
+.dv-distr-dpto{
+    height : 700px;
+}
+
+
 @media only screen and (max-width: 500px) {
     .distribucion-edad {
         margin-bottom: 10px;
@@ -528,6 +555,7 @@ canvas{
     .tipo-servicio-porc {
         position: relative;
         top: -26px;
+
     }
     .row-mobile {
         margin-left: -15px;

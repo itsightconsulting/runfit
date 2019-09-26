@@ -94,7 +94,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-md" onclick="agregarCategoria()">AGREGAR CATEGORIA</button>
+                        <button class="btn btn-md btn-darkgrey" onclick="agregarCategoria()">AGREGAR CATEGORIA</button>
                     </div>
                 </div>
             </section>
@@ -124,7 +124,7 @@
                                     <ul class="checks text-center">
                                         <li>
                                             <label class="chk-content">PLANTILLA ESTÁNDAR
-                                                <input type="checkbox" name="cbEditarCategoria" value="2"  checked><span class="checkmark"></span>
+                                                <input type="checkbox" name="cbEditarCategoria" value="2"><span class="checkmark"></span>
                                             </label>
                                         </li>
                                         <li>
@@ -141,7 +141,7 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-md btn-dark" onclick="eliminarCategoria()" id="btnEliminarCategoria">ELIMINAR CATEGORIA </button>
-                        <button class="btn btn-md"  id="btnEditarCategoria" onclick="actualizarCategoriaPlantilla()">EDITAR CATEGORIA</button>
+                        <button class="btn btn-md btn-darkgrey"  id="btnEditarCategoria" onclick="actualizarCategoriaPlantilla()">GUARDAR CAMBIOS</button>
                     </div>
                 </div>
             </section>
@@ -228,7 +228,7 @@
 
     <section id="listaCategoria">
         <div class="container-t">
-            <a th:href="@{/bienvenido}">
+            <a th:href="@{/bienvenido}" class="logo-link">
                <img class="logoBlack"  th:src="@{/img/logo_black.png}">
             </a>
             <h2 class="title_carousel dots">planes<span>- pre diseñados</span></h2>
@@ -332,6 +332,7 @@
         ulListRutina.on('click', 'li', rutinaClickListenerEvent);
         inpSearchRutina.addEventListener('input', searchRutinaEvent);
         owl.on('click', '.item-body a', seleccionCategoriaEvent);
+        body.addEventListener('focusout', bodyFocusOutEventListener);
         constraintsValidation();
         scrollEvent();
     }
@@ -352,6 +353,20 @@
         });
         return false;
     }
+
+    function bodyFocusOutEventListener(e){
+        const input = e.target;
+        if(input.tagName === "INPUT"){
+            if(input.type==="text"){
+                input.value = input.value.trim();
+            }
+        }
+        if(input.tagName === "TEXTAREA"){
+            input.value = input.value.trim();
+        }
+    }
+
+
     function scrollEvent(){
         $(".scroll").click(function() {
             ocultarSeccionRutinas();
@@ -367,7 +382,8 @@
     function agregarCategoria() {
         if ($('#nueva_categoria_frm').valid()) {
             const nombre = $('#nombreCategoria').val()
-            const tipoRutina = $('input[type="radio"][name="cbNuevaCategoria"]:checked').val();
+            const tipoRutina = $('input[type="checkbox"][name="cbNuevaCategoria"]:checked').val();
+
             $.ajax({
                 type: 'POST',
                 contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -379,12 +395,24 @@
                 },
                 dataType: 'json',
                 success: (data) => {
+                    $(mdlAgregarCat).modal('hide');
+                    $('#nueva_categoria_frm')[0].reset();
+                    obtenerCategorias();
                 },
-                error: (d) => {
+                error: (xhr) => {
+                       const mensaje = xhr.responseJSON.message;
+
+                       $.smallBox({
+                             title: "RUNFIT",
+                             content: '<p>'+mensaje+'</p>',
+                             timeout: 4500,
+                             color:  '#cc4d4d',
+                             icon: "fa fa-exclamation-circle"
+                         })
+
                 },
                 complete: (d) => {
-                    $(mdlAgregarCat).modal('hide');
-                    obtenerCategorias();
+
                 }
             })
         }
@@ -417,7 +445,7 @@
     function actualizarCategoriaPlantilla() {
         if ($('#editar_categoria_frm').valid()) {
             const nombre = $('#nombreCategoriaEdit').val()
-            const tipoRutina = $('input[type="radio"][name="cbEditarCategoria"]:checked').val();
+            const tipoRutina = $('input[type="checkbox"][name="cbEditarCategoria"]:checked').val();
             const categoriaId = Number(btnEditarCat.getAttribute("data-categoria-id"));
             $.ajax({
                 type: 'PUT',
@@ -470,6 +498,7 @@
                 }
             });
             $('.owl-carousel').trigger('replace.owl.carousel', itemsCategoria).trigger('refresh.owl.carousel');
+            $('.owl-stage').css('display','inline-flex');
             $('.owl-item').css('width','229.8px');
             $('.owl-item').css('margin-right','10px');
             imgtoSvgEvent();
@@ -622,7 +651,8 @@
             const txtNombre = mdlEditarCat.querySelector('#nombreCategoriaEdit');
             const cbTipoCategoria = mdlEditarCat.querySelectorAll('input[name="cbEditarCategoria"][value="'+ tipoCategoria+'"]');
             txtNombre.value = nombre;
-            console.log(nombre);
+
+            $('input[name="cbEditarCategoria"]').prop('checked',false)
             $(cbTipoCategoria).prop('checked','true');
             btnEditarCat.setAttribute("data-categoria-id",categoriaId);
             btnEliminarCat.setAttribute("data-categoria-id",categoriaId);
@@ -707,7 +737,17 @@
                     $("html, body").animate({ scrollTop: $(document).height()}, 1000);
                     document.getElementById("nueva_rutina_pred_frm").reset();
                 },
-                error: (e) =>{
+                error: (xhr) =>{
+
+                    const mensaje = xhr.responseJSON.message;
+                    $.smallBox({
+                        title: "RUNFIT",
+                        content: '<p>'+mensaje+'</p>',
+                        timeout: 4500,
+                        color:  '#cc4d4d',
+                        icon: "fa fa-exclamation-circle"
+                    })
+
                 },
                 complete: (c) =>{
                 }
@@ -801,17 +841,14 @@
             rules:{
                 nombreCategoria : {
                     required: true,
-                    rangelength: [1, 30],
-                    alphanumeric : true
+                    rangelength: [1, 30]
                 },
                 cbNuevaCategoria :{
                     required: true
                 }
             },
             messages: {
-                nombreCategoria :{
-                   alphanumeric: 'No se encontró ningún carácter válido en el campo'
-                }
+
             }
 
 

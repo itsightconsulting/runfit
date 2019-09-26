@@ -1102,33 +1102,25 @@ section#suspendidos #colores_suspendidos a{
     color: #a8fa00;
 }
 
-section#suspendidos span:before {
+section#suspendidos .tooltip span:before {
     content: "";
-    display: none;
+    display: inline-block!important;
     width: 15px;
     height: 15px;
     border-radius: 50%;
     margin-right: 5px;
 }
 
-/*span:before {
-    content: "";
-    display: inline-block;
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    margin-right: 5px;
-}*/
-.one:before {
+section#suspendidos .tooltip span.one:before {
     background: #a8fa00;
 }
-.two:before {
+section#suspendidos .tooltip span.two:before {
     background: #ffffff;
 }
-.three:before {
+section#suspendidos .tooltip span.three:before {
     background: #cf3239;
 }
-.four:before {
+section#suspendidos .tooltip span.four:before {
     background: #615b5b;
 }
 
@@ -2582,3 +2574,17 @@ button.note-color-fuente, button.note-bg-color {
     font-weight: bold;
 }
 
+button.btn-darkgrey {
+    background-color: #847e7e;
+    color: #ffffff;
+}
+
+button.btn-darkgrey:hover {
+    background-color: #847e7e;
+    color: #E2E2E2;
+}
+
+.logo-link{
+    z-index: 99;
+    position: absolute;
+}

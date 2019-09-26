@@ -195,7 +195,7 @@ function GraficoCumplimientoPeriodo(data, periodoIx){
                     ctx.font = "30px GothamHTF-Book";
                     ctx.fillStyle = colores[periodoIx];
                     ctx.textAlign = "center";
-                   ctx.fillText(data + '%', canvas.width/2 + 10, canvas.height/2 + 10);
+                    ctx.fillText(data + '%', (canvas.width/2) +5, (canvas.height/2) + 5);
                   //  ctx.fillText("100%",centerX -10,centerY - 25, 20,50);
 
                     ctx.beginPath();
@@ -337,7 +337,7 @@ function GraficoEsfuerzoPeriodo(data, periodoIx){
                     ctx.font = "30px GothamHTF-Book";
                     ctx.fillStyle = colores[periodoIx];
                     ctx.textAlign = "center";
-                    ctx.fillText(data, canvas.width/2 + 10, canvas.height/2 + 10);
+                    ctx.fillText(data + '%', (canvas.width/2) +5, (canvas.height/2) + 5);
                     //  ctx.fillText("100%",centerX -10,centerY - 25, 20,50);
 
                     ctx.beginPath();
@@ -1199,40 +1199,40 @@ function graficoTemporadaCumplimientoAvance(data)
                         fontSize: 15,
                         maxRotation: 0,
                       minRotation: 0
-},
-gridLines: {
-    display:false,
-        drawBorder: false
-},
-}],
-yAxes: [{
-    barThickness : 15,
-    ticks:{
-        fontColor: "#f3eeee94",
-        fontSize: 15,
-        suggestedMin: 0,
-        suggestedMax: 50,
-    },
-    gridLines: {
-        display:false,
-        drawBorder: false
-    }
-}]
-},
-hover: {
-    mode: 'nearest',
-        intersect: true
-},
-tooltips: {
-    mode: 'nearest'
-},
-legend:{
-    position: 'bottom',
-        display: false
-}
+                    },
+                gridLines: {
+                    display:false,
+                        drawBorder: false
+                },
+                }],
+                yAxes: [{
+                    barThickness : 15,
+                    ticks:{
+                        fontColor: "#f3eeee94",
+                        fontSize: 15,
+                        suggestedMin: 0,
+                        suggestedMax: 50,
+                    },
+                    gridLines: {
+                        display:false,
+                        drawBorder: false
+                    }
+                }]
+                },
+                hover: {
+                    mode: 'nearest',
+                        intersect: true
+                },
+                tooltips: {
+                    mode: 'nearest'
+                },
+                legend:{
+                    position: 'bottom',
+                        display: false
+                }
 
-}
-});
+                }
+                });
 Chart.elements.Rectangle.prototype.draw = function() {
 
     var ctx = this._chart.ctx;

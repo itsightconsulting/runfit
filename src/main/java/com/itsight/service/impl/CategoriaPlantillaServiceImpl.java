@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.itsight.util.Enums.Msg.CORREO_REPETIDO;
+import static com.itsight.util.Enums.Msg.NOMBRE_CATEGORIA_PLANTILLA_REPETIDO;
 import static com.itsight.util.Enums.ResponseCode.*;
 
 @Service
@@ -38,14 +40,21 @@ public class CategoriaPlantillaServiceImpl extends BaseServiceImpl<CategoriaPlan
     }
 
     @Override
-    public String agregarCategoriaPlantilla(CategoriaPlantilla categoriaPlantilla) {
+    public String agregarCategoriaPlantilla(CategoriaPlantilla categoriaPlantilla) throws CustomValidationException {
 
-        Integer trainerId = (Integer) session.getAttribute("id");
-        Trainer trainer = new Trainer();
-        trainer = trainerService.findOne(trainerId);
-        categoriaPlantilla.setTrainer(trainer);
-        repository.save(categoriaPlantilla);
-        return REGISTRO.get();
+      String nombreCat= categoriaPlantilla.getNombre();
+      Integer tipoCat = categoriaPlantilla.getTipo();
+      Integer trainerId = (Integer) session.getAttribute("id");
+
+      if(!repository.findNombreCategPlantExiste(nombreCat, trainerId, tipoCat)) {
+          Trainer trainer = new Trainer();
+          trainer = trainerService.findOne(trainerId);
+          categoriaPlantilla.setTrainer(trainer);
+          repository.save(categoriaPlantilla);
+          return REGISTRO.get();
+      }else{
+          throw new CustomValidationException(NOMBRE_CATEGORIA_PLANTILLA_REPETIDO.get(), EX_VALIDATION_FAILED.get());
+      }
     }
     @Override
     public String actualizarCategoriaPlantilla(CategoriaPlantilla categoriaPlantilla) {

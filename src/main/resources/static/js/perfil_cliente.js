@@ -38,12 +38,8 @@ function cargarDataCliente(){
               }
           })
   }else{
-
-       console.log("b");
-
       const dataCliente = JSON.parse($('#pruebaData').val());
-         console.log(dataCliente);
-         dataCliente ? generarDOMDataCliente(dataCliente) : "";
+      dataCliente ? generarDOMDataCliente(dataCliente) : "";
   }
 
 

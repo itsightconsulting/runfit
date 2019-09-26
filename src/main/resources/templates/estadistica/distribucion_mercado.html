@@ -99,8 +99,8 @@
                                              <p class="masc-age-prom"> </p>
                                             </div>
                                          </div>
-                                                                                                                                                                                                                                                                                                
-                                         <div class="col-md-6 col-xs-6">                                                                                                                                                                                                                        
+
+                                         <div class="col-md-6 col-xs-6">
                                             <div class="graph-porc masc-graph">
 
                                                 <div> <div class="col-xs-2 ds-block">  <img class="svg masc " th:src="@{/img/iconos-trainers/icon_male_body.svg}+'?'+${version}"/> </div> <div class="col-xs-3"> <p class="masc-range-porc">0%</p> </div> <div class="col-xs-7 pad-0"><p>(18-24 edad)</p></div> </div>
@@ -147,7 +147,7 @@
                                        </li>
                                     </ul>
                                  <div class="graph-distr-departamento">
-                                   <canvas id="graficoDistribucionLocalizacion"></canvas>
+                                   <canvas id="graficoDistribucionLocalizacion" height="650"></canvas>
                                  </div>
                                </div>
 
@@ -157,46 +157,25 @@
 
                               </div>
 
-                              <div class="col-md-6 separador-col">
+                                 <div class="col-md-6 separador-col">
 
-                                    <div class="row dv-servicios">
+                                       <div class="row dv-servicios">
 
                                         <p class="tipo-servicio-title"> SERVICIOS MÁS SOLICITADOS </p>
 
-                                        <div class="col-md-4">
-                                            <div class="nombre-servicio">
-
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-5">
+                                          <div class="col-md-12">
                                             <div class ="servicios-graph">
-                                                <canvas id="GraficoServiciosUsados" width="220" height="130"></canvas>
+                                             <div class="tipo-servicio-porc">
+                                                <img class="svg masc" th:src="@{/img/iconos-trainers/icon_male_body.svg}+'?'+${version}"/>
+                                                <img class="svg fem" th:src="@{/img/iconos-trainers/icon_female_body.svg}+'?'+${version}"/>
+                                             </div>
+                                             <canvas id="GraficoServiciosUsados" width="600" height="450"></canvas>
 
-                                            </div>
+                                             </div>
+                                          </div>
+
                                         </div>
-                                        <div class="col-md-3">
-                                            <div class ="tipo-servicio-porc">
-                                                <div class="col-md-6">
-                                                    <img class="svg fem" th:src="@{/img/iconos-trainers/icon_female_body.svg}+'?'+${version}"/>
-                                                    <div class="servicio-porc-fem">
 
-
-
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-6">
-                                                    <img class="svg masc" th:src="@{/img/iconos-trainers/icon_male_body.svg}+'?'+${version}"/>
-                                                    <div class="servicio-porc-masc">
-
-
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
 
                                     <hr class="hr-servicios">
 
@@ -218,7 +197,7 @@
 
                                       </div>
                                      </div>
-                                      <div class="col-md-3">
+                                      <div class="col-md-3" style="padding-right: unset;">
                                           <div class ="canal-porc-sexo">
                                             <div class="col-md-6">
                                                 <img class="svg fem" th:src="@{/img/iconos-trainers/icon_female_body.svg}+'?'+${version}"/>
@@ -229,7 +208,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-6">
+                                            <div class="col-md-6 fx-pad-porc-sexo">
                                               <img class="svg masc" th:src="@{/img/iconos-trainers/icon_male_body.svg}+'?'+${version}"/>
                                                 <div class="canal-porc-masc">
 
@@ -349,6 +328,7 @@
 
 <script th:src="@{/js/jquery.knob.js}+'?'+${version}"></script>
 <script th:src="@{/js/plugin/chartjs/chart.min.js}+'?'+${version}"></script>
+<script th:src="@{/js/plugin/chartjs/chartjs-plugin-datalabels.min.js}+'?'+${version}"></script>
 <script th:src="@{/js/plugin/moment/moment.min.js}+'?'+${version}"></script>
 <script th:src="@{/js/plugin/underscore/underscore.js}+'?'+${version}"></script>
 <script th:inline="javascript" th:src="@{/js/distribucion_mercado.js}+'?'+${version}"></script>

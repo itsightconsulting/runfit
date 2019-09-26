@@ -40,4 +40,15 @@ public interface ServicioRepository extends JpaRepository<Servicio, Integer>{
                    "IN (SELECT servicio_id FROM CLIENTE_SERVICIO WHERE cliente_id = ?1) " +
                    "LIMIT 1", nativeQuery = true)
     String findTrainerCorreoById(Integer servicioId);
+
+    @Query(value = "SELECT count(*) " +
+            "FROM cliente_servicio CS " +
+            "INNER JOIN servicio S ON  S.servicio_id = CS.servicio_id " +
+            "INNER JOIN trainer T ON T.security_user_id = S.trainer_id " +
+            "WHERE T.security_user_id =?1", nativeQuery = true)
+    Integer getTotalClientesByTrainerId(Integer trainerId);
+
+    @Query(value = "SELECT count(*) " +
+            "FROM cliente_servicio CS", nativeQuery = true)
+    Integer getTotalClientesServicios();
 }

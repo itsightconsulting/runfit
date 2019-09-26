@@ -1318,6 +1318,34 @@ section.ritmos_tiempo .box_tiempo {
   fill: #a8fa00;
   cursor: pointer; }
 
+
+a[aria-expanded="false"] .svg.moreview {
+  transform: rotate(0deg);
+  transition: all .5s;
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  -ms-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  -webkit-transition: all .5s;
+  -moz-transition: all .5s;
+  -ms-transition: all .5s;
+  -o-transition: all .5s;
+}
+
+
+a[aria-expanded="true"] .svg.moreview {
+  fill: #a8fa00;
+  transform: rotate(-180deg);
+  transition: all .5s;
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -ms-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  -webkit-transition: all .5s;
+  -moz-transition: all .5s;
+  -ms-transition: all .5s;
+  -o-transition: all .5s; }
+
 @media only screen and (max-width: 760px) {
   .material-diario .material {
     height: 92px; }
@@ -1914,5 +1942,9 @@ section.consejos span.msj-no-data{
 
 .chat-unread h4{
   font-weight: bold;
+}
+
+.mensaje-no-resultados{
+  margin-top:40px;
 }
 

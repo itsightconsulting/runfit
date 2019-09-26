@@ -130,4 +130,14 @@ public class ServicioServiceImpl extends BaseServiceImpl<ServicioRepository> imp
     public String getTrainerCorreoById(Integer servicioId) {
         return repository.findTrainerCorreoById(servicioId);
     }
+
+    @Override
+    public Integer getTotalClientesByTrainerId(Integer trainerId) {
+        return repository.getTotalClientesByTrainerId(trainerId);
+    }
+
+    @Override
+    public Integer getTotalClientesServicio() {
+        return repository.getTotalClientesServicios();
+    }
 }

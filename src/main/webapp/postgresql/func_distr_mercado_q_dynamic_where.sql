@@ -18,7 +18,7 @@ select
           condicion_anatomica :: text,
           fecha_nacimiento,
           ubigeo,
-          sexo,
+          c.sexo,
           r.fecha_creacion,
           rf.predeterminada_ficha_id
       from runfit.public.cliente_fitness cf inner join cliente c  on cf.cliente_id = c.security_user_id inner join red_fitness rf on c.security_user_id = rf.cliente_id

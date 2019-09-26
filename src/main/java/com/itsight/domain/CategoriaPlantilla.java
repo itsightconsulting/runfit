@@ -13,6 +13,16 @@ import java.util.List;
 
 @Data
 @Entity
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(name = "fn_validacion_nombre_categoria",
+                procedureName = "check_categ_plant_predisen_existe",
+                parameters = {
+                        @StoredProcedureParameter(name = "_nom_cat", mode = ParameterMode.IN, type = String.class),
+                        @StoredProcedureParameter(name = "_trainer_id", mode = ParameterMode.IN, type= Integer.class),
+                        @StoredProcedureParameter(name = "_tipo", mode = ParameterMode.IN , type = Integer.class),
+                        @StoredProcedureParameter(name = "result", mode = ParameterMode.OUT, type = Boolean.class)
+                })
+})
 public class CategoriaPlantilla extends AuditingEntity {
 
   @Id

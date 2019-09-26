@@ -17,4 +17,9 @@ public interface ServicioService extends BaseService<Servicio, Integer> {
     void addClienteServicio(Integer clienteId, Integer servicioId);
 
     String getTrainerCorreoById(Integer servicioId);
+
+    Integer getTotalClientesByTrainerId(Integer trainerId);
+
+    Integer getTotalClientesServicio();
+
 }

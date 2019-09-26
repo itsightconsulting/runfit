@@ -256,24 +256,25 @@ function owlCarouselVideoteca() {
         //   function getIndex(event) {
         //   }
         owl.on('changed.owl.carousel', function(event) {
-            console.log(event.item.index);
-            inputType.val(event.item.index);
 
+          //  let currentIdx = fixOwlCurrentIdx(event);
+
+            let targetIndex = event.item.index;
+
+            targetIndex -=  event.relatedTarget.clones().length / 2;
+
+            if(targetIndex === event.relatedTarget.clones().length/2 ){
+               targetIndex = 0;
+            }
+
+            inputType.val(targetIndex);
         });
 
-        $(".go-me").click(function() {
-            owl.trigger("next.owl.carousel");
-        });
-        $(".back-me").on("click", function() {
-            owl.trigger("prev.owl.carousel");
-        });
         $("input").on("change", function(e) {
             e.preventDefault();
             // console.log(e.item.index);
             // FIGURE OUT HOW TO GET CAROUSEL INDEX
-
             $('.owl-carousel').trigger('to.owl.carousel', [inputType.val(),1,true]);
-
         });
     });
 
@@ -473,4 +474,13 @@ function fancyBoxCustomThumbnail(src){
     return $(img);
 }
 
+function fixOwlCurrentIdx(event) {
+    let current = (event.item.index + 1) - event.relatedTarget._clones.length / 2;
+    let itemsCount = event.item.count;
 
+    if (current > itemsCount || current == 0) {
+        current = itemsCount - (current % itemsCount);
+    }
+
+    return current - 1;
+}

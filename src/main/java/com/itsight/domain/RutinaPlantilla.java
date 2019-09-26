@@ -30,6 +30,16 @@ import java.util.List;
                 @NamedAttributeNode(value = "trainer")}),
         @NamedEntityGraph(name = "rutinaPlantilla"),
 })*/
+
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(name = "fn_validacion_nombre_rutina_plantilla",
+                procedureName = "check_rutina_plant_predisen_existe",
+                parameters = {
+                        @StoredProcedureParameter(name = "_nom_rutina", mode = ParameterMode.IN, type = String.class),
+                        @StoredProcedureParameter(name = "_cat_id", mode = ParameterMode.IN, type= Integer.class),
+                        @StoredProcedureParameter(name = "result", mode = ParameterMode.OUT, type = Boolean.class)
+                })})
+
 @TypeDefs({
         @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 })

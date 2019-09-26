@@ -135,9 +135,22 @@
                         return "image" === t.type && "zoom"
                     }
                 },
-                lang: "en",
+                lang: "sp",
                 i18n: {
                     en: {
+                        CLOSE:"Close",
+                        NEXT:"Next",
+                        PREV:"Previous",
+                        ERROR:"The requested content cannot be loaded. <br/> Please try again later.",
+                        PLAY_START:"Start slideshow",
+                        PLAY_STOP:"Pause slideshow",
+                        FULL_SCREEN:"Full screen",
+                        THUMBS:"Thumbnails",
+                        DOWNLOAD:"Download",
+                        SHARE:"Share",
+                        ZOOM:"Zoom"
+                    },
+                    sp: {
                         CLOSE: "Cerrar",
                         NEXT: "Siguiente",
                         PREV: "Anterior",

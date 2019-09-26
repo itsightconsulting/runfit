@@ -84,24 +84,24 @@
 .steps ul.distance::before {
     content: '.';
     font-size: 0;
-    width: 338px;
+    width: 304px;
     height: 1px;
     border-top: 1px solid #d3d3d3;
     position: absolute;
     bottom: 37px;
-    margin: 0 47px
+    margin: 0 42px;
 }
 
 .steps ul.distance li {
     display: inline-block;
-    max-width: 100px;
+    max-width: 89px;
     margin-right: 10px;
     text-align: center
 }
 
 .steps ul.distance li input {
     width: 100%;
-    padding: 10px;
+    padding: 9px;
     text-align: center;
 }
 

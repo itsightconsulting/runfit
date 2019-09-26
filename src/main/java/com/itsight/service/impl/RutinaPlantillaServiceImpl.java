@@ -1,5 +1,6 @@
 package com.itsight.service.impl;
 
+import com.itsight.advice.CustomValidationException;
 import com.itsight.domain.*;
 import com.itsight.domain.dto.DiaPlantillaDTO;
 import com.itsight.domain.dto.RutinaPlantillaDTO;
@@ -20,8 +21,9 @@ import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import static com.itsight.util.Enums.ResponseCode.ACTUALIZACION;
-import static com.itsight.util.Enums.ResponseCode.REGISTRO;
+import static com.itsight.util.Enums.Msg.NOMBRE_CATEGORIA_PLANTILLA_REPETIDO;
+import static com.itsight.util.Enums.Msg.NOMBRE_RUTINA_PLANTILLA_REPETIDO;
+import static com.itsight.util.Enums.ResponseCode.*;
 
 @Service
 @Transactional
@@ -120,12 +122,12 @@ public class RutinaPlantillaServiceImpl extends BaseServiceImpl<RutinaPlantillaR
         return null;
     }
 
-/*
-    @Override
-    public List<RutinaPlantilla> listarPorFiltroPT(Integer trainerId) {
-        return repository.findByTrainerIdOrderByIdDesc(trainerId);
-    }
-*/
+    /*
+        @Override
+        public List<RutinaPlantilla> listarPorFiltroPT(Integer trainerId) {
+            return repository.findByTrainerIdOrderByIdDesc(trainerId);
+        }
+    */
     @Override
     public String registrar(RutinaPlantilla entity, String wildcard) {
         return null;
@@ -142,61 +144,70 @@ public class RutinaPlantillaServiceImpl extends BaseServiceImpl<RutinaPlantillaR
     }
 
     @Override
-    public String agregarRutinaPrediseñada(RutinaPlantillaDTO rutinaPlantillaDTO) {
+    public String agregarRutinaPrediseñada(RutinaPlantillaDTO rutinaPlantillaDTO) throws CustomValidationException {
 
-        RutinaPlantilla objRp = new RutinaPlantilla();
-        //Pasando del Dto al objeto
+        String rutinaNombre = rutinaPlantillaDTO.getNombre();
         Integer categoriaId = rutinaPlantillaDTO.getCategoriaPlantilla();
-        CategoriaPlantilla cP = new CategoriaPlantilla();
-        cP = categoriaPlantillaService.findOne(categoriaId);
-        BeanUtils.copyProperties(rutinaPlantillaDTO, objRp);
+        if (!repository.findNombreRutinaPlantExiste(rutinaNombre, categoriaId)) {
 
-        Rutina objR = new Rutina();
-        objRp.setCategoriaPlantilla(cP);
+            RutinaPlantilla objRp = new RutinaPlantilla();
+            //Pasando del Dto al objeto
+            CategoriaPlantilla cP = new CategoriaPlantilla();
+            cP = categoriaPlantillaService.findOne(categoriaId);
+            BeanUtils.copyProperties(rutinaPlantillaDTO, objRp);
 
-        objRp.setForest(3);
+            Rutina objR = new Rutina();
+            objRp.setCategoriaPlantilla(cP);
 
-        RutinaPlantilla rutinaPlantilla = repository.save(objRp);
+            objRp.setForest(3);
 
-        List<SemanaPlantilla> semanas = new ArrayList<>();
-        for ( int i = 0 ; i < rutinaPlantilla.getTotalSemanas() ; i++) {
+            RutinaPlantilla rutinaPlantilla = repository.save(objRp);
 
-            SemanaPlantilla semanaPlantilla = new SemanaPlantilla();
-            //BeanUtils.copyProperties(semana, semanaPlantilla);
-          //  semanas.add(semanaPlantilla);
-            //Pasando el objeto de rutina a la semana para al momento de su registro, el ID que se genere(De la RutPlan)
-            //se referencie en el registro de la semana
-            semanaPlantilla.setFechaInicio(new Date());
-            semanaPlantilla.setFechaFin(new Date());
-            semanaPlantilla.setHoras(2);
-            semanaPlantilla.setRutinaPlantilla(rutinaPlantilla);
-            semanas.add(semanaPlantilla);
-            //Insertando dias de la semana a su respectiva lista de dias
-            List<DiaPlantilla> dias = new ArrayList<>();
-            for(int j = 0 ; j < 7 ; j++){
-                DiaPlantilla objDia = new DiaPlantilla();
-                objDia.setCalorias(2);
-                dias.add(objDia);
-                //Pasando el objeto de semana al dia para al momento de su registro, el ID que se genere(De la SemPlan)
-                //se referencie en el registro del día
-                objDia.setSemanaPlantilla(semanaPlantilla);
+            List<SemanaPlantilla> semanas = new ArrayList<>();
+            for (int i = 0; i < rutinaPlantilla.getTotalSemanas(); i++) {
+
+                SemanaPlantilla semanaPlantilla = new SemanaPlantilla();
+                //BeanUtils.copyProperties(semana, semanaPlantilla);
+                //  semanas.add(semanaPlantilla);
+                //Pasando el objeto de rutina a la semana para al momento de su registro, el ID que se genere(De la RutPlan)
+                //se referencie en el registro de la semana
+                semanaPlantilla.setFechaInicio(new Date());
+                semanaPlantilla.setFechaFin(new Date());
+                semanaPlantilla.setHoras(2);
+                semanaPlantilla.setRutinaPlantilla(rutinaPlantilla);
+                semanas.add(semanaPlantilla);
+                //Insertando dias de la semana a su respectiva lista de dias
+                List<DiaPlantilla> dias = new ArrayList<>();
+                for (int j = 0; j < 7; j++) {
+                    DiaPlantilla objDia = new DiaPlantilla();
+                    objDia.setCalorias(2);
+                    dias.add(objDia);
+                    //Pasando el objeto de semana al dia para al momento de su registro, el ID que se genere(De la SemPlan)
+                    //se referencie en el registro del día
+                    objDia.setSemanaPlantilla(semanaPlantilla);
+                }
+                //Agregando la lista de dias a la semana
+                semanaPlantilla.setLstDiaPlantilla(dias);
+
             }
-            //Agregando la lista de dias a la semana
-            semanaPlantilla.setLstDiaPlantilla(dias);
 
-        }
-
-        //Agregando las semanas a la instancia de rutina que hará que se inserten mediante cascade strategy
-       // objRp.setLstSemana(semanas);
-        rutinaPlantilla.setLstSemana(semanas);
-        rutinaPlantilla.setFlagActivo(true);
-        repository.saveAndFlush(rutinaPlantilla);
-        //Guardando en session el id de la nueva rutina plantilla y los ids de las semanas generadas
+            //Agregando las semanas a la instancia de rutina que hará que se inserten mediante cascade strategy
+            // objRp.setLstSemana(semanas);
+            rutinaPlantilla.setLstSemana(semanas);
+            rutinaPlantilla.setFlagActivo(true);
+            repository.saveAndFlush(rutinaPlantilla);
+            //Guardando en session el id de la nueva rutina plantilla y los ids de las semanas generadas
     /*    session.setAttribute("rpId", objRp.getId());
         session.setAttribute("rpSemanaIds", semanas.stream().map(semana-> semana.getId()).toArray(Integer[]::new));
 */
-        return REGISTRO.get();
+            return REGISTRO.get();
+        }
+        else{
+            throw new CustomValidationException(NOMBRE_RUTINA_PLANTILLA_REPETIDO.get(), EX_VALIDATION_FAILED.get());
+
+        }
     }
+
 
     @Override
     public String actualizarRutinaPrediseñada(RutinaPlantillaDTO rutinaPlantillaDTO) {

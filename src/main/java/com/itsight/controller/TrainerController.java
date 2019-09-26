@@ -8,6 +8,7 @@ import com.itsight.domain.dto.ClienteDTO;
 import com.itsight.domain.dto.QueryParamsDTO;
 import com.itsight.domain.dto.ResPaginationDTO;
 import com.itsight.domain.pojo.ClienteFitnessPOJO;
+import com.itsight.domain.pojo.ServicioPOJO;
 import com.itsight.domain.pojo.UsuarioPOJO;
 import com.itsight.service.*;
 import com.itsight.util.Enums;
@@ -45,6 +46,10 @@ public class TrainerController extends BaseController{
 
     private ClienteProcedureInvoker clienteProcedureInvoker;
 
+    private ServicioProcedureInvoker servicioProcedureInvoker;
+
+    private ServicioService servicioService;
+
 
     @Autowired
     public TrainerController(TrainerService trainerService,
@@ -55,7 +60,9 @@ public class TrainerController extends BaseController{
                              UbPeruService ubPeruService,
                              SecUserProcedureInvoker secUserProcedureInvoker,
                              ClienteFitnessProcedureInvoker clienteFitnessProcedureInvoker,
-                             ClienteProcedureInvoker clienteProcedureInvoker) {
+                             ClienteProcedureInvoker clienteProcedureInvoker,
+                             ServicioProcedureInvoker servicioProcedureInvoker,
+                             ServicioService servicioService) {
         this.trainerService = trainerService;
         this.perfilService = perfilService;
         this.tipoDocumentoService = tipoDocumentoService;
@@ -65,6 +72,8 @@ public class TrainerController extends BaseController{
         this.secUserProcedureInvoker = secUserProcedureInvoker;
         this.clienteFitnessProcedureInvoker = clienteFitnessProcedureInvoker;
         this.clienteProcedureInvoker = clienteProcedureInvoker;
+        this.servicioProcedureInvoker = servicioProcedureInvoker;
+        this.servicioService = servicioService;
     }
 
     @GetMapping(value = "")
@@ -179,6 +188,23 @@ public class TrainerController extends BaseController{
         return clienteKey;
     }
 
+    @GetMapping(value = "/servicio/top/obtener")
+    public @ResponseBody List<ServicioPOJO> getTopServiciosxTrainer(HttpSession session){
+
+        Integer trainerId = Integer.parseInt(session.getAttribute("id").toString());
+        List<ServicioPOJO> lstServicio = servicioProcedureInvoker.getTopServiciobyTrainerId(trainerId);
+
+        return lstServicio;
+    }
+
+    @GetMapping(value = "/servicio/total/obtener")
+    public @ResponseBody int getTotalClientesServiciosxTrainer(HttpSession session){
+
+        Integer trainerId = Integer.parseInt(session.getAttribute("id").toString());
+        Integer total = servicioService.getTotalClientesByTrainerId(trainerId);
+
+        return total;
+    }
 
 
 

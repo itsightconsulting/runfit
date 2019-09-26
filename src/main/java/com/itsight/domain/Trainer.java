@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.itsight.domain.base.AuditingEntity;
 import com.itsight.domain.jsonb.Rol;
+import com.itsight.domain.pojo.ClienteFitnessPOJO;
+import com.itsight.domain.pojo.ServicioPOJO;
 import com.itsight.json.JsonDateSimpleSerializer;
 import com.itsight.json.JsonMoneyDoubleSimpleSerializer;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
@@ -18,6 +20,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+
 
 @Entity
 @NamedEntityGraphs({

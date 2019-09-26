@@ -205,7 +205,9 @@ public class Enums {
         ENLACE_RECUPERACION_PASS_UTILIZADO("El enlace ha ya sido utilizado"),
         POSTULANTE_ULTIMA_ETAPA_EMP("Su ficha ha sido enviada satisfactoriamente. Pronto la revisaremos y le notificaremos del resultado vía correo. Gracias!"),
         FLAG_BLOQUEADO_TIENE_DEPS("No puede actualizar el ESTADO del registro ya que este se encuentra asociado a un tabla hijo"),
-        CLIENTE_ANTIGUO_SUSC_A_NUE_SERVICIO("Su inscripción se ha realizado con éxito. El asesor esta siendo notificado y pronto se comunicará con usted. Gracias!");
+        CLIENTE_ANTIGUO_SUSC_A_NUE_SERVICIO("Su inscripción se ha realizado con éxito. El asesor esta siendo notificado y pronto se comunicará con usted. Gracias!"),
+        NOMBRE_CATEGORIA_PLANTILLA_REPETIDO("Usted ya cuenta con una categoría  con el mismo nombre para el tipo de categoría seleccionada"),
+        NOMBRE_RUTINA_PLANTILLA_REPETIDO("Usted ya cuenta con una rutina prediseñada con el mismo nombre para la categoría seleccionada");
 
         final String msg;
 
