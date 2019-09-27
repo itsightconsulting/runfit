@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.math.BigInteger;
 
 @Data
-@AllArgsConstructor
 public class ServicioPOJO implements Serializable {
 
     private Integer id;
@@ -24,6 +23,15 @@ public class ServicioPOJO implements Serializable {
     private Integer trainerId;
     private String trainerNombres;
 
+    public ServicioPOJO(Integer id, String nombre, String descripcion, String incluye, String infoAdicional, String tarifarios, String tycFile) {
+        this.id = id;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.incluye = incluye;
+        this.infoAdicional = infoAdicional;
+        this.tarifarios = tarifarios;
+        this.tycFile = tycFile;
+    }
 
     public ServicioPOJO(int trainerId, String trainerNombres, String servicioNombre, int servicioId, BigInteger qtyClientes,
                         BigInteger qtyHombre, BigInteger qtyMujer){

@@ -270,6 +270,7 @@ function exceptionCheckDuplicateKeyConstraint(xhr, csMessage){
 }
 
 function exception(xhr, errorName) {
+    console.info(xhr);
     const sCode = xhr['status'];
 
     if(sCode === 0 && xhr.readyState === 0){
@@ -381,6 +382,7 @@ function exception(xhr, errorName) {
             }
 
         } catch(ex) {
+            console.error(ex);
             $.smallBox({
                 content: "<i> Comuníquese con el administrador <br/> Code error: " + xhr['status'] + " <br/> Detail: " + "Error" + "</i>",
                 color: "#8a6d3b",

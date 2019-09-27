@@ -2634,7 +2634,7 @@ RutinaDiaHTML = (function(){
             return elementos.map((elemento, ix) =>
                 `<div class="panel panel-default">
                           <div class="panel-heading">
-                            <h3>${elemento.nombre}<div class="mas_menos"><img class="svg" src="img/iconos/icon_menos.svg"><img class="svg" src="img/iconos/icon_mas.svg"></div></h3>
+                            <h3>${elemento.nombre}<div class="mas_menos"><img class="svg ele-less" src="img/iconos/icon_menos.svg"><img class="svg ele-plus" src="img/iconos/icon_mas.svg"></div></h3>
                             <div class="icons">
                               <div class="svg-wrap" rel="tooltip" title="">
                                 <img class="svg" src="img/iconos/icon_microfono.svg">
@@ -2765,8 +2765,8 @@ Indicadores = (function(){
         instanciarPasoYpulso: ()=>{
             const numSem = RutinaGet.getNumSemIx();
             const metricas =  $rutina.semanas[numSem].metricas;
-            const divPulsos = document.querySelector('#Pulsos');
-            const divRitmos = document.querySelector('#Ritmos');
+            const divsPulsos = document.querySelectorAll('.pulsos');
+            const divsRitmos = document.querySelectorAll('.ritmos');
 
             const arrMetricas = metricas.map((e,ix)=>{
                 const indi = e.indicadores;
@@ -2782,14 +2782,18 @@ Indicadores = (function(){
                                   <td>${e.max}</td>
                                 </tr>`};
             });
-            divPulsos.querySelector('tbody').innerHTML = arrMetricas.map(ind=>ind.pulso).join('');
-            divRitmos.querySelector('tbody').innerHTML = arrMetricas.map(ind=>ind.paso).join('');
+            const rawPulso = arrMetricas.map(ind=>ind.pulso).join('');
+            const rawPaso = arrMetricas.map(ind=>ind.paso).join('');
+            divsPulsos.forEach((e, ix) => {
+                e.querySelector('tbody').innerHTML = rawPulso;
+                divsRitmos[ix].querySelector('tbody').innerHTML = rawPaso;
+            });
         },
         instanciarRitmosProyectados: ()=>{
             const numSem = RutinaGet.getNumSemIx();
             let metricasVel =  $rutina.semanas[numSem].metricasVelocidad;
-            const divMetricasVel = document.querySelector('.ritmos_tiempo');
-            const wex = ["200m", "400m", "800m", "1KM","10KM","15KM","21KM","42KM"];
+            const divsMetricasVel = document.querySelectorAll('.ritmos_tiempo');
+            const wex = ["200m", "400m", "800m", "1KM", "10KM", "15KM", "21KM", "42KM"];
             metricasVel = metricasVel.map((v,i)=>{return {p: v.parcial, s: v.parcial.toSeconds(), m: wex[i]}});
             metricasVel.forEach((v,i)=>{
                 if(i>3)
@@ -2797,20 +2801,24 @@ Indicadores = (function(){
                 else
                     v.tt = v.p
             });
-            metricasVel.forEach((e,ix)=>{
-                const pasoKm = e.p.slice(3);
-                const fPasoKm = pasoKm.startsWith("0") ? pasoKm.slice(1) : pasoKm;
-                const pasoTotal = ix>3 ? e.tt.slice(0, -3) : e.tt.slice(3);
-                const fPasoTotal = pasoTotal.startsWith("0") ? pasoTotal.slice(1) : pasoTotal;
-                divMetricasVel.appendChild(htmlStringToElement(
-                    `<div class="col-md-3 col-sm-4 col-xs-4">
+            divsMetricasVel.forEach(divMet=>{
+                //Cleaning Div Metricas
+                divMet.innerHTML = "";
+                metricasVel.forEach((e,ix)=>{
+                    const pasoKm = e.p.slice(3);
+                    const fPasoKm = pasoKm.startsWith("0") ? pasoKm.slice(1) : pasoKm;
+                    const pasoTotal = ix>3 ? e.tt.slice(0, -3) : e.tt.slice(3);
+                    const fPasoTotal = pasoTotal.startsWith("0") ? pasoTotal.slice(1) : pasoTotal;
+                    divMet.appendChild(htmlStringToElement(
+                        `<div class="col-md-3 col-sm-4 col-xs-4">
                                 <div class="box_tiempo">
                                   <div class="text-center col-xs-7"><span>${e.m}</i></span><span>${fPasoKm}</span></div>
                                   <div class="text-center col-xs-5"><img class="svg" src="${_ctx}img/iconos/icon_cronometro.svg"><span>${fPasoTotal}</span></div>
                                 </div>
                               </div>`
-                ));
-            })
+                    ));
+                })
+            });
             return metricasVel;
         },
         instanciarIndicador0: ()=>{
@@ -2871,9 +2879,32 @@ Indicadores = (function(){
             document.querySelector('#Indicadores2').innerHTML = raw;
         },
         instanciarKilometrajes: ()=>{
+            const raw = Indicadores.instanciarHtmlKilometrajes();
+            document.querySelectorAll('.datos_semanales').forEach(e=>{
+                if (e.classList.contains('ds-vista-mes')) {
+                    e.innerHTML = raw.replace("<tagToBeReplaced>", `
+                            <li>
+                                <label><img class="svg" src="img/iconos/icon_ayuda.svg"><strong>cumplimiento</strong></label>
+                                <div class="text-center">
+                                  <input style="color: indianred; !important;" data-thickness="0.05" data-fgColorMid="#d6ff58" data-fgColorEnd="#d6ff58" data-width="56%" data-height="142" id="indicadorCirculo3" type="text" value="50" class="dial dayAvance" />
+                                </div>
+                            </li>
+                            <li>
+                              <label><img class="svg" src="img/iconos/icon_ayuda.svg"><strong>km</strong>restante</label>
+                              <div class="text-center">
+                                <input style="color: indianred; !important;" data-thickness="0.05" data-fgColorMid="#cf3239" data-fgColorEnd="#cf3239" data-width="56%" data-height="142" id="indicadorCirculo4" type="text" value="50" class="dial dayAvance" />
+                              </div>
+                            </li>
+                    `);
+                }else{
+                    e.innerHTML = raw.replace("<tagToBeReplaced>", "");
+                }
+            });
+        },
+        instanciarHtmlKilometrajes: ()=>{
             const k = RutinaGet.getKilometrajes();
             const kcalKm = k.kcal%75 === 0 ? k.kcal : parseFloat(k.kcal/75).toFixed(1);//El 75 viene del excel macro
-            const raw = `<ul>
+                return  `<ul>
                             <li>
                               <label><img class="svg" src="${_ctx}img/iconos/icon_ayuda.svg" data-container="body" data-original-title="El kilometraje planificado por su asesor" rel="tooltip"><strong>KM</strong>semanal</label>
                               <p class="green"><img class="svg" src="${_ctx}img/iconos/icon_pasos.svg"><strong>${Number(k.kmPlanificado)}</strong>km</p>
@@ -2890,8 +2921,8 @@ Indicadores = (function(){
                               <label><img class="svg" src="${_ctx}img/iconos/icon_ayuda.svg"><strong>kcl</strong>semanales</label>
                               <p class="orange"><img class="svg" src="${_ctx}img/iconos/icon_fuego.svg"><strong>${Math.ceil(k.kcal)}</strong></p>
                             </li>
+                            <tagToBeReplaced>
                          </ul>`;
-            document.querySelector('.datos_semanales').innerHTML = raw;
         },
         instanciarPorcentajeAvance: ()=>{
             const porcAvance = document.querySelector('#PorcentajeAvanceSemana');

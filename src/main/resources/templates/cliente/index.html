@@ -25,6 +25,10 @@
         font-size: 0.6em;
       }
 
+      .ele-plus, .ele-less{
+        cursor: pointer;
+      }
+
     </style>
   </head>
   <body>
@@ -57,7 +61,7 @@
                 <div class="ritmos_pulsos row">
                   <div class="col-xs-6">
                     <h3 class="title_graphic no_margin_top"><img rel="tooltip" title="prueba" class="svg" src="img/iconos/icon_ayuda.svg">PULSOS<img class="red svg" src="img/iconos/icon_heart.svg"></h3>
-                    <table class="pulsos" id="Pulsos">
+                    <table class="pulsos ps-dia" id="Pulsos">
                       <thead>
                         <tr>
                           <th width="30%"></th>
@@ -72,7 +76,7 @@
                   </div>
                   <div class="col-xs-6 col-ritmos">
                     <h3 class="title_graphic no_margin_top"><div class="svg-wrap" rel="tooltip" title="prueba"><img class="svg" src="img/iconos/icon_ayuda.svg"></div>RITMOS<img class="blue svg" src="img/iconos/icon_ritmo-tiempo.svg"></h3>
-                    <table class="ritmos" id="Ritmos">
+                    <table class="ritmos rs-dia" id="Ritmos">
                       <thead>
                         <tr>
                           <th></th>
@@ -91,16 +95,16 @@
                 <div class="row">
                   <div class="col col-md-6 col-xs-6">
                     <h3 class="title_graphic no_margin_top"><img class="svg" src="img/iconos/icon_ayuda.svg">CUMPLIMIENTO</h3>
-                    <input data-thickness="0.06" data-fgColorMid="#d6ff58" data-fgColorEnd="#d6ff58" data-width="56%" data-height="142" id="indicadorCirculo1" type="text" value="15" class="dial dayAvance"/>
+                    <input data-thickness="0.06" data-fgColorMid="#d6ff58" data-fgColorEnd="#d6ff58" data-width="56%" data-height="142" id="indicadorCirculo1" type="text" value="0" class="dial dayAvance"/>
                   </div>
                   <div class="col col-md-6 col-xs-6">
                     <h3 class="title_graphic no_margin_top"><img class="svg" src="img/iconos/icon_ayuda.svg">KM<i>RESTANTE</i></h3>
-                    <input data-thickness="0.06" data-fgcolor="#cf3239" data-width="56%" data-height="142" id="indicadorCirculo2" type="text" value="15" class="dial dayAvance"/>
+                    <input data-thickness="0.06" data-fgcolor="#cf3239" data-width="56%" data-height="142" id="indicadorCirculo2" type="text" value="0" class="dial dayAvance"/>
                   </div>
                 </div>
               </div>
               <div class="col-md-4">
-                <div class="datos_semanales">
+                <div class="datos_semanales ds-vista-dia">
 
                 </div>
               </div>
@@ -108,7 +112,7 @@
               </div>
               <hr>
               <h3 class="title_section">ritmos y tiempos proyectados</h3>
-              <section class="ritmos_tiempo row">
+              <section class="ritmos_tiempo row rt-dia">
 
               </section>
             </div>
@@ -227,7 +231,7 @@
                 <div class="ritmos_pulsos row">
                   <div class="col-xs-6">
                     <h3 class="title_graphic"><img class="svg" src="img/iconos/icon_ayuda.svg">PULSOS<img class="red svg" src="img/iconos/icon_heart.svg"></h3>
-                    <table class="pulsos">
+                    <table class="pulsos ps-semana">
                       <thead>
                         <tr>
                           <th width="30%"></th>
@@ -241,7 +245,7 @@
                   </div>
                   <div class="col-xs-6">
                     <h3 class="title_graphic"><img class="svg" src="img/iconos/icon_ayuda.svg">RITMOS<img class="blue svg" src="img/iconos/icon_ritmo-tiempo.svg"></h3>
-                    <table class="ritmos">
+                    <table class="ritmos rs-semana">
                       <thead>
                         <tr>
                           <th></th>
@@ -249,84 +253,19 @@
                           <th><img class="svg" src="img/iconos/icon_mas.svg"></th>
                         </tr>
                       </thead>
+                      <tbody></tbody>
                     </table>
                   </div>
                 </div>
               </div>
               <div class="col-md-4">
-                <div class="datos_semanales">
-                  <ul>
-                    <li>
-                      <label><img class="svg" src="img/iconos/icon_ayuda.svg"><strong>KM</strong>semanal</label>
-                      <p class="green"><img class="svg" src="img/iconos/icon_pasos.svg"><strong>84</strong>km</p>
-                    </li>
-                    <li>
-                      <label><img class="svg" src="img/iconos/icon_ayuda.svg"><strong>hrs</strong>semanales</label>
-                      <p class="green"><img class="svg" src="img/iconos/icon_ritmo-tiempo.svg"><strong>9.4</strong>hrs</p>
-                    </li>
-                    <li>
-                      <label><img class="svg" src="img/iconos/icon_ayuda.svg"><strong>kcl</strong></label>
-                      <p class="orange"><img class="svg" src="img/iconos/icon_fuego.svg"><strong>91.6</strong>km</p>
-                    </li>
-                    <li>
-                      <label><img class="svg" src="img/iconos/icon_ayuda.svg"><strong>kcl</strong>semanales</label>
-                      <p class="orange"><img class="svg" src="img/iconos/icon_fuego.svg"><strong>4787</strong></p>
-                    </li>
-                  </ul>
+                <div class="datos_semanales ds-vista-semana">
                 </div>
               </div>
               <div class="clearfix"></div>
               <hr>
               <h3 class="title_section">ritmos y tiempos proyectados</h3>
-              <section class="ritmos_tiempo row">
-                <div class="col-md-3 col-sm-4 col-xs-4">
-                  <div class="box_tiempo">
-                    <div class="text-center col-xs-7"><span>200<i>m</i></span><span>3:51</span></div>
-                    <div class="text-center col-xs-5"><img class="svg" src="img/iconos/icon_cronometro.svg"><span>1:10</span></div>
-                  </div>
-                </div>
-                <div class="col-md-3 col-sm-4 col-xs-4">
-                  <div class="box_tiempo">
-                    <div class="text-center col-xs-7"><span>200<i>m</i></span><span>3:51</span></div>
-                    <div class="text-center col-xs-5"><img class="svg" src="img/iconos/icon_cronometro.svg"><span>1:10</span></div>
-                  </div>
-                </div>
-                <div class="col-md-3 col-sm-4 col-xs-4">
-                  <div class="box_tiempo">
-                    <div class="text-center col-xs-7"><span>200<i>m</i></span><span>3:51</span></div>
-                    <div class="text-center col-xs-5"><img class="svg" src="img/iconos/icon_cronometro.svg"><span>1:10</span></div>
-                  </div>
-                </div>
-                <div class="col-md-3 col-sm-4 col-xs-4">
-                  <div class="box_tiempo">
-                    <div class="text-center col-xs-7"><span>200<i>m</i></span><span>3:51</span></div>
-                    <div class="text-center col-xs-5"><img class="svg" src="img/iconos/icon_cronometro.svg"><span>1:10</span></div>
-                  </div>
-                </div>
-                <div class="col-md-3 col-sm-4 col-xs-4">
-                  <div class="box_tiempo">
-                    <div class="text-center col-xs-7"><span>200<i>m</i></span><span>3:51</span></div>
-                    <div class="text-center col-xs-5"><img class="svg" src="img/iconos/icon_cronometro.svg"><span>1:10</span></div>
-                  </div>
-                </div>
-                <div class="col-md-3 col-sm-4 col-xs-4">
-                  <div class="box_tiempo">
-                    <div class="text-center col-xs-7"><span>200<i>m</i></span><span>3:51</span></div>
-                    <div class="text-center col-xs-5"><img class="svg" src="img/iconos/icon_cronometro.svg"><span>1:10</span></div>
-                  </div>
-                </div>
-                <div class="col-md-3 col-sm-4 col-xs-4">
-                  <div class="box_tiempo">
-                    <div class="text-center col-xs-7"><span>200<i>m</i></span><span>3:51</span></div>
-                    <div class="text-center col-xs-5"><img class="svg" src="img/iconos/icon_cronometro.svg"><span>1:10</span></div>
-                  </div>
-                </div>
-                <div class="col-md-3 col-sm-4 col-xs-4">
-                  <div class="box_tiempo">
-                    <div class="text-center col-xs-7"><span>200<i>m</i></span><span>3:51</span></div>
-                    <div class="text-center col-xs-5"><img class="svg" src="img/iconos/icon_cronometro.svg"><span>1:10</span></div>
-                  </div>
-                </div>
+              <section class="ritmos_tiempo row rt-semana">
               </section>
             </div>
             <div class="tab-pane fade" id="mensual">
@@ -339,7 +278,7 @@
                     <br>
                     <div class="col-xs-6">
                       <h3 class="title_graphic"><img class="svg" src="img/iconos/icon_ayuda.svg">PULSOS<img class="red svg" src="img/iconos/icon_heart.svg"></h3>
-                      <table class="pulsos">
+                      <table class="pulsos ps-mes">
                         <thead>
                           <tr>
                             <th width="30%"></th>
@@ -348,37 +287,12 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td>Z1</td>
-                            <td>122</td>
-                            <td>145</td>
-                          </tr>
-                          <tr>
-                            <td>Z1</td>
-                            <td>122</td>
-                            <td>145</td>
-                          </tr>
-                          <tr>
-                            <td>Z1</td>
-                            <td>122</td>
-                            <td>145</td>
-                          </tr>
-                          <tr>
-                            <td>Z1</td>
-                            <td>122</td>
-                            <td>145</td>
-                          </tr>
-                          <tr>
-                            <td>Z1</td>
-                            <td>122</td>
-                            <td>145</td>
-                          </tr>
                         </tbody>
                       </table>
                     </div>
                     <div class="col-xs-6">
                       <h3 class="title_graphic"><img class="svg" src="img/iconos/icon_ayuda.svg">RITMOS<img class="blue svg" src="img/iconos/icon_ritmo-tiempo.svg"></h3>
-                      <table class="ritmos">
+                      <table class="ritmos rs-mes">
                         <thead>
                           <tr>
                             <th></th>
@@ -387,123 +301,23 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td>Z1</td>
-                            <td>122</td>
-                            <td>145</td>
-                          </tr>
-                          <tr>
-                            <td>Z2</td>
-                            <td>122</td>
-                            <td>145</td>
-                          </tr>
-                          <tr>
-                            <td>Z3</td>
-                            <td>122</td>
-                            <td>145</td>
-                          </tr>
-                          <tr>
-                            <td>Z4</td>
-                            <td>122</td>
-                            <td>145</td>
-                          </tr>
-                          <tr>
-                            <td>Z5</td>
-                            <td>122</td>
-                            <td>145</td>
-                          </tr>
+
                         </tbody>
                       </table>
                     </div>
                   </div>
                 </div>
                 <div class="col-md-4">
-                  <div class="datos_semanales">
-                    <ul>
-                      <li>
-                        <label><img class="svg" src="img/iconos/icon_ayuda.svg"><strong>KM</strong>semanal</label>
-                        <p class="green"><img class="svg" src="img/iconos/icon_pasos.svg"><strong>84</strong>km</p>
-                      </li>
-                      <li>
-                        <label><img class="svg" src="img/iconos/icon_ayuda.svg"><strong>hrs</strong>semanales</label>
-                        <p class="green"><img class="svg" src="img/iconos/icon_ritmo-tiempo.svg"><strong>9.4</strong>hrs</p>
-                      </li>
-                      <li>
-                        <label><img class="svg" src="img/iconos/icon_ayuda.svg"><strong>kcl</strong></label>
-                        <p class="orange"><img class="svg" src="img/iconos/icon_fuego.svg"><strong>91.6</strong>km</p>
-                      </li>
-                      <li>
-                        <label><img class="svg" src="img/iconos/icon_ayuda.svg"><strong>kcl</strong>semanales</label>
-                        <p class="orange"><img class="svg" src="img/iconos/icon_fuego.svg"><strong>4787</strong></p>
-                      </li>
-                      <li>
-                        <label><img class="svg" src="img/iconos/icon_ayuda.svg"><strong>cumplimiento</strong></label>
-                        <div class="text-center">
-                          <input style="color: indianred; !important;" data-thickness="0.05" data-fgColorMid="#d6ff58" data-fgColorEnd="#d6ff58" data-width="56%" data-height="142" id="indicadorCirculo3" type="text" value="50" class="dial dayAvance" />
-                        </div>
-                      </li>
-                      <li>
-                        <label><img class="svg" src="img/iconos/icon_ayuda.svg"><strong>km</strong>restante</label>
-                        <div class="text-center">
-                          <input style="color: indianred; !important;" data-thickness="0.05" data-fgColorMid="#cf3239" data-fgColorEnd="#cf3239" data-width="56%" data-height="142" id="indicadorCirculo4" type="text" value="50" class="dial dayAvance" />
-                        </div>
-                      </li>
-                    </ul>
+                  <div class="datos_semanales ds-vista-mes">
+
                   </div>
                 </div>
               </div>
               <div class="clearfix"></div>
               <hr>
               <h3 class="title_section">ritmos y tiempos proyectados</h3>
-              <section class="ritmos_tiempo row">
-                <div class="col-md-3 col-sm-4 col-xs-4">
-                  <div class="box_tiempo">
-                    <div class="text-center col-xs-7"><span>200<i>m</i></span><span>3:51</span></div>
-                    <div class="text-center col-xs-5"><img class="svg" src="img/iconos/icon_cronometro.svg"><span>1:10</span></div>
-                  </div>
-                </div>
-                <div class="col-md-3 col-sm-4 col-xs-4">
-                  <div class="box_tiempo">
-                    <div class="text-center col-xs-7"><span>200<i>m</i></span><span>3:51</span></div>
-                    <div class="text-center col-xs-5"><img class="svg" src="img/iconos/icon_cronometro.svg"><span>1:10</span></div>
-                  </div>
-                </div>
-                <div class="col-md-3 col-sm-4 col-xs-4">
-                  <div class="box_tiempo">
-                    <div class="text-center col-xs-7"><span>200<i>m</i></span><span>3:51</span></div>
-                    <div class="text-center col-xs-5"><img class="svg" src="img/iconos/icon_cronometro.svg"><span>1:10</span></div>
-                  </div>
-                </div>
-                <div class="col-md-3 col-sm-4 col-xs-4">
-                  <div class="box_tiempo">
-                    <div class="text-center col-xs-7"><span>200<i>m</i></span><span>3:51</span></div>
-                    <div class="text-center col-xs-5"><img class="svg" src="img/iconos/icon_cronometro.svg"><span>1:10</span></div>
-                  </div>
-                </div>
-                <div class="col-md-3 col-sm-4 col-xs-4">
-                  <div class="box_tiempo">
-                    <div class="text-center col-xs-7"><span>200<i>m</i></span><span>3:51</span></div>
-                    <div class="text-center col-xs-5"><img class="svg" src="img/iconos/icon_cronometro.svg"><span>1:10</span></div>
-                  </div>
-                </div>
-                <div class="col-md-3 col-sm-4 col-xs-4">
-                  <div class="box_tiempo">
-                    <div class="text-center col-xs-7"><span>200<i>m</i></span><span>3:51</span></div>
-                    <div class="text-center col-xs-5"><img class="svg" src="img/iconos/icon_cronometro.svg"><span>1:10</span></div>
-                  </div>
-                </div>
-                <div class="col-md-3 col-sm-4 col-xs-4">
-                  <div class="box_tiempo">
-                    <div class="text-center col-xs-7"><span>200<i>m</i></span><span>3:51</span></div>
-                    <div class="text-center col-xs-5"><img class="svg" src="img/iconos/icon_cronometro.svg"><span>1:10</span></div>
-                  </div>
-                </div>
-                <div class="col-md-3 col-sm-4 col-xs-4">
-                  <div class="box_tiempo">
-                    <div class="text-center col-xs-7"><span>200<i>m</i></span><span>3:51</span></div>
-                    <div class="text-center col-xs-5"><img class="svg" src="img/iconos/icon_cronometro.svg"><span>1:10</span></div>
-                  </div>
-                </div>
+              <section class="ritmos_tiempo row rt-mes">
+
               </section>
             </div>
           </div>

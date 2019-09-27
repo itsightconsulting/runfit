@@ -135,10 +135,36 @@ function searchSvgTraversing(path){
     return svg;
 }
 
+function searchClassTraversing(ele){
+    let temp = ele;
+    while(!temp.classList.contains('panel-heading')){
+        temp = temp.parentElement;
+    }
+    return temp;
+}
+
 function svgIconsEvents(svg){
     const clases = svg.classList;
     if (clases.contains('ico-video')) {
         //svg.parentElement.parentElement.querySelectorAll('[data-fancybox]').forEach(e => $(e).fancybox());
+    }else if (clases.contains('ele-plus')) {
+        actionCollapsableIconPlusOrLess(svg, 1);
+    } else if (clases.contains('ele-less')) {
+        actionCollapsableIconPlusOrLess(svg, 0);
+    }
+}
+
+function actionCollapsableIconPlusOrLess(svg, isPlus){
+    const collapserElement = searchClassTraversing(svg).querySelector('a[data-toggle="collapse"]');
+    if(collapserElement.hasAttribute('aria-expanded')){
+        if(collapserElement.getAttribute('aria-expanded') === (isPlus ? 'false' : 'true')){
+            collapserElement.click();
+        }
+    } else{
+        if(!isPlus){
+            return;
+        }
+        collapserElement.click();
     }
 }
 
@@ -188,80 +214,6 @@ async function getSemanasDeLaUltimaRutinaGenerada(semanaIx){
             complete: function () {}
         });
     })
-}
-
-function elementosDia(val) {
-    var elementoDia = val.elementos;
-    var texto = "";
-    if (elementoDia != null && elementoDia.length > 0){
-       $.each(elementoDia, function (i, dato) {
-           var subElements = showSubElementos(dato);
-           texto= texto.concat(`
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h3>${dato.nombre}<div class="mas_menos"><img class="svg" src="img/iconos/icon_menos.svg"><img class="svg" src="img/iconos/icon_mas.svg"></div></h3>
-                <div class="icons">
-                  <img class="svg" src="img/iconos/icon_microfono.svg"><img class="svg" src="img/iconos/icon_leyenda.svg">
-                  <span><img class="svg" src="img/iconos/icon_tiempo2.svg">${dato.minutos}</span>
-                  <a data-toggle="collapse" href="#elemento-${i}"><img class="svg arrow" src="img/iconos/icon_flecha2.svg"></a>
-                </div>
-              </div>
-              <div class="panel-collapse collapse" id="elemento-${i}">
-                <div class="panel-body"><span class="text_green">1 serie x 20" de recuperación</span>
-                  <ul class="principal">
-                       ${subElements}
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            `);
-       });
-   }
-   return texto;
-}
-
-function vistaDia(data) {
-    var date = [data];
-    $.each(date, function (i, dato) {
-        var fecha = dato.fechaInicio.split('/');
-        var firstFecha = parseInt(date[0].fechaInicio.split('/')[1]);
-        var week = parseInt(fecha[1]);
-        if (week <= firstFecha) {
-            var day = dato.lstDia;
-            $.each(day, function (i, val) {
-                var firstDate = moment(date[0].lstDia[0].fecha, "DD-MM-YYYY").week();
-                var weeknumber = moment(val.fecha, "DD-MM-YYYY").week();
-                if (firstDate == weeknumber) {
-                    $("#panel_days").append(
-                        `<div class="panel panel-default">
-                          <div class="panel-heading day"><a data-toggle="collapse" data-parent="#panel_days" href="#dia${i}">
-                            <h3>${val.diaLiteral}</h3></a>
-                            <div class="icons">
-                              <img class="svg" src="img/iconos/icon_microfono.svg"><img class="svg" src="img/iconos/icon_leyenda.svg">
-                              <span><img class="svg" src="img/iconos/icon_tiempo2.svg">${val.minutos}</span>
-                              <a data-toggle="collapse" data-parent="#panel_days" href="#dia${i}"><img class=" arrow" src="img/iconos/icon_flecha2.svg"></a>
-                            </div>
-                          </div>
-                          <div class="panel-collapse collapse" id="dia${i}">
-                            <div class="panel-body">
-                              <ul class="datos">
-                                <li><img class="svg" src="img/iconos/icon_programas.svg">Carrera<img class="svg help" src="img/iconos/icon_ayuda.svg"></li>
-                                <li><img class="svg" src="img/iconos/icon_temporada.svg">Fuerza<img class="svg help" src="img/iconos/icon_ayuda.svg"></li>
-                                <li><img class="svg" src="img/iconos/icon_cronometro.svg">${val.minutos}<img class="svg help" src="img/iconos/icon_ayuda.svg"></li>
-                                <li><img class="svg" src="img/iconos/icon_km.svg">${val.distancia}<img class="svg help" src="img/iconos/icon_ayuda.svg"></li>
-                              </ul>
-                            <div class="panel-group elementos">
-                              ${elementosDia(val)}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    `);
-                }
-            });
-        }
-    });
 }
 
 function vistaMes(data) {
