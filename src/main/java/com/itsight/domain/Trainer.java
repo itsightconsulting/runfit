@@ -94,6 +94,9 @@ public class Trainer extends AuditingEntity implements Serializable {
     @Column(nullable = false)
     private Integer canPerValoracion;
 
+    @Column(nullable = false, length = 1)
+    private Integer sexo;
+
     @JsonSerialize(using = JsonMoneyDoubleSimpleSerializer.class)
     @Column(precision = 6, scale = 2, nullable = false)
     private Double totalValoracion;
@@ -175,7 +178,7 @@ public class Trainer extends AuditingEntity implements Serializable {
     }
 
     public Trainer(String nombres, String apellidos, String correo, String telefono, String movil, String username,
-                   String numeroDocumento, boolean flagRutinarioCe, int tipoDocumentId, boolean flagActivo) {
+                   String numeroDocumento, boolean flagRutinarioCe, int tipoDocumentId, boolean flagActivo, Integer sexo) {
         this.nombres = nombres;
         this.apellidos = apellidos;
         this.correo = correo;
@@ -186,6 +189,7 @@ public class Trainer extends AuditingEntity implements Serializable {
         this.flagRutinarioCe = flagRutinarioCe;
         this.tipoDocumento = new TipoDocumento(tipoDocumentId);
         this.setFlagActivo(flagActivo);
+        this.sexo = sexo;
     }
 
     public void setPais(Pais pais){

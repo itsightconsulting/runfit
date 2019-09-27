@@ -21,7 +21,6 @@ public class ClienteFitnessDTO implements Serializable {
 
     private String correoSecundario;
     private Integer estadoCivil;
-    private Integer sexo;
     @JsonSerialize(using = JsonMoneyDoubleSimpleSerializer.class)
     private Double peso;
     private Integer talla;

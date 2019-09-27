@@ -117,7 +117,7 @@ import java.util.UUID;
                               "\tf.trainer_id id, \n" +
                               "\tt.tipo_trainer_id tipoTrainerId, \n" +
                               "\tCONCAT(t.nombres,' ' ,t.apellidos) nombreCompleto, \n" +
-                              "\tf.sexo, \n" +
+                              "\tt.sexo, \n" +
                               "\tt.ficha_cliente_ids fichaClienteIds,\n" +
                               "\tf.disciplinas, \n" +
                               "\tf.especialidad, \n" +
@@ -155,7 +155,7 @@ import java.util.UUID;
                       query = "SELECT \n" +
                               "\tf.trainer_id id, \n" +
                               "\tCONCAT(t.nombres,' ' ,t.apellidos) nombreCompleto, \n" +
-                              "\tf.sexo, \n" +
+                              "\tt.sexo, \n" +
                               "\tt.ficha_cliente_ids fichaClienteIds,\n" +
                               "\tf.disciplinas, \n" +
                               "\tf.especialidad, \n" +
@@ -215,8 +215,6 @@ public class TrainerFicha implements Serializable {
             })
     @Column(name="TrainerFichaId")
     private Integer id;
-    @Column(nullable = false)
-    private Integer sexo;
     @Column(nullable = true)
     private String especialidad;
     @Column(nullable = false, columnDefinition="TEXT")

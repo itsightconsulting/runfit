@@ -260,6 +260,7 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
         objCli.setRoles(CLIENTE.ordinal());
         objCli.setTipoDocumento(cliente.getTipoDocumentoId());
         objCli.setPais(cliente.getPaisId());
+        objCli.setSexo(cliente.getSexo());
 
         SecurityUser secCliente;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
