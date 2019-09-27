@@ -8,13 +8,11 @@ import com.itsight.domain.RedFitness;
 import com.itsight.domain.SecurityUser;
 import com.itsight.domain.dto.ClienteDTO;
 import com.itsight.domain.dto.ClienteFitnessDTO;
+import com.itsight.domain.pojo.ClienteFitnessPOJO;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.ClienteFitnessRepository;
 import com.itsight.repository.ClienteRepository;
-import com.itsight.service.ClienteFitnessService;
-import com.itsight.service.ClienteProcedureInvoker;
-import com.itsight.service.ClienteService;
-import com.itsight.service.RedFitnessService;
+import com.itsight.service.*;
 import com.itsight.util.Enums;
 import com.itsight.util.Utilitarios;
 import org.springframework.beans.BeanUtils;
@@ -44,15 +42,19 @@ public class ClienteFitnessServiceImpl extends BaseServiceImpl<ClienteFitnessRep
 
     private ClienteProcedureInvoker clienteProcedureInvoker;
 
+    private ClienteFitnessProcedureInvoker clienteFitnessProcedureInvoker;
+
     @Autowired
     public ClienteFitnessServiceImpl(ClienteFitnessRepository repository,
                                      ClienteService clienteService,
                                      RedFitnessService redFitnessService,
-                                     ClienteProcedureInvoker clienteProcedureInvoker){
+                                     ClienteProcedureInvoker clienteProcedureInvoker,
+                                     ClienteFitnessProcedureInvoker clienteFitnessProcedureInvoker){
         super(repository);
         this.clienteService = clienteService;
         this.redFitnessService = redFitnessService;
         this.clienteProcedureInvoker = clienteProcedureInvoker;
+        this.clienteFitnessProcedureInvoker = clienteFitnessProcedureInvoker;
     }
 
     @Override
@@ -163,8 +165,8 @@ public class ClienteFitnessServiceImpl extends BaseServiceImpl<ClienteFitnessRep
     }
 
     @Override
-    public ClienteFitness findByClienteId(Integer clienteId) {
-        return Optional.of(repository.findByClienteId(clienteId)).orElseThrow(()->new EntityNotFoundException());
+    public ClienteFitnessPOJO findByClienteId(Integer clienteId) {
+        return Optional.of(clienteFitnessProcedureInvoker.getById(clienteId)).orElseThrow(()->new EntityNotFoundException());
     }
 
     @Override

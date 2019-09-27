@@ -57,9 +57,9 @@ public class ClienteFitnessController {
     //Edicion de rutinas
     @GetMapping(value = "/obtener/secundario/{clienteId}")
     public @ResponseBody
-    ClienteFitness obtenerPorUsuarioId(@PathVariable(name = "clienteId") String clienteId) {
-        Integer redFitId = Parseador.getDecodeHash16Id("rf-rutina", clienteId);
-        return clienteFitnessService.findByClienteId(redFitId);
+    ClienteFitnessPOJO obtenerPorUsuarioId(@PathVariable(name = "clienteId") String clienteId) {
+        Integer cliId = Parseador.getDecodeHash16Id("rf-rutina", clienteId);
+        return clienteFitnessService.findByClienteId(cliId);
     }
 
     @PostMapping(value = "/agregar")

@@ -121,6 +121,8 @@ function instanciarDatosFitnessCliente(){
         dataType: "json",
         blockLoading: false,
         success: function (data, textStatus) {
+
+
             if (textStatus == "success") {
                 if (data == "-9") {
                     $.smallBox({
@@ -196,6 +198,7 @@ function actualizarPorcentajesKilometrajeBD(porcentajes, e){
 }
 
 function obtenerKilometrajeBaseBD(distancia, nivel){
+    debugger
     const o  = {};
     o.distancia = distancia;
     o.nivelAtleta = nivel;
@@ -309,7 +312,7 @@ function guardarRutina(rutina){
         success: function (data) {
             const resWithErrors = getResponseCodeWithErrors(data);
             resWithErrors != false ? notificacionesRutinaSegunResponseCode(resWithErrors.code, RutinaParsers.obtenerErroresValidacion(resWithErrors.errors)) : notificacionesRutinaSegunResponseCode(data);
-            data == "-1" ? window.location.href = _ctx + 'rutina/edicion?key=' + id + '&rn=' + rn + datosAsURI: setTimeout(()=>$('#bot1-Msg1').click());//res.id para el caso = redFitnessId;
+            data == "-1" ? window.location.href = _ctx + 'rutina/editor?key=' + id + '&rn=' + rn + datosAsURI: setTimeout(()=>$('#bot1-Msg1').click());//res.id para el caso = redFitnessId;
         },
         error: function (xhr) {
             exception(xhr);

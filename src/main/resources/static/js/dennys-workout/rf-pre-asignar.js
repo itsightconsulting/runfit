@@ -96,6 +96,10 @@ function init(){
     Array.from(distAtletaRdBtn.querySelectorAll('.chkDistancia')).forEach(v=>v.addEventListener('change', MacroCiclo.instanciarKilometrajeBase));
     fInitMacro.addEventListener('change', FichaSet.setTotalSemanas);
     fFinMacro.addEventListener('change', FichaSet.setTotalSemanas);
+
+   // console.log("momo",Number(document.querySelector('#DistanciaRutina input:checked').value));
+
+
     setFechaActual(document.querySelectorAll('input[type="date"]'));
     setTimeout(() => {
         obtenerKilometrajeBaseBD(Number(document.querySelector('#DistanciaRutina input:checked').value), Number(document.querySelector('#NivelAtleta input:checked').value));
@@ -193,6 +197,8 @@ function actualizarPorcentajesKilometrajeBD(porcentajes, e){
 }
 
 function obtenerKilometrajeBaseBD(distancia, nivel){
+
+    debugger
     const o  = {};
     o.distancia = distancia;
     o.nivelAtleta = nivel;

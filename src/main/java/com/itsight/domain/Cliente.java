@@ -110,6 +110,9 @@ public class Cliente extends AuditingEntity implements Serializable {
     @Column(nullable = false, length = 16)
     private String movil;
 
+    @Column(nullable = false, length = 1)
+    private Integer sexo;
+
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
     @Temporal(TemporalType.DATE)
     private Date fechaNacimiento;

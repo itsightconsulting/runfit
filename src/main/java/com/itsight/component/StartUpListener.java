@@ -1229,6 +1229,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             cli.setRoles(lstRolCli);
             cli.setFechaNacimiento(Parseador.fromStringToDate("1987-01-0"+i));
             cli.setSecurityUser(secCliente);
+            cli.setSexo(1);
 
             //
             ConfiguracionCliente cliConfg = new ConfiguracionCliente();
@@ -1247,7 +1248,6 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             cliFit.setEstadoCivil(1);
             cliFit.setImc(Double.parseDouble(String.valueOf(15+i)));
             cliFit.setPeso((65+i)+0.0);
-            cliFit.setSexo(1);
             cliFit.setDesgasteZapatilla("Inicio");
             cliFit.setDesObjetivos("Resistencia");
             cliFit.setDesTerPredom("Asfalto");

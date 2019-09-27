@@ -253,6 +253,8 @@
 
                     ocultarElementosCategoría();
 
+                    data.length <= 6 ? 1 :  document.querySelector('.range-slider').max =  data.length - 5;
+
                     dvSeleccionCategorias.appendChild(mensaje);
 
                   }

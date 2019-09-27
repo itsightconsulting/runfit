@@ -3,14 +3,19 @@
 Ficha = (function(){
     return {
         instanciar: (ficha)=>{
-            const comps = ficha.competencias;
+
+            console.log("ficha" , ficha);
+
+            const comps =JSON.parse(ficha.competencias);
+            const condicionAnatomica = JSON.parse(ficha.condicionAnatomica);
             $fechasCompetencia = comps.map(v=>{return {nombre: v.nombre, prioridad: v.prioridad, fecha: parseFromStringToDate2(v.fecha)}}).sort((a, b)=>{return a.fecha - b.fecha;});
+
             $('#Nombres').val(atob(getParamFromURL("nm")));
             $('#ApellidoPaterno').val(atob(getParamFromURL("nm")));
             $('#FechaNacimiento').val(atob(getParamFromURL("fn")));
             $('#Edad').val(calcularEdadByFechaNacimiento($('#FechaNacimiento').val()));
-            $('#FrecuenciaCardiacaMinima').val(ficha.condicionAnatomica.frecuenciaCardiaca);
-            $('#FrecuenciaCardiacaMaxima').val(ficha.condicionAnatomica.frecuenciaCardiacaMaxima);
+            $('#FrecuenciaCardiacaMinima').val(condicionAnatomica.frecuenciaCardiaca);
+            $('#FrecuenciaCardiacaMaxima').val(condicionAnatomica.frecuenciaCardiacaMaxima);
             $('#MacroFechaFin').val(getFechaFormatoString(FichaGet.obtenerMaximaFechaCompeticiones($fechasCompetencia)));
             $('#EstadoCivil').text(ficha.estadoCivil);
             $('#Sexo').val(ficha.sexo == 1 ? "Masculino" : "Femenino");
@@ -21,6 +26,7 @@ Ficha = (function(){
             Calc.setRestantes();
             //Recreando tabla de listado de competencias
             tbCompetencias.appendChild(FichaSeccion.newListadoCompetencias(comps));//global variable
+
         },
     }
 })();
@@ -50,7 +56,7 @@ FichaGet = (function(){
             basico.numSem = Number(document.querySelector('#MacroTotalSemanas').textContent);
             basico.periodizacion = Array.from(proyecciones.querySelectorAll('.periodizacion-calc[data-type="2"]')).map(v=>{if(v.value>0) return Number(v.value)});
             basico.distribucionPorcentaje = Array.from(proyecciones.querySelectorAll('.periodizacion-calc[data-type="1"]')).map(v=>{if(v.value>0) return Number(v.value)/100;});
-            basico.distancia = basico.distancia ? Number(document.querySelector('#DistanciaRutina input:checked').value) : '';
+            basico.distancia =  Number(document.querySelector('#DistanciaRutina input:checked').value);
             basico.nivelAtleta = Number(document.querySelector('#NivelAtleta input:checked').value);
             basico.fechaInicio = document.querySelector('#MacroFechaInicio').value;
             basico.fechaFin = document.querySelector('#MacroFechaFin').value;
@@ -116,7 +122,7 @@ FichaSet = (function(){
             MacroValidacion.cleanDistribucion();
         },
         instanciarDatosFicha: (ficha)=>{
-            const comps = ficha.competencias;
+            const comps = JSON.parse(ficha.competencias);
             $fechasCompetencia = comps.map(v=>{return {nombre: v.nombre, prioridad: v.prioridad, fecha: parseFromStringToDate2(v.fecha)}}).sort((a, b)=>{return a.fecha - b.fecha;});
             document.querySelector('#Nombres').value = atob(getParamFromURL("nm"));
             document.querySelector('#ApellidoPaterno').value = atob(getParamFromURL("nm"));

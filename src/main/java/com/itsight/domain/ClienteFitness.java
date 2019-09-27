@@ -121,8 +121,7 @@ public class ClienteFitness implements Serializable {
     private String correoSecundario;
     @Column
     private Integer estadoCivil;
-    @Column(nullable = false)
-    private Integer sexo;
+
     @JsonSerialize(using = JsonMoneyDoubleSimpleSerializer.class)
     @Column(precision = 6, scale = 3, nullable = false)
     private Double peso;

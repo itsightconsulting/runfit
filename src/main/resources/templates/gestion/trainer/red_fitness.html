@@ -891,7 +891,7 @@
             success: function (data) {
                 const id = data.res;
                 const rn = data.rdm;
-                window.location.href = _ctx + 'rutina/edicion?key=' + id + '&rn=' + rn;//res.id para el caso = redFitnessId;
+                window.location.href = _ctx + 'rutina/editor?key=' + id + '&rn=' + rn;//res.id para el caso = redFitnessId;
             },
             error: function (xhr) {
                 input.removeAttribute('disabled');
@@ -972,7 +972,7 @@
     function verUltimoPrograma(redFitnessId, clienteId, fechaNac, cliFullNombre){
 
        const datosAsURI = '&fn=' + fechaNac + '&nm=' + cliFullNombre;
-       window.location.href = _ctx+'rutina/edicion?key='+ getHash32Id('rf-rutina', redFitnessId) + '&rn='+ getHash16Id('rf-rutina', clienteId)+datosAsURI;
+       window.location.href = _ctx+'rutina/editor?key='+ getHash32Id('rf-rutina', redFitnessId) + '&rn='+ getHash16Id('rf-rutina', clienteId)+datosAsURI;
     }
 
 

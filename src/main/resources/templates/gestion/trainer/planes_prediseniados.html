@@ -398,6 +398,7 @@
                     $(mdlAgregarCat).modal('hide');
                     $('#nueva_categoria_frm')[0].reset();
                     obtenerCategorias();
+                    $('input[name="cbSeleccionTipo"]').prop('checked', false);
                 },
                 error: (xhr) => {
                        const mensaje = xhr.responseJSON.message;
@@ -434,6 +435,8 @@
                         clasesSlider.add('hidden');
                     }
                 }
+
+
                 obtenerCategoriasPlantillas(dataCategorias);
             } ,
             error: (d) =>{
@@ -475,10 +478,13 @@
                 return 0;
             });
             let itemsCategoria = "";
+
+            data.length <= 6 ? 1 :  document.querySelector('.range-slider').max =  data.length - 5;
+
             data.forEach(function(element) {
                 let claseCategoria = "title-categoria";
-                let tamanio = element.nombre.length <= 5 && 1 <= (element.nombre).split("").length <= 2  ? "lg" :
-                    (element.nombre.length < 18 && 1 <= (element.nombre).split("").length <= 4  ?  "md" : "sm");
+                let tamanio = element.nombre.length <= 4 && 1 <= (element.nombre).split("").length <= 2  ? "lg" :
+                    (element.nombre.length < 18 && 1 <= (element.nombre).split("").length <= 3  ?  "md" : "sm");
                 claseCategoria += " "+ tamanio;
                 if(element.favorito){
                     favoritos.push(element.id);
@@ -620,6 +626,7 @@
         })
     }
     function categoriaClickListenerEvent(e){
+        debugger
         const input = e.target;
         const parentStarDOM = ($(input).parent().closest('.star'));
         const parentEditDOM = ($(input).parent().closest('.icon-edit'));
@@ -645,6 +652,8 @@
             obtenerCategoriasPlantillas(dataCategorias);
         }
         else if(editElement){
+
+            debugger
             const nombre = editElement.getAttribute("data-nombre");
             const categoriaId = editElement.getAttribute("data-categoria-id");
             const tipoCategoria = Number(editElement.getAttribute("data-tipo"));
@@ -846,27 +855,17 @@
                 cbNuevaCategoria :{
                     required: true
                 }
-            },
-            messages: {
-
             }
-
 
         });
         $('#editar_categoria_frm').validate({
             rules:{
                 nombreCategoriaEdit : {
                     required: true,
-                    rangelength: [1, 30],
-                    alphanumeric : true
+                    rangelength: [1, 30]
 
                 } , cbEditarCategoria :{
                     required: true
-                }
-            },
-            messages: {
-                nombreCategoriaEdit :{
-                    alphanumeric: 'No se encontró ningún carácter válido en el campo'
                 }
             }
         });
@@ -874,18 +873,11 @@
             rules:{
                 nombreRutina : {
                     required: true,
-                    maxlength : 30,
-                    alphanumeric : true
-
+                    maxlength : 30
                 },
                 semanasRutina : {
                     required: true,
                     range: [6, 84]
-                }
-            },
-            messages: {
-                nombreCategoria :{
-                    alphanumeric: 'No se encontró ningún carácter válido en el campo'
                 }
             }
         });
@@ -893,14 +885,7 @@
             rules:{
                 nombreRutinaEdit :{
                     required: true,
-                    maxlength : 30,
-                    alphanumeric : true
-
-                }
-            },
-            messages: {
-                nombreCategoria :{
-                    alphanumeric: 'No se encontró ningún carácter válido en el campo'
+                    maxlength : 30
                 }
             }
 

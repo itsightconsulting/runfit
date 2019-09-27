@@ -3,16 +3,17 @@
 Ficha = (function(){
     return {
         instanciar: (ficha)=>{
-            const comps = ficha.competencias;
-            console.log(ficha.competencias);
+
+            const comps =JSON.parse(ficha.competencias);
+            const condicionAnatomica = JSON.parse(ficha.condicionAnatomica);
             $fechasCompetencia = comps.map(v=>{return {nombre: v.nombre, prioridad: v.prioridad, fecha: parseFromStringToDate2(v.fecha)}}).sort((a, b)=>{return a.fecha - b.fecha;});
 
             $('#Nombres').val(atob(getParamFromURL("nm")));
             $('#ApellidoPaterno').val(atob(getParamFromURL("nm")));
             $('#FechaNacimiento').val(atob(getParamFromURL("fn")));
             $('#Edad').val(calcularEdadByFechaNacimiento($('#FechaNacimiento').val()));
-            $('#FrecuenciaCardiacaMinima').val(ficha.condicionAnatomica.frecuenciaCardiaca);
-            $('#FrecuenciaCardiacaMaxima').val(ficha.condicionAnatomica.frecuenciaCardiacaMaxima);
+            $('#FrecuenciaCardiacaMinima').val(condicionAnatomica.frecuenciaCardiaca);
+            $('#FrecuenciaCardiacaMaxima').val(condicionAnatomica.frecuenciaCardiacaMaxima);
             $('#MacroFechaFin').val(getFechaFormatoString(FichaGet.obtenerMaximaFechaCompeticiones($fechasCompetencia)));
             $('#EstadoCivil').text(ficha.estadoCivil);
             $('#Sexo').val(ficha.sexo == 1 ? "Masculino" : "Femenino");
