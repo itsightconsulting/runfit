@@ -70,7 +70,6 @@ public class LoginListener implements ApplicationListener<InteractiveAuthenticat
             if(login.getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_TRAINER"))){
                 trainerService.actualizarFechaUltimoAcceso(new Date(), id);
                 usu = trainerService.getForCookieById(id);
-
             } else if(login.getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))){
                 usu = administradorService.getForCookieById(id);
                 administradorService.actualizarFechaUltimoAcceso(new Date(), id);

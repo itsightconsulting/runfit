@@ -3,7 +3,6 @@ package com.itsight.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.itsight.domain.TrainerFicha;
 import com.itsight.domain.dto.PerfilObsDTO;
-import com.itsight.domain.dto.TrainerDTO;
 import com.itsight.domain.dto.TrainerEmpresaDTO;
 import com.itsight.domain.dto.TrainerFichaDTO;
 import com.itsight.domain.pojo.TrainerFichaPOJO;

@@ -7,6 +7,7 @@ const initLimit = 10;
 const initOffset = 0;
 let totalRows = 0;
 let queryParams = resetPagination();
+let $finishQuery = true;
 function resetPagination(){
     return {
         limit: initLimit,
@@ -63,6 +64,9 @@ function onlyBusquedaDinamica(noCleanPrevious){
     d.limit = queryParams.limit;
     d.offset = queryParams.offset;
 
+    //Param required to avoid unexpected queries when scroll event is triggered
+    $finishQuery = false;
+
     $.ajax({
         type: 'GET',
         url: _ctx + 'p/trainer/find/dinamico',
@@ -97,7 +101,7 @@ function onlyBusquedaDinamica(noCleanPrevious){
         }, error: (xhr) => {
             exception(xhr);
         }, complete: () => {
-
+            $finishQuery = true;
         }
     })
 }
@@ -179,6 +183,9 @@ function scrollEventBusquedaAutomatica(){
     const footHeight = footer ? footer.clientHeight + 300 : 100;
     $(window).scroll(function() {
         if($(window).scrollTop() + $(window).height() > $(document).height() - footHeight) {
+            if($finishQuery === false){
+                return;
+            }
             if(totalRows> queryParams.offset + queryParams.limit){
                 queryParams.offset = queryParams.offset + queryParams.limit;
                 const noCleanPrevious = true;

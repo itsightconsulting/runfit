@@ -1487,8 +1487,6 @@ function principalesAlCambiarTab(e){
 
     else if(input.nodeName == "A" && input.getAttribute('href') == '#tabGrupoVideos') {
         e.preventDefault();
-     //   document.querySelector('#OpsAdic').classList.add('hidden');
-     //   document.querySelector('#DivEditor').classList.add('hidden');
         $videosElegidos = [];
         $subEleElegidos = [];
         Array.from(document.getElementById('ArbolGrupoVideoDetalle').querySelectorAll('.txt-color-greenIn')).forEach(e => e.classList.remove('txt-color-greenIn'));
@@ -2218,7 +2216,6 @@ function instanciarGrupoAudios(){
 
 
 function instanciarGrupoVideos(){
-
     $.ajax({
         type: 'GET',
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
@@ -2243,12 +2240,10 @@ function instanciarGrupoVideos(){
                         rawHTMLCabecera +=
                             `<div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                     <div class="container-fluid padding-0">
-                                        <h1 class="text-center txt-color-white padding-7 bg-color-blue-sl"><img class="pull-left" height="80px" src="https://s3-us-west-2.amazonaws.com/rf-media-rutina/grupo-video/${grupoVideo.id}/${grupoVideo.rutaWeb}">${grupoVideo.nombre}</h1>
+                                        <h1 class="text-align-center txt-color-white padding-7 bg-color-blue-sl"><img class="pull-left" height="80px" src="https://s3-us-west-2.amazonaws.com/rf-media-rutina/grupo-video/${rrWeb}">${grupoVideo.nombre}</h1>
                                     </div>
                                     ${generandoCategoriaVideos(grupoVideo)}
                                  </div>`;
-
-
                     });
                     rawHTMLCabecera +='</div>';
 
@@ -2320,11 +2315,10 @@ function generandoVideosCuerpo(subCatVideo){
         rawVideosHTML += `<a class="elegir-video padding-7-no-left" href="javascript:void(0);">
                           <i id="livideo${v.id}" title="Agregar a favoritos" class="fa fa-star fa-fw ck-favorito-video padding-top-3" data-selected="0" data-id="${v.id}"></i>
                           <i class="fa fa-arrow-circle-left fa-fw ck-video padding-top-3"></i>
-                          <i data-placement="bottom" rel="tooltip" data-original-title="Reproducir" class="reprod-video fa fa-video-camera fa-fw" data-media="/${v.id+'/'+v.rutaWeb}" data-index="${v.id}">
+                          <i data-placement="bottom" rel="tooltip" data-original-title="Reproducir" class="reprod-video fa fa-video-camera fa-fw" data-media="/${v.id+'/'+v.rutaWeb+'?v'+v.version +'&tn='+v.thumbnail+'.jpg'}" data-index="${v.id}">
                           </i>${v.nombre}</a>`;
-    })
+    });
     return rawVideosHTML;
-
 }
 
 

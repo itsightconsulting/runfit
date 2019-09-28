@@ -42,9 +42,9 @@
                         <h4 class="graph-title"> PORCENTAJE DE DISTRIBUCIÓN DE CLIENTES POR SEXO Y EDAD </h4>
                         </section>
 
-                        <div th:unless="${perfilValue}">
+                        <section th:unless="${perfilValue}">
                             <h4 class="graph-title">PORCENTAJE DE DISTRIBUCIÓN DE MERCADO POR SEXO Y EDAD</h4>
-                        </div>
+                        </section>
 
                         <section id="consolidado" style="visibility: hidden">
 
@@ -233,8 +233,13 @@
                             <div class="row dv-ventas-servicios ">
 
                                <h4 class="graph-title"> VENTAS DE SERVICIO POR TEMPORADA</h4>
+
                                  <div class="select-year">
                                      <select id="graphYearFilter" name="graph-year"> </select>
+                                     <div class="icons-body">
+                                         <img class="svg fem" th:src="@{/img/iconos-trainers/icon_female_body.svg}+'?'+${version}"/>
+                                         <img class="svg masc" th:src="@{/img/iconos-trainers/icon_male_body.svg}+'?'+${version}"/>
+                                     </div>
                                  </div>
 
                                 <div id="chart-legends"></div>

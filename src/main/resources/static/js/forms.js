@@ -789,7 +789,7 @@ function generarDOMCarouselEdit(imgTemps, nomImgsGaleria){
         aGall.href = "#myGallery";
         aGall.setAttribute('data-slide-to', index);
         const img = document.createElement('img');
-        img.classList.add('img-gal')
+        img.classList.add('img-gal');
         img.src = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+$perfil.id+'/'+v;
         aGall.appendChild(img);
         dvItem.appendChild(aGall);

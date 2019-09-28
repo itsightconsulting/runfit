@@ -47,20 +47,21 @@ function datepicker_init(minDate, maxDate) {
                 }
             });
 
-                $('.datepicker_inline').on('dp.error', function (e) {
-                    console.log(e);
-                })
+            $('.datepicker_inline').on('dp.error', function (e) {
+                console.info(e);
+            })
 
-                $('.datepicker_inline').on('dp.change', function (e) {
+            $('.datepicker_inline').on('dp.change', function (e) {
+
                 const daySelected = e.target.querySelector('.day.active');
                 const dayDate = parseFromStringToDate2(daySelected.getAttribute('data-day'));
-                const semanaIndex = $rutina.semanas.map((s,ix)=>dayDate>s.fechaInicio && dayDate<=s.fechaFin ? ix : "").join("");
+                const semanaIndex = $rutina.semanas.map((s,ix)=>dayDate>=s.fechaInicio && dayDate<=s.fechaFin ? ix : "").join("");
                 getSemanasDeLaUltimaRutinaGenerada(semanaIndex)
                     .then(sem=>{
                         //Importante mantener el orden para el correcto funcionamiento
                         $rutina.semanas[semanaIndex] = new Semana(sem);
                         $rutina.initEspecificoDesdeRutina(semanaIndex);
-                        vistaMes(sem);
+                        vistaSemana(sem);
                         setTimeout(  () => {
                             imgToSvg();
                             document.querySelector('a[data-parent="#panel_days"]').click();
@@ -72,7 +73,7 @@ function datepicker_init(minDate, maxDate) {
                     exception(xhr)
                 });
             });
-            $('.datepicker_inline').on('dp.update', function (e) {
+            $('.datepicker_inline').on('dp.update', function (e) {//Se ejecuta cuando se navegando en el calendario entre meses
                 let nwCalendarDate = e.viewDate['_d'];
                 $relativeCalendarDate = nwCalendarDate;
                 const weeks = getIndexCalendarWeeks($relativeCalendarDate);
@@ -81,9 +82,9 @@ function datepicker_init(minDate, maxDate) {
                     Array.from(e.children).filter(e=>!e.classList.contains('disabled')).length
                 ).forEach((e, ix)=>{
                     const td = e.firstElementChild;
-                    const dayCalendar = td.innerHTML;
                     if(weeks.length > ix){
-                        td.innerHTML = `<i class="calendar-num-sem">S${weeks[ix].numSem}</i>${dayCalendar}`;
+                        td.classList.add('cal-num-week');
+                        td.style.setProperty("--content", `'S${weeks[ix].numSem}'`);
                     }
                 });
             });
@@ -98,9 +99,9 @@ function datepicker_init(minDate, maxDate) {
                 Array.from(e.children).filter(e=>!e.classList.contains('disabled')).length
             ).forEach((e, ix)=>{
                 const td = e.firstElementChild;
-                const dayCalendar = td.innerHTML;
                 if(weeks.length > ix){
-                    td.innerHTML = `<i class="calendar-num-sem">S${weeks[ix].numSem}</i>${dayCalendar}`;
+                    td.classList.add('cal-num-week');
+                    td.style.setProperty("--content", `'S${weeks[ix].numSem}'`);
                 }
             });
         }
@@ -193,34 +194,33 @@ function hideMenuMobile(){
 }
 
 function owlCarouselSemanal() {
-    $(document).ready(function(){
-        $('#carousel-semanal').owlCarousel({
-            loop:false,
-            margin:30,
-            dots:true,
-            navigation:true,
-            responsive:{
-                0:{
-                    items:1
-                },
-                600:{
-                    items:2
-                },
-                1000:{
-                    items:3
-                }
+
+    $('#carousel-semanal').owlCarousel({
+        loop:false,
+        margin:30,
+        dots:true,
+        navigation:true,
+        responsive:{
+            0:{
+                items:1
+            },
+            600:{
+                items:2
+            },
+            1000:{
+                items:3
             }
-        })
+        }
     });
 
-    $('#carousel-semanal .owl-item.active:first-child .item').addClass('selected');
 
-    $('#carousel-semanal .item').click(function(e) {
+    //$('#carousel-semanal .owl-item.active:first-child .item').addClass('selected');
 
+    /*$('#carousel-semanal .item').click(function(e) {
         e.preventDefault(); //prevent the link from being followed
         $('#carousel-semanal .item').removeClass('selected');
         $(this).addClass('selected');
-    });
+    });*/
 }
 
 function owlCarouselVideoteca() {
@@ -327,10 +327,8 @@ $(function() {
     imgToSvg();
     //datepicker_init();
     openNav();
-    owlCarouselSemanal();
     owlCarouselVideoteca();
     //heightCard();
-    miniPanelActive();
     //fancybox();
     select_fave();
     checkAlertas();

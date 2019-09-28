@@ -721,7 +721,6 @@ function instanciarDatosFitnessCliente(){
 
 
 function instanciarGrupoVideos(){
-
     $.ajax({
         type: 'GET',
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
@@ -965,7 +964,7 @@ function generandoVideosCuerpo(subCatVideo){
                           <i class="fa fa-arrow-circle-left fa-fw ck-video padding-top-3"></i>
                           <i data-placement="bottom" rel="tooltip" data-original-title="Reproducir" class="reprod-video fa fa-video-camera fa-fw" data-media="/${v.id+'/'+v.rutaWeb+'?v'+v.version +'&tn='+v.thumbnail+'.jpg'}" data-index="${v.id}">
                           </i>${v.nombre}</a>`;
-    })
+    });
     return rawVideosHTML;
 }
 

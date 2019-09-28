@@ -2,11 +2,12 @@ package com.itsight.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.itsight.constants.ViewConstant;
 import com.itsight.domain.Correo;
-import com.itsight.domain.Trainer;
 import com.itsight.domain.TrainerFicha;
-import com.itsight.domain.dto.*;
+import com.itsight.domain.dto.PerfilObsDTO;
+import com.itsight.domain.dto.ServicioDTO;
+import com.itsight.domain.dto.TrainerEmpresaDTO;
+import com.itsight.domain.dto.TrainerFichaDTO;
 import com.itsight.domain.pojo.TrainerFichaPOJO;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.SecurityUserRepository;
@@ -25,7 +26,8 @@ import java.util.UUID;
 import static com.itsight.util.Enums.FileExt.JPEG;
 import static com.itsight.util.Enums.Mail.*;
 import static com.itsight.util.Enums.Msg.OBS_PERFIL_TRAINER;
-import static com.itsight.util.Enums.TipoTrainer.*;
+import static com.itsight.util.Enums.TipoTrainer.EMPRESA;
+import static com.itsight.util.Enums.TipoTrainer.PARA_EMPRESA;
 
 @Service
 @Transactional
@@ -183,7 +185,8 @@ public class TrainerFichaServiceImpl extends BaseServiceImpl<TrainerFichaReposit
     public String actualizarObservacionesPerfil(TrainerFichaDTO trainerFicha, Integer id) throws JsonProcessingException {
         int tipoTrainerId = trainerFicha.getTipoTrainerId();
         repository.actualizarMiniGaleriaById(trainerFicha.getMiniGaleria(), id);
-        repository.actualizarFichaByTrainerId(trainerFicha.getSexo(), trainerFicha.getDisciplinas(), trainerFicha.getAcerca(), trainerFicha.getCentroTrabajo(), trainerFicha.getEspecialidad(), trainerFicha.getEspecialidades(), trainerFicha.getEstudios(), trainerFicha.getExperiencias(),  trainerFicha.getFormasTrabajo(), trainerFicha.getHorario(), trainerFicha.getIdiomas(), trainerFicha.getMetodoTrabajo(), trainerFicha.getNiveles(), trainerFicha.getNota(), trainerFicha.getRedes(), trainerFicha.getResultados(), id);
+        repository.actualizarFichaByTrainerId(trainerFicha.getDisciplinas(), trainerFicha.getAcerca(), trainerFicha.getCentroTrabajo(), trainerFicha.getEspecialidad(), trainerFicha.getEspecialidades(), trainerFicha.getEstudios(), trainerFicha.getExperiencias(),  trainerFicha.getFormasTrabajo(), trainerFicha.getHorario(), trainerFicha.getIdiomas(), trainerFicha.getMetodoTrabajo(), trainerFicha.getNiveles(), trainerFicha.getNota(), trainerFicha.getRedes(), trainerFicha.getResultados(), id);
+        repository.actualizarSexoFichaByTrainerId(trainerFicha.getSexo(), id);
         //Actualizando servicios
         if(!trainerFicha.getServicios().isEmpty()){
             for(int i=0; i<trainerFicha.getServicios().size(); i++){

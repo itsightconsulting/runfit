@@ -1,10 +1,10 @@
-<div id="SideBar1" class="sidebar mCustomScrollbar"  th:fragment="fg-menu-desk">
+<div id="SideBar1" class="sidebar"  th:fragment="fg-menu-desk">
     <div class="text-center no_mostrar_mobile">
         <a th:href="@{/}">
             <img class="logo" th:src="@{/img/logo.png}+'?'+${version}" alt="">
         </a>
     </div>
-    <div class="mobile">
+    <div class="mobile mCustomScrollbar">
         <div class="only_mobile text-center">
             <button class="navbar-toggle" onclick="hideMenuMobile()"><img class="svg" th:src="@{/img/iconos/icon_hamburger.svg}+'?'+${version}"></button><a th:href="@{/}"><img class="logo" th:src="@{/img/logo.png}+'?'+${version}" alt=""></a>
         </div>

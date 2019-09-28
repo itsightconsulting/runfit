@@ -130,7 +130,8 @@
 .login .show-pass{
   cursor: pointer;
   position: absolute;
-  left: 325px !important;
+  left: auto !important;
+  right: 16px;
   top: 21px !important;
   color: #A8FA00;
   font-size: 1.6em;
@@ -138,7 +139,7 @@
 
 @media only screen and (max-width: 420px) {
   .login .show-pass{
-    left: 293px !important;
+    right: 0;
   }
 }
 
@@ -159,7 +160,7 @@
   background: transparent;
   border: 0;
   width: 90%;
-  padding: 6px 15px;
+  padding: 6px 15px 6px 0;
   border-bottom: 1px solid;
 
 }
@@ -1421,6 +1422,8 @@ ul.tabs {
   margin-bottom: 30px;
   margin: 0;
   border: none;
+  font-size: 20px;
+  color: #000;
 }
 
 .emprende-form h3 span {
@@ -3601,7 +3604,8 @@ hr {
     margin-top: auto
   }
   .trainers-form h3 {
-    border: none
+    border: none;
+    font-size: 16px;
   }
   .faq {
     margin-top: auto
