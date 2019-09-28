@@ -279,7 +279,12 @@
 
   function poblarDvVideosFavoritosxCliente(dataVideos){
 
+
+    console.log(dataVideos.length);
+
     ulFavoritosGrupo.innerHTML ="";
+    ulOtrosFavoritosGrupo.innerHTML ="";
+
     $('section.favoritos p').text("");
     if(dataVideos.length > 0){
       const videosFav =  dataVideos.reverse();

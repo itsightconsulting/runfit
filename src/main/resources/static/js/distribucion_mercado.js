@@ -2347,9 +2347,23 @@ function graficoServiciosUsados(  totalServicios, dataServicio){
 
     porcentajes= suma === 100 ? porcentajes : roundedPercentage( porcentajes, 100);
 
-    let porcentajesHombre = roundedPercentage((dataServicio.map( e => ((e.qtyHombre/e.qtyClientes)*100))),100);
-    let porcentajesMujer = roundedPercentage((dataServicio.map( e => ((e.qtyMujer/e.qtyClientes)*100))) , 100 );
+    let porcentajesHombre = (dataServicio.map( e => Math.round((e.qtyHombre/e.qtyClientes)*100)));
+    let porcentajesMujer = (dataServicio.map( e => Math.round((e.qtyMujer/e.qtyClientes)*100)) );
 
+    const porcentajesAcumSexo = [];
+
+    //para asegurar que ambos valores (hombre,mujer) sumen 100
+
+    porcentajesHombre.forEach( function(item,index){
+
+        let arrCurrentPorcServicio =roundedPercentage([ porcentajesHombre[index] , porcentajesMujer[index]],100);
+
+         porcentajesAcumSexo.push( {
+                        porcHombre: arrCurrentPorcServicio[0],
+                        porcMujer : arrCurrentPorcServicio[1]
+              });
+
+    }   )
 
     //GraficoCanalesUsados
     var ctx = document.getElementById("GraficoServiciosUsados").getContext("2d");
@@ -2358,7 +2372,7 @@ function graficoServiciosUsados(  totalServicios, dataServicio){
         labels: perfil !==1 && !getParamFromURL('trId') ? dataServicio.map( e => e.trainerNombres) : dataServicio.map( e => e.nombre),
         datasets: [
             {
-                data:  dataServicio.map( e => (e.qtyClientes)),
+                data:  porcentajes,
                 backgroundColor: "#e04c51"
             }
         ]
@@ -2369,10 +2383,15 @@ function graficoServiciosUsados(  totalServicios, dataServicio){
 
     if(perfil !==1 && !getParamFromURL('trId')){
         options= {
+            responsive: true,
             scales: {
                 xAxes: [{
+                    display: false,
                     ticks: {
-                        display: false
+                        display: false,
+                        beginAtZero: true,
+                        min: 1,
+                        max: 100,
                     },
                     gridLines: {
                         display: false,
@@ -2382,12 +2401,15 @@ function graficoServiciosUsados(  totalServicios, dataServicio){
                     barPercentage: 1.0
                 }],
                 yAxes: [{
-                    barThickness: 15,
-                    ticks: {
+                    barThickness : 15,
+                    display: true,
+                    ticks:{
+
                         fontSize: "13",
-                        fontFamily: "Gotham-HTF-Book",
+                        fontFamily: "GothamHTF-Book",
+                        fontColor : "#a6a3ba",
                         padding: 35,
-                        fontColor:'#9B999C'
+                        display:true
                     },
                     gridLines: {
                         display: false,
@@ -2395,23 +2417,23 @@ function graficoServiciosUsados(  totalServicios, dataServicio){
                     },
                     categoryPercentage: 1.0,
                     barPercentage: 1.0
-                }, {
+                } , {
                     type: 'category',
                     offset: true,
                     position: 'right',
                     ticks: {
-                        fontSize: 13,
+                        fontSize:13,
                         fontFamily: "GothamHTF-Book",
-                        fontColor:'#9B999C',
+                        fontColor : "#a6a3ba",
                         callback: function (value, index, values) {
-                            return (String(porcentajesHombre[index]).length == 2 ? '' : ' ') + '  ' + porcentajesHombre[index] + '%       ' + porcentajesMujer[index] + '%'
+                            return (String(porcentajesAcumSexo[index]['porcHombre']).length == 2 ? '' :' ')  +'  '+ porcentajesAcumSexo[index]['porcHombre'] + '%       '+ porcentajesAcumSexo[index]['porcMujer'] + '%'
                         }
                     },
                     gridLines: {
                         display: false,
                         drawBorder: false
                     }
-                }]
+                } ]
             },
             hover: {
                 mode: 'nearest',
@@ -2420,8 +2442,8 @@ function graficoServiciosUsados(  totalServicios, dataServicio){
             tooltips: {
                 yAlign: 'bottom',
                 xAlign: 'center',
-                xPadding: 25,
-                yPadding: 15,
+                xPadding: 10,
+                yPadding: 5,
                 _bodyAlign: 'center',
                 _footerAlign: 'center',
                 mode: 'nearest',
@@ -2430,7 +2452,7 @@ function graficoServiciosUsados(  totalServicios, dataServicio){
                         return 'Servicio : ' + dataServicio[tooltipItem[0]['index']].nombre + '( ID: ' + dataServicio[tooltipItem[0]['index']].id  +')';
                     },
                     label: function (tooltipItem, data) {
-                        return 'Cantidad : ' + data['datasets'][0]['data'][tooltipItem['index']];
+                        return 'Cantidad : ' + dataServicio[tooltipItem['index']].qtyClientes;
                     },
                     footer: function (tooltipItem, data) {
                         return '(Trainer ID : ' + dataServicio[tooltipItem[0]['index']].trainerId  + ')' ;
@@ -2438,12 +2460,13 @@ function graficoServiciosUsados(  totalServicios, dataServicio){
                   },
                 displayColors: false,
                 titleFontSize: 14,
-                bodyFontSize: 13,
+                labelFontSize: 12,
+                bodyFontSize: 12,
                 footerFontSize:12
                 },
                 layout: {
                     padding: {
-                        left: 60
+                        left: 40
                     }
                 },
                 legend: {
@@ -2454,13 +2477,14 @@ function graficoServiciosUsados(  totalServicios, dataServicio){
                     datalabels: {
                         anchor: 'start',
                         align: 'start',
+                        offset: 0,
                         color: '#e04c51',
                         font: {
                             weight: 'bold',
                             size: 13,
-                            family: "Gotham-HTF-Book"
+                            family:"Gotham-HTF-Book"
                         },
-                        formatter: function (value, context) {
+                        formatter: function(value, context) {
                             return porcentajes[context.dataIndex] + '%';
                         }
                     }
@@ -2468,14 +2492,20 @@ function graficoServiciosUsados(  totalServicios, dataServicio){
         }
     }else{
 
+
         options= {
+            responsive: true,
             scales: {
                 xAxes: [{
+                    display: false,
                     ticks: {
-                        display: false
+                        display: false,
+                        beginAtZero: true,
+                        min: 1,
+                        max: 100,
                     },
                     gridLines: {
-                        display:false,
+                        display: false,
                         drawBorder: false
                     },
                     categoryPercentage: 1.0,
@@ -2483,25 +2513,29 @@ function graficoServiciosUsados(  totalServicios, dataServicio){
                 }],
                 yAxes: [{
                     barThickness : 15,
+                    display: true,
                     ticks:{
+
                         fontSize: "13",
-                        fontFamily: "Gotham-HTF-Book",
-                        display:true,
-                        padding: 35
+                        fontFamily: "GothamHTF-Book",
+                        fontColor : "#a6a3ba",
+                        padding: 35,
+                        display:true
                     },
                     gridLines: {
-                        display:false,
+                        display: false,
                         drawBorder: false
                     },
                     categoryPercentage: 1.0,
                     barPercentage: 1.0
-                }, {
+                } , {
                     type: 'category',
                     offset: true,
                     position: 'right',
                     ticks: {
                         fontSize:13,
-                        fontFamily: "Gotham-HTF-Book",
+                        fontFamily: "GothamHTF-Book",
+                        fontColor : "#a6a3ba",
                         callback: function (value, index, values) {
                             return (String(porcentajesHombre[index]).length == 2 ? '' :' ')  +'  '+ porcentajesHombre[index] + '%       '+ porcentajesMujer[index] + '%'
                         }
@@ -2510,18 +2544,35 @@ function graficoServiciosUsados(  totalServicios, dataServicio){
                         display: false,
                         drawBorder: false
                     }
-                }]
+                } ]
             },
             hover: {
                 mode: 'nearest',
                 intersect: true
             },
             tooltips: {
-                mode: 'nearest'
+                yAlign: 'bottom',
+                xAlign: 'center',
+                xPadding: 10,
+                yPadding: 5,
+                _bodyAlign: 'center',
+                _footerAlign: 'center',
+                mode: 'nearest',
+                callbacks: {
+                    label: function (tooltipItem, data) {
+                        return 'Cantidad : ' + dataServicio[tooltipItem['index']].qtyClientes;
+                    }
+
+                },
+                displayColors: false,
+                labelFontSize: 15,
+                bodyFontSize: 12
             },
             layout: {
                 padding: {
-                    left: 60
+                  // left:10
+                    left: 40,
+
                 }
             },
             legend:{
@@ -2532,6 +2583,7 @@ function graficoServiciosUsados(  totalServicios, dataServicio){
                 datalabels:{
                     anchor: 'start',
                     align: 'start',
+                    offset: 0,
                     color: '#e04c51',
                     font: {
                         weight: 'bold',
@@ -2539,7 +2591,7 @@ function graficoServiciosUsados(  totalServicios, dataServicio){
                         family:"Gotham-HTF-Book"
                     },
                     formatter: function(value, context) {
-                        return porcentajes[context.dataIndex] + '%';
+                       return porcentajes[context.dataIndex] + '%';
                     }
                 }
             }
@@ -2555,8 +2607,6 @@ function graficoServiciosUsados(  totalServicios, dataServicio){
         options: options
     });
 
-    Chart.defaults.global.tooltips.titleAlign = 'center';
-    Chart.defaults.global.tooltips.bodyAlign = 'center';
     Chart.elements.Rectangle.prototype.draw = function() {
 
         var ctx = this._chart.ctx;
@@ -2731,7 +2781,7 @@ function graficoDistribucionLocalizacion(dataLocalizacion, porcentajes, tipo){
         labels: labelsData,
         datasets: [
             {
-                data: qtyData ,
+                data: porcentajes ,
                 backgroundColor: "#a8fa00"
             }
         ]
@@ -2747,7 +2797,10 @@ function graficoDistribucionLocalizacion(dataLocalizacion, porcentajes, tipo){
             scales: {
                 xAxes: [{
                     ticks: {
-                        display: false
+                        display: false,
+                        beginAtZero: true,
+                        min: 1,
+                        max: 100
                     },
                     gridLines: {
                         display:false,
@@ -2760,8 +2813,8 @@ function graficoDistribucionLocalizacion(dataLocalizacion, porcentajes, tipo){
                     barThickness : 15,
                     ticks:{
                         fontSize: 13,
-                        fontColor: "#9B999C",
-                        fontFamily: "Gotham-HTF-Book"
+                        fontColor : "#a6a3ba",
+                        fontFamily: "GothamHTF-Book"
                     },
                     gridLines: {
                         display:false,
@@ -2776,7 +2829,7 @@ function graficoDistribucionLocalizacion(dataLocalizacion, porcentajes, tipo){
                     ticks: {
                         fontColor: '#a8fa00',
                         fontSize:13,
-                        fontFamily: "Gotham-HTF-Bold",
+                        fontFamily: "GothamHTF-Bold",
                         padding: 65,
                         callback: function (value, index, values) {
                             return porcentajes[index] + '%'
@@ -2793,11 +2846,27 @@ function graficoDistribucionLocalizacion(dataLocalizacion, porcentajes, tipo){
                 intersect: true
             },
             tooltips: {
+                yAlign: 'bottom',
+                xAlign: 'center',
+                xPadding: 10,
+                yPadding: 2,
+                _bodyAlign: 'center',
+                _footerAlign: 'center',
                 mode: 'nearest',
-                intersect: true
-            },  layout: {
+                callbacks: {
+                    label: function (tooltipItem, data) {
+                        return 'Cantidad : ' + dataLocalizacion[tooltipItem['index']].qty;
+                    }
+                },
+                displayColors: false,
+                titleFontSize: 14,
+                labelFontSize: 12,
+                bodyFontSize: 12,
+                footerFontSize:12
+            }, layout: {
                 padding: {
-                    right: 15  //set that fits the best
+                    right: 15 ,
+                    top: 30 //set that fits the best
                 }
             },
             legend:{
@@ -3085,7 +3154,6 @@ function generarPorcentajeCondFisica(arr, sexo){
 
     let porcCondFisic;
     porcCondFisic = ( arr.reduce( (a,b) => a+b) === 0) ? arr : getPorcentaje(arr);
-
 
     $(`.dv-cond-fisica .${sexo} .cond-fisica-porc`).each(
         function(index){

@@ -18,7 +18,7 @@ $func$
      from runfit.public.cliente_servicio cs
      inner join servicio s  on cs.servicio_id = s.servicio_id
      inner join cliente c on cs.cliente_id = c.security_user_id
-     where  s.trainer_id = 17
+     where  s.trainer_id = $1
      group by s.servicio_id, s.nombre
      order by qtyClientes desc
      limit 5
