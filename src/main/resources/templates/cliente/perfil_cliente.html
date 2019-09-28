@@ -626,7 +626,7 @@
                                     <li>
                                         <div class="form-group">
                                             <label>De los siguientes aspectos, ¿Cuáles crees que debes mejorar?</label>
-                                            <div id="CondicionesMejora">
+                                            <div id="CondicionesMejora" class="row">
 
                                             </div>
                                             <div class="form-group"><br/>
@@ -1104,7 +1104,7 @@
                                                             <tr>
                                                                 <th>FECHA</th>
                                                                 <th>DISTANCIA(KM)</th>
-                                                                <th style="width: 38%">MARATÓN</th>
+                                                                <th style="width: 35%">MARATÓN</th>
                                                                 <th>TIEMPO OBJETIVO</th>
                                                                 <th>PRIORIDAD</th>
                                                                 <th class="hidden" style="width: auto">&nbsp;</th>
@@ -1690,27 +1690,27 @@
                 success: function (res) {
                     lstCondMejoras = res;
                     const divConMej = document.getElementById('CondicionesMejora');
-                    const f4 = '<div class="col-md-4 pad-0"><ul class="checks">'+res.slice(0, 4).map(e=>`
+                    const f4 = '<div class="col-md-4"><ul class="checks">'+res.slice(0, 4).map(e=>`
                             <li>
                               <div class="chk-content">${e.nombre}
                                 <input name="CondicionMejora" data-aka="Aspectos a mejorar" value="${e.id}" type="checkbox"><span class="checkmark"></span>
                               </div>
                             </li>
                   `).join('')+'</ul></div>';
-                        const s4 = '<div class="col-md-8 pad-0"><ul class="checks">'+res.slice(4, 8).map(e=>`
+                        const s4 = '<div class="col-md-8"><ul class="checks">'+res.slice(4, 8).map(e=>`
                                 <li>
                                   <div class="chk-content">${e.nombre}
                                     <input name="CondicionMejora" data-aka="Aspectos a mejorar" value="${e.id}" type="checkbox"><span class="checkmark"></span>
                                   </div>
                                 </li>
                   `).join('')+'</ul></div>';
-                        const ls3 = '<div class="row"><div class="col-md-12"><br><ul class="checks">'+res.slice(8, 11).map(e=>`
+                        const ls3 = '<div class="col-md-12"><br><ul class="checks">'+res.slice(8, 11).map(e=>`
                                 <li>
                                   <div class="chk-content">${e.nombre}
                                     <input name="CondicionMejora" data-aka="Aspectos a mejorar" value="${e.id}" type="checkbox"><span class="checkmark"></span>
                                   </div>
                                 </li>
-                  `).join('')+'</ul></div></div>';
+                  `).join('')+'</ul></div>';
                         divConMej.innerHTML = `${f4}${s4}${ls3}`;
                         specificCheckBoxes('CondicionesMejora');
                 },complete:()=>{

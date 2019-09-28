@@ -291,9 +291,10 @@
     font-size: 16px;
     font-family: Gotham-HTF-Bold, 'system-ui';
     color: #9d9d9d;
-    padding-right: 25px
 }
-
+.steps p.form-group-subtitle {
+    color: #9d9d9d;
+}
 .steps .form-group input,
 .steps .form-group select {
     background-color: #161824;
@@ -302,6 +303,10 @@
     height: 40px;
     box-shadow: 0 0 0;
     color: #9d9d9d;
+}
+
+.steps .checks li {
+    margin-right: 0;
 }
 
 .steps input.form-control.multiselect-search {

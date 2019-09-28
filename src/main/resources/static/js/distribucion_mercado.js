@@ -1997,7 +1997,7 @@ function generarInfoDistribucionEdadMascDOM(dataMasc) {
 
     $('.masc-porc').text(`${dataMasc.porcentajeMasc}%`);
 
-    dataMasc.edadPromedioMasc > 0 ? $('.masc-age-prom').text(`${dataMasc.edadPromedioMasc} años`)
+    dataMasc.edadPromedioMasc > 0 ? $('.masc-age-prom').text(`${dataMasc.edadPromedioMasc} AÑOS`)
         : $('.masc-age-prom').html(`<i class="fa fa-bars"></i>`);
 
     $('.graph-porc .masc-range-porc').each(function (index) {
@@ -2015,9 +2015,9 @@ function generarInfoDistribucionEdadMascDOM(dataMasc) {
 function generarInfoDistribucionEdadFemDOM(dataFem){
 
     $('.fem-porc').text(`${dataFem.porcentajeFem}%`);
-    $('.fem-age-prom').text(`${dataFem.edadPromedioFem} años`);
+    $('.fem-age-prom').text(`${dataFem.edadPromedioFem} AÑOS`);
 
-    dataFem.edadPromedioFem > 0 ?  $('.fem-age-prom').text(`${dataFem.edadPromedioFem} años`)
+    dataFem.edadPromedioFem > 0 ?  $('.fem-age-prom').text(`${dataFem.edadPromedioFem} AÑOS`)
         :  $('.fem-age-prom').html(`<i class="fa fa-bars"></i>`);
 
     $('.graph-porc .fem-range-porc').each( function(index) {$(this).html(`${dataFem.porcentajeRangosFem[index] }%`);

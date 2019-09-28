@@ -117,7 +117,7 @@ h2.title_carousel button {
 h2.title_carousel span {
     font-family: GothamHTF-Light; }
 h2.title_carousel.dots {
-    margin-bottom: 70px; }
+    margin-bottom: 62px; }
 
 h1.title_big {
     font-size: 50px;
@@ -174,7 +174,8 @@ select {
     outline: none !important;
     border: none;
     border-radius: 15px;
-    padding: 6.1px 12px; }
+    padding: 6.1px 12px;
+    height: 35px;}
 
 section#suspendidos .input-group button {
     width:105px;}
@@ -311,7 +312,7 @@ a.star:hover .svg, a.star.selected .svg {
     width: 10px;
     height: 20px;
     position: absolute;
-    left: -25px;
+    left: -30px;
     top: 0;
     bottom: 0;
     margin: auto; }
@@ -672,6 +673,11 @@ a.star:hover .svg, a.star.selected .svg {
 .chk-content input:checked ~ .checkmark::after {
     display: block; }
 
+.flechas {
+    display: inline-block;
+    width: 100%;
+}
+
 .options {
     text-align: right;
     margin-top: 20px; }
@@ -738,7 +744,7 @@ a.star:hover .svg, a.star.selected .svg {
     border: 1px solid #525056; }
 
 #planesCarousel, #planElegido {
-    margin-top: 40px; }
+    margin-top: 22px; }
 #planesCarousel .owl-stage-outer, #planElegido .owl-stage-outer {
     overflow: initial; }
 #planesCarousel .owl-item, #planElegido .owl-item {
@@ -812,7 +818,7 @@ a.star:hover .svg, a.star.selected .svg {
 #planesCarousel .owl-item:hover .item-header strong, #planesCarousel .owl-item:hover .item-header span, #planesCarousel .owl-item.selected .item-header strong, #planesCarousel .owl-item.selected .item-header span, #planElegido .owl-item:hover .item-header strong, #planElegido .owl-item:hover .item-header span, #planElegido .owl-item.selected .item-header strong, #planElegido .owl-item.selected .item-header span {
     color: #a8fa00; }
 #planesCarousel .owl-nav, #planElegido .owl-nav {
-    top: -186px; }
+    top: -210px; }
 #planesCarousel .owl-nav .owl-prev, #planElegido .owl-nav .owl-prev {
     background: url(/img/arrow-left2.png) no-repeat center;
     margin-right: 34%; }
@@ -821,7 +827,7 @@ a.star:hover .svg, a.star.selected .svg {
 #planesCarousel .owl-dots, #planElegido .owl-dots {
     text-align: center;
     position: absolute;
-    top: -124px;
+    top: -156px;
     left: 0;
     right: 0;
     margin: auto; }
@@ -1062,7 +1068,7 @@ section#suspendidos ul.users li img.user {
     margin-right: 18px; }
 section#suspendidos ul.users li h4 {
     display: inline-block;
-    font-family: Montserrat-Light;
+    font-family: Montserrat-Medium;
     font-size: 18px;
     color: #9d9d9d;
     margin-top: 20px; }
@@ -1610,6 +1616,11 @@ section.consejos span.msj-no-data , section.consejos-favs span.msj-no-data{
 
 .btn-white{
     color: #ffffff;
+    opacity: 0.8;
+}
+
+.close:focus, .close:hover {
+    color: #fff;
     opacity: 0.8;
 }
 /*RUTINA PLATAFORMA*/
