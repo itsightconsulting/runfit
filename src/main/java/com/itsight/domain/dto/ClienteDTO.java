@@ -17,6 +17,7 @@ import java.util.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ClienteDTO implements Serializable  {
     private Integer trainerId;
+    private Integer sexo;
     private String nombres;
     private String apellidos;
     private String numeroDocumento;

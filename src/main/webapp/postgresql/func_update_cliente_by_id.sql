@@ -1,5 +1,6 @@
 CREATE OR REPLACE FUNCTION func_update_cliente_by_id(
     _security_user_id int,
+    _sexo int,
     _movil text,
     _nombres text,
     _apellidos text,
@@ -28,7 +29,6 @@ CREATE OR REPLACE FUNCTION func_update_cliente_by_id(
     _nivel int,
     _peso double precision,
     _salud text,--jsonb
-    _sexo int,
     _talla int,
     _tiempo_distancia text,
     _tiempo_un_kilometro text
@@ -37,6 +37,7 @@ AS
 $func$
 BEGIN
     UPDATE cliente SET
+                       sexo = COALESCE(_sexo, sexo),
                        movil = COALESCE(_movil, movil),
                        nombres = COALESCE(_nombres, nombres),
                        apellidos = COALESCE(_apellidos, apellidos),
@@ -67,7 +68,6 @@ BEGIN
                                nivel = COALESCE(_nivel, nivel),
                                peso = COALESCE(_peso, peso),
                                salud = COALESCE(_salud::jsonb, salud),
-                               sexo = COALESCE(_sexo, sexo),
                                talla = COALESCE(_talla, talla),
                                tiempo_distancia = COALESCE(_tiempo_distancia, tiempo_distancia),
                                tiempo_un_kilometro = COALESCE(_tiempo_un_kilometro, tiempo_un_kilometro)

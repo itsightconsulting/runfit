@@ -1151,7 +1151,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             //Añadiendole los datos detalle del entrenador(TB: Cliente)
             Trainer trainer = new Trainer(
                 "Alejandro "+ i, "Gonzales Prada", correoUsuario, "543213"+i,
-                 "5197672198"+i , correoUsuario, "0102030"+i, true, 1,true);
+                 "5197672198"+i , correoUsuario, "0102030"+i, true, 1,true, 1);
             List<com.itsight.domain.jsonb.Rol> rolesJsonB = new ArrayList<>();
             rolesJsonB.add(new com.itsight.domain.jsonb.Rol(1, role1.getRole()));
             rolesJsonB.add(new com.itsight.domain.jsonb.Rol(2, role2.getRole()));

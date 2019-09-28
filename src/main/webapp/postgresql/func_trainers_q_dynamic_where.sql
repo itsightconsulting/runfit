@@ -38,7 +38,7 @@ select DISTINCT id,
        nomPag,
        tipoTrainerId
 from (select
-    ff.trainer_id id,
+    jt.security_user_id id,
     concat(jt.nombres, ' ',jt.apellidos) nombreCompleto,
     especialidad,
     ubigeo,
@@ -46,14 +46,14 @@ from (select
     acerca,
     can_per_valoracion canPerValoracion,
     total_valoracion totalValoracion,
-    CONCAT(ff.uuid_fp, ff.ext_fp) nomImgPerfil,
+    CONCAT(regexp_replace(lower(encode(username::bytea, 'base64')), '=', '', 'gi'), '.jpg') nomImgPerfil,
     nom_pag nomPag,
     s2.nombre servicio,
     jt.flag_activo fg,
-    ff.sexo,
+    jt.sexo,
     jt.tipo_trainer_id tipoTrainerId
-from trainer_ficha ff
-         inner join trainer jt on ff.trainer_id=jt.security_user_id
+from trainer jt
+         inner join trainer_ficha ff on ff.trainer_id=jt.security_user_id
          inner join servicio s2 on ff.trainer_id = s2.trainer_id
 where
         ff.trainer_id IN
