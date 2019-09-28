@@ -42,6 +42,9 @@ header{
  display: flow-root;
 }
 
+h4.user {
+    display: none;
+}
 .container{
  padding-top:20px !important;
 }
@@ -376,6 +379,13 @@ select{
    border-top: 1px solid #565a4d;
    margin-top: 30px;
 }
+.icons-body {
+    display: inline-block;
+    float: right;
+}
+.dv-ventas-servicios .svg {
+    width: 40px;
+}
 
 canvas{
     margin: 0 auto;
@@ -405,6 +415,10 @@ canvas{
     float:right;
     display:inline-block;
     padding-right:40px;
+}
+.mapa g {
+    fill: #ffff;
+    stroke: #fff;
 }
 .separador-col{
     border-left: 1px solid #565a4d;

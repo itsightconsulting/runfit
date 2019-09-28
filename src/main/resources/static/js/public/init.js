@@ -587,7 +587,7 @@ function getCookiePb(cname) {
 function scrollSidebar() {
     $(window).on("load",function(){
         if($(".sidebar")[0]){
-            $(".sidebar").mCustomScrollbar();
+            $(".sidebar .mCustomScrollbar ").mCustomScrollbar();
         }
     });
 }
