@@ -36,7 +36,7 @@ import java.util.List;
         @NamedNativeQuery(query = "SELECT U.security_user_id id, U.nombres, U.apellidos, U.tipo_documento_id tipoDocumento, U.numero_documento numeroDocumento, U.correo, U.telefono, U.movil, U.username, U.ubigeo, U.flag_activo flagActivo FROM trainer U WHERE U.security_user_id = ?1",
                 name = "Trainer.getById",
                 resultSetMapping = "findById"),
-        @NamedNativeQuery(query = "select nombres, apellidos, tf.uuid_fp uuidFp, tf.ext_fp extFp from trainer t inner join trainer_ficha tf on t.security_user_id = tf.trainer_id where t.security_user_id = ?1",
+        @NamedNativeQuery(query = "select nombres, apellidos, regexp_replace(lower(encode(CAST(username as bytea), 'base64')), '=', '', 'gi') uuidFp, '.jpg' extFp from trainer t where t.security_user_id = ?1",
                 name = "Trainer.getForCookieById",
                 resultSetMapping = "findForCookieById")
 })

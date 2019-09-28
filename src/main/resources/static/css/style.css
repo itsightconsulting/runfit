@@ -1534,6 +1534,17 @@ section #moreFav {
     fill: #ddf515 !important;
   }
 
+
+.rutina-cli #mensual tbody > tr > td:first-child.cal-num-week:before{
+  content: var(--content, "");
+  position: absolute;
+  left: -50px;
+  color: #a8fa00;
+  font-style: normal;
+  font-size: 0.6em;
+  font-family: "Montserrat-Medium";
+}
+
 .svg-wrap{
   cursor: pointer;
 }
@@ -1947,4 +1958,3 @@ section.consejos span.msj-no-data{
 .mensaje-no-resultados{
   margin-top:40px;
 }
-

@@ -42,12 +42,12 @@ function init(){
         instanciandoIndicadoresCirculo();
 
         const ix = getSemanaIndice(rutina.fechaInicio, rutina.fechaFin);
+
         getSemanasDeLaUltimaRutinaGenerada(ix).then((sem)=>{
             //Importante mantener el orden para el correcto funcionamiento
             $rutina = new Rutina(rutina);
             $rutina.init(sem, ix);
-            //vistaDia(sem);
-            vistaMes(sem);
+            vistaSemana(sem);
             setTimeout(  () => {
                 imgToSvg();
                 document.querySelector('a[data-parent="#panel_days"]').click();
@@ -63,9 +63,6 @@ function init(){
         instanciarDatosFitnessCliente();
 
         tabRutina.addEventListener('click', principalesEventosTabRutina);
-        $semanario.addEventListener('click', principalesEventosClickRutina);
-        $semanario.addEventListener('focusout', principalesEventosFocusOutSemanario);
-        $semanario.addEventListener('focusin', principalEventoFocusIn);
         cboEspSubCategoriaIdSec.addEventListener('change', cargarReferenciasMiniPlantilla);
         mainTabs.addEventListener('click', principalesAlCambiarTab);
         btnVerDetSemanas.addEventListener('click', FichaSeccion.newAlertaInfoSemanas);
@@ -92,6 +89,16 @@ function principalesEventosClickRutina(e){
     else if(input.tagName === "svg"){
         svgIconsEvents(input);
     }
+    else if (clases.contains('owl-prev')) {
+        const inpRange = document.getElementById('range');
+        const actualValue = inpRange.value;
+        inpRange.value = Number(actualValue) - 1;
+    }
+    else if (clases.contains('owl-next')) {
+        const inpRange = document.getElementById('range');
+        const actualValue = inpRange.value;
+        inpRange.value = Number(actualValue) + 1;
+    }
 }
 
 function clickEventListenerNavTabs(e){
@@ -111,6 +118,12 @@ function clickEventListenerNavTabs(e){
             datepicker_init($rutina.fechaInicio, $rutina.fechaFin);
         }
         svg.parentElement.click();
+        if(ahref === "semanal"){
+            setTimeout(()=>{
+                heightCard();
+            }, 500);
+
+        }
     }
     else if(input.tagName === "svg"){
         e.stopPropagation();
@@ -124,6 +137,12 @@ function clickEventListenerNavTabs(e){
             datepicker_init($rutina.fechaInicio, $rutina.fechaFin);
         }
         input.parentElement.click();
+        if(ahref === "semanal"){
+            setTimeout(()=>{
+                heightCard();
+            }, 500);
+
+        }
     }
 }
 
@@ -215,22 +234,53 @@ async function getSemanasDeLaUltimaRutinaGenerada(semanaIx){
         });
     })
 }
+var timessemit = 0;
+function vistaSemana(data) {
+    ++timessemit;
+    const objSemRutina = data;
+    const fecha = objSemRutina.fechaInicio.split('/');
+    const firstFecha = parseInt(objSemRutina.fechaInicio.split('/')[1]);
+    const week = parseInt(fecha[1]);
 
-function vistaMes(data) {
-    var date = [data];
-    $.each(date, function (i, dato) {
-        var fecha = dato.fechaInicio.split('/');
-        var firstFecha = parseInt(date[0].fechaInicio.split('/')[1]);
-        var week = parseInt(fecha[1]);
-        if(week <= firstFecha) {
-            var day = dato.lstDia;
-            $.each(day, function (i, dato) {
-                var firstDate = moment(date[0].lstDia[0].fecha, "DD-MM-YYYY").week();
-                var weeknumber = moment(dato.fecha, "DD-MM-YYYY").week();
-                var data = elementosWeek(dato);
-                if (firstDate == weeknumber) {
-                    $("#carousel-semanal").append(
-                        `<div class="item">
+    if(week <= firstFecha) {
+
+        //Limpiando elementos carusel de vista semana
+        const itemsCaruselSemana = $('#carousel-semanal .item').length;
+        for (var i=0; i < itemsCaruselSemana; i++) {
+            $("#carousel-semanal").trigger('remove.owl.carousel', [0]).trigger('refresh.owl.carousel');
+        }
+
+        //Reseteando el slider
+        document.getElementById('range').value = 0;
+
+        const day = objSemRutina.lstDia;
+
+        $.each(day, function (i, dato) {
+            const firstDate = moment(objSemRutina.lstDia[0].fecha, "DD-MM-YYYY").week();
+            const weeknumber = moment(dato.fecha, "DD-MM-YYYY").week();
+            const data = elementosWeek(dato);
+
+            if(timessemit>1){
+                $('#carousel-semanal').trigger('add.owl.carousel',
+                    htmlStringToElement(`
+                            <div class="item">
+                              <div class="title">${dato.diaLiteral}</div>
+                              <div class="body-card">
+                                <div class="dias">Faltan 73 días<img class="svg" src="img/iconos/icon_ayuda.svg"></div>
+                                <ul>
+                                  <li><img class="svg" src="img/iconos/icon_programas.svg">Carrera<img class="svg help" src="img/iconos/icon_ayuda.svg"></li>
+                                  <li><img class="svg" src="img/iconos/icon_temporada.svg">Fuerza<img class="svg help" src="img/iconos/icon_ayuda.svg"></li>
+                                  <li><img class="svg" src="img/iconos/icon_cronometro.svg">${dato.minutos}<img class="svg help" src="img/iconos/icon_ayuda.svg"></li>
+                                  <li><img class="svg" src="img/iconos/icon_km.svg">${dato.distancia}<img class="svg help" src="img/iconos/icon_ayuda.svg"></li>
+                                </ul>
+                                ${data}
+                              </div>
+                            </div>`
+                    )
+                );
+            }else {
+                $("#carousel-semanal").append(
+                    `<div class="item">
                       <div class="title">${dato.diaLiteral}</div>
                       <div class="body-card">
                         <div class="dias">Faltan 73 días<img class="svg" src="img/iconos/icon_ayuda.svg"></div>
@@ -243,28 +293,16 @@ function vistaMes(data) {
                         ${data}
                       </div>
                     </div>`
-                    );
-                };
-
-            });
-        }
-
-    });
-    $(document).ready(function () {
-        if(data[0]){
-            var json = jQuery.parseJSON(data[0].metricas);
-            console.log(data[0].metricas);
-            var tr;
-            for (var i = 0; i < json.length; i++) {
-                tr = $('<tr/>');
-                tr.append("<td>" + json[i].nombre + "</td>");
-                tr.append("<td>" + json[i].min + "</td>");
-                tr.append("<td>" + json[i].max + "</td>");
-                $('table.pulsos,table.ritmos').append(tr);
+                );
             }
-        }
-    });
-    owlCarouselSemanal();
+        });
+    }
+    if(timessemit==1){
+        owlCarouselSemanal();
+    }
+    if (document.querySelector('.owl-dots')) {
+        document.querySelector('.owl-dots').classList.add('hidden');
+    }
     miniPanelActive();
 }
 

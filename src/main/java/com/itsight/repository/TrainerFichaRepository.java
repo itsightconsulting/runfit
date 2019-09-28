@@ -44,7 +44,6 @@ public interface TrainerFichaRepository extends JpaRepository<TrainerFicha, Inte
     @Modifying
     @Query(nativeQuery = true, value = "UPDATE trainer_ficha \n" +
             "SET \n" +
-            "sexo =:sexo, \n" +
             "disciplinas =:disciplinas, \n" +
             "acerca =:acerca, \n" +
             "centro_trabajo =:centroTrabajo,\n" +
@@ -61,10 +60,13 @@ public interface TrainerFichaRepository extends JpaRepository<TrainerFicha, Inte
             "nota =:nota,\n" +
             "redes =:redes,\n" +
             "resultados =:resultados\n" +
-            "WHERE trainer_id=:trainerId")
-    void actualizarFichaByTrainerId(
-            @Param(value = "sexo") Integer sexo, @Param(value = "disciplinas") String disciplinas, @Param(value = "acerca") String acerca, @Param(value = "centroTrabajo") String centroTrabajo, @Param(value = "especialidad") String especialidad, @Param(value = "especilidades") String especilidades, @Param(value = "estudios") String estudios, @Param(value = "experiencias") String experiencias, @Param(value = "formasTrabajo") String formasTrabajo, @Param(value = "horario") String horario, @Param(value = "idiomas") String idiomas, @Param(value = "metodoTrabajo") String metodoTrabajo, @Param(value = "niveles") String niveles, @Param(value = "nota") String nota, @Param(value = "redes") String redes, @Param(value = "resultados") String resultados, @Param(value = "trainerId") Integer trainerId
-    );
+            "WHERE trainer_id =:trainerId")
+    void actualizarFichaByTrainerId(@Param(value = "disciplinas") String disciplinas, @Param(value = "acerca") String acerca, @Param(value = "centroTrabajo") String centroTrabajo, @Param(value = "especialidad") String especialidad, @Param(value = "especilidades") String especilidades, @Param(value = "estudios") String estudios, @Param(value = "experiencias") String experiencias, @Param(value = "formasTrabajo") String formasTrabajo, @Param(value = "horario") String horario, @Param(value = "idiomas") String idiomas, @Param(value = "metodoTrabajo") String metodoTrabajo, @Param(value = "niveles") String niveles, @Param(value = "nota") String nota, @Param(value = "redes") String redes, @Param(value = "resultados") String resultados, @Param(value = "trainerId") Integer trainerId);
+
+    @Modifying
+    @Query(value = "UPDATE trainer SET sexo =:sexo\n" +
+            "WHERE security_user_id =:trainerId", nativeQuery = true)
+    void actualizarSexoFichaByTrainerId(@Param(value = "sexo") Integer sexo, @Param(value = "trainerId") Integer trainerId);
 
     @Modifying
     @Query(value = "UPDATE trainer_ficha SET staff_galeria = COALESCE(staff_galeria,'') || case when COALESCE(NULLIF(staff_galeria,''), '0') = '0' then ?1 else '|' || ?1 end WHERE trainer_id = ?2", nativeQuery = true)
