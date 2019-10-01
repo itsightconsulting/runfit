@@ -51,8 +51,11 @@ function obtenerRutinaConsolidado(rutinaId) {
 
             graficoTemporadaKilometraje(data.dtGrafico);
             periodizacionRutina = getSemanasEtapas(data);
+
+
             const etapasPorc = calcularPorcentajesEtapas(periodizacionRutina);
 
+            console.log("waaah" , etapasPorc);
 
             graficoDistribucionEtapa(etapasPorc);
             cargarInfoPeriodizacion(periodizacionRutina);
@@ -1675,22 +1678,21 @@ function cargarInfoKmEtapas(data){
 
     const sumKms = allKms.reduce((a,b)=>{return a+b});
 
+    console.log("AAA", sumKms);
     const periodizacion = getSemanasEtapas(data);
 
+    console.log("BBB", periodizacion)
     const kmsParts = periodizacion.map((v)=>{
         return allKms.splice(0, v);//Cada vez el arreglo va perdiendo elementos y por eso siempre hacemos que se corte desde 0
     });
 
-    const kmsEsp = parseFloat(kmsParts[1].reduce((a, b) => {
-        return a + b
-    }))
     document.querySelectorAll('#consolidado .etapa-km')
         .forEach((v,i)=>{
 
             if(periodizacion) {
-                const kmsEsp = parseFloat(kmsParts[i].reduce((a, b) => {
+                const kmsEsp = kmsParts[i].length > 0 ? parseFloat(kmsParts[i].reduce((a, b) => {
                     return a + b
-                }))
+                })) : 0;
                 v.querySelector('strong.km-value').textContent = kmsEsp.toFixed(1);
                 //   v.querySelector('span').textContent = base.periodizacion[i] + " semanas";
                 // base.porcentajesKms.push(((kmsEsp * 100) / sumKms).toFixed(2));
@@ -1703,12 +1705,11 @@ function cargarInfoKmEtapas(data){
 
 function cargarInfoPeriodizacion(periodizacion){
 
+    console.log("ñaja", periodizacion);
     document.querySelectorAll('#consolidado .etapa-rutina')
         .forEach((v,i)=>{
             v.querySelector('strong.etapa-sem').textContent = periodizacion[i];
-
         })
-
 
 }
 

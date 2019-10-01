@@ -596,6 +596,26 @@ function graficoCondFisicaBasicaMasc(arr) {
         }
     });
 
+    var gradientColors = [
+        {
+            start: '#f3bb98',
+            end: '#ea8ba9'
+        },
+        {
+            start: '#F6A064',
+            end: '#ED5384'
+        }
+    ];
+
+    var gradients = [];
+
+    gradientColors.forEach( function( item ){
+        var gradient = ctx.createLinearGradient(0, 0, 150 , 150);
+        gradient.addColorStop(0, item.start);
+        gradient.addColorStop(1, item.end);
+        gradients.push(gradient);
+    });
+
     if(total === 0){
         var config = {
             type: 'doughnutCenterElement',
@@ -603,7 +623,7 @@ function graficoCondFisicaBasicaMasc(arr) {
                 labels: ["Básica"],
                 datasets: [{
                     data: [-1],
-                    backgroundColor: '#666077',
+                    backgroundColor: '#756d77',
                     borderColor: 'transparent',
                 }],
             },
@@ -638,7 +658,7 @@ function graficoCondFisicaBasicaMasc(arr) {
                 labels: ["Básica","Otros"],
                 datasets: [{
                     data: [arr[0] , total - arr[0]],
-                    backgroundColor: ['#00b5f7', '#666077'],
+                    backgroundColor: arr[0] !== 0 ?  generarGradientes( ctx,'#1e8cf7','#756d77') : ['#756d77', '#756d77'],
                     borderColor: 'transparent',
                 }],
             },
@@ -790,7 +810,7 @@ function graficoCondFisicaMedioMasc(arr){
                 labels: ["Medio"],
                 datasets: [{
                     data: [-1],
-                    backgroundColor: '#666077',
+                    backgroundColor: '#756d77',
                     borderColor: 'transparent',
                 }],
             },
@@ -826,7 +846,7 @@ function graficoCondFisicaMedioMasc(arr){
                 labels: ["Medio", "Otros"],
                 datasets: [{
                     data: [arr[1], total - arr[1]],
-                    backgroundColor: ['#00b5f7', '#666077'],
+                    backgroundColor: arr[1] !== 0 ?  generarGradientes( ctx,'#1e8cf7','#756d77') : ['#756d77', '#756d77'],
                     hoverBackgroundColor: ["#2C42CA", "#7A6D64"],
                     borderColor: 'transparent',
                 }],
@@ -975,7 +995,7 @@ function graficoCondFisicaAvanzadoMasc(arr){
                 labels: ["Avanzado"],
                 datasets: [{
                     data: [-1],
-                    backgroundColor: '#666077',
+                    backgroundColor: '#756d77',
                     borderColor: 'transparent',
                 }],
             },
@@ -1007,7 +1027,7 @@ function graficoCondFisicaAvanzadoMasc(arr){
                 labels: ["Avanzado","Otros"],
                 datasets: [{
                     data: [arr[2] , total - arr[2]],
-                    backgroundColor: ['#00b5f7', '#666077'],
+                    backgroundColor: arr[2] !== 0 ?  generarGradientes( ctx,'#1e8cf7','#756d77') : ['#756d77', '#756d77'],
                     hoverBackgroundColor:  ["#2C42CA", "#7A6D64"],
                     borderColor: 'transparent',
                 }],
@@ -1151,6 +1171,10 @@ function graficoCondFisicaBasicaFem(arr){
         }
     });
 
+
+
+
+
     if(total === 0){
 
         var config = {
@@ -1159,7 +1183,7 @@ function graficoCondFisicaBasicaFem(arr){
                 labels: ["Básica"],
                 datasets: [{
                     data: [1],
-                    backgroundColor: 'grey',
+                    backgroundColor: '#756d77',
                     borderColor: 'transparent',
                 }],
             },
@@ -1196,7 +1220,7 @@ function graficoCondFisicaBasicaFem(arr){
                 labels: ["Básica", "Otros"],
                 datasets: [{
                     data: [arr[0], total - arr[0]],
-                    backgroundColor: ['#FF00EB', '#756d77'],
+                    backgroundColor: arr[0] !== 0 ?  generarGradientes(ctx,'#FF00EB' , '#756d77') : ['#756d77', '#756d77'],
                     hoverBackgroundColor: ["#EB0955", "#7A6D64"],
                     borderColor: 'transparent',
                 }],
@@ -1342,6 +1366,7 @@ function graficoCondFisicaMedioFem(arr){
         }
     });
 
+
     if(total === 0){
         var config = {
             type: 'doughnutCenterElement',
@@ -1349,7 +1374,7 @@ function graficoCondFisicaMedioFem(arr){
                 labels: ["Medio"],
                 datasets: [{
                     data: [1],
-                    backgroundColor: 'grey',
+                    backgroundColor: '#756d77',
                     borderColor: 'transparent',
                 }],
             },
@@ -1383,7 +1408,7 @@ function graficoCondFisicaMedioFem(arr){
                 labels: ["Medio","Otros"],
                 datasets: [{
                     data: [arr[1] , total - arr[1]],
-                    backgroundColor: ['#FF00EB', '#756d77'],
+                    backgroundColor: arr[1] !== 0 ?  generarGradientes(ctx,'#FF00EB' , '#756d77') : ['#756d77', '#756d77'],
                     hoverBackgroundColor:  ["#EB0955", "#7A6D64"],
                     borderColor: 'transparent',
                 }],
@@ -1533,6 +1558,9 @@ function graficoCondFisicaAvanzadoFem(arr){
         }
     });
 
+
+
+
     if(total === 0){
         var config = {
             type: 'doughnutCenterElement',
@@ -1540,7 +1568,7 @@ function graficoCondFisicaAvanzadoFem(arr){
                 labels: ["Avanzado"],
                 datasets: [{
                     data: [-1],
-                    backgroundColor: 'grey',
+                    backgroundColor: '#756d77',
                     borderColor: 'transparent',
                 }],
             },
@@ -1573,7 +1601,7 @@ function graficoCondFisicaAvanzadoFem(arr){
                 labels: ["Avanzado","Otros"],
                 datasets: [{
                     data: [arr[2] , total - arr[2]],
-                    backgroundColor: ['#FF00EB', '#756d77'],
+                    backgroundColor: arr[2] !== 0 ?  generarGradientes(ctx,'#FF00EB' , '#756d77') : ['#756d77', '#756d77'],
                     hoverBackgroundColor:  ["#EB0955", "#7A6D64"],
                     borderColor: 'transparent',
                 }],
@@ -2340,9 +2368,7 @@ function setDataServicioDistrSexo(data, graphGeneralData){
 
 function graficoServiciosUsados(  totalServicios, dataServicio){
 
-
     let porcentajes = dataServicio.map( e => Math.round((e.qtyClientes/totalServicios)*100));
-
     let suma = porcentajes.reduce(  (a,b) => a+b);
 
     porcentajes= suma === 100 ? porcentajes : roundedPercentage( porcentajes, 100);
@@ -2353,23 +2379,23 @@ function graficoServiciosUsados(  totalServicios, dataServicio){
     const porcentajesAcumSexo = [];
 
     //para asegurar que ambos valores (hombre,mujer) sumen 100
-
     porcentajesHombre.forEach( function(item,index){
-
         let arrCurrentPorcServicio =roundedPercentage([ porcentajesHombre[index] , porcentajesMujer[index]],100);
-
          porcentajesAcumSexo.push( {
                         porcHombre: arrCurrentPorcServicio[0],
                         porcMujer : arrCurrentPorcServicio[1]
-              });
+           });
+        }
+    )
 
-    }   )
-
-    //GraficoCanalesUsados
+    //GraficoServiciosUsados
     var ctx = document.getElementById("GraficoServiciosUsados").getContext("2d");
+    var canvas = document.getElementById("GraficoServiciosUsados");
+
+    canvas.height= ( porcentajes.length * 30 );
 
     var data = {
-        labels: perfil !==1 && !getParamFromURL('trId') ? dataServicio.map( e => e.trainerNombres) : dataServicio.map( e => e.nombre),
+        labels: perfil !==1 && !getParamFromURL('trId') ? dataServicio.map( e => formatLabel(e.trainerNombres,10)) : dataServicio.map( e => formatLabel(e.nombre, 10)),
         datasets: [
             {
                 data:  porcentajes,
@@ -2390,7 +2416,7 @@ function graficoServiciosUsados(  totalServicios, dataServicio){
                     ticks: {
                         display: false,
                         beginAtZero: true,
-                        min: 1,
+                        min: 0,
                         max: 100,
                     },
                     gridLines: {
@@ -2408,7 +2434,7 @@ function graficoServiciosUsados(  totalServicios, dataServicio){
                         fontSize: "13",
                         fontFamily: "GothamHTF-Book",
                         fontColor : "#a6a3ba",
-                        padding: 35,
+                        padding: 55,
                         display:true
                     },
                     gridLines: {
@@ -2466,7 +2492,7 @@ function graficoServiciosUsados(  totalServicios, dataServicio){
                 },
                 layout: {
                     padding: {
-                        left: 40
+                        left: 50
                     }
                 },
                 legend: {
@@ -2477,7 +2503,7 @@ function graficoServiciosUsados(  totalServicios, dataServicio){
                     datalabels: {
                         anchor: 'start',
                         align: 'start',
-                        offset: 0,
+                        offset: 12,
                         color: '#e04c51',
                         font: {
                             weight: 'bold',
@@ -2501,7 +2527,7 @@ function graficoServiciosUsados(  totalServicios, dataServicio){
                     ticks: {
                         display: false,
                         beginAtZero: true,
-                        min: 1,
+                        min: 0,
                         max: 100,
                     },
                     gridLines: {
@@ -2519,7 +2545,7 @@ function graficoServiciosUsados(  totalServicios, dataServicio){
                         fontSize: "13",
                         fontFamily: "GothamHTF-Book",
                         fontColor : "#a6a3ba",
-                        padding: 35,
+                        padding: 55,
                         display:true
                     },
                     gridLines: {
@@ -2571,7 +2597,7 @@ function graficoServiciosUsados(  totalServicios, dataServicio){
             layout: {
                 padding: {
                   // left:10
-                    left: 40,
+                    left: 50,
 
                 }
             },
@@ -2583,7 +2609,7 @@ function graficoServiciosUsados(  totalServicios, dataServicio){
                 datalabels:{
                     anchor: 'start',
                     align: 'start',
-                    offset: 0,
+                    offset: 12,
                     color: '#e04c51',
                     font: {
                         weight: 'bold',
@@ -2751,29 +2777,20 @@ function graficoDistribucionLocalizacion(dataLocalizacion, porcentajes, tipo){
 
     //let dataLength = dataLocalizacion.reduce( (a,b) => a+b);
     let qtyData = dataLocalizacion.map( e => e.qty);
-    let labelsData = dataLocalizacion.map( e => e.nombre);
+    let labelsData = dataLocalizacion.map( e => formatLabel(e.nombre , 17));
 
     let oldcanv = document.getElementById('graficoDistribucionLocalizacion');
     let parentDv = oldcanv.parentElement;
     parentDv.removeChild(oldcanv)
 
-
-
     let canv = document.createElement('canvas');
     canv.id = 'graficoDistribucionLocalizacion';
 
-    if(porcentajes.length < 6){
-        canv.height= 200;
-    }else{
-        canv.height= 470;
-    }
-
+    //setear altura de acuerdo a la cantidad de departamentos / distritos
+    canv.height= ( porcentajes.length * 15)+ 40 // 200;
     parentDv.appendChild(canv)
 
     let canvas = document.getElementById('graficoDistribucionLocalizacion');
-
-
-
     let ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -3231,7 +3248,7 @@ function graficoBarraVentaServiciosTemporada(dataFem,dataMasc){
                 intersect: true
             },
             legend: {
-                display: true,
+                display: false,
                 position: "bottom",
                 align: "middle",
                 labels: {
@@ -3413,3 +3430,71 @@ function generarPorcentajes(dataGrafico){
 
 }
 
+
+function formatLabel(str, maxwidth){
+    var sections = [];
+    var words = str.split(" ");
+    var temp = "";
+
+    words.forEach(function(item, index){
+        if(temp.length > 0)
+        {
+            var concat = temp + ' ' + item;
+
+            if(concat.length > maxwidth){
+                sections.push(temp);
+                temp = "";
+            }
+            else{
+                if(index == (words.length-1))
+                {
+                    sections.push(concat);
+                    return;
+                }
+                else{
+                    temp = concat;
+                    return;
+                }
+            }
+        }
+
+        if(index == (words.length-1))
+        {
+            sections.push(item);
+            return;
+        }
+
+        if(item.length < maxwidth) {
+            temp = item;
+        }
+        else {
+            sections.push(item);
+        }
+
+    });
+
+    return sections;
+}
+
+function  generarGradientes(ctx, colorStart , colorEnd) {
+
+    let gradientColors = [colorStart , colorEnd];
+    let gradients = [];
+
+    gradientColors.forEach( function( item,index ) {
+        if (index === 0) {
+            var gradient = ctx.createLinearGradient(10, 0, 150, 0);
+            gradient.addColorStop(1, colorStart);
+            gradients.push(gradient);
+        } else {
+
+            var gradient = ctx.createLinearGradient(10, 0, 250, 0);
+
+            gradient.addColorStop(0, colorEnd);
+            gradient.addColorStop(0.8, colorStart);
+            gradients.push(gradient);
+        }
+    });
+
+    return gradients;
+}
