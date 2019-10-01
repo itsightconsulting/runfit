@@ -47,7 +47,7 @@ function init(){
             //Importante mantener el orden para el correcto funcionamiento
             $rutina = new Rutina(rutina);
             $rutina.init(sem, ix);
-            vistaSemana(sem);
+            vistaSemana(sem, ix);
             setTimeout(  () => {
                 imgToSvg();
                 document.querySelector('a[data-parent="#panel_days"]').click();
@@ -77,6 +77,10 @@ function init(){
     });
     eventTab();
     pulsosRitmos();
+    //Check cambios en responsive
+    if (window.innerWidth <= 415) {
+        $('#range').attr('max', 6);
+    }
 }
 
 function principalesEventosClickRutina(e){
@@ -99,6 +103,65 @@ function principalesEventosClickRutina(e){
         const actualValue = inpRange.value;
         inpRange.value = Number(actualValue) + 1;
     }
+    else if(clases.contains('title')){
+        const parent = input.parentElement;
+        if (parent && parent.classList.contains('item')) {
+            const itemSelected = document.getElementById('carousel-semanal').querySelector('.owl-carousel .item.selected');
+            if (itemSelected) {
+                itemSelected.classList.remove('selected');
+            }
+            parent.classList.add('selected');
+        }
+    }
+    else if(clases.contains('mini-panel')){
+        const diaIndex = Number(input.getAttribute('data-dia-index'));
+        visualizarElementoDiaInVistaSemana(input, diaIndex);
+    }
+}
+
+function visualizarElementoDiaInVistaSemana(divEle, dIx){
+    let i=0;
+    let tempEle = divEle;
+    while((tempEle = tempEle.previousElementSibling) && tempEle.classList.contains('mini-panel')) i++;
+    const sIx = Number($('#NumSemana').text())-1;
+    const elementos = $rutina.semanas[sIx].dias[dIx].elementos;
+    const divElementosDia = document.getElementById('ElementosDia');
+    divElementosDia.innerHTML = "";
+    elementos.forEach(e=>{
+        divElementosDia.appendChild(htmlStringToElement(`
+                <div class="panel-group">
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h3>${e.nombre}
+                        <div class="mas_menos"><img class="svg" src="${_ctx}img/iconos/icon_menos.svg"><img class="svg" src="${_ctx}img/iconos/icon_mas.svg"></div>
+                      </h3>
+                      <div class="icons"><a data-toggle="collapse" data-parent="#accordion" href="#diario1"><img class="svg arrow" src="${_ctx}img/iconos/icon_flecha2.svg"></a></div>
+                    </div>
+                    <div class="panel-collapse collapse in" id="diario${sIx}-${dIx}-${i}">
+                      ${!e.subElementos ? 
+                            '':
+                        e.subElementos.map(se=>
+                          `<div class="panel-body"><span class="text_green">1 serie x 20" de recuperación
+                              <div class="icons no_mostrar_mobile"><img class="svg" src="${_ctx}img/iconos/icon_microfono.svg"><img class="svg" src="${_ctx}img/iconos/icon_leyenda.svg"><span><img class="svg" src="${_ctx}img/iconos/icon_tiempo2.svg">20</span></div></span>
+                              <div class="material-diario">
+                                <div class="material">
+                                  <div class="content_img"></div>
+                                  <div class="content_text">
+                                    <div class="title">
+                                      <h4><img class="svg" src="${_ctx}img/iconos/icon_microfono.svg">${se.nombre}<span>Alternar</span></h4>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                          </div>`).join('')
+                      }
+                    </div>
+                  </div>
+                </div>
+        `));
+    });
+    //Instanciando svg elementos
+    imgToSvg();
 }
 
 function clickEventListenerNavTabs(e){
@@ -115,7 +178,7 @@ function clickEventListenerNavTabs(e){
 
         if(ahref === "mensual"){
             //$('.datepicker_inline').data("DateTimePicker").date(sem.fechaInicio);
-            datepicker_init($rutina.fechaInicio, $rutina.fechaFin);
+            datepicker_init($rutina.fechaInicio, $rutina.fechaFinPt);
         }
         svg.parentElement.click();
         if(ahref === "semanal"){
@@ -134,7 +197,7 @@ function clickEventListenerNavTabs(e){
 
         if(ahref === "mensual"){
             //$('.datepicker_inline').data("DateTimePicker").date(sem.fechaInicio);
-            datepicker_init($rutina.fechaInicio, $rutina.fechaFin);
+            datepicker_init($rutina.fechaInicio, $rutina.fechaFinPt);
         }
         input.parentElement.click();
         if(ahref === "semanal"){
@@ -168,8 +231,12 @@ function svgIconsEvents(svg){
         //svg.parentElement.parentElement.querySelectorAll('[data-fancybox]').forEach(e => $(e).fancybox());
     }else if (clases.contains('ele-plus')) {
         actionCollapsableIconPlusOrLess(svg, 1);
+        svg.style.fill = "#a8fa00";
+        svg.previousElementSibling.style.fill = "";
     } else if (clases.contains('ele-less')) {
         actionCollapsableIconPlusOrLess(svg, 0);
+        svg.style.fill = "#a8fa00";
+        svg.nextElementSibling.style.fill = "";
     }
 }
 
@@ -234,16 +301,18 @@ async function getSemanasDeLaUltimaRutinaGenerada(semanaIx){
         });
     })
 }
-var timessemit = 0;
-function vistaSemana(data) {
+let timessemit = 0;
+function vistaSemana(data, sIx) {
     ++timessemit;
     const objSemRutina = data;
     const fecha = objSemRutina.fechaInicio.split('/');
     const firstFecha = parseInt(objSemRutina.fechaInicio.split('/')[1]);
     const week = parseInt(fecha[1]);
+    const semanaFechaInicio = parseFromStringToDate2(objSemRutina.fechaInicio);
+    const ruFfin = $rutina.fechaFin;
+    const remainDays = moment(ruFfin).diff(semanaFechaInicio, 'days');
 
     if(week <= firstFecha) {
-
         //Limpiando elementos carusel de vista semana
         const itemsCaruselSemana = $('#carousel-semanal .item').length;
         for (var i=0; i < itemsCaruselSemana; i++) {
@@ -256,38 +325,38 @@ function vistaSemana(data) {
         const day = objSemRutina.lstDia;
 
         $.each(day, function (i, dato) {
-            const firstDate = moment(objSemRutina.lstDia[0].fecha, "DD-MM-YYYY").week();
-            const weeknumber = moment(dato.fecha, "DD-MM-YYYY").week();
-            const data = elementosWeek(dato);
+            const finalRemainDays = remainDays-i;
+            const finalRemainMessage = finalRemainDays > 0 ? `Faltan ${finalRemainDays} días` : 'Llego el día!';
+            const data = elementosWeek(dato, (diaIx = i));
 
             if(timessemit>1){
                 $('#carousel-semanal').trigger('add.owl.carousel',
                     htmlStringToElement(`
-                            <div class="item">
+                            <div class="item item-carusel-semana" data-six="${i}">
                               <div class="title">${dato.diaLiteral}</div>
                               <div class="body-card">
-                                <div class="dias">Faltan 73 días<img class="svg" src="img/iconos/icon_ayuda.svg"></div>
+                                <div class="dias">${finalRemainMessage}<img class="svg" src="img/iconos/icon_ayuda.svg"></div>
                                 <ul>
-                                  <li><img class="svg" src="img/iconos/icon_programas.svg">Carrera<img class="svg help" src="img/iconos/icon_ayuda.svg"></li>
-                                  <li><img class="svg" src="img/iconos/icon_temporada.svg">Fuerza<img class="svg help" src="img/iconos/icon_ayuda.svg"></li>
-                                  <li><img class="svg" src="img/iconos/icon_cronometro.svg">${dato.minutos}<img class="svg help" src="img/iconos/icon_ayuda.svg"></li>
-                                  <li><img class="svg" src="img/iconos/icon_km.svg">${dato.distancia}<img class="svg help" src="img/iconos/icon_ayuda.svg"></li>
+                                  <li><img class="svg" src="${_ctx}img/iconos/icon_programas.svg">Carrera<img class="svg help" src="${_ctx}img/iconos/icon_ayuda.svg"></li>
+                                  <li><img class="svg" src="${_ctx}img/iconos/icon_temporada.svg">Fuerza<img class="svg help" src="${_ctx}img/iconos/icon_ayuda.svg"></li>
+                                  <li><img class="svg" src="${_ctx}img/iconos/icon_cronometro.svg">${parseNumberToHoursNoExcedent(dato.minutos, 0)}<img class="svg help" src="${_ctx}img/iconos/icon_ayuda.svg"></li>
+                                  <li><img class="svg" src="${_ctx}img/iconos/icon_km.svg">${dato.distancia}<img class="svg help" src="${_ctx}img/iconos/icon_ayuda.svg"></li>
                                 </ul>
                                 ${data}
                               </div>
                             </div>`
                     )
                 );
-            }else {
+            } else {
                 $("#carousel-semanal").append(
-                    `<div class="item">
+                    `<div class="item item-carusel-semana" data-six="${i}">
                       <div class="title">${dato.diaLiteral}</div>
                       <div class="body-card">
-                        <div class="dias">Faltan 73 días<img class="svg" src="img/iconos/icon_ayuda.svg"></div>
+                        <div class="dias">${finalRemainMessage}<img class="svg" src="img/iconos/icon_ayuda.svg"></div>
                         <ul>
                           <li><img class="svg" src="img/iconos/icon_programas.svg">Carrera<img class="svg help" src="img/iconos/icon_ayuda.svg"></li>
                           <li><img class="svg" src="img/iconos/icon_temporada.svg">Fuerza<img class="svg help" src="img/iconos/icon_ayuda.svg"></li>
-                          <li><img class="svg" src="img/iconos/icon_cronometro.svg">${dato.minutos}<img class="svg help" src="img/iconos/icon_ayuda.svg"></li>
+                          <li><img class="svg" src="img/iconos/icon_cronometro.svg">${parseNumberToHoursNoExcedent(dato.minutos, 0)}<img class="svg help" src="img/iconos/icon_ayuda.svg"></li>
                           <li><img class="svg" src="img/iconos/icon_km.svg">${dato.distancia}<img class="svg help" src="img/iconos/icon_ayuda.svg"></li>
                         </ul>
                         ${data}
@@ -303,18 +372,38 @@ function vistaSemana(data) {
     if (document.querySelector('.owl-dots')) {
         document.querySelector('.owl-dots').classList.add('hidden');
     }
+
+    //Seteando num Semana y Mes en la vista semana
+    $('#weekMonth').html(`${'Semana '+(Number(sIx)+1)} - <span>${meses[semanaFechaInicio.getMonth()]}</span>`);
+    //Event swipe's owl carousel
+    const owl = $('.owl-carousel');
+    owl.owlCarousel();
+    // Listen to owl events:
+    owl.on('changed.owl.carousel', function(event) {
+        setTimeout(()=>{
+            if(!event.target.querySelector('.owl-item.active')){
+                return;
+            }
+            if(!event.target.querySelector('.owl-item.active').firstElementChild){
+                return;
+            }
+            $('#range').val(
+                Number(event.target.querySelector('.owl-item.active').firstElementChild.getAttribute('data-six'))
+            )
+        }, 100)
+    });
     miniPanelActive();
 }
 
-function elementosWeek(dato) {
+function elementosWeek(dato, diaIndex) {
     var elementoDia = dato.elementos;
     var texto = "";
 
     if (elementoDia != null && elementoDia.length > 0){
         $.each(elementoDia, function (i, dato) {
             texto= texto.concat(`
-            <div class="mini-panel"><span>${dato.nombre}<img class="svg help" src="img/iconos/icon_flecha2.svg"></span>
-              <div class="time"><img class="svg help" src="img/iconos/icon_horas.svg">${dato.minutos}</div>
+            <div class="mini-panel" data-dia-index="${diaIndex}"><span>${dato.nombre}<img class="svg help" src="${_ctx}img/iconos/icon_flecha2.svg"></span>
+              <div class="time"><img class="svg help" src="${_ctx}img/iconos/icon_horas.svg">${parseNumberToHoursNoExcedent(dato.minutos, 0)}</div>
             </div>
             `);
         });

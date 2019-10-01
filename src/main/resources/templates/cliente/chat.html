@@ -16,7 +16,15 @@
 <div class="row" id="main-content">
     <div class="container-chat chat" id="ChatContainer">
         <div class="col-md-4 no_padding">
-            <h3>Chat<span style="padding-right: 10px">Recientes</span></h3>
+            <h3>
+                <a class="only_mobile" th:href="@{/bienvenido}" style="text-align: center;position: absolute;right: 44%;top: 13px;">
+                    <img class="logo" th:src="@{/img/logo.png}" alt="" style="height: 34px;">
+                </a>
+                <button class="navbar-toggle only_mobile" onclick="showMenuMobile()" style="width: 24px; float: left;margin-right: 10px">
+                    <img class="svg" th:src="@{/img/iconos/icon_hamburger.svg}">
+                </button>
+                Chat
+                <span style="padding-right: 10px">Recientes</span></h3>
             <div class="contacts" id="TrainerProfiles">
             </div>
         </div>

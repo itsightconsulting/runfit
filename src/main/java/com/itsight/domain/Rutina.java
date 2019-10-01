@@ -44,6 +44,7 @@ import java.util.List;
                                         @ColumnResult(name = "tipoRutinaId"),
                                         @ColumnResult(name = "fechaInicio"),
                                         @ColumnResult(name = "fechaFin"),
+                                        @ColumnResult(name = "fechaFinPt"),
                                         @ColumnResult(name = "control"),
                                         @ColumnResult(name = "rows"),
                                 }
@@ -124,6 +125,10 @@ public class Rutina extends AuditingEntity {
     @JsonDeserialize(using = JsonDateSimpleDeserializer.class)
     @Temporal(TemporalType.DATE)
     private Date fechaFin;
+    @JsonSerialize(using = JsonDateSimpleSerializer.class)
+    @JsonDeserialize(using = JsonDateSimpleDeserializer.class)
+    @Temporal(TemporalType.DATE)
+    private Date fechaFinPt;
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ClienteId", referencedColumnName = "SecurityUserId", updatable = false)

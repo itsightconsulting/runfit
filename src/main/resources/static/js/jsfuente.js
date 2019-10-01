@@ -650,6 +650,9 @@ function parseNumberToHours(minutos){
 }
 
 function parseNumberToHoursNoExcedent(minutos, spaceBefore){
+    if(minutos === 0){
+        return (spaceBefore ? "&nbsp;" : "") + minutos + "\"";
+    }
     let h = Math.floor(minutos/60);
     let m = minutos%60;
     let final = h+ "' "+ (m%60<10?"0"+String(m%60):m%60) + "\"";

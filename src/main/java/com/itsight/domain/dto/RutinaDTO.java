@@ -37,6 +37,8 @@ public class RutinaDTO implements Serializable {
     private Date fechaInicio;
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
     private Date fechaFin;
+    @JsonSerialize(using = JsonDateSimpleSerializer.class)
+    private Date fechaFinPt;
     private RuGeneral general;
     private RuStats stats;
     private RuMejoras mejoras;

@@ -20,6 +20,8 @@ public class RuCliPOJO implements Serializable {
     private Date fechaInicio;
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
     private Date fechaFin;
+    @JsonSerialize(using = JsonDateSimpleSerializer.class)
+    private Date fechaFinPt;
 
     private String control;
     private Integer rows;
@@ -30,7 +32,7 @@ public class RuCliPOJO implements Serializable {
 
     public RuCliPOJO(){}
 
-    public RuCliPOJO(int id, int anios, int meses, int totalSemanas, int dias, Integer tipoRutina, Date fechaInicio, Date fechaFin, String control, Integer rows) {
+    public RuCliPOJO(int id, int anios, int meses, int totalSemanas, int dias, Integer tipoRutina, Date fechaInicio, Date fechaFin, Date fechaFinPt, String control, Integer rows) {
         this.id = id;
         this.anios = anios;
         this.meses = meses;
@@ -39,6 +41,7 @@ public class RuCliPOJO implements Serializable {
         this.tipoRutina = tipoRutina;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
+        this.fechaFinPt = fechaFinPt;
         this.control = control;
         this.rows = rows;
     }
