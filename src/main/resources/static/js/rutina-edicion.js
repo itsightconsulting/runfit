@@ -1008,18 +1008,15 @@ function principalesEventosClickRutina(e) {
             let i = 0;
             while ((tempElemento = tempElemento.previousElementSibling) != null) i++;
             RutinaAdd.nuevoSubElementoMedia(ixs.numSem, ixs.diaIndex, i, obj);
-            alert("cuack");
             agregarSubElementoAElementoBD(ixs.numSem, ixs.diaIndex, i, 0); //Siempre va ser el primero por eso se deja la posicion como 0
             const iconoAdd = RutinaDOMQueries.getSubElementoByIxs(ixs).querySelector('.ele-add');
             const dvMediaElements =  RutinaDOMQueries.getSubElementoByIxs(ixs).querySelector('.notes');;
-
 
             if($tipoMedia == TipoElemento.AUDIO){
                 dvMediaElements.appendChild(htmlStringToElement(`<div class="ong reprod-audio" rel="tooltip" data-media="${$mediaAudio}" data-original-title="Audio"></div>`));
             }else{
                 iconoAdd.insertAdjacentHTML('beforebegin', RutinaElementoHTML.iconoVideo($mediaVideo));
             }
-
 
             $(initElemento.querySelector(`.in-init-sub-ele`)).closest('li').remove();  //toggleClass('hidden');
             $mediaAudio = '';
@@ -1181,7 +1178,6 @@ function principalesEventosClickRutina(e) {
          e.stopPropagation();
          if(validUUID($mediaAudio) || validUUID($mediaVideo)){
              const ixs = RutinaIx.getIxsForSubElemento(input);
-             alert("xdd");
              SubEleOpc.agregarMediaToSubElemento2(ixs, input);
          }
          //Sirve para despues de guardar el valor del input en el onclick validar que este haya sido o no modificado para conforme a eso actualizar en el focusout
@@ -1619,7 +1615,6 @@ function principalesEventosTabGrupoAudios(e){
         cambiarATabRutina();
     }
     else if(clases.contains('ck')){
-        alert("eureka");
         const li = input.parentElement;
         const eleAudio = li.querySelector('.reprod-audio');
         const ix = eleAudio.getAttribute('data-index');
@@ -1812,7 +1807,6 @@ function agregarElementoBD(numSem, diaIndex, tipoElemento){
 }
 
 function agregarSubElementoAElementoBD(numSem, diaIndex, listaIndex , elementoIndex){
-   // alert("xd");
     let params = $rutina.semanas[numSem].dias[diaIndex].elementos[listaIndex].subElementos[elementoIndex];
     params.numeroSemana = numSem;
     params.diaIndice = diaIndex;

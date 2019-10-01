@@ -120,10 +120,10 @@ function carouselPlanElegido() {
          
       });
     
-    $(".go-me").click(function() {
+    $(".flechas .pull-left").click(function() {
       owl.trigger("next.owl.carousel");
     });
-    $(".back-me").on("click", function() {
+    $(".flechas .pull-right").on("click", function() {
       owl.trigger("prev.owl.carousel");
     });
     $("input").on("change", function(e) {
@@ -180,17 +180,18 @@ function carouselPlanes() {
           
       //   }
             owl.on('changed.owl.carousel', function(event) {
-            console.log(event.item.index);
             inputType.val(event.item.index);
              
           });
-        
-        $(".go-me").click(function() {
-          owl.trigger("next.owl.carousel");
+
+
+        $(".flechas .pull-left").click(function() {
+            owl.trigger("next.owl.carousel");
         });
-        $(".back-me").on("click", function() {
-          owl.trigger("prev.owl.carousel");
+        $(".flechas .pull-right").on("click", function() {
+            owl.trigger("prev.owl.carousel");
         });
+
         $("input").on("change", function(e) {
           e.preventDefault();
           console.log(inputType.val());

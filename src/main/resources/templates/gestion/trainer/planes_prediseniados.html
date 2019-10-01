@@ -311,6 +311,7 @@
     const cbox = $('input[type="radio"][name="cbNuevaCategoria"]');
     const dvListaCategoria = document.querySelector("section#listaCategoria div");
     const dvListaRutinas = document.querySelector("section#info div");
+    const dvArrows = document.querySelector(".flechas");
     const mdlEditarCat = document.getElementById("modalEditarCategoria");
     const mdlEditarRutina = document.getElementById("modalEditarRutina");
     const mdlAgregarCat = document.getElementById("modalNuevaCategoria");
@@ -377,6 +378,8 @@
             return false;
         });
     }
+
+
     function ocultarSeccionRutinas(){
         $("section#info").slideUp(200);
         $('html, body').animate({
@@ -488,8 +491,7 @@
                 return 0;
             });
             let itemsCategoria = "";
-
-            data.length <= 6 ? 1 :  document.querySelector('.range-slider').max =  data.length - 5;
+            data.length <= 6 ? document.querySelector('.range-slider').max = 1 :  document.querySelector('.range-slider').max = data.length - 6 ;
 
             data.forEach(function(element) {
                 let claseCategoria = "title-categoria";
@@ -499,18 +501,18 @@
                 if(element.favorito){
                     favoritos.push(element.id);
                     itemsCategoria += `
-              <div class="item" >
-                <div class="item-header"><a class="star selected" data-categoria-id = "${element.id}"><img class="svg" src="/img/iconos-trainers/icon_star.svg"></a><a data-toggle="modal" class="icon-edit" data-target="#modalEditarCategoria" type="button" href="#"  data-categoria-id ="${element.id}"  data-nombre="${element.nombre}" data-tipo ="${element.tipo}"><img class="svg" src="/img/iconos-trainers/icon_edit.svg"  ></a><div class="${claseCategoria}"> <p> ${element.nombre} </> </div> </div>
-                <div class="item-body"><img class="svg" src="/img/iconos-trainers/icon_tablero.svg"><a data-categoria-id ="${element.id}"  data-nombre="${element.nombre}"><img class="svg" src="/img/iconos-trainers/icon_add.svg">Agregar</a></div>
-              </div>
-              `;
+                      <div class="item" >
+                       <div class="item-header"><a class="star selected" data-categoria-id = "${element.id}"><img class="svg" src="/img/iconos-trainers/icon_star.svg"></a><a data-toggle="modal" class="icon-edit" data-target="#modalEditarCategoria" type="button" href="#"  data-categoria-id ="${element.id}"  data-nombre="${element.nombre}" data-tipo ="${element.tipo}"><img class="svg" src="/img/iconos-trainers/icon_edit.svg"  ></a><div class="${claseCategoria}"> <p> ${element.nombre} </> </div> </div>
+                       <div class="item-body"><img class="svg" src="/img/iconos-trainers/icon_tablero.svg"><a data-categoria-id ="${element.id}"  data-nombre="${element.nombre}"><img class="svg" src="/img/iconos-trainers/icon_add.svg">Agregar</a></div>
+                      </div>
+                    `;
                 }else{
                     itemsCategoria += `
-             <div class="item" >
-                <div class="item-header"><a class="star" data-categoria-id = "${element.id}"><img class="svg" src="/img/iconos-trainers/icon_star.svg"></a><a data-toggle="modal" class="icon-edit" data-target="#modalEditarCategoria" type="button" href="#" data-categoria-id ="${element.id}"  data-nombre="${element.nombre}" data-tipo ="${element.tipo}"><img class="svg" src="/img/iconos-trainers/icon_edit.svg" ></a><div class="${claseCategoria}"> <p> ${element.nombre} </p> </div> </div>
-                <div class="item-body"><img class="svg" src="/img/iconos-trainers/icon_tablero.svg"><a data-categoria-id ="${element.id}"  data-nombre="${element.nombre}"><img class="svg" src="/img/iconos-trainers/icon_add.svg">Agregar</a></div>
-             </div>
-           `;
+                    <div class="item" >
+                      <div class="item-header"><a class="star" data-categoria-id = "${element.id}"><img class="svg" src="/img/iconos-trainers/icon_star.svg"></a><a data-toggle="modal" class="icon-edit" data-target="#modalEditarCategoria" type="button" href="#" data-categoria-id ="${element.id}"  data-nombre="${element.nombre}" data-tipo ="${element.tipo}"><img class="svg" src="/img/iconos-trainers/icon_edit.svg" ></a><div class="${claseCategoria}"> <p> ${element.nombre} </p> </div> </div>
+                      <div class="item-body"><img class="svg" src="/img/iconos-trainers/icon_tablero.svg"><a data-categoria-id ="${element.id}"  data-nombre="${element.nombre}"><img class="svg" src="/img/iconos-trainers/icon_add.svg">Agregar</a></div>
+                    </div>
+                    `;
                 }
             });
             $('.owl-carousel').trigger('replace.owl.carousel', itemsCategoria).trigger('refresh.owl.carousel');

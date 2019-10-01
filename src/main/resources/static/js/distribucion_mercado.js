@@ -2377,15 +2377,14 @@ function graficoServiciosUsados(  totalServicios, dataServicio){
     let porcentajesMujer = (dataServicio.map( e => Math.round((e.qtyMujer/e.qtyClientes)*100)) );
 
     const porcentajesAcumSexo = [];
-
     //para asegurar que ambos valores (hombre,mujer) sumen 100
     porcentajesHombre.forEach( function(item,index){
-        let arrCurrentPorcServicio =roundedPercentage([ porcentajesHombre[index] , porcentajesMujer[index]],100);
-         porcentajesAcumSexo.push( {
+      let arrCurrentPorcServicio =roundedPercentage([ porcentajesHombre[index] , porcentajesMujer[index]],100);
+     porcentajesAcumSexo.push( {
                         porcHombre: arrCurrentPorcServicio[0],
                         porcMujer : arrCurrentPorcServicio[1]
-           });
-        }
+         });
+       }
     )
 
     //GraficoServiciosUsados
@@ -2393,7 +2392,6 @@ function graficoServiciosUsados(  totalServicios, dataServicio){
     var canvas = document.getElementById("GraficoServiciosUsados");
 
     canvas.height= ( porcentajes.length * 30 );
-
     var data = {
         labels: perfil !==1 && !getParamFromURL('trId') ? dataServicio.map( e => formatLabel(e.trainerNombres,10)) : dataServicio.map( e => formatLabel(e.nombre, 10)),
         datasets: [
@@ -2475,13 +2473,10 @@ function graficoServiciosUsados(  totalServicios, dataServicio){
                 mode: 'nearest',
                 callbacks: {
                     title: function (tooltipItem, data) {
-                        return 'Servicio : ' + dataServicio[tooltipItem[0]['index']].nombre + '( ID: ' + dataServicio[tooltipItem[0]['index']].id  +')';
+                        return 'Servicio : ' + dataServicio[tooltipItem[0]['index']].nombre;
                     },
                     label: function (tooltipItem, data) {
                         return 'Cantidad : ' + dataServicio[tooltipItem['index']].qtyClientes;
-                    },
-                    footer: function (tooltipItem, data) {
-                        return '(Trainer ID : ' + dataServicio[tooltipItem[0]['index']].trainerId  + ')' ;
                     }
                   },
                 displayColors: false,
