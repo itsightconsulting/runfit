@@ -199,7 +199,7 @@ p.masc-age-prom, strong.masc-porc, p.masc-porc-age {
 }
 
 .canal-porc-sexo svg , .tipo-servicio-porc svg{
-  height: 35px;
+  height: 45px;
   fill: #e04c51!important;
 }
 
@@ -285,7 +285,6 @@ p.masc-age-prom, strong.masc-porc, p.masc-porc-age {
   font-family: GothamHTF-Bold;
 }
 
-
 .dv-cond-fisica .fem p.cond-fisica-title{
   color: #FF00EB;
   font-size:18px;
@@ -367,7 +366,7 @@ select{
 }
 
 .tipo-servicio-porc svg{
-    width: 44px;
+    width: 50px;
     fill: #e04c51!important
 }
 

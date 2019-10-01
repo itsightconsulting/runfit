@@ -392,6 +392,8 @@
                 type: 'POST',
                 contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
                 url: _ctx + 'gestion/categoria-plantilla/agregar',
+                blockLoading: false,
+                noOne: true,
                 data: {
                     nombre: nombre,
                     tipo: tipoRutina,
@@ -430,6 +432,8 @@
             contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
             url: _ctx+'gestion/categoria-plantilla/obtener',
             dataType: 'json',
+            blockLoading: false,
+            noOne: true,
             success: (data) =>  {
                 dataCategorias = data;
                 if(dataCategorias.length <= 5){
@@ -458,6 +462,8 @@
                 type: 'PUT',
                 url: _ctx + "gestion/categoria-plantilla/actualizar",
                 contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                blockLoading: false,
+                noOne: true,
                 data: {id: categoriaId, nombre: nombre, tipo: tipoRutina},
                 dataType: 'json',
                 success: (d) => {
@@ -548,6 +554,8 @@
                 url: _ctx + "gestion/categoria-plantilla/eliminar",
                 type: "DELETE",
                 dataType: 'json',
+                blockLoading: false,
+                noOne: true,
                 data: obj,
                 success: function(e) {
                     $(mdlEditarCat).modal('hide');
@@ -704,6 +712,8 @@
                     url: _ctx + "gestion/rutina-plantilla/eliminar",
                     type: "DELETE",
                     dataType: 'json',
+                    blockLoading: false,
+                    noOne: true,
                     data: obj,
                     success: function(e) {
                         obtenerRutinas(categoriaId);
@@ -743,6 +753,8 @@
                 url: _ctx + 'gestion/rutina-plantilla/agregar',
                 dataType:'json',
                 contentType: 'application/json',
+                blockLoading: false,
+                noOne: true,
                 data : JSON.stringify(obj),
                 success: (s) =>{
                     obtenerRutinas(id);
@@ -782,6 +794,8 @@
                 url: _ctx + 'gestion/rutina-plantilla/actualizar',
                 dataType: 'json',
                 contentType: 'application/json',
+                blockLoading: false,
+                noOne: true,
                 data: JSON.stringify(obj),
                 success: (s) => {
                     obtenerRutinas(categoriaId);
