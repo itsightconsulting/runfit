@@ -30,7 +30,6 @@ import java.util.List;
                 @NamedAttributeNode(value = "trainer")}),
         @NamedEntityGraph(name = "rutinaPlantilla"),
 })*/
-
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "fn_validacion_nombre_rutina_plantilla",
                 procedureName = "check_rutina_plant_predisen_existe",

@@ -9,6 +9,7 @@ CREATE OR REPLACE FUNCTION func_rutina_q_by_cliente_id(
                   tipoRutinaId int,
                   fechaInicio date,
                   fechaFin date,
+                  fechaFinPt date,
                   control text,
                   rows int) AS
 $func$
@@ -21,6 +22,7 @@ select
     tipo_rutina_id,
     fecha_inicio fechaInicio,
     fecha_fin fechaFin,
+    fecha_fin_pt fechaFinPt,
     control::text,
     count(*) over()::int as rows
 from rutina
@@ -28,3 +30,4 @@ WHERE cliente_id = $1
 ORDER BY id desc
 LIMIT $2
 $func$ LANGUAGE sql;
+

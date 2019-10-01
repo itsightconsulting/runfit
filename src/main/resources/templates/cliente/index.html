@@ -39,7 +39,7 @@
         <div class="container">
           <header>
             <div class="text-center">
-              <button class="navbar-toggle only_mobile" onclick="showMenuMobile()"><img class="svg" src="img/iconos/icon_hamburger.svg"></button><a class="only_mobile" href="index.html"><img class="logo" src="img/logo.png" alt=""></a>
+              <button class="navbar-toggle only_mobile" onclick="showMenuMobile()"><img class="svg" th:src="@{/img/iconos/icon_hamburger.svg}"></button><a class="only_mobile" th:href="@{/bienvenido}"><img class="logo" th:src="@{/img/logo.png}" alt=""></a>
               <h4 class="user">
                 <img class="svg" th:src="@{/img/iconos/icon_perfil.svg}"><span class="user-full-name"></span><span id="TipoRutina">&nbsp</span></h4>
             </div>
@@ -126,46 +126,8 @@
               <div class="slider-container">
                 <input class="range-slider" type="range" id="range" value="0" name="range" min="0" step="1" max="4">
               </div>
-              <div class="panel-group">
-                <div class="panel panel-default">
-                  <div class="panel-heading">
-                    <h3>parte principal
-                      <div class="mas_menos"><img class="svg" src="img/iconos/icon_menos.svg"><img class="svg" src="img/iconos/icon_mas.svg"></div>
-                    </h3>
-                    <div class="icons"><a data-toggle="collapse" data-parent="#accordion" href="#diario1"><img class="svg arrow" src="img/iconos/icon_flecha2.svg"></a></div>
-                  </div>
-                  <div class="panel-collapse collapse in" id="diario1">
-                    <div class="panel-body"><span class="text_green">1 serie x 20" de recuperación
-                        <div class="icons no_mostrar_mobile"><img class="svg" src="img/iconos/icon_microfono.svg"><img class="svg" src="img/iconos/icon_leyenda.svg"><span><img class="svg" src="img/iconos/icon_tiempo2.svg">20</span></div></span>
-                      <div class="material-diario">
-                        <div class="material">
-                          <div class="content_img"></div>
-                          <div class="content_text">
-                            <div class="title">
-                              <h4><img class="svg" src="img/iconos/icon_microfono.svg">Zarpaso bajo 49mt<span>Alternar</span></h4>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="material">
-                          <div class="content_img"></div>
-                          <div class="content_text">
-                            <div class="title">
-                              <h4><img class="svg" src="img/iconos/icon_microfono.svg">Patero de glúteos 30mt<span>Alternar</span></h4>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="material">
-                          <div class="content_img"></div>
-                          <div class="content_text">
-                            <div class="title">
-                              <h4><img class="svg" src="img/iconos/icon_microfono.svg">Péndulo frontal 15ccp<span>Alternar</span></h4>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <div id="ElementosDia">
+                <!-- ELEMENTOS FROM VISTA SEMANA-->
               </div>
               <hr>
               <div class="col-md-8 no_padding">

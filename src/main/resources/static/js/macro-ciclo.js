@@ -539,8 +539,8 @@ MacroCiclo = (function(){
                     const cantSemExcedentes = ($baseAfterComprobacion.distancia == 10 ? 1 : $baseAfterComprobacion.distancia == 21 ? 2 : 3);
                     const totalSemanas = numSemBase + cantSemExcedentes;
                     const fIni = parseFromStringToDate(document.querySelector('#MacroFechaInicio').value);
-                    let fFin = parseFromStringToDate(document.querySelector('#MacroFechaFin').value);
-                    fFin = parseFromStringToDate2(moment(fFin).add((cantSemExcedentes*7), 'd').format('DD/MM/YYYY'));
+                    const fFin = parseFromStringToDate(document.querySelector('#MacroFechaFin').value);
+                    const fFinIncluyendoPc = parseFromStringToDate2(moment(fFin).add((cantSemExcedentes*7), 'd').format('DD/MM/YYYY'));
 
                     for(let i=0; i<totalSemanas;i++){
                         const refDia = fIni.getDay();
@@ -569,10 +569,11 @@ MacroCiclo = (function(){
                     const r = {};
                     r.fechaInicio = fIni;
                     r.fechaFin = fFin;
-                    r.meses = 4;
-                    r.anios = 0;
+                    r.fechaFinPt = fFinIncluyendoPc;
+                    r.meses = moment(fFin).diff(fIni, 'months');
+                    r.anios = moment(fFin).diff(fIni, 'years');
                     r.totalSemanas = $('#MacroTotalSemanas').text().trim();
-                    r.dias = 200;
+                    r.dias = totalSemanas * 7;
                     r.semanas = $chelmoMacro;
                     r.tipoRutina = 1;
                     r.control = {};

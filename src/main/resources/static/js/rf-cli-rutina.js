@@ -4,6 +4,7 @@ class Rutina {
         this.fechaInicio = obj.fechaInicio instanceof Date ? obj.fechaInicio : parseFromStringToDate2(obj.fechaInicio);
         this.fechaFin = obj.fechaFin instanceof Date ? obj.fechaFin : parseFromStringToDate2(obj.fechaFin);
         this.fechaCliAcceso = obj.fechaCliAcceso instanceof Date ? obj.fechaCliAcceso : parseFromStringToDate2(obj.fechaCliAcceso != null ? obj.fechaCliAcceso : "01/01/2000");
+        this.fechaFinPt = obj.fechaFinPt instanceof Date ? obj.fechaFinPt : parseFromStringToDate2(obj.fechaFinPt);
         this.meses = obj.meses;
         this.anios = obj.anios;
         this.totalSemanas = obj.totalSemanas;
@@ -700,7 +701,7 @@ RutinaGet = (function(){
             const coincidencias = $rutina.semanas.map((v,i)=>{
                 if ((v.fechaInicio.getFullYear() == anio && v.fechaInicio.getMonth()== mes) || (v.fechaFin.getFullYear()== anio && v.fechaFin.getMonth()== mes))
                     return i;
-            })
+            });
             return coincidencias.filter(v=>{return v!=undefined});
         },
         getRegeneracionSemanas: (ini, fin, numSemanas)=>{
@@ -2643,7 +2644,7 @@ RutinaDiaHTML = (function(){
                                 <img class="svg${elemento.nota ? ' svg-color-nota':''}" src="img/iconos/icon_leyenda.svg"/>
                               </div>                            
                               <span>
-                                <img class="svg" src="img/iconos/icon_tiempo2.svg">${"&nbsp;"+elemento.minutos}
+                                <img class="svg" src="img/iconos/icon_tiempo2.svg">${parseNumberToHoursNoExcedent(elemento.minutos, true)}
                               </span>
                               <a data-toggle="collapse" href="#elemento-${ix+''+diaIndex}"><img class="svg arrow" src="img/iconos/icon_flecha2.svg"></a>
                             </div>

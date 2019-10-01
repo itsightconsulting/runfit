@@ -48,13 +48,22 @@
 <th:block th:insert="html-commons/in/left-panel::fg-menu-mob"></th:block>
 <div id="main-content">
     <div id="wrapper">
+        <div class="container">
+            <header>
+                <div class="text-center">
+                    <button class="navbar-toggle only_mobile" onclick="showMenuMobile()"><img class="svg" th:src="@{/img/iconos/icon_hamburger.svg}"></button><a class="only_mobile" th:href="@{/bienvenido}"><img class="logo" th:src="@{/img/logo.png}" alt=""></a>
+                    <h4 class="user">
+                        <img class="svg" th:src="@{/img/iconos/icon_perfil.svg}"><span class="user-full-name"></span><span id="TipoRutina">&nbsp</span></h4>
+                </div>
+            </header>
+        </div>
         <section class="steps">
             <div class="container">
                 <div class="">
                     <div class="col-md-5">
                         <h1>Ficha de<span> Inscripción</span></h1>
                     </div>
-                    <div class="col-md-7 text-right pad-0">
+                    <div class="col-md-7 text-right pad-0" style="margin: 0 -4px">
                         <a href="#"><div class="step step-01" data-num-sheet="1" onclick="next_step_cs(1)">
                             <div class="curve"></div>
                             <p>PASO<span>01</span></p>

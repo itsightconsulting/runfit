@@ -1,12 +1,13 @@
 package com.itsight.configuration;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.util.Optional;
 
 public class CookieExpiryRefresher extends HandlerInterceptorAdapter {
 
@@ -18,9 +19,14 @@ public class CookieExpiryRefresher extends HandlerInterceptorAdapter {
         if(cookies == null){
             return;
         }
+
         for (Cookie cookie : cookies){
             if (cookie.getName().contentEquals("JSESSIONID")){
-                if (cookie.getValue().contentEquals(request.getSession().getId())){
+                Optional<HttpSession> session = Optional.ofNullable(request.getSession(false));
+                if(!session.isPresent()){
+                    break;
+                }
+                if (cookie.getValue().contentEquals(session.get().getId())){
                     cookie.setMaxAge(72000);
                     cookie.setPath("/");
                     response.addCookie(cookie);

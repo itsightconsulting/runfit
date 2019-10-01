@@ -48,7 +48,7 @@ function datepicker_init(minDate, maxDate) {
             });
 
             $('.datepicker_inline').on('dp.error', function (e) {
-                console.info(e);
+                console.warn(e);
             })
 
             $('.datepicker_inline').on('dp.change', function (e) {
@@ -61,7 +61,7 @@ function datepicker_init(minDate, maxDate) {
                         //Importante mantener el orden para el correcto funcionamiento
                         $rutina.semanas[semanaIndex] = new Semana(sem);
                         $rutina.initEspecificoDesdeRutina(semanaIndex);
-                        vistaSemana(sem);
+                        vistaSemana(sem, semanaIndex);
                         setTimeout(  () => {
                             imgToSvg();
                             document.querySelector('a[data-parent="#panel_days"]').click();
