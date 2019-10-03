@@ -110,9 +110,8 @@ public class RutinaPlantilla extends AuditingEntity implements Identifiable {
     @JsonIgnoreProperties
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn( name = "CategoriaPlantillaId" , referencedColumnName =  "CategoriaPlantillaId")
-    private CategoriaPlantilla categoriaPlantilla;
-
+    @JoinColumn( name = "SubCategoriaPlantillaId" , referencedColumnName =  "SubCategoriaPlantillaId")
+    private SubCategoriaPlantilla subCategoriaPlantilla;
 
     @JsonBackReference
     @ManyToOne

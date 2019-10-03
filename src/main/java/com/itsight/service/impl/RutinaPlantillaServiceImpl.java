@@ -2,9 +2,7 @@ package com.itsight.service.impl;
 
 import com.itsight.advice.CustomValidationException;
 import com.itsight.domain.*;
-import com.itsight.domain.dto.DiaPlantillaDTO;
 import com.itsight.domain.dto.RutinaPlantillaDTO;
-import com.itsight.domain.dto.SemanaPlantillaDTO;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.RutinaPlantillaRepository;
 import com.itsight.service.*;
@@ -21,7 +19,6 @@ import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import static com.itsight.util.Enums.Msg.NOMBRE_CATEGORIA_PLANTILLA_REPETIDO;
 import static com.itsight.util.Enums.Msg.NOMBRE_RUTINA_PLANTILLA_REPETIDO;
 import static com.itsight.util.Enums.ResponseCode.*;
 
@@ -147,17 +144,17 @@ public class RutinaPlantillaServiceImpl extends BaseServiceImpl<RutinaPlantillaR
     public String agregarRutinaPrediseñada(RutinaPlantillaDTO rutinaPlantillaDTO) throws CustomValidationException {
 
         String rutinaNombre = rutinaPlantillaDTO.getNombre();
-        Integer categoriaId = rutinaPlantillaDTO.getCategoriaPlantilla();
-        if (!repository.findNombreRutinaPlantExiste(rutinaNombre, categoriaId)) {
+        Integer subcategoriaId = rutinaPlantillaDTO.getSubCategoriaPlantilla();
+        if (!repository.findNombreRutinaPlantExiste(rutinaNombre, subcategoriaId)) {
 
             RutinaPlantilla objRp = new RutinaPlantilla();
             //Pasando del Dto al objeto
-            CategoriaPlantilla cP = new CategoriaPlantilla();
-            cP = categoriaPlantillaService.findOne(categoriaId);
+           // SubCategoriaPlantilla cP = new SubCategoriaPlantilla();
+           // cP = categoriaPlantillaService.findOne(categoriaId);
             BeanUtils.copyProperties(rutinaPlantillaDTO, objRp);
 
             Rutina objR = new Rutina();
-            objRp.setCategoriaPlantilla(cP);
+         //   objRp.setSubCategoriaPlantilla(null);
 
             objRp.setForest(3);
 
@@ -223,7 +220,7 @@ public class RutinaPlantillaServiceImpl extends BaseServiceImpl<RutinaPlantillaR
     @Override
     public List<RutinaPlantillaDTO> listarRutinasPredByCatId(Integer categoriaId) {
 
-        return repository.findByCategoriaId(categoriaId);
+        return repository.findBySubCategoriaId(categoriaId);
     }
 
     @Override

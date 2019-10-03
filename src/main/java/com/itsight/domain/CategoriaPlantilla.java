@@ -54,6 +54,6 @@ public class CategoriaPlantilla extends AuditingEntity {
 
   @JsonBackReference
   @OneToMany(fetch =  FetchType.LAZY , mappedBy = "categoriaPlantilla", orphanRemoval = true)
-  private List<RutinaPlantilla> lstRutinaPlantilla;
+  private List<SubCategoriaPlantilla> lstSubCategoriaPlantilla;
 
 }

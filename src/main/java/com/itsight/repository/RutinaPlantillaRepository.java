@@ -20,8 +20,8 @@ public interface RutinaPlantillaRepository extends JpaRepository<RutinaPlantilla
     List<RutinaPlantilla> findByTrainerIdOrderByIdDesc(Integer trainerId);
 */
 
-    @Query("SELECT NEW com.itsight.domain.dto.RutinaPlantillaDTO(R.id,R.nombre, R.totalSemanas, R.dias) FROM RutinaPlantilla R WHERE R.categoriaPlantilla.id= ?1")
-    List<RutinaPlantillaDTO> findByCategoriaId (Integer categoriaId);
+    @Query("SELECT NEW com.itsight.domain.dto.RutinaPlantillaDTO(R.id,R.nombre, R.totalSemanas, R.dias) FROM RutinaPlantilla R WHERE R.subCategoriaPlantilla.id= ?1")
+    List<RutinaPlantillaDTO> findBySubCategoriaId(Integer subCategoriaId);
 
     @Procedure(name = "fn_validacion_nombre_rutina_plantilla")
     Boolean findNombreRutinaPlantExiste(@Param("_nom_rutina") String nombre,  @Param("_cat_id") Integer categoriaId);

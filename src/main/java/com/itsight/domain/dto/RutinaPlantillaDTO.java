@@ -28,7 +28,7 @@ public class RutinaPlantillaDTO implements Serializable {
     private int meses;
     private int totalSemanas;
     private int dias;
-    private int categoriaPlantilla;
+    private int subCategoriaPlantilla;
 
 //  private List<SemanaPlantillaDTO> semanas;
 

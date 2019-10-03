@@ -142,11 +142,11 @@ function carouselPlanElegido() {
 
 }
 
-function carouselPlanes() {
+function carouselCategoriaPlantilla() {
     $(document).ready(function() {
-        var owl = $("#planesCarousel"),
+        var owl = $("#categoriaPlantillaCarousel"),
             // rangeArr = [],
-            inputType =$("input[type=range]");
+            inputType =$("section#listaCategoria input[type=range]");
         //Si no existe ese id no ejecutamos el resto
         if(!owl[0]){
             return;
@@ -185,10 +185,10 @@ function carouselPlanes() {
           });
 
 
-        $(".flechas .pull-left").click(function() {
+        $("section#listaCategoria .flechas .pull-left").click(function() {
             owl.trigger("next.owl.carousel");
         });
-        $(".flechas .pull-right").on("click", function() {
+        $("section#listaCategoria .flechas .pull-right").on("click", function() {
             owl.trigger("prev.owl.carousel");
         });
 
@@ -203,6 +203,69 @@ function carouselPlanes() {
         });
       });
 }
+
+function carouselSubCategoriaPlantilla() {
+    $(document).ready(function() {
+        var owl = $("#subCategoriaPlantillaCarousel"),
+            // rangeArr = [],
+            inputType =$("section#listaSubCategoria input[type=range]");
+        //Si no existe ese id no ejecutamos el resto
+        if(!owl[0]){
+            return;
+        }
+        owl.owlCarousel({
+            loop: false,
+            margin: 10,
+            nav:true,
+            dots:true,
+            stagePadding: 50,
+            'responsive': {
+                0: {
+                    items: 1,
+                    slideBy: 1
+
+                },
+                600: {
+                    items: 3,
+                    slideBy: 1
+
+                },
+                1280: {
+                    items: 5,
+                    slideBy: 1
+
+
+                }
+            }
+        });
+        //   function getIndex(event) {
+
+        //   }
+        owl.on('changed.owl.carousel', function(event) {
+            inputType.val(event.item.index);
+
+        });
+
+
+        $("section#listaSubCategoria .flechas .pull-left").click(function() {
+            owl.trigger("next.owl.carousel");
+        });
+        $("section#listaSubCategoria .flechas .pull-right").on("click", function() {
+            owl.trigger("prev.owl.carousel");
+        });
+
+        $("input").on("change", function(e) {
+            e.preventDefault();
+            console.log(inputType.val());
+            // console.log(e.item.index);
+            // FIGURE OUT HOW TO GET CAROUSEL INDEX
+
+            $('.owl-carousel').trigger('to.owl.carousel', [inputType.val(),1,true]);
+
+        });
+    });
+}
+
 
 function carouselSuspendidos() {
   $('#carouselSuspendidos').owlCarousel({
@@ -235,7 +298,8 @@ function select_fave () {
 $(function() {
     imgToSvg();
     openNav();
-    carouselPlanes();
+    carouselCategoriaPlantilla();
+    carouselSubCategoriaPlantilla();
     carouselPlanElegido();
     carouselSuspendidos();
     //fancybox();
