@@ -139,21 +139,43 @@ function visualizarElementoDiaInVistaSemana(divEle, dIx){
                     </div>
                     <div class="panel-collapse collapse in" id="diario${sIx}-${dIx}-${i}">
                       ${!e.subElementos ? 
-                            '':
-                        e.subElementos.map(se=>
-                          `<div class="panel-body"><span class="text_green">1 serie x 20" de recuperación
-                              <div class="icons no_mostrar_mobile"><img class="svg" src="${_ctx}img/iconos/icon_microfono.svg"><img class="svg" src="${_ctx}img/iconos/icon_leyenda.svg"><span><img class="svg" src="${_ctx}img/iconos/icon_tiempo2.svg">20</span></div></span>
-                              <div class="material-diario">
-                                <div class="material">
-                                  <div class="content_img"></div>
-                                  <div class="content_text">
-                                    <div class="title">
-                                      <h4><img class="svg" src="${_ctx}img/iconos/icon_microfono.svg">${se.nombre}<span>Alternar</span></h4>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                          </div>`).join('')
+                           '':
+                           `<div class="panel-body">
+                                      <span class="text_green">1 serie x 20" de recuperación
+                                          <div class="icons no_mostrar_mobile">
+                                            <img class="svg" src="${_ctx}img/iconos/icon_microfono.svg">
+                                            <img class="svg" src="${_ctx}img/iconos/icon_leyenda.svg">
+                                            <span>
+                                                <img class="svg" src="${_ctx}img/iconos/icon_tiempo2.svg">20
+                                            </span>
+                                          </div>
+                          </span>`+e.subElementos.map(se=>{
+                                          const tsubEle = se.tipo;
+                                          const mediaVideo = se.mediaVideo;
+                                          const checkMediaVideo = mediaVideo ? true : false;
+                                          let thumbnail = "";
+                                          let checkThumbnail = false;
+                                          if(checkMediaVideo){
+                                              thumbnail = mediaVideo.split("&tn=")[1];
+                                              checkThumbnail = thumbnail.length > 36;
+                                              if(checkThumbnail){
+                                                  thumbnail = `https://s3-us-west-2.amazonaws.com/rf-media-rutina/video/${mediaVideo.split("/")[1]+'/'+thumbnail}`
+                                              }
+                                          }
+                                          if(tsubEle !=  2){
+                                              return ``
+                                          }
+                                          return `<div class="material-diario">
+                                                    <div class="material">
+                                                      <div class="content_img" style="${!checkThumbnail ? '' : 'background: url('+thumbnail+') no-repeat center;background-size: cover;'}"></div>
+                                                      <div class="content_text">
+                                                        <div class="title">
+                                                          <h4><img class="svg" src="${_ctx}img/iconos/icon_microfono.svg">${se.nombre}<span>Alternar</span></h4>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>`
+                          }).join('')
                       }
                     </div>
                   </div>
@@ -331,20 +353,20 @@ function vistaSemana(data, sIx) {
 
             if(timessemit>1){
                 $('#carousel-semanal').trigger('add.owl.carousel',
-                    htmlStringToElement(`
-                            <div class="item item-carusel-semana" data-six="${i}">
-                              <div class="title">${dato.diaLiteral}</div>
-                              <div class="body-card">
-                                <div class="dias">${finalRemainMessage}<img class="svg" src="img/iconos/icon_ayuda.svg"></div>
-                                <ul>
-                                  <li><img class="svg" src="${_ctx}img/iconos/icon_programas.svg">Carrera<img class="svg help" src="${_ctx}img/iconos/icon_ayuda.svg"></li>
-                                  <li><img class="svg" src="${_ctx}img/iconos/icon_temporada.svg">Fuerza<img class="svg help" src="${_ctx}img/iconos/icon_ayuda.svg"></li>
-                                  <li><img class="svg" src="${_ctx}img/iconos/icon_cronometro.svg">${parseNumberToHoursNoExcedent(dato.minutos, 0)}<img class="svg help" src="${_ctx}img/iconos/icon_ayuda.svg"></li>
-                                  <li><img class="svg" src="${_ctx}img/iconos/icon_km.svg">${dato.distancia}<img class="svg help" src="${_ctx}img/iconos/icon_ayuda.svg"></li>
-                                </ul>
-                                ${data}
-                              </div>
-                            </div>`
+                    htmlStringToElement(
+                           `<div class="item item-carusel-semana" data-six="${i}">
+                                      <div class="title">${dato.diaLiteral}</div>
+                                      <div class="body-card">
+                                        <div class="dias">${finalRemainMessage}<img class="svg" src="img/iconos/icon_ayuda.svg"></div>
+                                        <ul>
+                                          <li><img class="svg" src="${_ctx}img/iconos/icon_programas.svg">Carrera<img class="svg help" src="${_ctx}img/iconos/icon_ayuda.svg"></li>
+                                          <li><img class="svg" src="${_ctx}img/iconos/icon_temporada.svg">Fuerza<img class="svg help" src="${_ctx}img/iconos/icon_ayuda.svg"></li>
+                                          <li><img class="svg" src="${_ctx}img/iconos/icon_cronometro.svg">${parseNumberToHoursNoExcedent(dato.minutos, 0)}<img class="svg help" src="${_ctx}img/iconos/icon_ayuda.svg"></li>
+                                          <li><img class="svg" src="${_ctx}img/iconos/icon_km.svg">${dato.distancia}<img class="svg help" src="${_ctx}img/iconos/icon_ayuda.svg"></li>
+                                        </ul>
+                                        ${data}
+                                      </div>
+                                    </div>`
                     )
                 );
             } else {
@@ -429,12 +451,11 @@ function showSubElementos(dato) {
                     </li>
                 `);
             } else {
-                texto= texto.concat(`
-                    <li>
+                texto= texto.concat(
+                    `<li>
                         <img class="svg" src="img/iconos/icon_microfono.svg">
                       <p class="title">${dato.nombre}<span>${dato.nota ? dato.nota : ""}</span></p>
-                    </li>
-                `);
+                    </li>`);
             }
         });
     }

@@ -20,7 +20,6 @@ public interface VideoService extends BaseService<Video, Integer> {
 
     VideoPOJO obtenerFullById(Integer id);
 
-
     String addClienteServicio(Integer clienteId, Integer videoId);
 
     String deleteClienteServicio(Integer clienteId, Integer videoId);

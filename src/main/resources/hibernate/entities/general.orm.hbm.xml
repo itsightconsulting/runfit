@@ -14,6 +14,7 @@
                    v.peso,
                    v.duracion,
                    v.uuid,
+                   v.thumbnail,
                    v.flag_activo flagActivo,
                    scv.sub_categoria_video_id subCatVideoId,
                    scv.nombre nombreSubCat,
@@ -32,6 +33,7 @@
             <column name="peso" class="java.lang.String"/>
             <column name="duracion" class="java.lang.String"/>
             <column name="uuid" class="java.lang.String"/>
+            <column name="thumbnail" class="java.lang.String"/>
             <column name="flagActivo" class="java.lang.Boolean"/>
             <column name="subCatVideoId" class="java.lang.Integer"/>
             <column name="nombreSubCat" class="java.lang.String"/>

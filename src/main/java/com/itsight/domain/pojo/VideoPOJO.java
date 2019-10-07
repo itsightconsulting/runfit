@@ -34,13 +34,14 @@ public class VideoPOJO {
 
     public VideoPOJO(){}
 
-    public VideoPOJO(Integer id, String nombre, String rutaWeb, String peso, String duracion, String uuid, Boolean flagActivo, Integer subCatVideoId, String nombreSubCat, Integer catVideoId) {
+    public VideoPOJO(Integer id, String nombre, String rutaWeb, String peso, String duracion, String uuid, String thumbnail, Boolean flagActivo, Integer subCatVideoId, String nombreSubCat, Integer catVideoId) {
         this.id = id;
         this.nombre = nombre;
         this.rutaWeb = rutaWeb;
         this.peso = peso;
         this.duracion = duracion;
         this.uuid = uuid;
+        this.thumbnail = thumbnail;
         this.flagActivo = flagActivo;
         this.subCatVideoId = subCatVideoId;
         this.nombreSubCat = nombreSubCat;

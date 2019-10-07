@@ -522,24 +522,24 @@ RutinaOpc = (function(){
         },
         colapsarAll: ()=>{
             Array.from(RutinaDOMQueries.getAllElementosCollapse()).forEach(e=>{
-                e.classList.remove('collapsed')
+                e.classList.remove('collapsed');
                 e.setAttribute('aria-expanded', "true");
             });
 
             Array.from(RutinaDOMQueries.getAllPanelElementosCollapse()).forEach(e=>{
-                e.classList.add('in')
+                e.classList.add('in');
                 e.setAttribute('aria-expanded', "false");
                 e.style = '';
             });
         },
         comprimirAll: ()=>{
             Array.from(RutinaDOMQueries.getAllElementosCollapse()).forEach(e=>{
-                e.classList.add('collapsed')
+                e.classList.add('collapsed');
                 e.setAttribute('aria-expanded', "false");
             });
 
             Array.from(RutinaDOMQueries.getAllPanelElementosCollapse()).forEach(e=>{
-                e.classList.remove('in')
+                e.classList.remove('in');
                 e.setAttribute('aria-expanded', "false");
             });
         },
@@ -2666,39 +2666,39 @@ RutinaDiaHTML = (function(){
                 return '<h6>No tiene sub elementos</h6>';
             }
             return subElementos.map((subEle) =>{
-                    const mediaVideo = subEle.mediaVideo;
-                    const checkMediaVideo = mediaVideo ? true : false;
-                    let thumbnail = "";
-                    let checkThumbnail = false;
-                    if(checkMediaVideo){
-                        thumbnail = mediaVideo.split("&tn=")[1];
-                        checkThumbnail = thumbnail.length > 36;
-                        if(checkThumbnail){
-                            thumbnail = `https://s3-us-west-2.amazonaws.com/rf-media-rutina/video/${mediaVideo.split("/")[1]+'/'+thumbnail}`
-                        }
+                const mediaVideo = subEle.mediaVideo;
+                const checkMediaVideo = mediaVideo ? true : false;
+                let thumbnail = "";
+                let checkThumbnail = false;
+                if(checkMediaVideo){
+                    thumbnail = mediaVideo.split("&tn=")[1];
+                    checkThumbnail = thumbnail.length > 36;
+                    if(checkThumbnail){
+                        thumbnail = `https://s3-us-west-2.amazonaws.com/rf-media-rutina/video/${mediaVideo.split("/")[1]+'/'+thumbnail}`
                     }
+                }
 
-                    return `${!checkMediaVideo && !subEle.mediaAudio ?
+                return `${!checkMediaVideo && !subEle.mediaAudio ?
+                        `<li>
+                            <a>
+                              <p class="title">${subEle.nombre}<span>${subEle.nota ? subEle.nota : "&nbsp;"}</span></p>
+                            </a>
+                        </li>` : checkMediaVideo ?
                             `<li>
-                                <a>
-                                  <p class="title">${subEle.nombre}<span>${subEle.nota ? subEle.nota : "&nbsp;"}</span></p>
-                                </a>
-                            </li>` : checkMediaVideo ?
-                                `<li>
-                                <img  data-width="640" data-height="360"
-                                    data-fancybox="gallery-${diaIndex}-${eleIndex}" 
-                                    href="https://s3-us-west-2.amazonaws.com/rf-media-rutina/video${mediaVideo}" 
-                                    class="svg ico-video ico" src="${_ctx}img/iconos/icon_videoteca.svg"
-                                    data-thumbnail-src="${checkThumbnail ? thumbnail : ""}"/>
-                                <a>
-                                  <p class="title">${subEle.nombre}<span>${subEle.nota ? subEle.nota : "&nbsp;"}</span></p>
-                                </a>
-                            </li>`
-                                : `<li>
-                                <img class="svg ico-video ico" src="img/iconos/icon_microfono.svg">
-                                <p class="title">${subEle.nombre}<span>${subEle.nota}</span></p>
-                           </li>`
-                            }`
+                            <img  data-width="640" data-height="360"
+                                data-fancybox="gallery-${diaIndex}-${eleIndex}" 
+                                href="https://s3-us-west-2.amazonaws.com/rf-media-rutina/video${mediaVideo}" 
+                                class="svg ico-video ico" src="${_ctx}img/iconos/icon_videoteca.svg"
+                                data-thumbnail-src="${checkThumbnail ? thumbnail : ""}"/>
+                            <a>
+                              <p class="title">${subEle.nombre}<span>${subEle.nota ? subEle.nota : "&nbsp;"}</span></p>
+                            </a>
+                        </li>`
+                            : `<li>
+                            <img class="svg ico-video ico" src="img/iconos/icon_microfono.svg">
+                            <p class="title">${subEle.nombre}<span>${subEle.nota}</span></p>
+                       </li>`
+                        }`
             }).join('');
         }
     }
