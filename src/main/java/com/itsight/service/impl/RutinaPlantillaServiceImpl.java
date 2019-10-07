@@ -26,7 +26,7 @@ import static com.itsight.util.Enums.ResponseCode.*;
 @Transactional
 public class RutinaPlantillaServiceImpl extends BaseServiceImpl<RutinaPlantillaRepository> implements RutinaPlantillaService {
 
-    CategoriaPlantillaService categoriaPlantillaService;
+    SubCategoriaPlantillaService subCategoriaPlantillaService;
     RutinaService rutinaService;
     SemanaService semanaService;
     DiaService diaService;
@@ -35,10 +35,10 @@ public class RutinaPlantillaServiceImpl extends BaseServiceImpl<RutinaPlantillaR
     private EntityManager entityManager;
 
     @Autowired
-    public RutinaPlantillaServiceImpl(RutinaPlantillaRepository repository, CategoriaPlantillaService categoriaPlantillaService,
+    public RutinaPlantillaServiceImpl(RutinaPlantillaRepository repository, SubCategoriaPlantillaService subCategoriaPlantillaService,
                                       RutinaService rutinaService, EntityManager entityManager, SemanaService semanaService, DiaService diaService, RedFitnessService redFitnessService) {
         super(repository);
-        this.categoriaPlantillaService = categoriaPlantillaService;
+        this.subCategoriaPlantillaService = subCategoriaPlantillaService;
         this.rutinaService = rutinaService;
         this.entityManager = entityManager;
         this.semanaService = semanaService;
@@ -149,12 +149,12 @@ public class RutinaPlantillaServiceImpl extends BaseServiceImpl<RutinaPlantillaR
 
             RutinaPlantilla objRp = new RutinaPlantilla();
             //Pasando del Dto al objeto
-           // SubCategoriaPlantilla cP = new SubCategoriaPlantilla();
-           // cP = categoriaPlantillaService.findOne(categoriaId);
+            SubCategoriaPlantilla sCP = new SubCategoriaPlantilla();
+            sCP = subCategoriaPlantillaService.findOne(subcategoriaId);
             BeanUtils.copyProperties(rutinaPlantillaDTO, objRp);
 
             Rutina objR = new Rutina();
-         //   objRp.setSubCategoriaPlantilla(null);
+            objRp.setSubCategoriaPlantilla(sCP);
 
             objRp.setForest(3);
 
@@ -297,7 +297,6 @@ public class RutinaPlantillaServiceImpl extends BaseServiceImpl<RutinaPlantillaR
                         dia.setSemana(sem);
 
                         diaService.save(dia);
-
                         indexDia++;
                     }
 

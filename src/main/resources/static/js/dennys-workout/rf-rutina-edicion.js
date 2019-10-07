@@ -1467,7 +1467,6 @@ function principalesEventosClickRutina(e) {
     }
     else if(clases.contains('in-ele-dia-esp-pos')){
         if(validUUID($mediaAudio) || validUUID($mediaVideo)){
-            alert("xd");
             const valor = $mediaNombre;
             let ixs = RutinaIx.getIxsForElemento(input);
             let tempElemento = RutinaDOMQueries.getPreElementoByIxs(ixs);

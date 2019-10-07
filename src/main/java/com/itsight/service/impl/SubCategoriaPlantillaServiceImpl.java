@@ -97,7 +97,7 @@ public class SubCategoriaPlantillaServiceImpl extends BaseServiceImpl<SubCategor
 
     @Override
     public SubCategoriaPlantilla findOne(Integer id) {
-        return null;
+        return repository.findById(id).orElse(null);
     }
 
     @Override

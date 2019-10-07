@@ -743,19 +743,24 @@ a.star:hover .svg, a.star.selected .svg {
 .table.table-trainer.table-bordered > thead > tr > td, .table-bordered > thead > tr > th {
     border: 1px solid #525056; }
 
-#categoriaPlantillaCarousel, #planElegido {
+#categoriaPlantillaCarousel, #planElegido, #subCategoriaPlantillaCarousel {
     margin-top: 22px; }
-#categoriaPlantillaCarousel .owl-stage-outer, #planElegido .owl-stage-outer {
+#categoriaPlantillaCarousel .owl-stage-outer, #planElegido .owl-stage-outer,
+#subCategoriaPlantillaCarousel .owl-stage-outer {
     overflow: initial; }
-#categoriaPlantillaCarousel .owl-item, #planElegido .owl-item {
+#categoriaPlantillaCarousel .owl-item, #planElegido .owl-item,
+#subCategoriaPlantillaCarousel .owl-item {
     -webkit-box-shadow: 0px 5px 13px -3px rgba(0, 0, 0, 0.3);
     -moz-box-shadow: 0px 5px 13px -3px rgba(0, 0, 0, 0.3);
     box-shadow: 0px 5px 13px -3px rgba(0, 0, 0, 0.3);
     border-radius: 7px;
     overflow: auto; }
-#categoriaPlantillaCarousel .owl-item .item, #planElegido .owl-item .item {
+#categoriaPlantillaCarousel .owl-item .item, #planElegido .owl-item .item,
+#subCategoriaPlantillaCarousel .owl-item .item {
     background-color: #fff; }
-#categoriaPlantillaCarousel .owl-item .item .item-header, #planElegido .owl-item .item .item-header {
+#categoriaPlantillaCarousel .owl-item .item .item-header, #planElegido .owl-item .item .item-header,
+#subCategoriaPlantillaCarousel .owl-item .item .item-header
+ {
     background-color: #1d2030;
     padding: 12px 8px;
     -webkit-box-shadow: 0px 5px 13px -3px rgba(0, 0, 0, 0.5);
@@ -764,48 +769,58 @@ a.star:hover .svg, a.star.selected .svg {
     text-align: center;
     text-transform: uppercase;
     height: 66px; }
-#categoriaPlantillaCarousel .owl-item .item .item-header a, #planElegido .owl-item .item .item-header a {
+#categoriaPlantillaCarousel .owl-item .item .item-header a, #planElegido .owl-item .item .item-header a,
+#subCategoriaPlantillaCarousel .owl-item .item .item-header a   {
     display: inline-block;
     float: right; }
-#categoriaPlantillaCarousel .owl-item .item .item-header a .svg, #planElegido .owl-item .item .item-header a .svg {
+#categoriaPlantillaCarousel .owl-item .item .item-header a .svg, #planElegido .owl-item .item .item-header a .svg,
+#subCategoriaPlantillaCarousel .owl-item .item .item-header a .svg {
     float: right;
     fill: #9d9d9d;
     height: 20px; }
-#categoriaPlantillaCarousel .owl-item .item .item-header a.star, #planElegido .owl-item .item .item-header a.star {
+#categoriaPlantillaCarousel .owl-item .item .item-header a.star, #planElegido .owl-item .item .item-header a.star,
+#subCategoriaPlantillaCarousel .owl-item .item .item-header a.star {
     float: left; }
-#categoriaPlantillaCarousel .owl-item .item .item-header strong, #planElegido .owl-item .item .item-header strong {
+#categoriaPlantillaCarousel .owl-item .item .item-header strong, #planElegido .owl-item .item .item-header strong,
+#subCategoriaPlantillaCarousel .owl-item .item .item-header strong {
     font-family: GothamHTF-Book;
     color: #daffc6;
     font-size: 48px;
     line-height: 1; }
-#categoriaPlantillaCarousel .owl-item .item .item-header span, #planElegido .owl-item .item .item-header span {
+#categoriaPlantillaCarousel .owl-item .item .item-header span, #planElegido .owl-item .item .item-header span,
+#subCategoriaPlantillaCarousel .owl-item .item .item-header span{
     font-family: GothamHTF-Light;
     font-size: 16px;
     line-height: 1.5;
     color: #daffc6; }
-#categoriaPlantillaCarousel .owl-item .item .item-body, #planElegido .owl-item .item .item-body {
+#categoriaPlantillaCarousel .owl-item .item .item-body, #planElegido .owl-item .item .item-body,
+#subCategoriaPlantillaCarousel .owl-item .item .item-body {
     text-align: center;
     padding: 35px; }
-#categoriaPlantillaCarousel .owl-item .item .item-body .svg, #planElegido .owl-item .item .item-body .svg {
+#categoriaPlantillaCarousel .owl-item .item .item-body .svg, #planElegido .owl-item .item .item-body .svg,
+#subCategoriaPlantillaCarousel .owl-item .item .item-body .svg {
     width: 90px;
     height: 100px;
     fill: #1d2030;
     display: block;
     margin: auto; }
-#categoriaPlantillaCarousel .owl-item .item .item-body a, #planElegido .owl-item .item .item-body a {
+#categoriaPlantillaCarousel .owl-item .item .item-body a, #planElegido .owl-item .item .item-body a,
+#subCategoriaPlantillaCarousel .owl-item .item .item-body a{
     font-size: 12px;
     margin-top: 35px;
     color: #9d9d9d;
     display: inline-block;
     text-decoration: none;
     cursor: pointer; }
-#categoriaPlantillaCarousel .owl-item .item .item-body a .svg, #planElegido .owl-item .item .item-body a .svg {
+#categoriaPlantillaCarousel .owl-item .item .item-body a .svg, #planElegido .owl-item .item .item-body a .svg,
+#subCategoriaPlantillaCarousel .owl-item .item .item-body a .svg{
     width: 11px;
     height: 11px;
     fill: #9d9d9d;
     margin-right: 5px;
     display: inline-block; }
-#categoriaPlantillaCarousel .owl-item:hover, #categoriaPlantillaCarousel .owl-item.selected, #planElegido .owl-item:hover, #planElegido .owl-item.selected {
+#categoriaPlantillaCarousel .owl-item:hover, #categoriaPlantillaCarousel .owl-item.selected, #planElegido .owl-item:hover, #planElegido .owl-item.selected,
+#subCategoriaPlantillaCarousel .owl-item:hover {
     -webkit-transition: all 200ms ease-in;
     -webkit-transform: scale(1.1);
     -ms-transition: all 200ms ease-in;
@@ -815,22 +830,38 @@ a.star:hover .svg, a.star.selected .svg {
     transition: all 200ms ease-in;
     transform: scale(1.1);
     z-index: 2; }
-#categoriaPlantillaCarousel .owl-item:hover .item-header strong, #categoriaPlantillaCarousel .owl-item:hover .item-header span, #categoriaPlantillaCarousel .owl-item.selected .item-header strong, #categoriaPlantillaCarousel .owl-item.selected .item-header span, #planElegido .owl-item:hover .item-header strong, #planElegido .owl-item:hover .item-header span, #planElegido .owl-item.selected .item-header strong, #planElegido .owl-item.selected .item-header span {
+#categoriaPlantillaCarousel .owl-item:hover .item-header strong,
+#categoriaPlantillaCarousel .owl-item:hover .item-header span,
+#categoriaPlantillaCarousel .owl-item.selected .item-header strong,
+#categoriaPlantillaCarousel .owl-item.selected .item-header span,
+#planElegido .owl-item:hover .item-header strong,
+#planElegido .owl-item:hover .item-header span,
+#planElegido .owl-item.selected .item-header strong,
+#planElegido .owl-item.selected .item-header span,
+#subCategoriaPlantillaCarousel .owl-item:hover .item-header strong,
+#subCategoriaPlantillaCarousel .owl-item:hover .item-header span,
+#subCategoriaPlantillaCarousel .owl-item.selected .item-header strong,
+#subCategoriaPlantillaCarousel .owl-item.selected .item-header span {
     color: #a8fa00; }
-#categoriaPlantillaCarousel .owl-nav, #planElegido .owl-nav {
+#categoriaPlantillaCarousel .owl-nav, #planElegido .owl-nav,
+#subCategoriaPlantillaCarousel .owl-nav {
     top: -210px; }
-#categoriaPlantillaCarousel .owl-nav .owl-prev, #planElegido .owl-nav .owl-prev {
+#categoriaPlantillaCarousel .owl-nav .owl-prev, #planElegido .owl-nav .owl-prev,
+#subCategoriaPlantillaCarousel .owl-nav .owl-prev {
     background: url(/img/arrow-left2.png) no-repeat center;
     margin-right: 34%; }
-#categoriaPlantillaCarousel .owl-nav .owl-next, #planElegido .owl-nav .owl-next {
+#categoriaPlantillaCarousel .owl-nav .owl-next, #planElegido .owl-nav .owl-next ,
+#subCategoriaPlantillaCarousel .owl-nav .owl-next{
     background: url(/img/arrow-right2.png) no-repeat center; }
-#categoriaPlantillaCarousel .owl-dots, #planElegido .owl-dots {
+#categoriaPlantillaCarousel .owl-dots, #planElegido .owl-dots,
+#subCategoriaPlantillaCarousel .owl-dots{
     text-align: center;
     position: absolute;
     top: -156px;
     left: 0;
     right: 0;
-    margin: auto; }
+    margin: auto;
+}
 
 .shadow-gris {
     background: url(/img/shadow_gris.png) no-repeat center;
@@ -865,7 +896,7 @@ section#info .search input, section#info select {
     border: 1px solid #ddd !important;
     border-radius: 10px;
     box-shadow: none !important; }
-section#info h1.title_big {
+section#info h1.title_big, section#listaSubCategoria h1.title_big  {
     max-width: 500px;
     margin: 0 auto 65px;
     word-break: break-word;

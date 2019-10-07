@@ -1461,9 +1461,9 @@ DiaOpc = (function(){
                 const numSem = $semActual.textContent-1;
                 const totDis = DiaFunc.obtenerTotalKmsDia(diaIndex), totMin = DiaFunc.obtenerTotalMinutosDia(diaIndex);
                 const nuevasCalorias = DiaFunc.obtenerKilometrajeFromEleSeleccionados(eleFinales);
-               // RutinaSet.setDiaDistanciaTotal(numSem, diaIndex, totDis);
-              // RutinaSet.setDiaTiempoTotal(numSem, diaIndex, totMin);
-              //  RutinaSet.setAddDiaCalorias(numSem, diaIndex, nuevasCalorias);
+                RutinaSet.setDiaDistanciaTotal(numSem, diaIndex, totDis);
+                 RutinaSet.setDiaTiempoTotal(numSem, diaIndex, totMin);
+                RutinaSet.setAddDiaCalorias(numSem, diaIndex, nuevasCalorias);
                 const diaHTML =  RutinaDOMQueries.getDiaByIx(diaIndex);
                 diaHTML.querySelector(`.distancia-total`).textContent = parseNumberToDecimal(totDis, 2);
                 diaHTML.querySelector(`.horas-totales`).textContent = parseNumberToHours(totMin);
@@ -2461,9 +2461,10 @@ RutinaElementoHTML = (function(){
             return `<div class="ong reprod-audio" rel="tooltip" data-media="${mediaAudio}" data-original-title="Audio"></div>`;
         },
         adjuntarElementos: (diaIndex, elementos)=>{
-            
+
+            debugger
             const listaDiv = RutinaDOMQueries.getDivListaDiaByIxs({diaIndex: diaIndex});
-            listaDiv.children.length==0?listaDiv.parentElement.querySelector('.inputs-init').classList.toggle('hidden'):'';
+           // listaDiv.children.length==0?listaDiv.parentElement.querySelector('.inputs-init').classList.toggle('hidden'):'';
             elementos.forEach(e=>{
                 listaDiv.appendChild(htmlStringToElement(e.tipo == 1 ? RutinaElementoHTML.elementoSimplePaste(e, diaIndex) : RutinaElementoHTML.elementoCompuestoPaste(e, diaIndex)));
             });
@@ -2501,8 +2502,8 @@ RutinaElementoHTML = (function(){
                 $subEleElegidos = [];
             }
 
-            instanciarSubElementosTooltip(divSubEle);
-            instanciarSubElementosPopover(divSubEle);
+           // instanciarSubElementosTooltip(divSubEle);
+           // instanciarSubElementosPopover(divSubEle);
         },
         elementoSimple:(ele, posDia, posEle)=>{
             const ess = RutinaEditor.obtenerEstilos(ele.estilos);

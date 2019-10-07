@@ -81,7 +81,7 @@ function init(){
 
         editorRutinaContenido.addEventListener('click', eventosEditorRutina);
         $semanario.addEventListener('focusout', principalesEventosFocusOutSemanario);
-        $semanario.addEventListener('focusin', principalEventoFocusIn);
+      //  $semanario.addEventListener('focusin', principalEventoFocusIn);
         $semanario.addEventListener('click', principalesEventosClickRutina);
         $selectZoom.addEventListener('change', eventoSelectZoom);
         tabGrupoAudios.addEventListener('click', principalesEventosTabGrupoAudios);
@@ -501,6 +501,7 @@ function eventosClickMenuOptDia(e) {
     }else if(inpClasses.contains('pegar-elementos')){
         const dvDia = $menuTargetInput.parentElement.parentElement; //dvDia aloja el atributo data-index
         const diaIndex = dvDia.getAttribute('data-index');
+
         //- DiaOpc.pegarMiniPlantillaDiaListas(diaIndex);
         DiaOpc.pegarElementosSeleccionados(diaIndex);
 
@@ -745,7 +746,10 @@ function principalesEventosFocusOutSemanario(e) {
                 DiaOpc.validPreActualizarFromNomEle(valor, ixs, (posElemento = i));
             }
         }
-        $nombreActualizar = valor;
+
+           $nombreActualizar = valor;
+
+
     }
 
     else if(clases.contains('agregar-tiempo')){
@@ -1046,6 +1050,8 @@ function principalesEventosClickRutina(e) {
     }
 
     else if(e.ctrlKey){
+
+        alert("a");
         if(clases.contains('rf-dia-elemento-nombre')){
             DiaOpc.seleccionarElementos(input);
         }else if(clases.contains('rf-sub-elemento-nombre')){
@@ -1450,10 +1456,10 @@ function eventoClickSeleccionMesDots(e){
 
 
 }
-
+/*
 function principalEventoFocusIn(e){
     $nombreActualizar = e.target.textContent;
-}
+}*/
 
 function principalesAlCambiarTab(e){
     const input = e.target;

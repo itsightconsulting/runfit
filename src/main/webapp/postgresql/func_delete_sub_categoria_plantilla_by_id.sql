@@ -11,7 +11,7 @@ BEGIN
     DELETE FROM semana_plantilla WHERE  rutina_plantilla_id  IN  ( SELECT rutina_plantilla_id FROM rutina_plantilla
                                                                    WHERE sub_categoria_plantilla_id = $1);
     DELETE FROM rutina_plantilla WHERE sub_categoria_plantilla_id = $1;
-    DELETE FROM categoria_plantilla WHERE sub_categoria_plantilla_id = $1;
+    DELETE FROM sub_categoria_plantilla WHERE sub_categoria_plantilla_id = $1;
     RETURN TRUE;
 END
 $func$
