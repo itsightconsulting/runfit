@@ -682,29 +682,6 @@
         } else if(clases.contains('fa-plus-cs')){
             clases.toggle('fa-chevron-up');
             clases.toggle('fa-chevron-down');
-        } else if(clases.contains('info-pago')){
-            const parent = input.parentElement;
-            const qInput = parent.querySelector('input');
-            let nomButton = "Agregar información pago";
-            if(qInput.value === "1"){
-                tabService.querySelectorAll('.info-cuenta').forEach(e => e.classList.add('hidden'));
-                tabService.querySelector('.info-tarjetas').classList.add('hidden');
-            }
-            if(qInput.value === "2"){
-                tabService.querySelector('.info-tarjetas').classList.add('hidden');
-                tabService.querySelectorAll('.info-cuenta').forEach(e => e.classList.remove('hidden'));
-                nomButton = "Agregar nueva cuenta bancaria";
-            }
-
-            if(qInput.value === "3"){
-                const exists = metodosPago.some(e=>e.infoPagoId ===3);
-                if(exists){
-                    nomButton = "Modificar con nueva elección";
-                }
-                tabService.querySelectorAll('.info-cuenta').forEach(e => e.classList.add('hidden'));
-                tabService.querySelector('.info-tarjetas').classList.remove('hidden');
-            }
-            btnNuevaInfoPago.innerText = nomButton;
         } else if(clases.contains('cc-elegir')){
             input.classList.toggle('img-cc');
         } else if(clases.contains('cc-bancaria')){

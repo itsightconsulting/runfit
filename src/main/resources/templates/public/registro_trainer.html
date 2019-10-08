@@ -543,7 +543,7 @@
                                                     <li>
                                                         <img class="img-ficha" th:src="@{/img/form_standard.svg}+'?'+${version}" alt="">
                                                         <div class="chk-content chk-ficha">Standard
-                                                            <input type="checkbox" value="2" name="FichaTrabajo" data-aka="SELECCIONE LA FICHA CON LA QUE VA TRABAJAR" aria-invalid="false"><span class="checkmark info-pago"></span>
+                                                            <input type="checkbox" value="2" name="FichaTrabajo" data-aka="SELECCIONE LA FICHA CON LA QUE VA TRABAJAR" aria-invalid="false"><span class="checkmark"></span>
                                                         </div>
                                                     </li>
                                                 </div>
@@ -754,17 +754,6 @@
         document.getElementById('txtCantidadSesiones').value = "14";
         document.getElementById('PrecioPaquete').value = "800.00";
         document.getElementById('btnNuevaTarifa').click();*/
-
-        //Información de pago
-       // document.querySelectorAll('.info-pago')[1].click();
-        //document.getElementById('btnNuevaInfoPago').click();
-        /*setTimeout(() => {
-            document.querySelectorAll('.info-pago')[2].click();
-            document.getElementById('TitularCuenta').value = "Dennys Gorina Maymir";
-            document.getElementById('NumeroSoles').value = "194-91022548-0-66";
-            document.getElementById('InterbancarioSoles').value = "00219419102254806693";
-            document.getElementById('btnNuevaInfoPago').click();
-        }, 1000);*/
 
         document.querySelector('#inpTermCond').checked = true;
         document.querySelectorAll('input[name="FichaTrabajo"]')[1].checked = true;
