@@ -52,7 +52,6 @@
             <AppenderRef ref="ConsoleAppender"/>
         </Logger>
         <Logger name="com.itsight.advice" level="warn" additivity="false">
-           <AppenderRef ref="AppFileAppenderWarn"/>
            <AppenderRef ref="ConsoleAppender"/>
         </Logger>
         <Logger name="com.itsight.service.impl.EmailServiceImpl" level="error" additivity="false">
