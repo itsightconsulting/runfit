@@ -214,7 +214,6 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
         if (securityUserRepository.findByUsername(trainer.getUsername()) == null) {
             try{
                 //2: Entrenador
-                    String originalPassword = trainer.getPassword();
                     String[] arrRoles = rols.split(",");
                     List<com.itsight.domain.Rol> lstRoles = rolService.findByIdsIn(Arrays.asList(Parseador.stringArrayToIntArray(arrRoles)));
                     List<Rol> lstJsonRoles = lstRoles.stream()
