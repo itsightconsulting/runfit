@@ -596,25 +596,7 @@ function graficoCondFisicaBasicaMasc(arr) {
         }
     });
 
-    var gradientColors = [
-        {
-            start: '#f3bb98',
-            end: '#ea8ba9'
-        },
-        {
-            start: '#F6A064',
-            end: '#ED5384'
-        }
-    ];
 
-    var gradients = [];
-
-    gradientColors.forEach( function( item ){
-        var gradient = ctx.createLinearGradient(0, 0, 150 , 150);
-        gradient.addColorStop(0, item.start);
-        gradient.addColorStop(1, item.end);
-        gradients.push(gradient);
-    });
 
     if(total === 0){
         var config = {
@@ -623,7 +605,7 @@ function graficoCondFisicaBasicaMasc(arr) {
                 labels: ["Básica"],
                 datasets: [{
                     data: [-1],
-                    backgroundColor: '#756d77',
+                    backgroundColor: '#4e6477',
                     borderColor: 'transparent',
                 }],
             },
@@ -658,7 +640,7 @@ function graficoCondFisicaBasicaMasc(arr) {
                 labels: ["Básica","Otros"],
                 datasets: [{
                     data: [arr[0] , total - arr[0]],
-                    backgroundColor: arr[0] !== 0 ?  generarGradientes( ctx,'#1e8cf7','#756d77') : ['#756d77', '#756d77'],
+                    backgroundColor: arr[0] !== 0 ?  generarGradientes( ctx,'#1e8cf7','#4e6477') : ['#4e6477', '#4e6477'],
                     borderColor: 'transparent',
                 }],
             },
@@ -810,7 +792,7 @@ function graficoCondFisicaMedioMasc(arr){
                 labels: ["Medio"],
                 datasets: [{
                     data: [-1],
-                    backgroundColor: '#756d77',
+                    backgroundColor: '#4e6477',
                     borderColor: 'transparent',
                 }],
             },
@@ -846,7 +828,7 @@ function graficoCondFisicaMedioMasc(arr){
                 labels: ["Medio", "Otros"],
                 datasets: [{
                     data: [arr[1], total - arr[1]],
-                    backgroundColor: arr[1] !== 0 ?  generarGradientes( ctx,'#1e8cf7','#756d77') : ['#756d77', '#756d77'],
+                    backgroundColor: arr[1] !== 0 ?  generarGradientes( ctx,'#1e8cf7','#4e6477') : ['#4e6477', '#4e6477'],
                     hoverBackgroundColor: ["#2C42CA", "#7A6D64"],
                     borderColor: 'transparent',
                 }],
@@ -995,7 +977,7 @@ function graficoCondFisicaAvanzadoMasc(arr){
                 labels: ["Avanzado"],
                 datasets: [{
                     data: [-1],
-                    backgroundColor: '#756d77',
+                    backgroundColor: '#4e6477',
                     borderColor: 'transparent',
                 }],
             },
@@ -1027,7 +1009,7 @@ function graficoCondFisicaAvanzadoMasc(arr){
                 labels: ["Avanzado","Otros"],
                 datasets: [{
                     data: [arr[2] , total - arr[2]],
-                    backgroundColor: arr[2] !== 0 ?  generarGradientes( ctx,'#1e8cf7','#756d77') : ['#756d77', '#756d77'],
+                    backgroundColor: arr[2] !== 0 ?  generarGradientes( ctx,'#1e8cf7','#4e6477') : ['#4e6477', '#4e6477'],
                     hoverBackgroundColor:  ["#2C42CA", "#7A6D64"],
                     borderColor: 'transparent',
                 }],

@@ -1709,7 +1709,9 @@
         const body = generateBody();
         body.predetFichaId = TipoFicha.RUNNING;
         const ttId = getParamFromURL("ttId");
-        $.ajax({
+
+        console.log(body);
+       $.ajax({
           type: 'POST',
           contentType: 'application/json',
           url: _ctx + 'p/cliente/fitness/agregar/'+ttId,

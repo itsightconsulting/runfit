@@ -325,7 +325,7 @@
 
       function generarCategoriasPlantillasDOM(categoriaData){
 
-          currentCategoriaData = categoriaData.sort( function(a,b){
+          currentCategoriasData = categoriaData.sort( function(a,b){
               if (a.favorito > b.favorito) return -1;
               if (a.favorito < b.favorito) return 1;
               if (a.id < b.id) return -1;
@@ -334,8 +334,10 @@
           });
 
           let itemsCategoria = "";
-          data.length <= 6 ? document.querySelector('.range-slider').max = 1 :  document.querySelector('.range-slider').max = data.length - 6 ;
-          currentCategoriaData.forEach(function(element) {
+
+
+          currentCategoriasData.length <= 6 ? document.querySelector('.range-slider').max = 1 :  document.querySelector('.range-slider').max = data.length - 6 ;
+          currentCategoriasData.forEach(function(element) {
               let claseCategoria = "title-categoria";
               let tamanio = element.nombre.length <= 5 && 1 <= (element.nombre).split("").length <= 2  ? "lg" :
                   (element.nombre.length < 18 && 1 <= (element.nombre).split("").length <= 4  ?  "md" : "sm");
@@ -443,78 +445,6 @@
           }
           return svg;
       }
-
-      function agregarRutina(){
-
-          const nombreRotulo = $('#nombreRutina').val();
-          const semanas = $('#semanasRutina').val();
-          const dias = $('#diasRutina').val();
-          const id = btnNuevaRutina.getAttribute('data-categoria-id');
-          const obj = {
-              nombre : nombreRotulo,
-              totalSemanas : semanas,
-              dias : dias,
-              anios : Math.floor(dias/365),
-              meses : Math.floor(dias/30),
-              categoriaPlantilla : id
-          }
-
-          console.log(id);
-
-          $.ajax({
-              type: 'POST',
-              url: _ctx + 'gestion/rutina-plantilla/agregar',
-              dataType:'json',
-              contentType: 'application/json',
-              data : JSON.stringify(obj),
-              success: (s) =>{
-                  obtenerRutinas(id);
-                  $(mdlAgregarRutina).modal('hide');
-                  $("html, body").animate({ scrollTop: $(document).height() }, 1000);
-              },
-              error: (e) =>{
-              },
-              complete: (c) =>{
-              }
-          });
-      }
-
-      function actualizarRutina(){
-
-          const nombreRotulo = $('#nombreEditRutina').val();
-          const semanas = $('#semanasEditRutina').val();
-          const dias = $('#diasEditRutina').val();
-          const id = btnEditarRutina.getAttribute('data-rutina-id');
-          const categoriaId = btnNuevaRutina.getAttribute('data-categoria-id');
-
-          const obj = {
-              id : id,
-              nombre : nombreRotulo,
-              totalSemanas : semanas,
-              dias : dias,
-              anios : Math.floor(dias/365),
-              meses : Math.floor(dias/30),
-              categoriaPlantilla : categoriaId
-          }
-
-
-          $.ajax({
-              type: 'PUT',
-              url: _ctx + 'gestion/rutina-plantilla/actualizar',
-              dataType:'json',
-              contentType: 'application/json',
-              data : JSON.stringify(obj),
-              success: (s) =>{
-                  obtenerRutinas(categoriaId);
-                  $(mdlEditarRutina).modal('hide');
-              },
-              error: (e) =>{
-              },
-              complete: (c) =>{
-              }
-          });
-      }
-
 
 
       function obtenerRutinas(catId){

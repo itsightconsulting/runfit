@@ -245,8 +245,8 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
     @Override
     public String registroFull(ClienteDTO cliente, Integer ttId) throws CustomValidationException {
         if(cliente.getTrainerId() != null && cliente.getTrainerId() > 0){
-            Boolean suserActive = securityUserRepository.findEnabledById(cliente.getTrainerId());
-            if(suserActive == null || !suserActive){
+            Boolean userActive = securityUserRepository.findEnabledById(cliente.getTrainerId());
+            if(userActive == null || !userActive){
                 throw new CustomValidationException(Enums.Msg.TRAINER_INACTIVO.get(), ResponseCode.EX_GENERIC.get());
             } else {
                 //Continue with normal flow

@@ -245,20 +245,19 @@ public class RutinaPlantillaServiceImpl extends BaseServiceImpl<RutinaPlantillaR
         }
 
         rutina.setFechaInicio(dateInicio);
+        rutina.setNombre("Rutina con fecha de inicio "+ new SimpleDateFormat("dd-MM-yyyy").format(rutina.getFechaInicio()));
         rutina.setFechaFin(dateFin);
         rutina.setRedFitness(redFitID);
         rutina.setCliente(cliId);
         rutina.setTipoRutina(tipoRutina);
 
         Rutina nuevaRutina = rutinaService.save(rutina);
-
         List<SemanaPlantilla> sP = rutinaPlantilla.getLstSemana();
         List<Integer> semIdsList = new ArrayList<>();
 
         int indexSemana = 0;
 
         for(SemanaPlantilla semanaPlantilla: sP){
-
             Calendar calInicio = Calendar.getInstance();
             calInicio.setTime(dateInicio);
             calInicio.add(Calendar.DATE, 7* indexSemana);

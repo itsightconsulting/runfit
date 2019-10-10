@@ -729,11 +729,7 @@
     }
 
     function fttNp(v, row, ix, pos){
-        if(row.contadorRutinas >0){
-            return `<img class="svg rt-cli-ant" onclick="abrirOpcionesNuevaRutina(${row.id})" data-redfit-id="${row.id}" src="${_ctx}img/iconos/icon_edit_file.svg"/>`;
-        }else{
-            return `<img class="svg rt-cli-ant" rel="tooltip" title="Este cliente no cuenta con rutinas anteriores, debe generarle una con la opción de al lado" src="${_ctx}img/iconos/icon_edit_file.svg"/>`;
-        }
+          return `<img class="svg rt-cli-ant" onclick="abrirOpcionesNuevaRutina(${row.id})" data-redfit-id="${row.id}" src="${_ctx}img/iconos/icon_edit_file.svg"/>`;
     }
 
     function abrirOpcionesNuevaRutina(rfId){

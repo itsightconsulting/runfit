@@ -23,7 +23,9 @@ const ulListRutina = $('.list-plan');
 const anchorItemBody = $('.item-body a');
 const inpSearchRutina = document.getElementById('inpSearch');
 let currentRutinasData;
-const favoritos = [];
+const favoritosCategoria = [];
+const favoritosSubCategoria = [];
+
 let dataCategorias;
 let dataSubCategorias;
 $(function(){
@@ -53,6 +55,7 @@ function seleccionCategoriaEvent(e){
     catNombre = input.getAttribute('data-nombre');
     $('section#listaSubCategoria .title_big').text(catNombre);
     btnNuevaSubCategoria.setAttribute('data-categoria-id' , categoriaId);
+
     obtenerSubCategorias(categoriaId);
 
     $("section#listaSubCategoria").slideDown(200);
@@ -75,20 +78,11 @@ function seleccionSubCategoriaEvent(e){
 
     obtenerRutinas(subcategoriaId);
 
-
     $("section#info").slideDown(200);
 
     $( 'html, body' ).stop().animate({
         scrollTop: $("section#info").offset().top
     });
-
-    $(".scroll").click(function() {
-        $("section#info").slideUp(200);
-        $('html, body').animate({
-            scrollTop: 600
-        }, 800);
-    });
-    return false;
 
 
 
@@ -109,19 +103,38 @@ function bodyFocusOutEventListener(e){
 
 
 function scrollEvent(){
-    $(".scroll").click(function() {
+    $("section#listaSubCategoria .scroll").click(function() {
+        ocultarSeccionSubCategorias();
+        return false;
+    });
+
+    $("section#info .scroll").click(function() {
         ocultarSeccionRutinas();
         return false;
     });
 }
 
-
 function ocultarSeccionRutinas(){
+
     $("section#info").slideUp(200);
+    $('html, body').animate({
+        scrollTop: 760
+    }, 800);
+    return false;
+}
+
+function ocultarSeccionSubCategorias(){
+
+    $("section#info").slideUp(200);
+    $("section#listaSubCategoria").slideUp(200);
     $('html, body').animate({
         scrollTop: 0
     }, 800);
+    return false;
 }
+
+
+
 function agregarCategoria() {
     if ($('#nueva_categoria_frm').valid()) {
         const nombre = $('#nombreCategoria').val()
@@ -144,6 +157,7 @@ function agregarCategoria() {
                 $('#nueva_categoria_frm')[0].reset();
                 obtenerCategorias();
                 $('input[name="cbSeleccionTipo"]').prop('checked', false);
+                ocultarSeccionSubCategorias();
             },
             error: (xhr) => {
                 const mensaje = xhr.responseJSON.message;
@@ -164,8 +178,7 @@ function agregarCategoria() {
     }
 }
 function obtenerCategorias(){
-    //     const nombre = $('#nombreCategoria').val()
-    //     const tipoRutina = $('input[type="checkbox"][name="cbSeleccionTipo"]:checked').val();
+
     $.ajax({
         type: 'GET',
         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -174,19 +187,39 @@ function obtenerCategorias(){
         blockLoading: false,
         noOne: true,
         success: (data) =>  {
+            debugger
             dataCategorias = data;
+            const dvSlider = document.querySelector('section#listaCategoria .range-slider').parentElement;
+            const clasesSlider = dvSlider.classList;
+
             if(dataCategorias.length <= 5){
-                const dvSlider = document.querySelector('.range-slider').parentElement;
-                const clasesSlider = dvSlider.classList;
+
                 if(!clasesSlider.contains('hidden')){
                     clasesSlider.add('hidden');
                 }
+                $('section#listaCategoria .flechas').css('visibility','hidden');
+
+            }else{
+                if(clasesSlider.contains('hidden')){
+                    clasesSlider.remove('hidden');
+                }
+                $('section#listaCategoria .flechas').css('visibility','visible');
             }
 
 
             generarCategoriasPlantillas(dataCategorias);
         } ,
         error: (d) =>{
+
+            const mensaje = xhr.responseJSON.message;
+
+            $.smallBox({
+                title: "RUNFIT",
+                content: '<p>'+mensaje+'</p>',
+                timeout: 4500,
+                color:  '#cc4d4d',
+                icon: "fa fa-exclamation-circle"
+            })
         },
         complete: (d) =>{
         }
@@ -206,13 +239,24 @@ function actualizarCategoriaPlantilla() {
             data: {id: categoriaId, nombre: nombre, tipo: tipoRutina},
             dataType: 'json',
             success: (d) => {
-                console.log(d);
-            },
-            error: (e) => {
-            },
-            complete: (c) => {
+                ocultarSeccionSubCategorias();
                 obtenerCategorias();
                 $(mdlEditarCat).modal('hide');
+            },
+            error: (e) => {
+
+                const mensaje = xhr.responseJSON.message;
+
+                $.smallBox({
+                    title: "RUNFIT",
+                    content: '<p>'+mensaje+'</p>',
+                    timeout: 4500,
+                    color:  '#cc4d4d',
+                    icon: "fa fa-exclamation-circle"
+                })
+            },
+            complete: (c) => {
+
             }
         })
     }
@@ -227,21 +271,22 @@ function generarCategoriasPlantillas(data){
             return 0;
         });
         let itemsCategoria = "";
-        data.length <= 6 ? document.querySelector('.range-slider').max = 1 :  document.querySelector('.range-slider').max = data.length - 6 ;
+        data.length <= 6 ? document.querySelector('section#listaCategoria .range-slider').max = 1
+            :  (document.querySelector('section#listaCategoria .range-slider').max = data.length - 6 ) && ( $('section#listaCategoria .flechas').css('visibility','visible') ) ;
 
         data.forEach(function(element) {
             let claseCategoria = "title-categoria";
-            let tamanio = element.nombre.length <= 4 && 1 <= (element.nombre).split("").length <= 2  ? "lg" :
+            let tamanio = element.nombre.length < 4 && 1 <= (element.nombre).split("").length <= 2  ? "lg" :
                 (element.nombre.length < 18 && 1 <= (element.nombre).split("").length <= 3  ?  "md" : "sm");
             claseCategoria += " "+ tamanio;
             if(element.favorito){
-                favoritos.push(element.id);
+                !favoritosCategoria.includes(element.id) ? favoritosCategoria.push(element.id) : null;
                 itemsCategoria += `
                       <div class="item" >
                        <div class="item-header"><a class="star selected" data-categoria-id = "${element.id}"><img class="svg" src="/img/iconos-trainers/icon_star.svg"></a><a data-toggle="modal" class="icon-edit" data-target="#modalEditarCategoria" type="button" href="#"  data-categoria-id ="${element.id}"  data-nombre="${element.nombre}" data-tipo ="${element.tipo}"><img class="svg" src="/img/iconos-trainers/icon_edit.svg"  ></a><div class="${claseCategoria}"> <p> ${element.nombre} </> </div> </div>
                        <div class="item-body"><img class="svg" src="/img/iconos-trainers/icon_tablero.svg"><a data-categoria-id ="${element.id}"  data-nombre="${element.nombre}"><img class="svg" src="/img/iconos-trainers/icon_add.svg">Agregar</a></div>
                       </div>
-                    `;
+                      `;
             }else{
                 itemsCategoria += `
                     <div class="item" >
@@ -256,7 +301,7 @@ function generarCategoriasPlantillas(data){
         $('.owl-item').css('width','229.8px');
         $('.owl-item').css('margin-right','10px');
         imgtoSvgEvent();
-        visualizarElementosOcultos();
+        visualizarElementosOcultosCategoria();
     }else{
         let mensajeNoData;
         if(dataCategorias.length === 0){
@@ -265,18 +310,18 @@ function generarCategoriasPlantillas(data){
                        iniciar su colección </p>
             `) ;
             dvListaCategoria.appendChild(mensajeNoData);
-            ocultarElementos(1);
+            ocultarElementosCategoria(1);
         }else{
             let mensajeNoData = htmlStringToElement(`
                     <p class="mensaje-no-data"> No cuenta con registros para el tipo de categoría consultado. Dele click al botón de Agregar para
                        iniciar su colección </p>
             `) ;
             dvListaCategoria.appendChild(mensajeNoData);
-            ocultarElementos(2);
+            ocultarElementosCategoria(2);
         }
-        owl.css('display' , 'show');
+        owlCategoria.css('display' , 'show');
     }
-    ocultarSeccionRutinas();
+     ocultarSeccionSubCategorias();
 }
 function eliminarCategoria(){
 
@@ -298,10 +343,17 @@ function eliminarCategoria(){
             success: function(e) {
                 $(mdlEditarCat).modal('hide');
                 obtenerCategorias();
+                ocultarSeccionSubCategorias();
+
             },
             error: function(e) {
-                console.log(e)
-            }
+                $.smallBox({
+                    title: "RUNFIT",
+                    content: '<p>'+mensaje+'</p>',
+                    timeout: 4500,
+                    color:  '#cc4d4d',
+                    icon: "fa fa-exclamation-circle"
+                })            }
         })
     })
     $('.MsgTitle').css('display','flex');
@@ -327,6 +379,7 @@ function agregarSubCategoria() {
                 $(mdlAgregarSubCat).modal('hide');
                 $('#nueva_sub_categoria_frm')[0].reset();
                 obtenerSubCategorias(catId);
+                ocultarSeccionRutinas();
             },
             error: (xhr) => {
                 const mensaje = xhr.responseJSON.message;
@@ -359,19 +412,26 @@ function obtenerSubCategorias(categoriaId){
         data: {
             categoriaId: categoriaId
         },
-        success: (data) =>  {
+        success: (data) => {
 
+            const dvSlider = document.querySelector('section#listaSubCategoria .range-slider').parentElement;
+            const clasesSlider = dvSlider.classList;
             dataSubCategorias = data;
 
-            if(dataSubCategorias.length <= 5){
-                const dvSlider = document.querySelector('section#listaSubCategoria .range-slider').parentElement;
-                const clasesSlider = dvSlider.classList;
-                if(!clasesSlider.contains('hidden')){
+            if (dataSubCategorias.length <= 5) {
+                if (!clasesSlider.contains('hidden')) {
                     clasesSlider.add('hidden');
                 }
+                $('section#listaSubCategoria .flechas').css('visibility', 'hidden');
+
+            } else {
+                if (clasesSlider.contains('hidden')) {
+                    clasesSlider.remove('hidden');
+                }
+                $('section#listaSubCategoria .flechas').css('visibility', 'visible');
+
             }
-
-
+            ocultarSeccionRutinas();
             generarSubCategoriasPlantillas(dataSubCategorias);
         } ,
         error: (d) =>{
@@ -379,6 +439,39 @@ function obtenerSubCategorias(categoriaId){
         complete: (d) =>{
         }
     })
+}
+
+function actualizarSubCategoriaPlantilla() {
+    if ($('#editar_subcategoria_frm').valid()) {
+        const nombre = $('#nombreSubCategoriaEdit').val()
+        const subCategoriaId = Number(btnEditarSubCat.getAttribute("data-subcategoria-id"));
+        $.ajax({
+            type: 'PUT',
+            url: _ctx + "gestion/subcategoria-plantilla/actualizar",
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            blockLoading: false,
+            noOne: true,
+            data: {id: subCategoriaId, nombre: nombre},
+            dataType: 'json',
+            success: (d) => {
+                $(mdlEditarSubCat).modal('hide');
+                const catId = btnNuevaSubCategoria.getAttribute('data-categoria-id');
+                obtenerSubCategorias(catId);
+                ocultarSeccionRutinas();
+            },
+            error: (e) => {
+                $.smallBox({
+                title: "RUNFIT",
+                content: '<p>'+mensaje+'</p>',
+                timeout: 4500,
+                color:  '#cc4d4d',
+                icon: "fa fa-exclamation-circle"
+            })
+            },
+            complete: (c) => {
+            }
+        })
+    }
 }
 
 function eliminarSubCategoria(){
@@ -402,17 +495,22 @@ function eliminarSubCategoria(){
                 $(mdlEditarSubCat).modal('hide');
                 const catId = btnNuevaSubCategoria.getAttribute('data-categoria-id');
                 obtenerSubCategorias(catId);
+                ocultarSeccionRutinas();
             },
             error: function(e) {
-                console.log(e)
-            }
+                $.smallBox({
+                    title: "RUNFIT",
+                    content: '<p>'+mensaje+'</p>',
+                    timeout: 4500,
+                    color:  '#cc4d4d',
+                    icon: "fa fa-exclamation-circle"
+                })            }
         })
     })
     $('.MsgTitle').css('display','flex');
 }
 
 function generarSubCategoriasPlantillas(data){
-
 
     if(data.length > 0) {
         data = data.sort(function (a, b) {
@@ -423,15 +521,17 @@ function generarSubCategoriasPlantillas(data){
             return 0;
         });
         let itemsSubCategoria = "";
-        data.length <= 6 ? document.querySelector('section#listaSubCategoria .range-slider').max = 1 :  document.querySelector('section#listaSubCategoria .range-slider').max = data.length - 6 ;
+        data.length <= 6 ? document.querySelector('section#listaSubCategoria .range-slider').max = 1 :
+            (document.querySelector('section#listaSubCategoria .range-slider').max = data.length - 6) &&
+            ( $('section#listaSubCategoria .flechas').css('visibility','visible'));
 
         data.forEach(function(element) {
             let claseSubCategoria = "title-subcategoria";
-            let tamanio = element.nombre.length <= 4 && 1 <= (element.nombre).split("").length <= 2  ? "lg" :
+            let tamanio = element.nombre.length < 4 && 1 <= (element.nombre).split("").length <= 2  ? "lg" :
                 (element.nombre.length < 18 && 1 <= (element.nombre).split("").length <= 3  ?  "md" : "sm");
             claseSubCategoria += " "+ tamanio;
             if(element.favorito){
-                favoritos.push(element.id);
+                !favoritosSubCategoria.includes(element.id) ? favoritosSubCategoria.push(element.id) : null;
                 itemsSubCategoria += `
                       <div class="item" >
                        <div class="item-header"><a class="star selected" data-subcategoria-id = "${element.id}"><img class="svg" src="/img/iconos-trainers/icon_star.svg"></a><a data-toggle="modal" class="icon-edit" data-target="#modalEditarSubCategoria" type="button" href="#"  data-subcategoria-id ="${element.id}"  data-nombre="${element.nombre}" ><img class="svg" src="/img/iconos-trainers/icon_edit.svg"  ></a><div class="${claseSubCategoria}"> <p> ${element.nombre} </> </div> </div>
@@ -440,10 +540,10 @@ function generarSubCategoriasPlantillas(data){
                     `;
             }else{
                 itemsSubCategoria += `
-                    <div class="item" >
-                      <div class="item-header"><a class="star" data-subcategoria-id = "${element.id}"><img class="svg" src="/img/iconos-trainers/icon_star.svg"></a><a data-toggle="modal" class="icon-edit" data-target="#modalEditarSubCategoria" type="button" href="#" data-subcategoria-id ="${element.id}"  data-nombre="${element.nombre}"><img class="svg" src="/img/iconos-trainers/icon_edit.svg" ></a><div class="${claseSubCategoria}"> <p> ${element.nombre} </p> </div> </div>
-                      <div class="item-body"><img class="svg" src="/img/iconos-trainers/icon_tablero.svg"><a data-subcategoria-id ="${element.id}"  data-nombre="${element.nombre}"><img class="svg" src="/img/iconos-trainers/icon_add.svg">Agregar</a></div>
-                    </div>
+                      <div class="item" >
+                       <div class="item-header"><a class="star" data-subcategoria-id = "${element.id}"><img class="svg" src="/img/iconos-trainers/icon_star.svg"></a><a data-toggle="modal" class="icon-edit" data-target="#modalEditarSubCategoria" type="button" href="#" data-subcategoria-id ="${element.id}"  data-nombre="${element.nombre}"><img class="svg" src="/img/iconos-trainers/icon_edit.svg" ></a><div class="${claseSubCategoria}"> <p> ${element.nombre} </p> </div> </div>
+                       <div class="item-body"><img class="svg" src="/img/iconos-trainers/icon_tablero.svg"><a data-subcategoria-id ="${element.id}"  data-nombre="${element.nombre}"><img class="svg" src="/img/iconos-trainers/icon_add.svg">Agregar</a></div>
+                      </div>
                     `;
             }
         });
@@ -453,47 +553,70 @@ function generarSubCategoriasPlantillas(data){
         $('section#listaSubCategoria .owl-item').css('margin-right','10px');
 
         imgtoSvgEvent();
-        visualizarElementosOcultos();
+        visualizarElementosOcultosSubCategoria();
     }else{
         let mensajeNoData;
-        if(dataCategorias.length === 0){
+        if(data.length === 0){
             mensajeNoData = htmlStringToElement(`
                     <p class="mensaje-no-data"> No cuenta con alguna subcategoría de plantillas de rutinas. Dele click al botón de Agregar para
                        iniciar su colección </p>
             `) ;
-            dvListaSubCategoria.appendChild(mensajeNoData);
-            ocultarElementos(1);
+
+          if(!document.querySelector("section#listaSubCategoria .mensaje-no-data")) {
+              dvListaSubCategoria.appendChild(mensajeNoData);
+              ocultarElementosSubCategoria();
+
+          }
         }
-        $('section#listaSubCategoria .owl-carousel').css('display' , 'show');
     }
-    //   ocultarSeccionRutinas();
 }
 
-function visualizarElementosOcultos(){
-    $('.slider-container').css('display' , 'block');
+function visualizarElementosOcultosCategoria(){
+    $('section#listaCategoria .slider-container').css('display' , 'block');
     $('section#listaCategoria .checks').css('display' , 'block');
-    $('.mensaje-no-data').remove();
-    //   $('.flechas').toggleClass('hidden');
+    $('section#listaCategoria .mensaje-no-data').remove();
 }
-function ocultarElementos(tipo){
-    const item = document.querySelectorAll('body .item')
+
+function visualizarElementosOcultosSubCategoria(){
+    $('section#listaSubCategoria .slider-container').css('display' , 'block');
+    $('section#listaSubCategoria .checks').css('display' , 'block');
+    $('section#listaSubCategoria .mensaje-no-data').remove();
+}
+
+function ocultarElementosCategoria(tipo){
+    const item = document.querySelectorAll('body section#listaCategoria .item')
+
+    for (let i=0; i<item.length; i++) {
+        owlCategoria.trigger('remove.owl.carousel', [i])
+            .trigger('refresh.owl.carousel');
+    }
+
     switch(tipo) {
         case 1 :
             $('section#listaCategoria .checks').css('display' , 'none');
-            $('.slider-container').css('display' , 'none');
-            $('.flechas').css('visibility' , 'false');
+            $('section#listaCategoria .slider-container').css('display' , 'none');
+            $('section#listaCategoria .flechas').css('visibility','hidden')
             break;
         case 2 :
-            $('.slider-container').css('display' , 'none');
-            $('.flechas').css('visibility' , 'true');
-            for (let i=0; i<item.length; i++) {
-                owl.trigger('remove.owl.carousel', [i])
-                    .trigger('refresh.owl.carousel');
-            }
+            $('section#listaCategoria .slider-container').css('display' , 'none');
+            $('section#listaCategoria .flechas').css('visibility','hidden')
             break;
         default:
             null;
     }
+}
+
+function ocultarElementosSubCategoria(){
+    const item = document.querySelectorAll('body section#listaSubCategoria .item')
+
+    for (let i=0; i<item.length; i++) {
+        owlSubcategoria.trigger('remove.owl.carousel', [i])
+            .trigger('refresh.owl.carousel');
+    }
+    $('section#listaSubCategoria .checks').css('display' , 'none');
+    $('section#listaSubCategoria .slider-container').css('display' , 'none');
+    $('section#listaSubCategoria .flechas').css('visibility','hidden');
+
 }
 
 function actualizarFavoritoCategoria(categoriaId) {
@@ -506,22 +629,36 @@ function actualizarFavoritoCategoria(categoriaId) {
         success: (d) => {
         },
         error: (e) => {
+            $.smallBox({
+                title: "RUNFIT",
+                content: '<p>'+mensaje+'</p>',
+                timeout: 4500,
+                color:  '#cc4d4d',
+                icon: "fa fa-exclamation-circle"
+            })
         },
         complete: (c) => {
         }
     })
 }
 
-function actualizarFavoritoSubCategoria(categoriaId) {
+function actualizarFavoritoSubCategoria(subcategoriaId) {
     $.ajax({
         type: 'PUT',
-        url: _ctx + "gestion/categoria-plantilla/actualizar-favorito",
+        url: _ctx + "gestion/subcategoria-plantilla/actualizar-favorito",
         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-        data: {id: categoriaId},
+        data: {id: subcategoriaId},
         dataType: 'json',
         success: (d) => {
         },
         error: (e) => {
+            $.smallBox({
+                title: "RUNFIT",
+                content: '<p>'+mensaje+'</p>',
+                timeout: 4500,
+                color:  '#cc4d4d',
+                icon: "fa fa-exclamation-circle"
+            })
         },
         complete: (c) => {
         }
@@ -540,6 +677,7 @@ function checkBoxasRadioButtons(){
         }
     });
 }
+
 function checkBoxTipoChangeEvent() {
     $("section#listaCategoria input:checkbox").on('change', function () {
         let cbSeleccionado = $(this)[0].value;
@@ -553,7 +691,7 @@ function checkBoxTipoChangeEvent() {
             }
         }
         inpSearchRutina.value = '';
-        ocultarSeccionRutinas();
+        ocultarSeccionSubCategorias();
     })
 }
 function categoriaClickEvent(e){
@@ -570,13 +708,13 @@ function categoriaClickEvent(e){
         if(starClases.contains('selected')){
             //  const categoriaId =  Number(starElement.getAttribute('data-categoria-id');
             starClases.remove('selected');
-            let index = favoritos.findIndex( e => e === categoriaId);
-            favoritos.splice(index,1);
+            let index = favoritosCategoria.findIndex( e => e === categoriaId);
+            favoritosCategoria.splice(index,1);
             dataCategorias[dataCategoriaIx].favorito =  false;
         }else{
             starClases.add('selected');
             const categoriaId =  starElement.getAttribute('data-categoria-id');
-            !favoritos.includes('categoriaId') ? favoritos.push(Number(categoriaId)) : null;
+            !favoritosCategoria.includes('categoriaId') ? favoritosCategoria.push(Number(categoriaId)) : null;
             dataCategorias[dataCategoriaIx].favorito =  true;
         }
         generarCategoriasPlantillas(dataCategorias);
@@ -658,20 +796,20 @@ function subCategoriaClickEvent(e){
         const subcategoriaId =  Number(starElement.getAttribute('data-subcategoria-id'));
         actualizarFavoritoSubCategoria(subcategoriaId);
 
-    /*    let dataCategoriaIx = dataCategorias.findIndex( e => e.id === categoriaId );
+        let dataSubCategoriaIx = dataSubCategorias.findIndex( e => e.id === subcategoriaId );
         if(starClases.contains('selected')){
-            //  const categoriaId =  Number(starElement.getAttribute('data-categoria-id');
             starClases.remove('selected');
-            let index = favoritos.findIndex( e => e === categoriaId);
-            favoritos.splice(index,1);
-            dataCategorias[dataCategoriaIx].favorito =  false;
+            let index = favoritosSubCategoria.findIndex( e => e === subcategoriaId);
+            favoritosSubCategoria.splice(index,1);
+            dataSubCategorias[dataSubCategoriaIx].favorito =  false;
         }else{
+            debugger
             starClases.add('selected');
-            const categoriaId =  starElement.getAttribute('data-categoria-id');
-            !favoritos.includes('categoriaId') ? favoritos.push(Number(categoriaId)) : null;
-            dataCategorias[dataCategoriaIx].favorito =  true;
+            const subcategoriaId =  starElement.getAttribute('data-subcategoria-id');
+            !favoritosSubCategoria.includes(subcategoriaId) ? favoritosSubCategoria.push(Number(subcategoriaId)) : null;
+            dataSubCategorias[dataSubCategoriaIx].favorito =  true;
         }
-        generarCategoriasPlantillas(dataCategorias); */
+        generarSubCategoriasPlantillas(dataSubCategorias);
     }
     else if(editElement){
 

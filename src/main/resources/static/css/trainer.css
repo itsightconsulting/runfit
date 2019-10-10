@@ -1428,8 +1428,8 @@ section#info .btn-circle {
     cursor: pointer;
 }
 
-section#listaCategoria p.mensaje-no-data , section#info p.mensaje-no-data,
-section#seleccionCategoriasRutGen p.mensaje-no-data{
+section#listaCategoria p.mensaje-no-data , section#listaSubCategoria p.mensaje-no-data,
+section#info p.mensaje-no-data,  section#seleccionCategoriasRutGen p.mensaje-no-data{
     text-align: center;
     color: #000000;
     padding-bottom: 200px;
