@@ -3,6 +3,7 @@ package com.itsight.controller;
 import com.itsight.configuration.SSLClientFactory;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.dto.UserSsoDTO;
+import com.itsight.util.Parseador;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -37,6 +38,7 @@ public class SocialController {
         ResponseEntity<UserSsoDTO> responseObj = restTemplate.exchange(BASE_SOCIAL_SSO_URL+"/user/me", HttpMethod.GET, entities, UserSsoDTO.class);
         UserSsoDTO userBySso = responseObj.getBody();
         ModelAndView mav = new ModelAndView(ViewConstant.LOGIN);
+        userBySso.setSecret(Parseador.getDecodeHash32Id("rf-social-tecres", userBySso.getSecret()).toString());
         mav.addObject("usso", userBySso);
         return mav;
     }

@@ -207,28 +207,34 @@
                                                     </label>
                                                 </section>
                                             </div>
-                                            <section class="">
-                                                <div class="inline-group">
-                                                    <label class="radio">
-                                                        <input type="radio" id="FlagActivo" name="FlagActivo"
-                                                               checked="checked"/>
-                                                        <i></i>Activo</label>
-                                                    <label class="radio">
-                                                        <input type="radio" id="FlagActivoOff" name="FlagActivo"/>
-                                                        <i></i>Inactivo</label>
-                                                </div>
-                                            </section>
+                                            <div class="row">
+                                                <section class="col col-6">
+                                                    <div class="inline-group">
+                                                        <label class="radio">
+                                                            <input type="radio" id="FlagActivo" name="FlagActivo"
+                                                                   checked="checked"/>
+                                                            <i></i>Activo</label>
+                                                        <label class="radio">
+                                                            <input type="radio" id="FlagActivoOff" name="FlagActivo"/>
+                                                            <i></i>Inactivo</label>
+                                                    </div>
+                                                </section>
+                                                <section class="col col-6">
+                                                    <div class="row text-center padding-bottom-10">
+                                                        <button type="button" onclick="capturarVideoThumbnail()" class="btn btn-info">Capturar thumbnail</button>
+                                                        <button type="button" onclick="reverse()" class="btn btn-info">Dar vuelta a imagen</button>
+                                                    </div>
+                                                </section>
+                                            </div>
                                             <div class="row">
                                                 <section class="col col-6 text-align-center">
-                                                    <video width="80%" controls id="video_parent">
+                                                    <video width="80%" controls id="video_parent" crossorigin="anonymous">
                                                         <source src="" id="video_here">
                                                     </video>
                                                 </section>
-                                                <section  class="col col-6 text-align-center">
-                                                    <div class="row text-center padding-bottom-10">
-                                                        <button type="button" onclick="capturarVideoThumbnail()" class="btn btn-info">Capturar thumbnail</button>
-                                                    </div>
-                                                    <canvas id="canvas"></canvas>
+                                                <section class="col col-6 text-align-center">
+                                                    <canvas id="canvas" class="hidden"></canvas>
+                                                    <img src="" id="CanvasImage" width="80%">
                                                 </section>
                                             </div>
                                             <audio id="Tiempo"></audio>
@@ -312,6 +318,9 @@
             const subCat = document.getElementById('SubCategoriaVideoId');
             subCat.innerHTML = '<option value="" selected="selected"> -- Seleccione -- </option>';
             irRegistro();
+            document.getElementById('video_here').src = "";
+            document.getElementById('video_parent').load();
+            $('#CanvasImage').attr('src','');
         });
 
         $("#btnGuardar").click(function () {
@@ -328,6 +337,9 @@
 
         $("#btnCancelar").click(function () {
             irListado($index);
+            document.getElementById('video_here').src = "";
+            document.getElementById('video_parent').load();
+            $('#CanvasImage').attr('src','');
         });
 
         $("#btnFiltrar").click(function () {
@@ -464,9 +476,9 @@
             }
             $('#frm_registro input').attr('readonly', true);
             $('#frm_registro button').attr('disabled', true);
-            var params = getFormData($(frm));
+            const params = getFormData($(frm));
             params.flagActivo = $('#FlagActivo').is(':checked');
-            var video = $("#Video").get(0);
+            const video = $("#Video").get(0);
             if(video.files[0]){//Para que no se interrumpa en caso de edición
                 params.extFile = "."+getFileExtension(video.files[0].name);
             }
@@ -532,7 +544,7 @@
         $('#MsgActualizarSubCat').removeClass('hidden');
         irRegistro();
         $('#Operacion').text('Actualizar');
-        var param = new Object();
+        const param = new Object();
         param.id = id;
 
         $.ajax({
@@ -564,6 +576,10 @@
                     $('#MsgActualizarSubCat').attr('display', '');
                     $('#Archivo').attr('data-route', data.rutaWeb);
                     $('#Archivo').removeClass('hidden');
+                    //Vid
+                    $('#video_here').attr('src', `https://s3-us-west-2.amazonaws.com/rf-media-rutina/video/${objEdicion.id}/${objEdicion.rutaWeb}`);
+                    $('#CanvasImage').attr('src', `https://s3-us-west-2.amazonaws.com/rf-media-rutina/video/${objEdicion.id}/${objEdicion.thumbnail}.jpg`);
+                    $('#video_parent')[0].load();
                 }
             },
             error: function (xhr) {
@@ -679,6 +695,9 @@
                 }
                 $('#frm_registro input').removeAttr('readonly', true);
                 $('#frm_registro button').removeAttr('disabled', true);
+                document.getElementById('video_here').src = "";
+                document.getElementById('video_parent').load();
+                $('#CanvasImage').attr('src','');
             }
         });
     }
@@ -798,14 +817,25 @@
             document.getElementById(e).setAttribute('maxlength', rules[e].rangelength[1]);
         });
     }
-
     function capturarVideoThumbnail(){
-        var canvas = document.getElementById('canvas');
+        const videoParent = document.getElementById('video_parent');
+        const canvas = document.getElementById('canvas');
+        canvas.width = videoParent.videoWidth;
+        canvas.height = videoParent.videoHeight;
         const context = canvas.getContext('2d');
         context.clearRect(0, 0, canvas.width, canvas.height);
+        context.drawImage(videoParent, 0, 0, videoParent.videoWidth, videoParent.videoHeight, 0, 0, videoParent.videoWidth, videoParent.videoHeight);
+        $('#CanvasImage').attr('src', canvas.toDataURL("image/jpeg"));
+    }
 
-        var videoParent = document.getElementById('video_parent');
-        canvas.getContext('2d').drawImage(videoParent, 0, 0, videoParent.videoWidth, videoParent.videoHeight, 0, 0, 300, 150);
+    function reverse(){
+        const canvas = document.getElementById('canvas');
+        const context = canvas.getContext('2d');
+        const videoParent = document.getElementById('video_parent');
+        context.translate(videoParent.videoWidth, 0);
+        context.scale(-1, 1);
+        context.drawImage(videoParent, 0, 0, videoParent.videoWidth, videoParent.videoHeight, 0, 0, videoParent.videoWidth, videoParent.videoHeight);
+        $('#CanvasImage').attr('src', canvas.toDataURL("image/jpeg"));
     }
 
     /*]]>*/

@@ -276,6 +276,7 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
             //Fixing authentication object
             Set<GrantedAuthority> updatedAuthorities = new HashSet<>();
             updatedAuthorities.add(new SimpleGrantedAuthority("ROLE_RUNNER"));
+            updatedAuthorities.add(new SimpleGrantedAuthority("ROLE_SOCIAL"));
             UsernamePasswordAuthenticationToken nwAuthentication = new UsernamePasswordAuthenticationToken(
                     username,
                     authentication.getCredentials(),
