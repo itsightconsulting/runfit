@@ -32,7 +32,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // TODO Auto-generated method stub
-        //http.csrf().disable();
 
         http.headers().frameOptions().sameOrigin();
 
@@ -65,6 +64,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .passwordParameter("password")
                 .defaultSuccessUrl("/bienvenido")
                 .failureHandler(customAuthenticationFailureHandler())
+                .permitAll()
                 //.failureUrl("/login?error=error").permitAll()
                 .and()
                 .logout()

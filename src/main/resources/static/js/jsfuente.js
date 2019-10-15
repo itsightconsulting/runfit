@@ -1116,7 +1116,9 @@ function fromDateToString(d){
 function cerrarSesion(){
     let fullName = getFullNameFromUser();
     const arrFullName = fullName.split(" ");
-    arrFullName.map(e=>e.toLowerCase().split().map(zz=>capitalizeFirstLetter(zz)).join("")).join(" ");
+    fullName = arrFullName.map(e=>e.toLowerCase().split()
+                                .map(zz=>capitalizeFirstLetter(zz)).join(""))
+                                .join(" ").trim().replace(/ +/g, " ");
 
     $.SmartMessageBox({
         title: "<i class='fa fa-exclamation-triangle fa-fw' style='color:yellow;'></i> <b>RUNFIT</b>",

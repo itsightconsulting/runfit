@@ -1334,7 +1334,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
                 String content = reader.lines().collect(Collectors.joining("\n"));
                 String[] lines = content.split("\n");
                 reader.close();
-                for(int i=1; i<lines.length;i++){
+                for(int i=0; i<lines.length;i++){
                     try {
                         jbJdbcTemplate.execute(lines[i]);
                     }catch (BadSqlGrammarException ex){
