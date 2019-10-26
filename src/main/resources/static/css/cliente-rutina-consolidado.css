@@ -287,10 +287,8 @@ hr.semanas-fixed {
 .periodo-cadencia{
     padding-left: 20px;
     border-right: 1px solid #565a4d;
-    color: #c2ccac;
-    font-family: GothamHTF-Book;
+    color: #9d9d9d;
     padding-bottom: 15px;
-
 }
 
 .dato-cadencia {
@@ -305,7 +303,7 @@ hr.semanas-fixed {
     position: relative;
    /* top: 65px;*/
     padding: 0;
-    right: 13px;
+    /*right: 13px;*/
     font-size: 13px;
 }
 
@@ -388,9 +386,8 @@ div #proyeccionCompetencia .svg.red-icon {
 
 .factor-proyeccion{
     border-right: 1px solid #565a4d;
-    color: #c2ccac;
-    font-family: GothamHTF-Book;
-    padding: 0 0 12px 40px !important;
+    color: #9d9d9d;
+    padding: 0 0 15px 40px !important;
 }
 
 
@@ -421,6 +418,8 @@ div #proyeccionCompetencia .proyeccion-title strong{
     display: block;
     line-height: 1.3;
     top: 24px;
+    color: #ceeaa6;
+    font-family: GothamHTF-Bold;
 }
 
 div #proyeccionCompetencia .proyeccion-title{
