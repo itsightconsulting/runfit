@@ -30,12 +30,11 @@
     <div id="wrapper">
         <div>
             <header>
-         <div class="text-center">
+         <div class="text-center container-fluid">
                     <button class="navbar-toggle only_mobile" onclick="showMenuMobile()"><img class="svg" th:src="@{/img/iconos/icon_hamburger.svg}+'?'+${version}"></button><a class="only_mobile" href="index.html"><img class="logo" th:src="@{/img/logo.png}+'?'+${version}" alt=""></a>
                     <h4 class="user">
                         <img class="svg"  th:src="@{/img/iconos/icon_perfil.svg}+'?'+${version}"><span class="user-full-name"></span><span id="TipoRutina">&nbsp</span></h4>
                 </div>
-             <br>
             </header>
 
 
@@ -56,7 +55,7 @@
                         </div>
                     </div>
 
-
+                <hr>
                 <h3 class="metric-title"> KILOMETRAJE </h3>
 
 
@@ -120,7 +119,7 @@
                     <hr>
                     <div class="clearfix"></div>
                  </div>
-
+                <hr>
                     <div class="row distribucion-km">
 
                         <div class="col-md-3">
@@ -195,7 +194,7 @@
                                     <img class="svg" th:src="@{/img/iconos/icon_ayuda.svg}+'?'+${version}"/><strong>DISTRIBUCIÓN</strong>
                                 </label>
 
-                                <canvas id="MiniGraficoDistribucion" width="230" height="180"></canvas>
+                                <canvas id="MiniGraficoDistribucion" width="120" height="120"></canvas>
 
                             </div>
                         </div>
@@ -204,7 +203,7 @@
                         <div class="clearfix"></div>
                     </div>
 
-
+                <hr>
                 <div class="dv-mejora-vel">
 
                     <h2 class="metric-title"> MEJORAS DE VELOCIDAD POR DISTANCIA </h2>
@@ -246,8 +245,8 @@
 
                 </div>
 
-
-                    <div class="row">
+                <hr>
+                    <div class="">
                          <div class="col-md-8">
                              <div id="mejora-cadencia" class="mejora-metricas">
                                  <img class="svg" th:src="@{/img/iconos/icon_ayuda.svg}+'?'+${version}"/>
@@ -288,16 +287,17 @@
 
                          </div>
                     </div>
-
+                <div class="clearfix"></div>
+                <hr>
               <div id="dvCumplimiento">
                   <h3 class="metric-title"> CUMPLIMIENTO  DEL PROGRAMA <span>  </span></h3>
                   <div class="container-fluid">
                       <div class="col-md-12">
                           <canvas id="GraficoAvanceSemanal" height="350" width="950"></canvas>
                       </div>
-
+                      <div class="clearfix"></div>
                       <div class="resumen-metrica">
-                          <div class="col-md-12">
+                          <div class="row">
                               <div class="col-md-3 titulo">
                                   <div class="intro">
                                       <h4> CUMPLIMIENTO <span> POR TEMPORADA   </span>
@@ -325,16 +325,16 @@
                       </div>
                   </div>
               </div>
-
+              <hr>
               <div id="dvEsfuerzo">
                   <h3 class="metric-title"> PERCEPCIÓN DE ESFUERZO <span>  </span> </h3>
                   <div class="container-fluid">
                       <div class="col-md-12">
                           <canvas id="GraficoEsfuerzoSemanal" height="350" width="950"></canvas>
                       </div>
-
+                      <div class="clearfix"></div>
                       <div class="resumen-metrica">
-                          <div class="col-md-12">
+                          <div class="row">
                               <div class="col-md-3 titulo">
                                   <div class="intro">
                                       <h4> PERCEPCION DE ESFUERZO <span> POR TEMPORADA   </span> </h4>

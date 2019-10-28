@@ -56,6 +56,11 @@ body, html {
 }
 /* ------- END SCROLL ------- */
 
+#carousel-semanal .item::-webkit-scrollbar
+{
+  width: 8px;
+}
+
 ul, ol {
   list-style: none;
   margin: 0;
@@ -113,8 +118,8 @@ hr {
   border-color: #3d3f41;
   margin: 40px 0; }
 
-#diario .col-md-8 {
-  padding-right: 10%;
+#diario .col-md-8, #semanal .col-md-8, #mensual .col-md-8{
+  padding-right: 5%;
   border-right: 1px solid #3d3f41; }
 
 #diario .col-md-4 {
@@ -560,7 +565,7 @@ a.fav:hover .svg, a.fav.selected .svg {
         display: block; }
     .datepicker_inline .bootstrap-datetimepicker-widget table tbody td:after {
       content: "";
-      width: 46px;
+      width: 50px;
       height: 50px;
       border: 2px solid #8cd000;
       position: absolute;
@@ -593,7 +598,7 @@ h3.title_graphic {
     display: inline-block;
     margin-right: 10px;
        position: relative;
-       top: 4px;}
+       top: 2px;}
     h3.title_graphic i {
       font-size: 16px;
       font-style: normal;
@@ -710,10 +715,6 @@ h3.title_graphic {
     fill: #07b7c2; }
 .datos_semanales {
     padding-left: 28px;
-}
-div#mensual .col-md-8 {
-    border-right: 1px solid #3d3f41;
-    padding-right: 40px;
 }
 .datos_semanales li {
   color: #fff;
@@ -1104,7 +1105,7 @@ section.ritmos_tiempo .box_tiempo {
             width: 17px;
             height: 17px; }
       .panel-group .panel .panel-heading .icons .svg {
-        margin-right: 12px;
+        margin-right: 8px;
         height: 18px;
         max-height: 16px; }
       .panel-group .panel .panel-heading .icons span {
