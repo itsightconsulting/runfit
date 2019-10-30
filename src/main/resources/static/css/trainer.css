@@ -1789,9 +1789,9 @@ section.consejos span.msj-no-data , section.consejos-favs span.msj-no-data{
     padding: 10px;
     font-size: 12px;
     white-space: normal;
-    -webkit-box-shadow: 6px 15px 35px -20px rgba(0, 0, 0, 0.4);
-    -moz-box-shadow: 6px 15px 35px -20px rgba(0, 0, 0, 0.4);
-    box-shadow: 6px 15px 35px -20px rgba(0, 0, 0, 0.4); }
+    -webkit-box-shadow: 6px 0px 30px -20px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 6px 0px 30px -20px rgba(0, 0, 0, 0.4);
+    box-shadow: 6px 0px 30px -20px rgba(0, 0, 0, 0.4); }
 .scroll_rut .days_week article .rt-elem .elem a {
     text-decoration: none;
     color: #000;
@@ -2001,7 +2001,9 @@ box-shadow: 6px 15px 35px -20px rgba(0, 0, 0, 0.4);
 .white {
   color: #fff;
 }
-
+#editorContent h2.title_carousel {
+    margin-bottom: 0;
+}
 h2.title_carousel span.semana-num {
   font-family: GothamHTF-Bold;
 }

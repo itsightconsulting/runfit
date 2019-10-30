@@ -2775,11 +2775,13 @@ Indicadores = (function(){
                 return {paso:`<tr>
                                 <td>Z${zNum}</td>
                                 <td>${ix ? indi.min.slice(3) : indi.max.slice(3)}</td>
+                                <td>-</td>
                                 <td>${ix===metricas.length-1 ? indi.min.slice(3) : indi.max.slice(3)}</td>
                               </tr>`,
                         pulso: `<tr>
                                   <td>Z${zNum}</td>
                                   <td>${e.min}</td>
+                                  <td>-</td>
                                   <td>${e.max}</td>
                                 </tr>`};
             });

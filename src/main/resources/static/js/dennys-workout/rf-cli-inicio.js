@@ -354,7 +354,7 @@ function vistaSemana(data, sIx) {
             if(timessemit>1){
                 $('#carousel-semanal').trigger('add.owl.carousel',
                     htmlStringToElement(
-                           `<div class="item item-carusel-semana" data-six="${i}">
+                           `<div class="item item-carusel-semana mCustomScrollbar" data-six="${i}">
                                       <div class="title">${dato.diaLiteral}</div>
                                       <div class="body-card">
                                         <div class="dias">${finalRemainMessage}<img class="svg" src="img/iconos/icon_ayuda.svg"></div>
