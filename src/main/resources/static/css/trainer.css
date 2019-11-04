@@ -686,7 +686,8 @@ a.star:hover .svg, a.star.selected .svg {
     height: 17px;
     fill: #fff;
     display: inline-block;
-    cursor: pointer; }
+    cursor: pointer;
+    margin-left: 10px;}
 
 .trash {
     position: absolute !important;
