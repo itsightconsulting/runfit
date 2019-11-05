@@ -4,7 +4,7 @@ class Rutina {
         this.fechaInicio = obj.fechaInicio instanceof Date ? obj.fechaInicio : parseFromStringToDate2(obj.fechaInicio);
         this.fechaFin = obj.fechaFin instanceof Date ? obj.fechaFin : parseFromStringToDate2(obj.fechaFin);
         this.fechaCliAcceso = obj.fechaCliAcceso instanceof Date ? obj.fechaCliAcceso : parseFromStringToDate2(obj.fechaCliAcceso != null ? obj.fechaCliAcceso : "01/01/2000");
-        this.fechaFinPt = obj.fechaFinPt instanceof Date ? obj.fechaFinPt : this.fechaFinPt ? parseFromStringToDate2(obj.fechaFinPt) : "";
+        this.fechaFinPt = obj.fechaFinPt instanceof Date ? obj.fechaFinPt : obj.fechaFinPt ? parseFromStringToDate2(obj.fechaFinPt) : "";
         this.meses = obj.meses;
         this.anios = obj.anios;
         this.totalSemanas = obj.totalSemanas;

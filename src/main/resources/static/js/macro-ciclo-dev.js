@@ -30,17 +30,11 @@ Ficha = (function(){
 
 FichaGet = (function(){
     return {
-        obtenerMaximaFechaCompeticiones: (fechas)=>{
-            let maxFecha  = fechas[0];
-            if(!maxFecha || !maxFecha.fecha){
+        obtenerMaximaFechaCompeticiones: (competencias)=>{
+            if(!competencias || competencias.length){
                 return new Date();
             }
-            fechas.forEach((v,i)=>{
-                if(i != 0){
-                    maxFecha = v.fecha.getTime() > maxFecha.getTime() ? v.fecha : maxFecha;
-                }
-            });
-            return maxFecha;
+            return new Date(Math.max.apply(null, competencias.map(v=>v.fecha.getTime())));
         },
         obtenerNivelAtleta:()=>{
             let ix = 0;

@@ -200,6 +200,7 @@ function clickEventListenerNavTabs(e){
 
         if(ahref === "mensual"){
             //$('.datepicker_inline').data("DateTimePicker").date(sem.fechaInicio);
+            console.log()
             datepicker_init($rutina.fechaInicio, $rutina.fechaFinPt);
         }
         svg.parentElement.click();
