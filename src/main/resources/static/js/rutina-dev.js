@@ -1255,7 +1255,6 @@ DiaOpc = (function(){
             }
         },
         validPreActualizarFromNomEle: (e, ixs, posEle)=>{
-            debugger
             const nombreOZonaCardiaca = e.toUpperCase();
             const elemento = RutinaDOMQueries.getElementoByIxs(ixs);
             const tiempoAsignado = elemento.querySelector('.agregar-tiempo').value;

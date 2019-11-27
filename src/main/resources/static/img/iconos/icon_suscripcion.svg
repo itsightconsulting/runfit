@@ -8,8 +8,8 @@
 	.st2{fill:#030101;}
 	.st3{fill:none;stroke:#000000;stroke-miterlimit:10;}
 	.st4{stroke:#000000;stroke-miterlimit:10;}
-	.st5{fill:none;stroke:#272525;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
-	.st6{fill:#272525;stroke:#272525;stroke-width:3;stroke-miterlimit:10;}
+	.st5{fill:none;stroke:#9d9d9d !important;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st6{fill:#9d9d9d !important;stroke:#9d9d9d !important;stroke-width:3;stroke-miterlimit:10;}
 	.st7{opacity:0;clip-path:url(#SVGID_2_);fill-rule:evenodd;clip-rule:evenodd;fill:#FFFFFF;}
 	.st8{clip-path:url(#SVGID_4_);}
 	.st9{clip-path:url(#SVGID_6_);}

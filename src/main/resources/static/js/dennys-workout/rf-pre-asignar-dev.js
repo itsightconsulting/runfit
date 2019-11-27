@@ -199,7 +199,6 @@ function actualizarPorcentajesKilometrajeBD(porcentajes, e){
 }
 
 function obtenerKilometrajeBaseBD(distancia, nivel){
-    debugger
     const o  = {};
     o.distancia = distancia;
     o.nivelAtleta = nivel;
