@@ -99,9 +99,9 @@ function init(){
     fInitMacro.addEventListener('change', FichaSet.setTotalSemanas);
     fFinMacro.addEventListener('change', FichaSet.setTotalSemanas);
     setFechaActual(document.querySelectorAll('input[type="date"]'));
-    setTimeout(() => {
+ /*   setTimeout(() => {
         obtenerKilometrajeBaseBD(Number(document.querySelector('#DistanciaRutina input:checked').value), Number(document.querySelector('#NivelAtleta input:checked').value));
-    }, 1100);
+    }, 1100); */
 }
 
 function instanciarTooltips(){
@@ -121,6 +121,7 @@ function instanciarDatosFitnessCliente(){
         dataType: "json",
         blockLoading: false,
         success: function (data, textStatus) {
+
 
 
             if (textStatus == "success") {

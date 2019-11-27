@@ -11,7 +11,10 @@ const btnNuevo = document.getElementById('btn-nuevo');
 
 function init(){
     eventos();
+    mostrarMensajeErrorLogin(error);
 }
+
+
 
 function eventos(){
     if(btnRecuperar){//Iniciar recuperación password
@@ -34,6 +37,7 @@ function eventos(){
     body.addEventListener('keyup', bodyKeyupEventListener);
 
 }
+
 
 
 function bodyFocusOutEventListener(e){
@@ -114,7 +118,7 @@ function sendFormCambiar(){
     const passwordRe = $('#NuevaPasswordRe')[0];
 
     const params = {
-        nuevaPassword: $('#NuevaPassword').val(),
+        nuevaPassword: $(   '#NuevaPassword').val(),
         nuevaPasswordRe: $(passwordRe).val(),
         userId: hshId,
         schema: new URLSearchParams(window.location.search).get('sc')

@@ -16,15 +16,13 @@ public abstract class EmailGeneric {
     @Value("${spring.mail.username}")
     private String hostMail;
 
-
-
     public MimeMessagePreparator mimeMessagePreparatorHelper(String asunto, String receptor, String copiado, File archivoAdjunto, String contenido) {
 
         MimeMessagePreparator preparator = mimeMessage -> {
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage,
                     MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
                     UTF_8.name());
-            helper.setFrom(new InternetAddress(hostMail, "RunFit Plataform"));
+            helper.setFrom(new InternetAddress(hostMail, "Caja Piura"));
             helper.setSubject(asunto);
             helper.setTo(new InternetAddress(receptor));
             if(copiado!= null)helper.setCc(copiado);
@@ -42,7 +40,7 @@ public abstract class EmailGeneric {
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage,
                     MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
                     UTF_8.name());
-            helper.setFrom(new InternetAddress(hostMail, "RunFit Plataform"));
+            helper.setFrom(new InternetAddress(hostMail, "Caja Piura Signbox"));
             helper.setSubject(asunto);
             helper.setTo(new InternetAddress(receptor));
             if(copiados!=null && copiados.length>0) {
@@ -65,7 +63,7 @@ public abstract class EmailGeneric {
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage,
                     MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
                     UTF_8.name());
-            helper.setFrom(new InternetAddress(hostMail, "RunFit Plataform"));
+            helper.setFrom(new InternetAddress(hostMail, "Caja Piura Signbox"));
             helper.setSubject(asunto);
             helper.setTo(new InternetAddress(receptor));
             if(copiados!=null && copiados.length>0) {
@@ -87,9 +85,9 @@ public abstract class EmailGeneric {
     public MimeMessagePreparator mimeMessagePreparator(String asunto, String receptor, String contenido) {
 
         MimeMessagePreparator preparator = mimeMessage -> {
-            mimeMessage.setFrom(new InternetAddress(hostMail, "RunFit Plataform"));
+            mimeMessage.setFrom(new InternetAddress(hostMail, "Caja Piura Signbox"));
             mimeMessage.setSubject(asunto);
-            mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(receptor, "RunFit Plataform"));
+            mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(receptor, "Caja Piura Signbox"));
             mimeMessage.setContent(contenido
                     , "text/html; charset=utf-8");
         };
@@ -99,7 +97,7 @@ public abstract class EmailGeneric {
     public MimeMessagePreparator mimeMessagePreparatorForRecepientsBbc(String asunto, String receptors, String contenido) {
 
         MimeMessagePreparator preparator = mimeMessage -> {
-            mimeMessage.setFrom(new InternetAddress(hostMail, "RunFit Plataform"));
+            mimeMessage.setFrom(new InternetAddress(hostMail, "Caja Piura Signbox"));
             mimeMessage.setSubject(asunto);
             mimeMessage.addRecipients(Message.RecipientType.BCC, InternetAddress.parse(receptors));
             mimeMessage.setContent(contenido
@@ -111,7 +109,7 @@ public abstract class EmailGeneric {
     public MimeMessagePreparator mimeMessagePreparatorForRecepientAndOnlyOneCc(String asunto, String receptor, String ccReceptor, String contenido) {
 
         MimeMessagePreparator preparator = mimeMessage -> {
-            mimeMessage.setFrom(new InternetAddress(hostMail, "RunFit Plataform"));
+            mimeMessage.setFrom(new InternetAddress(hostMail, "Caja Piura Signbox"));
             mimeMessage.setSubject(asunto);
             mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(receptor));
             mimeMessage.setRecipient(Message.RecipientType.CC, new InternetAddress(ccReceptor));
@@ -124,7 +122,7 @@ public abstract class EmailGeneric {
     public MimeMessagePreparator mimeMessagePreparator(String asunto, String receptor, String contenido, String copiado) {
 
         MimeMessagePreparator preparator = mimeMessage -> {
-            mimeMessage.setFrom(new InternetAddress(hostMail, "RunFit Plataform"));
+            mimeMessage.setFrom(new InternetAddress(hostMail, "Caja Piura Signbox"));
             mimeMessage.setSubject(asunto);
             mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(receptor));
             if(copiado!=null && copiado.length() > 0) {
@@ -139,7 +137,7 @@ public abstract class EmailGeneric {
     public MimeMessagePreparator mimeMessagePreparator(String asunto, String receptor, String contenido, String[] copiados) {
 
         MimeMessagePreparator preparator = mimeMessage -> {
-            mimeMessage.setFrom(new InternetAddress(hostMail, "RunFit Plataform"));
+            mimeMessage.setFrom(new InternetAddress(hostMail, "Caja Piura Signbox"));
             mimeMessage.setSubject(asunto);
             mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(receptor));
             if(copiados!=null && copiados.length>0) {

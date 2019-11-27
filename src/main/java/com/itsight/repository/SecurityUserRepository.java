@@ -19,7 +19,7 @@ public interface SecurityUserRepository extends JpaRepository<SecurityUser, Inte
     SecurityUser findByUsername(String username);
 
     @Query(nativeQuery = true)
-    SecurityUserDTO findByUsernameNative(@Param("username") String username);
+        SecurityUserDTO findByUsernameNative(@Param("username") String username);
 
     @Query(value = "SELECT SU.id FROM SecurityUser SU WHERE SU.username = ?1")
     Integer findIdByUsername(String username);

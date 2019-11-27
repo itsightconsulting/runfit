@@ -84,7 +84,7 @@ public class PostController {
         return EXITO_GENERICA.get();
     }
 
-    @RequestMapping(value = "/desactivar", method = RequestMethod.POST)
+    @RequestMapping(value = "/desactivar", method = RequestMethod.PUT)
     public @ResponseBody String actualizarEstadoConsejo(@RequestParam Integer id,HttpSession session) {
 
         int idUser = Integer.parseInt(session.getAttribute("id").toString());

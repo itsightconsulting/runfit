@@ -165,7 +165,7 @@ public class SecurityUser{
 
     public SecurityUser(String username, String password) {
         this.username = username;
-        this.password = new BCryptPasswordEncoder().encode(password);
+            this.password = new BCryptPasswordEncoder().encode(password);
         this.enabled = true;
     }
 

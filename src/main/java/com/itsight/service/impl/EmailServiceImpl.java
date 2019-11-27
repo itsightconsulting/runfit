@@ -21,13 +21,13 @@ public class EmailServiceImpl extends EmailGeneric implements EmailService {
 
     @Value("${spring.mail.username}")
     private String emitterMail;
-	
+
     private JavaMailSender emailSender;
 
     private BandejaTemporalRepository bandejaTemporalRepository;
 
     public static final Logger LOGGER = LogManager.getLogger(EmailServiceImpl.class);
-    
+
     @Autowired
     public EmailServiceImpl(JavaMailSender emailSender, BandejaTemporalRepository bandejaTemporalRepository) {
 		// TODO Auto-generated constructor stub
@@ -74,7 +74,7 @@ public class EmailServiceImpl extends EmailGeneric implements EmailService {
                 emailSender.send(preparator);
             }
 
-            if(profile.equals("development")){
+                if(profile.equals("development")){
                 /*receptor = "contoso.peru@gmail.com";
                 preparator = mimeMessagePreparator(asunto, receptor, contenido);
                 emailSender.send(preparator);*/

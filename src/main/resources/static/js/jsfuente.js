@@ -546,6 +546,8 @@ function getDateAsDateTimeString(){
 }
 
 function getFechaFormatoString(d) {
+
+    debugger
     return `${d.getFullYear()}-${('00' + (d.getMonth() + 1)).slice(-2)}-${('00' + d.getDate()).slice(-2)}`;
 }
 

@@ -56,7 +56,7 @@ public class EntityInterceptorImpl extends EmptyInterceptor implements EntityInt
 
     @Override
     public boolean onFlushDirty(Object entity, Serializable id, Object[] currentState, Object[] previousState, String[] propertyNames, Type[] types) {
-        if (entity instanceof AuditingEntity) {
+         if (entity instanceof AuditingEntity) {
             for (int i = 0; i < propertyNames.length; i++) {
                 String propertyName = propertyNames[i];
 

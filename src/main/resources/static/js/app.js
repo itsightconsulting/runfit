@@ -104,10 +104,8 @@ var calc_navbar_height = function () {
         app.SmartActions = function () {
 
             var smartActions = {
-
                 // LOGOUT MSG
                 userLogout: function ($this) {
-
                     // ask verification
                     $.SmartMessageBox({
                         title: "<i class='fa fa-sign-out txt-color-orangeDark'></i> Logout <span class='txt-color-orangeDark'><strong>" + $('#show-shortcut').text() + "</strong></span> ?",
