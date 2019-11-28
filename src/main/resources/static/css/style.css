@@ -206,11 +206,15 @@ a.fav:hover .svg, a.fav.selected .svg {
       position: absolute;
       left: 4px;
       top: 4px; }
+    /*
     .search .options button:hover {
-      border-color: #a8fa00; }
-      .search .options button:hover .svg {
+      border-color: #a8fa00; } */
+
+      .search .options button:hover .svg,
+      .search .options  button.selected .svg {
         fill: #a8fa00; }
-      .search .options button:hover:before {
+      .search .options button:hover:before,
+      .search .options button.selected:before {
         content: " ";
         background-color: #a8fa00; }
 

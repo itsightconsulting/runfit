@@ -35,15 +35,16 @@
 
     <div id="main-content">
       <div id="wrapper">
-        <div class="container">
+        <div class="container-t">
           <header>
-            <div class="text-center">
-              <button class="navbar-toggle only_mobile" onclick="showMenuMobile()"><img class="svg" src="/img/iconos/icon_programas.svg"></button><a class="only_mobile" href="index.html"><img class="logo" src="/img/logo.png" alt=""></a>
-              <h4 class="user"><img class="svg" src="/img/iconos/icon_perfil.svg">Yasmine Andía H.<span>RUNNING</span></h4>
-            </div>
+              <div class="text-center">
+                  <button class="navbar-toggle only_mobile" onclick="showMenuMobile()"><img class="svg" th:src="@{/img/iconos/icon_hamburger.svg}"></button><a class="only_mobile" th:href="@{/bienvenido}"><img class="logo" th:src="@{/img/logo.png}" alt=""></a>
+                  <h4 class="user">
+                      <img class="svg" th:src="@{/img/iconos/icon_perfil.svg}"><span class="user-full-name"></span></h4>
+              </div>
           </header>
         </div>
-        <div class="container-consejos no_padding_top">
+        <div class="container-consejos">
          <div>
           <h3 class="title_section no_margin_top">mis consejos</h3>
           <section class="consejos">

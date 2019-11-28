@@ -340,7 +340,7 @@ function GraficoEsfuerzoPeriodo(data, periodoIx){
                     ctx.font = "30px GothamHTF-Book";
                     ctx.fillStyle = colores[periodoIx];
                     ctx.textAlign = "center";
-                    ctx.fillText(data + '%', (canvas.width/2) +5, (canvas.height/2) + 5);
+                    ctx.fillText(data , (canvas.width/2) +5, (canvas.height/2) + 5);
                     //  ctx.fillText("100%",centerX -10,centerY - 25, 20,50);
 
                     ctx.beginPath();
@@ -1590,12 +1590,12 @@ function graficoDistribucionEtapa(etapasPorc){
     let canvas = document.getElementById('MiniGraficoDistribucion');
     let ctx = document.getElementById('MiniGraficoDistribucion').getContext('2d');
 
-    if($chartMiniPorc.ctx != undefined){
-        $chartMiniPorc.destroy();
-    }
 
+    Chart.defaults.doughnutCenterElement = Chart.helpers.clone(Chart.defaults.doughnut);
 
-    $chartMiniPorc = new Chart(ctx, {
+    var helpers = Chart.helpers;
+    var defaults = Chart.defaults;
+    var config = {
         type: 'doughnut',
         data: {
             labels: ["General","Específica","Competitiva","Tránsito"],
@@ -1607,29 +1607,19 @@ function graficoDistribucionEtapa(etapasPorc){
             }],
         },
         options: {
+            pluginRegister: true,
             responsive:false,
             cutoutPercentage: 95,
             legend: {
                 display: false,
-                labels: {
-                    // This more specific font property overrides the global property
-                    fontColor : 'white',
-                    fontFamily : 'GothamHTF-Book',
-                }
             },
             title: {
                 display: false
             },
-            animation: {
-                onComplete: function () {
-                    var xCenter = (canvas.width / 2);
-                    var yCenter = canvas.height / 2;
-                    var progressLabel = '%';
-                    ctx.font = '25px Helvetica';
-                    ctx.fillStyle = 'white';
-                    ctx.fillText(progressLabel, xCenter, yCenter);
-                }
+            tooltip:{
+                position: 'average'
             }
+
             /*segmentShowStroke: false*/
             //Boolean - Whether we should show a stroke on each segment
             // set to false to hide the space/line between segments
@@ -1637,8 +1627,32 @@ function graficoDistribucionEtapa(etapasPorc){
         }
 
 
-    });
+    };
 
+    Chart.pluginService.register({
+        beforeDraw: function(chart) {
+
+            if (chart.config.options.pluginRegister) {
+                var width = chart.chart.width,
+                    height = chart.chart.height,
+                    ctx = chart.chart.ctx;
+
+                ctx.restore();
+                var fontSize = (height / 45).toFixed(2);
+                ctx.font = fontSize + "em sans-serif";
+                ctx.textBaseline = "middle"
+                ctx.fillStyle = "white"
+
+                var text = "%",
+                    textX = Math.round((width - ctx.measureText(text).width) / 2),
+                    textY = (height / 2 ) + 6;
+
+                ctx.fillText(text, textX, textY);
+                ctx.save();            }
+
+        }
+    });
+    new Chart(ctx, config);
 
 }
 

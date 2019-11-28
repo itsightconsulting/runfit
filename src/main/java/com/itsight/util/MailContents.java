@@ -3,7 +3,7 @@ package com.itsight.util;
 public class MailContents {
 
     public static StringBuilder contenidoNuevoUsuario(String username, String originalPassword, int tipoUsuario, String domainName){
-        StringBuilder sb = new StringBuilder(1000);
+        StringBuilder sb = new StringBuilder(3000);
         if(tipoUsuario == 1 || tipoUsuario == 2){
             sb.append("<h4>Bienvenido a Dennys Workout Team,</h4>");
             sb.append("<p>Su perfil ya ha sido registrado en nuestra base de datos es por ello que le enviamos sus credenciales de ingreso las ");

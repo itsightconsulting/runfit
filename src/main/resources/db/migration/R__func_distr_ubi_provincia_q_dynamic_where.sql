@@ -1,4 +1,3 @@
-
 CREATE OR REPLACE FUNCTION func_distr_ubi_provincia_q_dynamic_where(
     _security_user_id  int  = NULL
 )

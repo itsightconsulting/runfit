@@ -13,6 +13,7 @@ import com.itsight.repository.TipoDescuentoRepository;
 import com.itsight.service.*;
 import com.itsight.util.Parseador;
 import com.itsight.util.Utilitarios;
+import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
@@ -24,6 +25,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletContext;
+import javax.sql.DataSource;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,6 +37,8 @@ import java.util.stream.Collectors;
 
 @Component
 public class StartUpListener implements ApplicationListener<ContextRefreshedEvent> {
+
+    public static final String PG_DATABASE_SCHEMA = "public";
 
     @Autowired
     private SecurityUserRepository userRepository;
@@ -77,7 +81,6 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
 
     @Autowired
     private EspecificacionSubCategoriaService especificacionSubCategoriaService;
-//
 
     @Autowired
     private GrupoVideoService grupoVideoService;
@@ -170,14 +173,19 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
     @Value("${flag.populate}")
     private Boolean flagPopulate;
 
-    @Autowired
-    private JdbcTemplate jbJdbcTemplate;
-
     @Value("${spring.jpa.hibernate.ddl-auto}")
     private String ddlAuto;
 
+    @Autowired
+    private DataSource dataSource;
+
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+        //Running procedures and unique index constraints
+        Flyway.configure().dataSource(dataSource)
+                .baselineOnMigrate(true)
+                .schemas(PG_DATABASE_SCHEMA).load().migrate();
+
         //Nos aseguramos que si los seeders ya han sido ejecutados nos saltemos su registro
         if(ddlAuto.equals("create")){
             //Main Seeders
@@ -222,8 +230,6 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
                 addingVideo();
             }
         }
-        //UNIQUE CONSTRAINTS
-        creatingUniqueIndex();
         addingApplicationParameters();
         addingToContextSession();
         addingInitUsers();
@@ -1326,24 +1332,4 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
         Utilitarios.createDirectoryStartUp(context.getAttribute("MAIN_ROUTE").toString(), childPaths);
     }
 
-    public void creatingUniqueIndex() {
-        try{
-            if(ddlAuto.equals("create")){
-                InputStream is = new ClassPathResource("unique_constraints_insensitive.sql").getInputStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-                String content = reader.lines().collect(Collectors.joining("\n"));
-                String[] lines = content.split("\n");
-                reader.close();
-                for(int i=0; i<lines.length;i++){
-                    try {
-                        jbJdbcTemplate.execute(lines[i]);
-                    }catch (BadSqlGrammarException ex){
-                        System.out.println("ERROR: «"+lines[i]+"» YA EXISTE!");
-                    }
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

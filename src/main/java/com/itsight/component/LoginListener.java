@@ -1,12 +1,9 @@
 package com.itsight.component;
 
-import com.itsight.domain.ConfiguracionCliente;
 import com.itsight.domain.dto.ConfiguracionClienteDTO;
 import com.itsight.domain.dto.UsuGenDTO;
 import com.itsight.service.*;
-import com.itsight.util.Enums;
 import com.itsight.util.Parseador;
-import com.itsight.util.Utilitarios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,7 +15,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Base64;
@@ -28,7 +24,6 @@ import java.util.List;
 import static com.itsight.util.Enums.CfsCliente.*;
 import static com.itsight.util.Enums.Galletas.*;
 import static com.itsight.util.Utilitarios.createCookie;
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Component
 public class LoginListener implements ApplicationListener<InteractiveAuthenticationSuccessEvent> {

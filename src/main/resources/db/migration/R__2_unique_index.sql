@@ -1,0 +1,16 @@
+CREATE UNIQUE INDEX IF NOT EXISTS uk_grupo_video_ic_nombre on grupo_video (lower(nombre));
+CREATE UNIQUE INDEX IF NOT EXISTS uk_categoria_video_ic_nombre_n_gv_id on categoria_video (lower(nombre), grupo_video_id);
+CREATE UNIQUE INDEX IF NOT EXISTS uk_sub_categoria_video_ic_nombre_n_cv_id on sub_categoria_video (lower(nombre), categoria_video_id);
+CREATE UNIQUE INDEX IF NOT EXISTS uk_video_ic_nombre_n_scv_id on video (lower(nombre), sub_categoria_video_id);
+CREATE UNIQUE INDEX IF NOT EXISTS uk_security_user_ic_username on runfit.public.security_user (lower(runfit.public.security_user.username));
+CREATE UNIQUE INDEX IF NOT EXISTS uk_postulante_trainer_ic_correo on runfit.public.postulante_trainer (lower(correo));
+CREATE UNIQUE INDEX IF NOT EXISTS uk_trainer_ic_correo on runfit.public.trainer (lower(correo));
+CREATE UNIQUE INDEX IF NOT EXISTS uk_tipo_rutina_ic_nombre on runfit.public.tipo_rutina (lower(nombre));
+CREATE UNIQUE INDEX IF NOT EXISTS uk_parametro_ic_clave on runfit.public.parametro (lower(clave));
+CREATE UNIQUE INDEX IF NOT EXISTS uk_tipo_audio_ic_nombre on runfit.public.tipo_audio (lower(nombre));
+CREATE UNIQUE INDEX IF NOT EXISTS uk_objetivo_ic_nombre on runfit.public.objetivo (lower(nombre));
+CREATE UNIQUE INDEX IF NOT EXISTS uk_visitante_ic_correo on runfit.public.visitante (lower(correo));
+CREATE UNIQUE INDEX IF NOT EXISTS uk_modulo_ic_nombre on runfit.public.modulo (lower(nombre));
+CREATE UNIQUE INDEX IF NOT EXISTS uk_administrador_ic_correo on runfit.public.administrador (lower(correo));
+CREATE UNIQUE INDEX IF NOT EXISTS uk_trainer_ficha_ic_nomPag on runfit.public.trainer_ficha (lower(nom_pag));
+CREATE UNIQUE INDEX IF NOT EXISTS uk_cliente_ic_correo on runfit.public.cliente (lower(correo));

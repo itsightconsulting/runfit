@@ -922,8 +922,6 @@ function validUniqueEmailOrUsernameOrNomPag(input, pathURLDiff){
         type: 'GET',
         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
         url: _ctx+'p/validacion-'+pathURLDiff,
-        blockLoading: false,
-        noOne: true,
         data: {valor: input.value},
         dataType: 'json',
         success: function(res){

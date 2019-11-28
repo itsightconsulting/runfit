@@ -358,6 +358,8 @@ function quitarDuplicados(arr, attribute){
 
 function setGraficosCondFisMasc(dataNoDuplMasc){
 
+    debugger
+
     const condAnatomicaMasc = dataNoDuplMasc.map( ({condicionAnatomica}) => JSON.parse(condicionAnatomica));  //.condicionAnatomica);
     let arrCondFisicMasc =  getDataGraficoCondFisica(condAnatomicaMasc);
     arrCondFisicMasc.length > 0 ? null : arrCondFisicMasc = [0,0,0];
@@ -484,7 +486,7 @@ function getDataGraficoTipoServicio(arr){
 
 function getDataGraficoCondFisica(arr){
 
-    let valBasico= arr.filter( e => e.formaInicial> 0 & e.formaInicial<=33).length;
+    let valBasico= arr.filter( e => e.formaInicial>= 0 & e.formaInicial<=33).length;
     let valMedio = arr.filter( e =>  e.formaInicial> 34 & e.formaInicial<=66).length;
     let valAvanzado = arr.filter( e => e.formaInicial >= 67).length;
 

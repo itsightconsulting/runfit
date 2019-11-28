@@ -22,7 +22,8 @@ let currentTipoConsejoConsulta = 1;
 
 $(function () {
 
-     obtenerData(1);
+     listarConsejosEntrenador(1);
+     btnAudiosList.addClass("selected")
      body2.on('click', 'svg.material', ejecutarContenidoMultimediaEvent);
      body2.on('click', 'a.delete svg', desactivarConsejoEvent);
      body2.on('click', 'a.edit-audio' , abrirMdlVerDatosConsejoAudio);
@@ -31,11 +32,17 @@ $(function () {
      btnEditarConsejoAudio.click(editarConsejoAudioEvent);
      btnTipoConsejoRegistro.click(seleccionTipoConsejoEvent);
      btnAudiosList.click(function(){
-            currentTipoConsejoConsulta = 2;
+
+
+            currentTipoConsejoConsulta  !== 1 ? ( currentTipoConsejoConsulta = 1 , btnAudiosList.addClass("selected")
+                                                    , btnPostsList.removeClass("selected")  ): null ;
+
             generarListaAudios(LISTA_FAVORITOS_AUDIO);
      });
      btnPostsList.click(function(){
-            currentTipoConsejoConsulta = 3;
+
+         currentTipoConsejoConsulta  !== 2 ? ( currentTipoConsejoConsulta = 2 , btnPostsList.addClass("selected")
+             , btnAudiosList.removeClass("selected")  ): null ;
             generarListaTextos(LISTA_FAVORITOS_TEXTO);
      });
      btnActualizarConsejoTxt.click(actualizarConsejoTextoEvent);
@@ -270,7 +277,7 @@ function agregarMultimedia() {
     $('#mdlAgregarConsejo').modal("show")
 }
 
-function obtenerData(flag) {
+function listarConsejosEntrenador(flag) {
     LISTA_FAVORITOS_VIDEO = [];
     LISTA_FAVORITOS_AUDIO = [];
     LISTA_FAVORITOS_TEXTO = [];
@@ -298,9 +305,10 @@ function obtenerData(flag) {
         complete: function (res) {
 
             if(flag == 1){
-               generarListaTextos(LISTA_FAVORITOS_TEXTO);
-            } else if(flag == 2){
                 generarListaAudios(LISTA_FAVORITOS_AUDIO);
+
+            } else if(flag == 2){
+                generarListaTextos(LISTA_FAVORITOS_TEXTO);
             }
 
             $('[rel="tooltip"]').tooltip();
@@ -369,7 +377,7 @@ function generarListaAudios(listaAudios) {
             let itemAudio = `  <li> <img class="material voice svg" data-id="${item.id}" data-media="${item.rutaWeb}" src="/img/iconos/icon_microfono.svg"> 
                                 <a class="edit-audio" data-id="${item.id}" data-titulo="${item.titulo}"> <span>${item.titulo}</span></a> 
                               <div class="pull-right">
-                                <div class="time"><img class="svg" src="/img/iconos/icon_time.svg"><span>${duracionArr[1] + "'"} ${duracionArr[2] + '"'} </span></div><a class="delete"><img class="svg" src="/img/iconos/icon_trash.svg" data-id="${item.id}"></a>
+                                <div class="time"><img class="svg" src="/img/iconos/icon_time.svg"><span>${ ( duracionArr[1].substr(0,1) === '0' ?  duracionArr[1].substr(1,1)   : duracionArr[1].substr ) + "'"} ${duracionArr[2] + '"'} </span></div><a class="delete"><img class="svg" src="/img/iconos/icon_trash.svg" data-id="${item.id}"></a>
                              </div>
                           </li>
                          `;
@@ -521,19 +529,25 @@ function desactivarConsejo(id) {
     }, function(e) {
         "Si" == e &&
         $.ajax({
-            type: "POST",
+            type: "PUT",
             contentType: "application/x-www-form-urlencoded; charset=UTF-8",
             url: _ctx + "gestion/consejo/desactivar",
             dataType: "json",
             data: params,
+            blockLoading:false,
+            noOne:true,
             success: function (data, textStatus) {
-                obtenerData(currentTipoConsejoConsulta);
+
+                setTimeout(function(){
+                    listarConsejosEntrenador(currentTipoConsejoConsulta);
+                }, 700);
+
+                $.smallBox({content: "<i class='fa fa-child'></i> <i>Se actualizó satisfactoriamente...!</i>",});
             },
             error: function (xhr) {
                 exception(xhr);
             },
             complete: function () {
-                    $.smallBox({content: "<i class='fa fa-child'></i> <i>Se actualizó satisfactoriamente...!</i>",});
             }
         });
 
@@ -687,7 +701,7 @@ function registrarMultimedia(id) {
                     exception(xhr);
                 },
                 complete: function () {
-                    obtenerData(tipoConsejoRegistro);
+                    listarConsejosEntrenador(tipoConsejoRegistro);
                     $('#registrar-texto-frm').trigger('reset');
                     $('#actualizar-texto-frm').trigger('reset');
 
@@ -728,7 +742,7 @@ function subirAudio(d,id, tipoConsejoRegistro) {
             exception(xhr);
         },
         complete: function () {
-            obtenerData(tipoConsejoRegistro);
+            listarConsejosEntrenador(tipoConsejoRegistro);
             $('#registrar-audio-frm').trigger('reset');
             $('#actualizar-audio-frm').trigger('reset');
         }

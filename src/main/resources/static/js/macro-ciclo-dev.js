@@ -3,7 +3,7 @@
 Ficha = (function(){
     return {
         instanciar: (ficha)=>{
-
+            debugger
             const comps =JSON.parse(ficha.competencias);
             const condicionAnatomica = JSON.parse(ficha.condicionAnatomica);
             $fechasCompetencia = comps.map(v=>{return {nombre: v.nombre, prioridad: v.prioridad, fecha: parseFromStringToDate2(v.fecha)}}).sort((a, b)=>{return a.fecha - b.fecha;});
@@ -30,11 +30,18 @@ Ficha = (function(){
 
 FichaGet = (function(){
     return {
-        obtenerMaximaFechaCompeticiones: (competencias)=>{
-            if(!competencias || competencias.length){
+        obtenerMaximaFechaCompeticiones: (fechas)=>{
+
+            let maxFecha  = fechas[0].fecha;
+            if(!maxFecha || !maxFecha.fecha){
                 return new Date();
             }
-            return new Date(Math.max.apply(null, competencias.map(v=>v.fecha.getTime())));
+            fechas.forEach((v,i)=>{
+                if(i != 0){
+                    maxFecha = v.fecha.getTime() > maxFecha.getTime() ? v.fecha : maxFecha;
+                }
+            });
+            return maxFecha;
         },
         obtenerNivelAtleta:()=>{
             let ix = 0;
@@ -94,6 +101,7 @@ FichaSeccion = (function(){
 FichaSet = (function(){
     return {
         nivelAtleta: (nivel)=>{
+            debugger
             document.querySelectorAll('#NivelAtleta input').forEach((v,i)=>{
                 if(i==nivel-1){
                     v.checked = true;

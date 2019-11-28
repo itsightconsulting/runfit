@@ -15,14 +15,18 @@ const btnBuscarConsejo = $('#btnSearch');
 
 $(function () {
 
+    
     listarConsejoEntrenador();
+    btnAudiosList.addClass("selected")
     btnAudiosList.click(function(){
-        currentTipo = 1;
+        currentTipo  !== 1 ? ( currentTipo = 1 , btnAudiosList.addClass("selected")
+            , btnPostsList.removeClass("selected")  ): null ;
         generarListaAudios(listaConsejosAudios);
 
     });
     btnPostsList.click(function(){
-        currentTipo = 3;
+        currentTipo  !== 2 ? ( currentTipo = 2 , btnPostsList.addClass("selected")
+            , btnAudiosList.removeClass("selected")  ): null;
         generarListaTextos(listaConsejosTextos);
     });
 
@@ -61,15 +65,11 @@ function buscarConsejoEvent(){
 }
 
 function buscarConsejosxFiltro(arr, filterValue){
-
     const filteredData =   arr.filter( ({titulo}) => titulo.toLowerCase().indexOf(filterValue) > -1);
 
     if(filteredData.length ===0){
-
         ulConsejos.html("");
-
         const mensaje = htmlStringToElement(`<span class="msj-no-data" style="color:#ffffff"> No se encontraron resultados para su búsqueda </span>`);
-
         ulConsejos.parent().append(mensaje);
     }
     return filteredData;
@@ -145,7 +145,7 @@ function listarConsejoEntrenador() {
         url: _ctx + 'cliente/get/consejos',
         dataType: "json",
         success: function (data, textStatus) {
-
+            debugger
             if (textStatus == "success") {
                 if (data == "-9") {
                     $.smallBox({
@@ -154,20 +154,20 @@ function listarConsejoEntrenador() {
                         color: "alert",
                     });
                 } else {
-                    if(data.length>0) {
+                   // if(data.length>0) {
                         //var $div = $(".list-cards");
                         //$div.html("");
                            const infoConsejos = data.sort( (a,b) =>  b.id - a.id);
-                           listaConsejosAudios  = infoConsejos.filter( e => e.tipo === 1);
+                           listaConsejosAudios  = infoConsejos.filter( e => e.tipo === 2);
                            listaConsejosTextos  = infoConsejos.filter( e => e.tipo === 3);
                            const arrIdsPostsFavoritos = $('#arrPostsFavs').val().split(",").map( elem => Number(elem));
                            const postsFavoritos = infoConsejos.filter( e =>  arrIdsPostsFavoritos.includes(e.id));
                            listaConsejosFavoritos = postsFavoritos;
                           // generarListaFavoritos(postsFavoritos);
-                           if(currentTipo === 1){
 
+                           if(currentTipo === 1){
                                generarListaAudios(listaConsejosAudios);
-                           }else if(currentTipo === 3){
+                           }else if(currentTipo === 2){
                                generarListaTextos(listaConsejosTextos);
                            }else{
                                generarListaFavoritos(listaConsejosFavoritos);
@@ -176,7 +176,7 @@ function listarConsejoEntrenador() {
                        /* $.each(data.sort((a, b)=>{return parseFromStringToDateTime(b.fechaCreacion).getTime() - parseFromStringToDateTime(a.fechaCreacion).getTime();}),(i, item)=>{
                             $div.append(GenerarDiv(item));
                         });*/
-                    }
+              //      }
                 }
             }
         },
@@ -230,6 +230,7 @@ function actualizarEstadoFavorito(id, favStatus,input) {
 
 function generarListaAudios(listaAudios) {
 
+    debugger
     $('.msj-busqueda').remove();
     $('#inpSearch').val("");
     ulConsejos.html("");
@@ -267,6 +268,7 @@ function generarListaAudios(listaAudios) {
         });
 
     }else{
+        debugger
         const mensajeNoData = htmlStringToElement(`<span class="msj-no-data"> El entrenador no cuenta con clips de audio para consultar. </span> `);
         ulConsejos.parent().append(mensajeNoData);
     }
