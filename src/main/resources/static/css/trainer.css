@@ -1355,9 +1355,9 @@ section#historial strong{
 }
 
 section#historial .periodo-rutina{
-    display: inline;
+    display: block;
     position: relative;
-    top: -4px;
+    padding-left: 50px;
 }
 
 section#historial .datos-cliente{
