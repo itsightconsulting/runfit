@@ -1,4 +1,4 @@
-CREATE EXTENSION unaccent;
+CREATE EXTENSION IF NOT EXISTS unaccent;
 
 CREATE OR REPLACE FUNCTION public.f_unaccent(text)
     RETURNS text AS

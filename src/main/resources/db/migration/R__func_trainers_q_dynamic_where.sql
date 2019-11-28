@@ -91,6 +91,3 @@ where
     LIMIT $10
     OFFSET $11
 $func$ LANGUAGE sql;
-
-
-

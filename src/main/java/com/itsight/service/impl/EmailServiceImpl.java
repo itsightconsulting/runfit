@@ -39,28 +39,24 @@ public class EmailServiceImpl extends EmailGeneric implements EmailService {
     public void enviarCorreoInformativo(String asunto, String receptor, String contenido) {
         MimeMessagePreparator preparator;
         try {
-            /*if(profile.equals("production")){
+            if(profile.equals("production")){
                 preparator = mimeMessagePreparator(asunto, receptor, contenido);
                 emailSender.send(preparator);
                 return;
             }
 
-            //Block development/qa
-            if(profile.equals("qa-azure")){*/
-                /*receptor = "yoselin.rodriguez@itsight.pe";*/
+            if(profile.equals("qa-azure")){
+                receptor = "yoselin.rodriguez@itsight.pe";
                 preparator = mimeMessagePreparator(asunto, receptor, contenido);
                 emailSender.send(preparator);
-            /*}
+                return;
+            }
 
-                if(profile.equals("development")){
-                /*receptor = "contoso.peru@gmail.com";
-
-                preparator = mimeMessagePreparator(asunto, receptor, contenido);
-                emailSender.send(preparator);*//*
+            if(profile.equals("development")){
                 Integer ixUrl = contenido.indexOf("href=");
                 String url = ixUrl == -1 ? "" : contenido.substring(contenido.indexOf("href=")+6).split("'")[0];
                 bandejaTemporalRepository.save(new BandejaTemporal(asunto, contenido, url));
-            }*/
+            }
         } catch (MailException ex) {
             //Importante el log.error ya que este dispara el envío del error al correo configurado en el SMTP del log4j2.xml
             LOGGER.error(ex.getMessage());
@@ -81,12 +77,14 @@ public class EmailServiceImpl extends EmailGeneric implements EmailService {
                 String receptorDev = "yoselin.rodriguez@itsight.pe";
                 preparator = mimeMessagePreparatorForRecepientsBbc(asunto, receptorDev, contenido);
                 emailSender.send(preparator);
+                return;
             }
 
             if(profile.equals("development")){
                 Integer ixUrl = contenido.indexOf("href=");
                 String url = ixUrl == -1 ? "" : contenido.substring(contenido.indexOf("href=")+6).split("'")[0];
                 bandejaTemporalRepository.save(new BandejaTemporal(asunto, contenido, url));
+                return;
             }
         } catch (MailException ex) {
             //Importante el log.error ya que este dispara el envío del error al correo configurado en el SMTP del log4j2.xml

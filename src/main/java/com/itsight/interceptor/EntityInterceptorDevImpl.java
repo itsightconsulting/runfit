@@ -13,14 +13,14 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Optional;
 
-public class EntityInterceptorImpl extends EmptyInterceptor implements EntityInterceptor {
+public class EntityInterceptorDevImpl extends EmptyInterceptor implements EntityInterceptor {
     /**
      *
      */
     private static final long serialVersionUID = 8160823652337870429L;
+
     @Autowired
     DateTimeRetriever dateTimeRetriever;
-
 
     @Override
     public boolean onSave(Object entity, Serializable id, Object[] state, String[] propertyNames, Type[] types) {
@@ -30,12 +30,12 @@ public class EntityInterceptorImpl extends EmptyInterceptor implements EntityInt
                 String propertyName = propertyNames[i];
 
                 if (propertyName.equals("creador")) {
-                    /*Optional<Authentication> optSc =  Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication());
-                    if(optSc.isPresent()){*/
+                    Optional<Authentication> optSc =  Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication());
+                    if(optSc.isPresent()){
                         state[i] = SecurityContextHolder.getContext().getAuthentication().getName();
-                    /*}else{
+                    }else{
                         state[i] = "InitialSeeder";
-                    }*/
+                    }
                 } else if (propertyName.equals("fechaCreacion")) {
                     state[i] = currentTime();
                 }
@@ -52,12 +52,16 @@ public class EntityInterceptorImpl extends EmptyInterceptor implements EntityInt
 
     @Override
     public boolean onFlushDirty(Object entity, Serializable id, Object[] currentState, Object[] previousState, String[] propertyNames, Type[] types) {
-         if (entity instanceof AuditingEntity) {
+        if (entity instanceof AuditingEntity) {
             for (int i = 0; i < propertyNames.length; i++) {
                 String propertyName = propertyNames[i];
-
                 if (propertyName.equals("modificadoPor")) {
-                    currentState[i] = SecurityContextHolder.getContext().getAuthentication().getName();
+                    Optional<Authentication> optSc =  Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication());
+                    if(optSc.isPresent()){
+                        currentState[i] = optSc.get().getName();
+                    }else{
+                        currentState[i] = "InitialSeeder";
+                    }
                 } else if (propertyName.equals("fechaModificacion")) {
                     currentState[i] = currentTime();
                 }
