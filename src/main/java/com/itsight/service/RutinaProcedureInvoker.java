@@ -8,6 +8,6 @@ public interface RutinaProcedureInvoker {
 
     RuCliPOJO findById(Integer id);
 
-    RuCliPOJO getDatosAvanceSemanalbyRutinaId(Integer id);
+    RuCliPOJO getDatosAvanceByRutinaId(Integer id);
 
 }

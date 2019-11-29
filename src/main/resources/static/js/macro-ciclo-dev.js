@@ -3,7 +3,6 @@
 Ficha = (function(){
     return {
         instanciar: (ficha)=>{
-            debugger
             const comps =JSON.parse(ficha.competencias);
             const condicionAnatomica = JSON.parse(ficha.condicionAnatomica);
             $fechasCompetencia = comps.map(v=>{return {nombre: v.nombre, prioridad: v.prioridad, fecha: parseFromStringToDate2(v.fecha)}}).sort((a, b)=>{return a.fecha - b.fecha;});
@@ -31,9 +30,8 @@ Ficha = (function(){
 FichaGet = (function(){
     return {
         obtenerMaximaFechaCompeticiones: (fechas)=>{
-
             let maxFecha  = fechas[0].fecha;
-            if(!maxFecha || !maxFecha.fecha){
+            if(!maxFecha){
                 return new Date();
             }
             fechas.forEach((v,i)=>{
@@ -41,6 +39,7 @@ FichaGet = (function(){
                     maxFecha = v.fecha.getTime() > maxFecha.getTime() ? v.fecha : maxFecha;
                 }
             });
+
             return maxFecha;
         },
         obtenerNivelAtleta:()=>{
@@ -101,7 +100,6 @@ FichaSeccion = (function(){
 FichaSet = (function(){
     return {
         nivelAtleta: (nivel)=>{
-            debugger
             document.querySelectorAll('#NivelAtleta input').forEach((v,i)=>{
                 if(i==nivel-1){
                     v.checked = true;
@@ -532,6 +530,7 @@ MacroCiclo = (function(){
                 if($('#frm_registro').valid()){
                     const $chelmoMacro = [];
                     //Semanas
+                    debugger
                     const numSemBase = FichaGet.obtenerBase().numSem;
                     const numSemBaseIx = numSemBase -1;
                     const cantSemExcedentes = ($baseAfterComprobacion.distancia == 10 ? 1 : $baseAfterComprobacion.distancia == 21 ? 2 : 3);

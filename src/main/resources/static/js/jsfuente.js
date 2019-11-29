@@ -546,8 +546,6 @@ function getDateAsDateTimeString(){
 }
 
 function getFechaFormatoString(d) {
-
-    debugger
     return `${d.getFullYear()}-${('00' + (d.getMonth() + 1)).slice(-2)}-${('00' + d.getDate()).slice(-2)}`;
 }
 
@@ -1178,3 +1176,11 @@ function checkDateAreEqualsYear(f1, f2){
             })
     }, /!*60**!/15000/!**30*!/);*/
 })();
+
+function roundedPercentage( l , target){
+    let off = target - _.reduce(l, function(acc, x) { return acc + Math.round(x) }, 0);
+    return _.chain(l).
+    sortBy(function(x) { return Math.round(x) - x }).
+    map(function(x, i) { return Math.round(x) + (off > i) - (i >= (l.length + off)) }).
+    value();
+}

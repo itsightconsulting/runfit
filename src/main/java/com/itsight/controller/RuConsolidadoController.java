@@ -24,7 +24,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("cliente/rutina/consolidado")
@@ -64,25 +66,14 @@ public class RuConsolidadoController extends BaseController {
     @PreAuthorize("hasRole('ROLE_RUNNER')")
     @GetMapping(value="/obtener")
     public @ResponseBody
-    RuConsolidado obtenerRuConsolidado(HttpSession session, Integer rutinaId){
+    RuConsolidado obtenerRuConsolidado(HttpSession session,@RequestParam Integer rutinaId){
         Integer clienteId = (Integer) session.getAttribute("id");
-        Integer filteredRutinaId = rutinaId == 0 ?   rutinaService.getMaxRutinaIdByClienteId(clienteId) : rutinaId ;
+        Integer filteredRutinaId = rutinaId == 0 ?   rutinaService.getMaxRutinaIdByClienteId(clienteId) : rutinaId;
+        filteredRutinaId = Optional.ofNullable(filteredRutinaId).orElse(0);
         RuConsolidado ruConsolidado = ruConsolidadoService.findOne(filteredRutinaId);
+
         return ruConsolidado;
     }
-
-    @PreAuthorize("hasRole('ROLE_RUNNER') or  hasRole('ROLE_TRAINER')")
-    @GetMapping(value="/metricas-semanal/obtener")
-    public @ResponseBody
-    ResponseEntity<RuCliPOJO> obtenerDataSemanal(HttpSession session, Integer rutinaId){
-        Integer clienteId = (Integer) session.getAttribute("id");
-        Integer filteredRutinaId = rutinaId == 0 ?   rutinaService.getMaxRutinaIdByClienteId(clienteId) : rutinaId ;
-
-        RuCliPOJO ruCliente = rutinaProcedureInvoker.getDatosAvanceSemanalbyRutinaId(filteredRutinaId);
-
-        return new ResponseEntity<>(ruCliente, HttpStatus.OK);
-    }
-
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_TRAINER')")
     @GetMapping(value="/obtener/by")
@@ -92,6 +83,20 @@ public class RuConsolidadoController extends BaseController {
        RuConsolidado ruConsolidado = ruConsolidadoService.findOne(filteredRutinaId);
        return ruConsolidado;
     }
+
+    @PreAuthorize("hasRole('ROLE_RUNNER') or  hasRole('ROLE_TRAINER')")
+    @GetMapping(value="/metricas/obtener")
+    public @ResponseBody
+    ResponseEntity<RuCliPOJO> obtenerMetricasAvanceEsfuerzo(HttpSession session, Integer rutinaId){
+        Integer clienteId = (Integer) session.getAttribute("id");
+        Integer filteredRutinaId = rutinaId == 0 ?   rutinaService.getMaxRutinaIdByClienteId(clienteId) : rutinaId ;
+
+        RuCliPOJO ruCliente = rutinaProcedureInvoker.getDatosAvanceByRutinaId(filteredRutinaId);
+
+        return new ResponseEntity<>(ruCliente, HttpStatus.OK);
+    }
+
+
 
     @GetMapping(value="/intensidad")
     public @ResponseBody

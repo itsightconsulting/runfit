@@ -1997,3 +1997,10 @@ section.consejos span.msj-no-data{
 .mensaje-no-resultados{
   margin-top:40px;
 }
+
+.mensaje-no-resultados-lg {
+  margin-top: 200px;
+  color: white;
+  font-size: 16px;
+  text-align: center;
+}
