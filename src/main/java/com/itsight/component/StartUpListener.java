@@ -81,7 +81,6 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
 
     @Autowired
     private EspecificacionSubCategoriaService especificacionSubCategoriaService;
-//
 
     @Autowired
     private GrupoVideoService grupoVideoService;
@@ -186,6 +185,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
         Flyway.configure().dataSource(dataSource)
                 .baselineOnMigrate(true)
                 .schemas(PG_DATABASE_SCHEMA).load().migrate();
+
         //Nos aseguramos que si los seeders ya han sido ejecutados nos saltemos su registro
         if(ddlAuto.equals("create")){
             //Main Seeders

@@ -414,6 +414,8 @@ canvas{
     float:right;
     display:inline-block;
     padding-right:40px;
+    position: relative;
+    bottom:-15px;
 }
 .mapa g {
     fill: #ffff;
@@ -492,6 +494,12 @@ canvas{
 
 .dv-distr-dpto{
     height : 700px;
+}
+.dv-distr-dpto checks{
+    display: inline-block;
+}
+.dv-distr-dpto .chk-content{
+    padding-left: 45px;
 }
 
 

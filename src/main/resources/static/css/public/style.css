@@ -173,7 +173,7 @@
   background: transparent;
   border: 0;
   width: 100%;
-  padding: 6px 15px;
+  padding: 6px 0px;
   border-bottom: 1px solid;
 
 }
@@ -534,6 +534,9 @@ footer ul li p {
   color: #666666;
   margin-bottom: 12px
 }
+footer .email-footer{
+    margin-right: 8px;
+}
 
 footer ul li p:hover {
   color: #a8fa00
@@ -573,6 +576,9 @@ footer li a span.fa{
     width: 100%;
     text-align: center;
   }
+   footer .email-footer{
+    margin-right: 0px;
+   }
 
   .col-xs-6-org {
     display: inline;
@@ -1861,7 +1867,7 @@ ul.tabs {
   font-family: Gotham-HTF-Black-Italic, 'system-ui';
   position: absolute;
   z-index: 3;
-  top: 25%;
+  top: 40%;
   font-size: 72.25px;
   color: #fff;
   padding-left: 45px
@@ -2457,7 +2463,7 @@ ul.tabs {
 
 .steps ul.distance li input {
   width: 100%;
-  padding: 10px;
+  padding: 5px;
   text-align: center;
 }
 

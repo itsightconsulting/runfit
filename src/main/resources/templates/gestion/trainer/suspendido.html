@@ -77,7 +77,7 @@
 
                             <form id="filtroPeriodo-form" method="get">
                                 <div class="input-group">
-                                    <input id="inputPeriodo" name="inputPeriodo" class="form-control" type="text" placeholder="EJEMPLO 01 / 2019">
+                                    <input id="inputPeriodo" name="inputPeriodo" class="form-control" type="text" placeholder="EJEMPLO: 01 / 2019">
                                     <div class="input-group-btn">
                                         <button id="btnBuscarPeriodo" class="btn btn-default" type="button">BUSCAR</button>
                                     </div>
@@ -122,7 +122,6 @@
 <!-- OTRAS LIBRERIAS DISTINTAS AL TEMPLATE -->
 
 <script>
-
     const btnBuscarPeriodo = document.getElementById('btnBuscarPeriodo');
     const dvItems = document.getElementById('dvItemsSuspendidos');
     const dvCalendario = document.getElementById('dvCalendario');
@@ -143,7 +142,6 @@
     })
 
     $( document ).ready(function() {
-
 
 
         let owl = $('.owl-carousel');
@@ -214,7 +212,7 @@
                     owl.trigger('prev.owl.carousel');
                     $('.owl-dot').removeClass('active');
                     $('.owl-dot[value=' + currentSelectedMonth + ']').addClass('active');
-                    return false;
+                    return false
                 }
                 else {
 
