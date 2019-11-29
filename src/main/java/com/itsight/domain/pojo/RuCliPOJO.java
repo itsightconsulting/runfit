@@ -30,9 +30,14 @@ public class RuCliPOJO implements Serializable {
     private String avanceSemanal;
     private String esfuerzoSemanal;
 
+
+    private String avanceDiario;
+    private String esfuerzoDiario;
+
     public RuCliPOJO(){}
 
-    public RuCliPOJO(int id, int anios, int meses, int totalSemanas, int dias, Integer tipoRutina, Date fechaInicio, Date fechaFin, Date fechaFinPt, String control, Integer rows) {
+    public RuCliPOJO(int id, int anios, int meses, int totalSemanas, int dias, Integer tipoRutina, Date fechaInicio,
+                        Date fechaFin, Date fechaFinPt, String control, Integer rows) {
         this.id = id;
         this.anios = anios;
         this.meses = meses;
@@ -46,7 +51,10 @@ public class RuCliPOJO implements Serializable {
         this.rows = rows;
     }
 
-    public RuCliPOJO(String avanceSemanal , String esfuerzoSemanal){
+    public RuCliPOJO(String avanceDiario , String esfuerzoDiario , String avanceSemanal , String esfuerzoSemanal ){
+
+        this.avanceDiario = avanceDiario;
+        this.esfuerzoDiario = esfuerzoDiario;
         this.avanceSemanal = avanceSemanal;
         this.esfuerzoSemanal = esfuerzoSemanal;
     }

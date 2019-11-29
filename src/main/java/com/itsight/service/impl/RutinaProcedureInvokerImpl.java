@@ -48,8 +48,8 @@ public class RutinaProcedureInvokerImpl implements RutinaProcedureInvoker {
     }
 
     @Override
-    public RuCliPOJO getDatosAvanceSemanalbyRutinaId(Integer id) {
-        StoredProcedureQuery storedProcedureQuery = entityManager.createStoredProcedureQuery("func_get_avance_esfuerzo_sem_by_rutina_id", "getDatosSemanaByRutinaId");
+    public RuCliPOJO getDatosAvanceByRutinaId(Integer id) {
+        StoredProcedureQuery storedProcedureQuery = entityManager.createStoredProcedureQuery("func_get_avance_esfuerzo_by_rutina_id", "getMetricasByRutinaId");
         storedProcedureQuery.registerStoredProcedureParameter(0, Integer.class, ParameterMode.IN);
         storedProcedureQuery.setParameter(0, id);
         return (RuCliPOJO) storedProcedureQuery.getSingleResult();

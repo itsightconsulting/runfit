@@ -245,12 +245,17 @@ hr.semanas-fixed {
 }
 
 .mejora-metricas{
-    border: 1px solid #565a4d;
-    border-radius: 5px;
     width: 210px;
     float:left;
     margin-right: 20px;
 }
+
+.mejora-metricas .content{
+    border: 1px solid #565a4d;
+    border-radius: 5px;
+    padding:3px;
+}
+
 .mejora-metricas:last-child {
     margin-right: 0;
 }
@@ -284,6 +289,15 @@ hr.semanas-fixed {
     position: relative;
 }
 
+.mejora-metricas .svg.porc {
+    width: 35px!important;
+    height: 22px!important;
+    fill: #d6ff58!important;
+    top: -10px!important;
+    left: -10px!important;
+    position: relative!important;
+}
+
 .periodo-cadencia{
     padding-left: 20px;
     border-right: 1px solid #565a4d;
@@ -301,9 +315,9 @@ hr.semanas-fixed {
 .mejora-metricas .porcentaje-mejora p {
     color: #c2ccac;
     position: relative;
-   /* top: 65px;*/
+    top: -15px;
     padding: 0;
-    /*right: 13px;*/
+    /* right: 13px; */
     font-size: 13px;
 }
 
@@ -321,16 +335,35 @@ hr.semanas-fixed {
 .mejora-velocidad {
     font-weight: bold;
     color: #ffffff;
-    padding: 5px 18px 20px;
+    padding: 0 18px 20px;
     text-align: center;
 }
 
 .mejora-velocidad .container-fluid{
-    padding: 0 0 10px;
+    padding: 0;
+}
+
+.cell-border{
+    border-left: 0.8px solid #6f6c6cb8;
+    width:105px;
+    padding-top:10px;
+}
+
+.cell-border-2{
+    border-left: 0.8px solid #6f6c6cb8;
+    margin-left: 2px;
+
+}
+
+.fr{
+    float: right;
+}
+
+.month-cell{
+    padding-top: 10px;
 }
 
 .header-met-vel{
-
     /* background: #4fd46b; */
     color: #a8fa00;
     font-size: 28px;
@@ -338,14 +371,44 @@ hr.semanas-fixed {
     /* border-right: 1px solid; */
     line-height: 1.2;
     text-align: center;
+    width:105px;
+    border-left: 0.8px solid #6f6c6cb8;
 }
 
+.header-met-vel-2{
+    color: #a8fa00;
+    font-size: 28px;
+    /* border-bottom: 3px solid #baf3c6; */
+    /* border-right: 1px solid; */
+    line-height: 1.2;
+    text-align: center;
+    padding-bottom: 24px;
+    border-left: 0.8px solid #6f6c6cb8;
+    width:105px;
+}
+
+.ml-cell-b{
+    padding-left: 2.5px!important;
+}
+
+.ml-cell-a{
+    padding-left: 1px!important;
+}
 
 .header-met-vel p{
     font-size: 12px;
     font-weight: normal;
 }
 
+hr.tabla-vel{
+    width: 93%;
+    margin-block-start: 0.5em;
+    margin-block-end: 0.5em;
+    margin-inline-start: auto;
+    margin-inline-end: auto;
+    margin-bottom: 0;
+    margin-top: 0;
+}
 
 .porc-mejora-vel{
     font-size: 18px;
@@ -479,6 +542,77 @@ canvas{
 #dvEsfuerzo p, #dvCumplimiento p{
     text-align: center;
 }
+<<<<<<< HEAD
 .horizontal-divider{
   border-right: 1px solid #3d3f41;
+=======
+
+
+
+.chk-content {
+    display: block;
+    position: relative;
+    padding-left: 32px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: normal;
+    font-family: GothamHTF-Book;
+}
+
+.chk-content input:checked ~ .checkmark::after {
+    display: block;
+}
+
+.chk-content .checkmark::after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 9px;
+    top: 5px;
+    width: 7px;
+    height: 12px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.chk-content input:checked ~ .checkmark {
+    background-color: #a8fa00;
+    border-color: #a8fa00;
+}
+
+.chk-content .checkmark {
+    position: absolute;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    border: 1px solid rgba(141, 141, 141, 0.59);
+    border-radius: 4px;
+}
+
+.chk-content input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checks li {
+    display: inline-block;
+    margin-right: 25px;
+}
+
+
+.dv-checks {
+    padding: 40px 0;
+>>>>>>> 5b9a52365b91cd509cc3319e8d0b02dcb9359c0e
 }

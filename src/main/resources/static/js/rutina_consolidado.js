@@ -7,6 +7,10 @@ let $chartEsfuerzoSemanal = {};
 let $chartAvanceSemanal = {};
 let periodizacionRutina;
 let rutinaId;
+let avanceSemanal;
+let avanceDiario;
+let esfuerzoSemanal;
+let esfuerzoDiario;
 
 let $chartMiniPorc ={};
 
@@ -15,23 +19,23 @@ $(function() {
 })
 
 function init(){
-
+    Chart.plugins.unregister(ChartDataLabels);
    const favRutinaId = Number(getCookie("GLL_FAV_RUTINA"));
    obtenerRutinaConsolidado(favRutinaId);
+   radioButtonFrecuenciaChangeEvent();
 }
 
 
 function obtenerRutinaConsolidado(rutinaId) {
     const body = new Object();
-    body.rutinaId = rutinaId;
-    if (document.getElementById('InpClienteId')) {
+    body.rutinaId = "0" ;
+    if (document.getElementById('InpClienteId').value) {
         body.clienteId = document.getElementById('InpClienteId').value;
     }
 
     let hrefFinal = "";
 
     if (body.clienteId) {//Ruta para entrenadores from red fitness listado
-
         hrefFinal = _ctx + "cliente/rutina/consolidado/obtener/by";
     } else {//Ruta personal de clientes
         hrefFinal = _ctx + "cliente/rutina/consolidado/obtener";
@@ -43,99 +47,123 @@ function obtenerRutinaConsolidado(rutinaId) {
         url: hrefFinal,
         success: function (data) {
 
-            cargarTablaVelocidad(data);
-            cargarTablaCadencia(data);
-            cargarTablaLongitudPaso(data);
-            cargarTablaTCS(data);
-            graficoTemporadaIntensidad(data.dtGrafico);
+            if(!data){
+                $('#contenidoConsolidado').addClass('hidden');
+                const mensajeNoData = htmlStringToElement("<div>" +
+                    "<div class='mensaje-no-resultados-lg'> <p> Los gráficos no se encuentran disponibles debido a que no cuenta con una rutina registrada </p> " +
+                    " </div>");
 
-            graficoTemporadaKilometraje(data.dtGrafico);
-            periodizacionRutina = getSemanasEtapas(data);
+                $(mensajeNoData).insertBefore("#contenidoConsolidado");
 
 
-            const etapasPorc = calcularPorcentajesEtapas(periodizacionRutina);
+            }else{
 
-            console.log("waaah" , etapasPorc);
+                cargarTablaVelocidad(data);
+                cargarTablaCadencia(data);
+                cargarTablaLongitudPaso(data);
+                cargarTablaTCS(data);
+                graficoTemporadaIntensidad(data.dtGrafico);
 
-            graficoDistribucionEtapa(etapasPorc);
-            cargarInfoPeriodizacion(periodizacionRutina);
-            cargarInfoKmEtapas(data);
-            cargarProyeccionCompetencia(data);
+                graficoTemporadaKilometraje(data.dtGrafico);
+                periodizacionRutina = getSemanasEtapas(data);
 
-             rutinaId = data.rutina.id;
-            const semTr = Number(data.general.distancia == 10 ? 1 : data.general.distancia == 21 ? 2 : 3);
-            const totalSemanas = Number(data.rutina.totalSemanas);
-            const semanaIx = totalSemanas - semTr;
+                const etapasPorc = calcularPorcentajesEtapas(periodizacionRutina);
+                graficoDistribucionEtapa(etapasPorc);
+                cargarInfoPeriodizacion(periodizacionRutina);
+                cargarInfoKmEtapas(data);
+                cargarProyeccionCompetencia(data);
 
-            obtenerMetricaIntensidad(rutinaId, semanaIx);
-
+                rutinaId = data.rutina.id;
+                const semTr = Number(data.general.distancia == 10 ? 1 : data.general.distancia == 21 ? 2 : 3);
+                const totalSemanas = Number(data.rutina.totalSemanas);
+                const semanaIx = totalSemanas - semTr;
+                obtenerMetricaIntensidad(rutinaId, semanaIx);
+                obtenerMetricasAvanceSemanal(rutinaId);
+                $('#contenidoConsolidado').removeClass('hidden');
+            }
         }
         , error: (xhr) => {
         }, complete: () => {
-            obtenerMetricasAvanceSemanal(rutinaId);
+            /*
+            */
         }
     });
+
 }
 
 function obtenerMetricasAvanceSemanal(rutinaId) {
 
     const body = new Object();
     body.rutinaId = rutinaId;
-    if (document.getElementById('InpClienteId')) {
+    if (document.getElementById('InpClienteId').value > 0) {
         body.clienteId = document.getElementById('InpClienteId').value;
     }
 
+    /*
 
+    let hrefFinal = "";
+
+    if (body.clienteId) {//Ruta para entrenadores from red fitness listado
+
+        hrefFinal = _ctx + "cliente/rutina/consolidado/obtener/by";
+    } else {//Ruta personal de clientes
+        hrefFinal = _ctx + "cliente/rutina/consolidado/obtener";
+    }
+
+*/
     $.ajax({
             type: "GET",
             data: body,
-            url: _ctx + "cliente/rutina/consolidado/metricas-semanal/obtener",
+            url: _ctx + "cliente/rutina/consolidado/metricas/obtener",
             success: function (data) {
 
-                if (data) {
-                    const avanceSemanal = data.avanceSemanal.split(',').map(e => Number(e));
-                    const esfuerzoSemanal = data.esfuerzoSemanal.split(',').map(e => Number(e));
+                if (data.avanceSemanal.length > 0) {
+                     avanceSemanal = data.avanceSemanal.split(',').map(e => Number(e));
+                     esfuerzoSemanal = data.esfuerzoSemanal.split(',').map(e => Number(e));
+                     avanceDiario = data.avanceDiario.split(',').map(e => Number(e));
+                     esfuerzoDiario = data.esfuerzoDiario.split(',').map(e => Number(e));
 
-                    graficoTemporadaCumplimientoAvance(avanceSemanal);
-                    generarMetricaTitulo(avanceSemanal, 'dvCumplimiento');
-                    generarMetricaTitulo(esfuerzoSemanal, 'dvEsfuerzo');
-
-                    graficoTemporadaEsfuerzo(esfuerzoSemanal);
 
                     let inc = 0;
                     let indexAs;
-
                     periodizacionRutina.forEach(function (element, index) {
-
-                       if(index + 1 < periodizacionRutina.length) {
-                          console.log(index);
-                           let sumAvances = 0,
-                               sumEsfuerzos = 0;
-                           inc += element;
-                           for (let i = inc - element; i < inc; i++) {
-                               //console.log(element, "x", index, i, avanceSemanal[i]);
-                               sumAvances += avanceSemanal[i];
-                               sumEsfuerzos += esfuerzoSemanal[i];
-                           }
-                           let promedioAvances = Math.round(sumAvances / element);
-                           let promedioEsfuerzos = Math.round(sumEsfuerzos / element);
-                           GraficoCumplimientoPeriodo(promedioAvances,index);
-                           GraficoEsfuerzoPeriodo(promedioEsfuerzos,index);
-
-                       }
+                        if(index + 1 < periodizacionRutina.length) {
+                            console.log(index);
+                            let sumAvances = 0,
+                                sumEsfuerzos = 0;
+                            inc += element;
+                            for (let i = inc - element; i < inc; i++) {
+                                //console.log(element, "x", index, i, avanceSemanal[i]);
+                                sumAvances += avanceSemanal[i];
+                                sumEsfuerzos += esfuerzoSemanal[i];
+                            }
+                            let promedioAvances = Math.round(sumAvances / element);
+                            let promedioEsfuerzos = Math.round(sumEsfuerzos / element);
+                            GraficoCumplimientoPeriodo(promedioAvances,index);
+                            GraficoEsfuerzoPeriodo(promedioEsfuerzos,index);
+                        }
                     })
-
                 }
 
             }
             , error: (xhr) => {
             }, complete: () => {
-
-            }
+                setGraficoEsfuerzo(esfuerzoSemanal,2 );
+                setGraficoCumplimiento(avanceSemanal, 2);
+        }
         });
 }
 
+function setGraficoCumplimiento(dataGrafico , frecuencia){
+    generarMetricaTitulo(dataGrafico, 'dvCumplimiento');
+    graficoTemporadaCumplimientoAvance(dataGrafico, frecuencia);
 
+}
+
+function setGraficoEsfuerzo(dataGrafico, frecuencia){
+    generarMetricaTitulo(dataGrafico, 'dvEsfuerzo');
+    graficoTemporadaEsfuerzo(dataGrafico , frecuencia );
+}
 
 function GraficoCumplimientoPeriodo(data, periodoIx){
 
@@ -340,7 +368,7 @@ function GraficoEsfuerzoPeriodo(data, periodoIx){
                     ctx.font = "30px GothamHTF-Book";
                     ctx.fillStyle = colores[periodoIx];
                     ctx.textAlign = "center";
-                    ctx.fillText(data , (canvas.width/2) +5, (canvas.height/2) + 5);
+                    ctx.fillText(data , (canvas.width/2), (canvas.height/2) + 5);
                     //  ctx.fillText("100%",centerX -10,centerY - 25, 20,50);
 
                     ctx.beginPath();
@@ -473,12 +501,13 @@ function cargarTablaVelocidad(data){
     }).reduce((a,b)=>a+b, 1)/mVC.length,1);
 
     console.log(porcMejora);
-
+    console.log(mVC);
+    let cont= 0;
     const tabla =  htmlStringToElement(`<div style="margin-right: 10px;">
                     ${mVC[0].ind.map((v,i)=>{
-           return (i+1)%4 == 0 ?`<div class="col col-md-1 col-sm-1 sems-o-mes-det-veloc"><div class="container-fluid text-align-center margin-o-bottom-10-w-bb"> <div class="padding-bottom-5 hd-column">${'MES '+(i+1)/4}</div> </div> </div> <div class="col col-md-11 col-sm-11"> <div class="container-fluid text-align-center margin-o-bottom-10-w-bb">
+           return (i+1)%4 == 0 ?`<div class="col col-md-1 col-sm-1 sems-o-mes-det-veloc"><div class="container-fluid text-align-center margin-o-bottom-10-w-bb"> <div class="padding-bottom-5 month-cell">${'MES '+(i+1)/4}</div> </div> </div> <div class="col col-md-11 col-sm-11"> <div class="container-fluid text-align-center margin-o-bottom-10-w-bb">
                                 ${mVC.map((v,ii)=>{
-            return (i+1)%4 == 0 ?`${ii==0?'<div class="col-md-6 col-sm-6 padding-bottom-5">':''}<div class="col col-md-3 col-sm-3 dt-ix${ii+1}">${v.ind[i]}</div>${ii==3?'</div><div class="col-md-6 col-sm-6 padding-bottom-5">':''}${ii==7?'</div>':''}`:'';
+            return (i+1)%4 == 0 ?`${ii==0? `<div class="col-md-6 col-sm-6 padding-bottom-5 ml-cell-a ">` : ''} <div class="col col-md-3 col-sm-3 dt-ix${ii+1} cell-border"> ${v.ind[i]}</div> ${ii==3?'</div><div class="col-md-6 col-sm-6 padding-bottom-5 ml-cell-b">':''}${ii==7?'</div>':''}`:'';
         }).join('')}</div></div>`:`<i class="hidden col-md-11">${mVC.map((v,ii)=>{ return `<i class="col-md-3 dt-ix${ii+1}">${v.ind[i]}</i>`}).join('')}</i>`;
     }).join('')}</div>`);
 
@@ -500,19 +529,22 @@ function cargarTablaCadencia(data){
     const dataRutinaGeneral = data.rutina;
     const numSemanas =  dataRutinaGeneral.totalSemanas;
 
-    let infoCadencia;
+    let infoCadencia, porcCadencia;
     const porcMejora = parseNumberToDecimal((((( Number(mMC[mMC.length - 1])) / Number(mMC[0])-1))*100), 1) + " %";
 
 
     if(numSemanas >=12){
         infoCadencia = htmlStringToElement('<div class="container-fluid">'+mMC.map((v,i)=>{
-            return `<div class="row"><div class="col col-md-6 col-sm-6 periodo-cadencia">MES ${(i+1)}</div><div class="col col-md-6 col-sm-6 dato-cadencia">${v}</div></div>`}).join('') + `<div class="porcentaje-mejora"><p class="padding-10 text-align-right"> MEJORA TOTAL <strong>${porcMejora}</strong></p></div></div>`);
+            return `<div class="row"><div class="col col-md-6 col-sm-6 periodo-cadencia">MES ${(i+1)}</div><div class="col col-md-6 col-sm-6 dato-cadencia">${v}</div></div>`}).join('') );
     }else{
         infoCadencia = htmlStringToElement('<div class="container-fluid">'+mMC.map((v,i)=>{
-            return (i+1)%4 == 0 ? `<div class="row"><div class="col col-md-6 col-sm-6  periodo-cadencia">SEMANA ${(i+1)}</div><div class="col col-md-6 col-sm-6 dato-cadencia">${v}</div></div>`:''}).join('') + `<div class="porcentaje-mejora"><p class="padding-10 text-align-right"> MEJORA TOTAL <strong>${porcMejora}</strong></p></div></div>`);
+            return (i+1)%4 == 0 ? `<div class="row"><div class="col col-md-6 col-sm-6  periodo-cadencia">SEMANA ${(i+1)}</div><div class="col col-md-6 col-sm-6 dato-cadencia">${v}</div></div>`:''}).join(''));
     }
-
-    $('#mejora-cadencia').append(infoCadencia);
+    porcCadencia = htmlStringToElement( `   
+                            <div class="porcentaje-mejora">  <img class= "svg porc" src="/img/iconos-trainers/icon_arrow-top.svg"/><p class="padding-10 text-align-right"> MEJORA TOTAL <strong>${porcMejora}</strong></p></div>`);
+    $('#mejora-cadencia .content').append(infoCadencia);
+    $('#mejora-cadencia').append(porcCadencia);
+    imgToSvg();
 }
 
 function cargarTablaTCS(data){
@@ -521,19 +553,24 @@ function cargarTablaTCS(data){
     const dataRutinaGeneral = data.rutina;
     const numSemanas =  dataRutinaGeneral.totalSemanas;
 
-    let infoTCS;
+    let infoTCS , porcTCS;
     const porcMejora = parseNumberToDecimal((((( Number(mTCS[mTCS.length - 1])) / Number(mTCS[0])-1))*100), 1) + " %";
 
 
     if(numSemanas >=12){
         infoTCS = htmlStringToElement('<div class="container-fluid">'+mTCS.map((v,i)=>{
-            return `<div class="row"><div class="col col-md-6 col-sm-6 periodo-cadencia">MES ${(i+1)}</div><div class="col col-md-6 col-sm-6 dato-cadencia">${v}</div></div>`}).join('') + `<div class="porcentaje-mejora"><p class="padding-10 text-align-right"> MEJORA TOTAL <strong>${porcMejora}</strong></p></div></div>`);
+            return `<div class="row"><div class="col col-md-6 col-sm-6 periodo-cadencia">MES ${(i+1)}</div><div class="col col-md-6 col-sm-6 dato-cadencia">${v}</div></div>`}).join(''));
+
     }else{
         infoTCS = htmlStringToElement('<div class="container-fluid">'+mTCS.map((v,i)=>{
-            return (i+1)%4 == 0 ? `<div class="row"><div class="col col-md-6 col-sm-6  periodo-cadencia">SEMANA ${(i+1)}</div><div class="col col-md-6 col-sm-6 dato-cadencia">${v}</div></div>`:''}).join('') + `<div class="porcentaje-mejora"><p class="padding-10 text-align-right"> MEJORA TOTAL <strong>${porcMejora}</strong></p></div></div>`);
+            return (i+1)%4 == 0 ? `<div class="row"><div class="col col-md-6 col-sm-6  periodo-cadencia">SEMANA ${(i+1)}</div><div class="col col-md-6 col-sm-6 dato-cadencia">${v}</div></div>`:''}).join(''));
     }
+    porcTCS = htmlStringToElement( `   
+                            <div class="porcentaje-mejora">  <img class= "svg porc" src="/img/iconos-trainers/icon_arrow-top.svg"/><p class="padding-10 text-align-right"> MEJORA TOTAL <strong>${porcMejora}</strong></p></div>`);
 
-    $('#mejora-tcs').append(infoTCS);
+    $('#mejora-tcs .content').append(infoTCS);
+    $('#mejora-tcs').append(porcTCS);
+    imgToSvg();
 }
 
 
@@ -544,19 +581,25 @@ function cargarTablaLongitudPaso(data){
     const dataRutinaGeneral = data.rutina;
     const numSemanas =  dataRutinaGeneral.totalSemanas;
 
-    let infoLongitudPaso;
+    let infoLongitudPaso, porcLongitudPaso;
     const porcMejora = parseNumberToDecimal((((( Number(mLP[mLP.length - 1])) / Number(mLP[0])-1))*100), 1) + " %";
 
 
     if(numSemanas >=12){
         infoLongitudPaso = htmlStringToElement('<div class="container-fluid">'+mLP.map((v,i)=>{
-            return `<div class="row"><div class="col col-md-6 col-sm-6 periodo-cadencia">MES ${(i+1)}</div><div class="col col-md-6 col-sm-6 dato-cadencia">${v}</div></div>`}).join('') + `<div class="porcentaje-mejora"><p class="padding-10 text-align-right"> MEJORA TOTAL <strong>${porcMejora}</strong></p></div></div>`);
+            return `<div class="row"><div class="col col-md-6 col-sm-6 periodo-cadencia">MES ${(i+1)}</div><div class="col col-md-6 col-sm-6 dato-cadencia">${v}</div></div>`}).join(''));
     }else{
         infoLongitudPaso = htmlStringToElement('<div class="container-fluid">'+mLP.map((v,i)=>{
-            return (i+1)%4 == 0 ? `<div class="row"><div class="col col-md-6 col-sm-6  periodo-cadencia">SEMANA ${(i+1)}</div><div class="col col-md-6 col-sm-6 dato-cadencia">${v}</div></div>`:''}).join('') + `<div class="porcentaje-mejora"><p class="padding-10 text-align-right"> MEJORA TOTAL <strong>${porcMejora}</strong></p></div></div>`);
+            return (i+1)%4 == 0 ? `<div class="row"><div class="col col-md-6 col-sm-6  periodo-cadencia">SEMANA ${(i+1)}</div><div class="col col-md-6 col-sm-6 dato-cadencia">${v}</div></div>`:''}).join(''));
     }
 
-    $('#mejora-longitud').append(infoLongitudPaso);
+    porcLongitudPaso = htmlStringToElement( `   
+                            <div class="porcentaje-mejora">  <img class= "svg porc" src="/img/iconos-trainers/icon_arrow-top.svg"/><p class="padding-10 text-align-right"> MEJORA TOTAL <strong>${porcMejora}</strong></p></div>`);
+
+    $('#mejora-longitud .content').append(infoLongitudPaso);
+    $('#mejora-longitud').append(porcLongitudPaso);
+    imgToSvg();
+
 }
 
 function timeStringtoSeconds(time){
@@ -569,14 +612,15 @@ function timeStringtoSeconds(time){
 
 
 function graficoTemporadaIntensidad(data){
-    data = data.map(v=>{return {kms: v.kms, color: v.color, perc: v.percInts, bullet: v.bullet, avance: v.avance}});
 
+    data = data.map(v=>{return {kms: v.kms, color: v.color, perc: v.percInts, bullet: v.bullet, avance: v.avance}});
     const avances =  data.filter(v=>{//Provisional
         return (v.avance != undefined)
     }).map(({avance})=>avance);
     avances.push(0);//Por conveniencia(estética) */
  //   document.querySelector('#ContainerVarVolumen').classList.remove('hidden');
   //  document.querySelector('#InicialMacro').classList.remove('hidden');
+
     let draw = Chart.controllers.line.prototype.draw;
     Chart.controllers.LineNoOffset = Chart.controllers.line.extend({
         updateElement: function(point, index, reset) {
@@ -734,18 +778,22 @@ function graficoTemporadaIntensidad(data){
                 yAxisID: 'y-axis-1',
                 // Changes this dataset to become a line
                 type: 'line',
+                pointRadius: 1.8,
+                pointHoverRadius: 1.8,
                 borderColor: '#a8fa00',
                 backgroundColor: gradientFill,
                 pointBorderColor: '#a8fa00',
                 pointBackgroundColor: '#a8fa00',
                 pointHoverBackgroundColor: 'a8fa00',
                 pointHoverBorderColor: '#a8fa00',
-                borderWidth: 1,
+                borderWidth: 0.8,
+                tension: 0.5,
                 fill: true
             }]
         },
         borderWidth: 1,
         options: {
+            responsive:false,
             layout: {
                 padding: {
                     top: 40  //set that fits the best
@@ -805,6 +853,10 @@ function graficoTemporadaIntensidad(data){
                         minRotation: 0
                     },
                      barPercentage: 1.0,
+                    gridLines: {
+                        display:false,
+                        drawBorder: false
+                    },
                    // categoryPercentage: 1.0,
 
                 }],
@@ -1169,7 +1221,7 @@ function graficoTemporadaKilometraje(data)
 }
 
 
-function graficoTemporadaCumplimientoAvance(data)
+function graficoTemporadaCumplimientoAvance(data,frecuencia)
 {
 
 
@@ -1184,7 +1236,20 @@ function graficoTemporadaCumplimientoAvance(data)
     };
 
 
-    let ctx = document.getElementById('GraficoAvanceSemanal').getContext('2d');
+
+    let oldcanv = document.getElementById('GraficoMetricaAvance');
+    let parentDv = oldcanv.parentElement;
+    parentDv.removeChild(oldcanv)
+
+    let canv = document.createElement('canvas');
+    canv.id = 'GraficoMetricaAvance';
+
+    //setear altura de acuerdo a la cantidad de departamentos / distritos
+    canv.height= 350;
+    canv.width= 950;
+    parentDv.appendChild(canv)
+
+    let ctx = document.getElementById('GraficoMetricaAvance').getContext('2d');
 
     //End temp
 
@@ -1227,7 +1292,12 @@ function graficoTemporadaCumplimientoAvance(data)
                         intersect: true
                 },
                 tooltips: {
-                    mode: 'nearest'
+                    mode: 'nearest',
+                    callbacks: {
+                        label: function (tooltipItem, data) {
+                            return (frecuencia === '1' ? 'Día' : 'Semana');
+                        }
+                    },
                 },
                 legend:{
                     position: 'bottom',
@@ -1369,16 +1439,17 @@ Chart.elements.Rectangle.prototype.draw = function() {
 
     ctx.fill();
     if (borderWidth) {
-        ctx.stroke();
+        ctx.stroke()
+
     }
 };
 
 }
 
-function graficoTemporadaEsfuerzo(data)
+function graficoTemporadaEsfuerzo(data , frecuencia)
 {
     var data = {
-        labels: data.map((v, i)=>i+1),
+        labels: data.map((v, i)=>  i+1),
         datasets: [
             {
                 data:  data,
@@ -1387,11 +1458,20 @@ function graficoTemporadaEsfuerzo(data)
         ]
     };
 
+    let oldcanv = document.getElementById('GraficoMetricaEsfuerzo');
+    let parentDv = oldcanv.parentElement;
+    parentDv.removeChild(oldcanv)
 
-    let ctx = document.getElementById('GraficoEsfuerzoSemanal').getContext('2d');
+    let canv = document.createElement('canvas');
+    canv.id = 'GraficoMetricaEsfuerzo';
+
+    //setear altura de acuerdo a la cantidad de departamentos / distritos
+    canv.height= 350;
+    canv.width= 950;
+    parentDv.appendChild(canv)
+    let ctx = document.getElementById('GraficoMetricaEsfuerzo').getContext('2d');
 
     //End temp
-
     $chartAvanceSemanal = new Chart(ctx, {
         type: 'bar',
         data: data,
@@ -1431,7 +1511,12 @@ function graficoTemporadaEsfuerzo(data)
                 intersect: true
             },
             tooltips: {
-                mode: 'nearest'
+                mode: 'nearest' ,
+                callbacks: {
+                    label: function (tooltipItem, data) {
+                        return (frecuencia === '1' ? 'Día' : 'Semana') ;
+                    }
+                },
             },
             legend:{
                 position: 'bottom',
@@ -1585,30 +1670,28 @@ function graficoTemporadaEsfuerzo(data)
 
 function graficoDistribucionEtapa(etapasPorc){
 
+    const arrPorc = roundedPercentage(etapasPorc,100);
     //  MCGrafico.cesDemoCircularGraphs();
 
     let canvas = document.getElementById('MiniGraficoDistribucion');
     let ctx = document.getElementById('MiniGraficoDistribucion').getContext('2d');
 
-
-    Chart.defaults.doughnutCenterElement = Chart.helpers.clone(Chart.defaults.doughnut);
-
-    var helpers = Chart.helpers;
-    var defaults = Chart.defaults;
     var config = {
         type: 'doughnut',
+        plugins: [ChartDataLabels],
         data: {
             labels: ["General","Específica","Competitiva","Tránsito"],
             datasets: [{
-                data: etapasPorc,
+                data: arrPorc,
                 backgroundColor: ['#c9ea83', '#9bbd4f', '#a8fa00', '#c2ccac'],
                 hoverBackgroundColor:  ["#E6F3FF", "#FAE1CE", "#EDFDE9", "#4A4E3B5E"],
                 borderColor: 'transparent',
-            }],
+
+          }],
         },
         options: {
             pluginRegister: true,
-            responsive:false,
+            responsive: false,
             cutoutPercentage: 95,
             legend: {
                 display: false,
@@ -1616,11 +1699,30 @@ function graficoDistribucionEtapa(etapasPorc){
             title: {
                 display: false
             },
-            tooltip:{
+            tooltip: {
                 position: 'average'
+            },
+            layout: {
+                padding: 10  //set that fits the best
+
+            },
+            plugins:{
+                datalabels: {
+                    anchor: 'start',
+                    align: 'start',
+                    offset: -25,
+                    color: '#ffff',
+                    font: {
+                        size: 13,
+                        family:"Montserrat-Medium"
+                    },
+                    formatter: function(value, context) {
+                        return arrPorc[context.dataIndex];
+                    }
+                }
             }
 
-            /*segmentShowStroke: false*/
+    /*segmentShowStroke: false*/
             //Boolean - Whether we should show a stroke on each segment
             // set to false to hide the space/line between segments
 
@@ -1720,9 +1822,12 @@ function cargarInfoKmEtapas(data){
 function cargarInfoPeriodizacion(periodizacion){
 
     console.log("ñaja", periodizacion);
+    const porcentajes = calcularPorcentajesEtapas(periodizacion);
     document.querySelectorAll('#consolidado .etapa-rutina')
         .forEach((v,i)=>{
             v.querySelector('strong.etapa-sem').textContent = periodizacion[i];
+            v.querySelector('hr').style.width = porcentajes[i] + '%';
+
         })
 
 }
@@ -1756,3 +1861,16 @@ function cargarProyeccionCompetencia(data){
 
 }
 
+function radioButtonFrecuenciaChangeEvent() {
+        $("#dvCumplimiento .dv-checks input:radio").on('change', function () {
+            let cbSeleccionado = $(this)[0].value;
+            cbSeleccionado === "1" ? setGraficoCumplimiento(avanceDiario , 1) :
+                setGraficoCumplimiento(avanceSemanal , 2) ;
+        })
+
+        $("#dvEsfuerzo .dv-checks input:radio").on('change', function () {
+            let cbSeleccionado = $(this)[0].value;
+            cbSeleccionado === "1" ? setGraficoEsfuerzo(esfuerzoDiario , 1) :
+                setGraficoEsfuerzo(esfuerzoSemanal , 2);
+        })
+}

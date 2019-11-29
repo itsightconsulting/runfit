@@ -53,13 +53,17 @@ import java.util.List;
                 }
         ),
         @SqlResultSetMapping(
-                name = "getDatosSemanaByRutinaId",
+                name = "getMetricasByRutinaId",
                 classes = {
                         @ConstructorResult(
                                 targetClass = RuCliPOJO.class,
                                 columns = {
+                                        @ColumnResult(name = "avanceDiario"),
+                                        @ColumnResult(name = "esfuerzoDiario"),
                                         @ColumnResult(name = "avanceSemanal"),
-                                        @ColumnResult(name = "esfuerzoSemanal")
+                                        @ColumnResult(name = "esfuerzoSemanal"),
+
+
                                 }
                         )
                 }
