@@ -138,11 +138,15 @@ span.text_green {
 
 .input-group {
   width: 380px; }
+  .input-group-btn{
+      position: absolute;
+      right: 0;
+      width: auto;}
   .input-group input {
     box-shadow: none !important;
     border-color: initial !important;
     height: 35px;
-    border-radius: 15px;
+    border-radius: 15px !important;
     border: none;
     background: url(/img/search.png) no-repeat;
     background-color: #fff;
@@ -156,7 +160,7 @@ span.text_green {
     font-weight: bold;
     outline: none !important;
     border: none;
-    border-radius: 15px;
+    border-radius: 15px !important;
     padding: 6.5px 12px; }
 
 a.fav .svg {

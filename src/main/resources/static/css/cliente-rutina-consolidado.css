@@ -479,3 +479,6 @@ canvas{
 #dvEsfuerzo p, #dvCumplimiento p{
     text-align: center;
 }
+.horizontal-divider{
+  border-right: 1px solid #3d3f41;
+}
