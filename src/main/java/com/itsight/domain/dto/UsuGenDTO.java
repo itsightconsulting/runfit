@@ -37,7 +37,8 @@ public class UsuGenDTO implements Serializable {
         this.flagActivo = flagActivo;
     }
 
-    public UsuGenDTO(String nombres, String apellidos, String uuidFp, String extFp) {
+    public UsuGenDTO(String nombres, String apellidos, String uuidFp, String extFp
+                    ) {
         this.nombres = nombres;
         this.apellidos = apellidos;
         this.uuidFp = uuidFp;

@@ -95,7 +95,6 @@ public class RedFitnessController {
 
 
                 for (Rutina r : lstRutina) {
-
                    RutinaPOJO rpj =  new RutinaPOJO(r);
                    lstRutinaPojo.add(rpj);
                 }

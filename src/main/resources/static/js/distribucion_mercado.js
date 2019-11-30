@@ -357,19 +357,13 @@ function quitarDuplicados(arr, attribute){
 }
 
 function setGraficosCondFisMasc(dataNoDuplMasc){
-
-    debugger
-
     const condAnatomicaMasc = dataNoDuplMasc.map( ({condicionAnatomica}) => JSON.parse(condicionAnatomica));  //.condicionAnatomica);
     let arrCondFisicMasc =  getDataGraficoCondFisica(condAnatomicaMasc);
     arrCondFisicMasc.length > 0 ? null : arrCondFisicMasc = [0,0,0];
     graficoCondFisicaBasicaMasc(arrCondFisicMasc);
     graficoCondFisicaMedioMasc(arrCondFisicMasc);
     graficoCondFisicaAvanzadoMasc(arrCondFisicMasc);
-
     generarPorcentajeCondFisica(arrCondFisicMasc, 'masc');
-
-
 }
 
 
@@ -643,6 +637,7 @@ function graficoCondFisicaBasicaMasc(arr) {
                 datasets: [{
                     data: [arr[0] , total - arr[0]],
                     backgroundColor: arr[0] !== 0 ?  generarGradientes( ctx,'#1e8cf7','#4e6477') : ['#4e6477', '#4e6477'],
+                    backgroundColor: arr[0] !== 0 ?  generarGradientes( ctx,'#1e8cf7','#4e6477') : ['#4e6477', '#4e6477'],
                     borderColor: 'transparent',
                 }],
             },
@@ -831,7 +826,7 @@ function graficoCondFisicaMedioMasc(arr){
                 datasets: [{
                     data: [arr[1], total - arr[1]],
                     backgroundColor: arr[1] !== 0 ?  generarGradientes( ctx,'#1e8cf7','#4e6477') : ['#4e6477', '#4e6477'],
-                    hoverBackgroundColor: ["#2C42CA", "#7A6D64"],
+                    hoverBackgroundColor: arr[1] !== 0 ?  generarGradientes( ctx,'#1e8cf7','#4e6477') : ['#4e6477', '#4e6477'],
                     borderColor: 'transparent',
                 }],
             },
@@ -1012,7 +1007,7 @@ function graficoCondFisicaAvanzadoMasc(arr){
                 datasets: [{
                     data: [arr[2] , total - arr[2]],
                     backgroundColor: arr[2] !== 0 ?  generarGradientes( ctx,'#1e8cf7','#4e6477') : ['#4e6477', '#4e6477'],
-                    hoverBackgroundColor:  ["#2C42CA", "#7A6D64"],
+                    hoverBackgroundColor: arr[2] !== 0 ?  generarGradientes( ctx,'#1e8cf7','#4e6477') : ['#4e6477', '#4e6477'],
                     borderColor: 'transparent',
                 }],
             },
@@ -1053,7 +1048,7 @@ function graficoCondFisicaAvanzadoMasc(arr){
 
 
 
-function graficoCondFisicaBasicaFem(arr){
+    function graficoCondFisicaBasicaFem(arr){
 
     let total = arr.reduce( (a,b) => a+b);
     let canvas = document.getElementById('GraficoCondFisFemBas');
@@ -1167,7 +1162,7 @@ function graficoCondFisicaBasicaFem(arr){
                 labels: ["Básica"],
                 datasets: [{
                     data: [1],
-                    backgroundColor: '#756d77',
+                    backgroundColor: '#afb2af',
                     borderColor: 'transparent',
                 }],
             },
@@ -1205,7 +1200,7 @@ function graficoCondFisicaBasicaFem(arr){
                 datasets: [{
                     data: [arr[0], total - arr[0]],
                     backgroundColor: arr[0] !== 0 ?  generarGradientes(ctx,'#FF00EB' , '#756d77') : ['#756d77', '#756d77'],
-                    hoverBackgroundColor: ["#EB0955", "#7A6D64"],
+                    hoverBackgroundColor: arr[0] !== 0 ?  generarGradientes(ctx,'#FF00EB' , '#756d77') : ['#756d77', '#756d77'],
                     borderColor: 'transparent',
                 }],
             },
@@ -1358,7 +1353,7 @@ function graficoCondFisicaMedioFem(arr){
                 labels: ["Medio"],
                 datasets: [{
                     data: [1],
-                    backgroundColor: '#756d77',
+                    backgroundColor: '#afb2af',
                     borderColor: 'transparent',
                 }],
             },
@@ -1393,7 +1388,7 @@ function graficoCondFisicaMedioFem(arr){
                 datasets: [{
                     data: [arr[1] , total - arr[1]],
                     backgroundColor: arr[1] !== 0 ?  generarGradientes(ctx,'#FF00EB' , '#756d77') : ['#756d77', '#756d77'],
-                    hoverBackgroundColor:  ["#EB0955", "#7A6D64"],
+                    hoverBackgroundColor: arr[1] !== 0 ?  generarGradientes(ctx,'#FF00EB' , '#756d77') : ['#756d77', '#756d77'],
                     borderColor: 'transparent',
                 }],
             },
@@ -1552,7 +1547,7 @@ function graficoCondFisicaAvanzadoFem(arr){
                 labels: ["Avanzado"],
                 datasets: [{
                     data: [-1],
-                    backgroundColor: '#756d77',
+                    backgroundColor: '#afb2af',
                     borderColor: 'transparent',
                 }],
             },
@@ -1586,7 +1581,7 @@ function graficoCondFisicaAvanzadoFem(arr){
                 datasets: [{
                     data: [arr[2] , total - arr[2]],
                     backgroundColor: arr[2] !== 0 ?  generarGradientes(ctx,'#FF00EB' , '#756d77') : ['#756d77', '#756d77'],
-                    hoverBackgroundColor:  ["#EB0955", "#7A6D64"],
+                    hoverBackgroundColor: arr[2] !== 0 ?  generarGradientes(ctx,'#FF00EB' , '#756d77') : ['#756d77', '#756d77'],
                     borderColor: 'transparent',
                 }],
             },
@@ -2050,7 +2045,7 @@ function setGraficosEdadMasc(data){
         dataMasc.edadPromedioMasc = Math.round((edadClientesMasc.reduce((acc, val) => acc + val)) / edadClientesMasc.length);
         dataMasc.porcentajeMasc = Math.round(edadClientesMasc.length * 100 / cantidadUsuarios);
         dataGraphMasculino = getAgeRangesValues(edadClientesMasc);
-        dataMasc.porcentajeRangosMasc = dataGraphMasculino.map(e => ((e / edadClientesMasc.length) * 100));
+        dataMasc.porcentajeRangosMasc = dataGraphMasculino.map(e => (Math.round((e / edadClientesMasc.length) * 100)));
         dataMasc.porcentajeRangosMasc = roundedPercentage(dataMasc.porcentajeRangosMasc , 100);
 
     }else{
@@ -2356,6 +2351,7 @@ function graficoServiciosUsados(  totalServicios, dataServicio){
     let suma = porcentajes.reduce(  (a,b) => a+b);
 
     porcentajes= suma === 100 ? porcentajes : roundedPercentage( porcentajes, 100);
+
 
     let porcentajesHombre = (dataServicio.map( e => Math.round((e.qtyHombre/e.qtyClientes)*100)));
     let porcentajesMujer = (dataServicio.map( e => Math.round((e.qtyMujer/e.qtyClientes)*100)) );
@@ -3147,10 +3143,8 @@ function generarPorcentajeTipoServicioSexoDOM(arr, index){
 }
 
 function generarPorcentajeCondFisica(arr, sexo){
-
     let porcCondFisic;
     porcCondFisic = ( arr.reduce( (a,b) => a+b) === 0) ? arr : getPorcentaje(arr);
-
     $(`.dv-cond-fisica .${sexo} .cond-fisica-porc`).each(
         function(index){
             $(this).html(`${porcCondFisic[index]}%`)
@@ -3158,21 +3152,16 @@ function generarPorcentajeCondFisica(arr, sexo){
 }
 
 function getPorcentaje(arr){
-
+    debugger
     const total = arr.reduce( (a,b) => a+b);
-
-    const porcArr = arr.map( e =>  (e/total)*100);
-
-    return roundedPercentage(porcArr,100);
-
+    const porcArr = arr.map( e =>  Math.round((e/total)*100));
+    const roundedPerc =  roundedPercentage(porcArr,100);
+    return roundedPerc;
 }
 
-
 function getDataServicioPorTemporada( arr, año){
-
     const values =[];
-
-    values.push(arr.filter(e => e === `01/${año}`).length);
+   values.push(arr.filter(e => e === `01/${año}`).length);
     values.push(arr.filter(e => e === `02/${año}`).length);
     values.push(arr.filter(e => e === `03/${año}`).length);
     values.push(arr.filter(e => e === `04/${año}`).length);
@@ -3393,6 +3382,7 @@ function generarSelectYearFilter(arr){
 
 function roundedPercentage( l , target){
     let off = target - _.reduce(l, function(acc, x) { return acc + Math.round(x) }, 0);
+
     return _.chain(l).
     sortBy(function(x) { return Math.round(x) - x }).
     map(function(x, i) { return Math.round(x) + (off > i) - (i >= (l.length + off)) }).

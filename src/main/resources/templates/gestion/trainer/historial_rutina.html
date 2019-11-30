@@ -85,6 +85,12 @@
 <!-- OTRAS LIBRERIAS DISTINTAS AL TEMPLATE -->
 <script th:src="@{/js/hashids.min.js}+'?'+${version}"></script>
 
+<script th:inline="javascript">
+    /*<![CDATA[*/
+      var rutinasInfo= /*[[${rutinas}]]*/ 'value';
+    /*]]>*/
+</script>
+
 <script>
     const btnBuscarPeriodo = document.getElementById('btnBuscarPeriodo');
     const dvItems = document.getElementById('dvItemsSuspendidos');
@@ -107,28 +113,32 @@
     })
 
     function init(){
+        setFormatoFechas();
         setSemanas();
         setDatosCliente();
     }
 
+    function setFormatoFechas(){
+        $('.rutina').each( function(index,element) {
 
-    function setDatosCliente() {
+            const fechaInicio = rutinasInfo[index].fechaInicio
+                                .split('/').join('-');
+            const fechaFin = rutinasInfo[index].fechaFin
+                             .split('/').join('-');
 
-         $('.nombre-cliente').html( '<strong> Cliente : </strong>' + atob(getParamFromURL("nm")));
-
-        $('.fecha-nacimiento').html( '<strong> Fecha de nacimiento : </strong>' + atob(getParamFromURL("fn")));
-
-
+            $('.rutina p.periodo-rutina').html(`( DE ${fechaInicio} A ${fechaFin} )`);
+        });
     }
 
+    function setDatosCliente() {
+         $('.nombre-cliente').html( '<strong> Cliente : </strong>' + atob(getParamFromURL("nm")));
+         $('.fecha-nacimiento').html( '<strong> Fecha de nacimiento : </strong>' + atob(getParamFromURL("fn")));
+    }
 
     function setSemanas(){
-
         let ulSemanas;
         let contadorLiItem = 0;
-
         $('.rutina').each( function(index,element){
-
             ulSemanas = $('.list-group')[index];
             let liItem;
             let numSemana = $(this)[0].dataset.value;

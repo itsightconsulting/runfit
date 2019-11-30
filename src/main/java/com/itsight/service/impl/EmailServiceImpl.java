@@ -44,29 +44,15 @@ public class EmailServiceImpl extends EmailGeneric implements EmailService {
                 emailSender.send(preparator);
                 return;
             }
-
-<<<<<<< HEAD
-            //Block development/qa
-            if(profile.equals("qa-azure")){
-                /*receptor = "yoselin.rodriguez@itsight.pe";*/
-                preparator = mimeMessagePreparator(asunto, receptor, contenido);
-                emailSender.send(preparator);
-            }
-
-            if(profile.equals("development")){
-                //*receptor = "contoso.peru@gmail.com";
-                preparator = mimeMessagePreparator(asunto, receptor, contenido);
-                emailSender.send(preparator);
-=======
+        //Block development/qa
             if(profile.equals("qa-azure")){
                 receptor = "yoselin.rodriguez@itsight.pe";
                 preparator = mimeMessagePreparator(asunto, receptor, contenido);
                 emailSender.send(preparator);
-                return;
             }
 
+
             if(profile.equals("development")){
->>>>>>> 0c88e998a40377e61ab21e76d410dbd1bccbed64
                 Integer ixUrl = contenido.indexOf("href=");
                 String url = ixUrl == -1 ? "" : contenido.substring(contenido.indexOf("href=")+6).split("'")[0];
                 bandejaTemporalRepository.save(new BandejaTemporal(asunto, contenido, url));

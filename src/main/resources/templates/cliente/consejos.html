@@ -96,5 +96,13 @@
    <th:block th:insert="html-commons/in/js :: fg-js"></th:block>
    <script th:src="@{/js/cliente-consejos.js}+'?'+${version}"></script>
 
+   <script th:inline="javascript">
+     /*<![CDATA[*/
+     const tipoRutina= /*[[${tipoRutina}]]*/ 'value';
+     /*]]>*/
+   </script>
+
   </body>
+
+
 </html>
