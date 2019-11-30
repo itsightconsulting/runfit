@@ -44,7 +44,7 @@ public class EmailServiceImpl extends EmailGeneric implements EmailService {
                 emailSender.send(preparator);
                 return;
             }
-        //Block development/qa
+
             if(profile.equals("qa-azure")){
                 receptor = "yoselin.rodriguez@itsight.pe";
                 preparator = mimeMessagePreparator(asunto, receptor, contenido);

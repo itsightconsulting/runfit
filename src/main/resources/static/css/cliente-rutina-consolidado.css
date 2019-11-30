@@ -542,6 +542,10 @@ canvas{
 #dvEsfuerzo p, #dvCumplimiento p{
     text-align: center;
 }
+<<<<<<< HEAD
+.horizontal-divider{
+  border-right: 1px solid #3d3f41;
+=======
 
 
 
@@ -610,4 +614,5 @@ canvas{
 
 .dv-checks {
     padding: 40px 0;
+>>>>>>> 5b9a52365b91cd509cc3319e8d0b02dcb9359c0e
 }
