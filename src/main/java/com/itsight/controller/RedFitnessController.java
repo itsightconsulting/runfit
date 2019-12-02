@@ -95,7 +95,6 @@ public class RedFitnessController {
 
 
                 for (Rutina r : lstRutina) {
-
                    RutinaPOJO rpj =  new RutinaPOJO(r);
                    lstRutinaPojo.add(rpj);
                 }
@@ -198,6 +197,7 @@ public class RedFitnessController {
 
     @GetMapping(value = "/consultar/cliente")
     public ModelAndView obtenerInfoCompletaByClienteId(Model model,HttpSession session, @RequestParam(value = "id") Integer clienteId,@RequestParam(value = "rfId") Integer redFitnessId) throws JsonProcessingException {
+
 
        Integer trainerId = (Integer) session.getAttribute("id");
        Integer validTrainer = redFitnessService.findTrainerIdByIdAndRunnerId(redFitnessId,clienteId);

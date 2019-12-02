@@ -14,8 +14,7 @@ const btnBuscarConsejo = $('#btnSearch');
 
 
 $(function () {
-
-    
+    setTipoRutina(tipoRutina);
     listarConsejoEntrenador();
     btnAudiosList.addClass("selected")
     btnAudiosList.click(function(){
@@ -145,7 +144,6 @@ function listarConsejoEntrenador() {
         url: _ctx + 'cliente/get/consejos',
         dataType: "json",
         success: function (data, textStatus) {
-            debugger
             if (textStatus == "success") {
                 if (data == "-9") {
                     $.smallBox({
@@ -154,9 +152,6 @@ function listarConsejoEntrenador() {
                         color: "alert",
                     });
                 } else {
-                   // if(data.length>0) {
-                        //var $div = $(".list-cards");
-                        //$div.html("");
                            const infoConsejos = data.sort( (a,b) =>  b.id - a.id);
                            listaConsejosAudios  = infoConsejos.filter( e => e.tipo === 2);
                            listaConsejosTextos  = infoConsejos.filter( e => e.tipo === 3);
@@ -172,11 +167,6 @@ function listarConsejoEntrenador() {
                            }else{
                                generarListaFavoritos(listaConsejosFavoritos);
                            }
-                           // allPosts = data ;//Global
-                       /* $.each(data.sort((a, b)=>{return parseFromStringToDateTime(b.fechaCreacion).getTime() - parseFromStringToDateTime(a.fechaCreacion).getTime();}),(i, item)=>{
-                            $div.append(GenerarDiv(item));
-                        });*/
-              //      }
                 }
             }
         },
@@ -377,4 +367,12 @@ function abrirMdlVerConsejoTxt(){
     $('#mdlTxtTitulo').prop('readonly',true);
     $('#mdlTxtDescripcion').prop('readonly',true);
     $('#mdlVerConsejoTexto').modal('show'); //lanza modal
+}
+
+
+function setTipoRutina(tipo){
+    const nombre = tipo === 1 ? 'Running' : 'General';
+
+    $('#TipoRutina').html(nombre);
+
 }

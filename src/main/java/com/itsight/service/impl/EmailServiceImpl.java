@@ -44,12 +44,13 @@ public class EmailServiceImpl extends EmailGeneric implements EmailService {
                 emailSender.send(preparator);
                 return;
             }
+
             if(profile.equals("qa-azure")){
                 receptor = "yoselin.rodriguez@itsight.pe";
                 preparator = mimeMessagePreparator(asunto, receptor, contenido);
                 emailSender.send(preparator);
-                return;
             }
+
 
             if(profile.equals("development")){
                 Integer ixUrl = contenido.indexOf("href=");

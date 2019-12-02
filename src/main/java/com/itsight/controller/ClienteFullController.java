@@ -54,12 +54,12 @@ public class ClienteFullController {
                                  RutinaProcedureInvoker rutinaProcedureInvoker){
         this.semanaService = semanaService;
         this.rutinaService = rutinaService;
-        this.redFitnessService = redFitnessService;
         this.miniPlantillaService = miniPlantillaService;
         this.diaRutinarioService = diaRutinarioService;
         this.especificacionSubCategoriaService = especificacionSubCategoriaService;
         this.postService = postService;
         this.clienteService = clienteService;
+        this.redFitnessService = redFitnessService;
         this.configuracionClienteService = configuracionClienteService;
         this.rutinaProcedureInvoker = rutinaProcedureInvoker;
     }
@@ -126,9 +126,10 @@ public class ClienteFullController {
     public ModelAndView pageConsejos(Model model, HttpSession session) {
         int id = (int) session.getAttribute("id");
         model.addAttribute("clienteId", id);
+        RuCliPOJO rutina = rutinaProcedureInvoker.getLastByClienteId(id, 1);
         String postIds = configuracionClienteService.obtenerPostIdFavoritos(id);
         model.addAttribute("postsFavoritos" , postIds);
-
+        model.addAttribute("tipoRutina" , rutina.getTipoRutina());
         return new ModelAndView(ViewConstant.MAIN_CONSEJOS_CLIENTE);
     }
 

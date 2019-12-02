@@ -982,23 +982,44 @@ function getImgUrlFromUser(){
     return getCookie("GLL_IMG_PERFIL").trim();
 }
 
+
+
 const optCliEnt = document.querySelector('#OptConfCliCtrlEntrenamiento');
 const optCliCrlRepVideo = document.querySelector('#OptConfCliCtrlRepVideo');
 const optCliEntMob = document.querySelector('#OptConfCliCtrlEntrenamientoMob');
 const optCliCrlRepVideoMob = document.querySelector('#OptConfCliCtrlRepVideoMob');
 
+function applyStyleToTextOptCliConfig(optCli , checked) {
+  if(checked) {
+      optCli.parentElement.querySelectorAll("i")[0].style.color = "grey";
+      optCli.parentElement.querySelectorAll("i")[1].style = " ";
+  }else{
+      optCli.parentElement.querySelectorAll("i")[0].style.color="";
+      optCli.parentElement.querySelectorAll("i")[1].style.color = "grey";
+ }
+}
 
 if(optCliEnt){
     optCliEnt.addEventListener('click', actualizarConfiguracionCliente);
+
     if(getCookie("GLL_CONTROL_ENTRENAMIENTO") === "SEMANAL"){
         optCliEnt.checked = true;
+        applyStyleToTextOptCliConfig(optCliEnt, 1)
+    }else{
+        applyStyleToTextOptCliConfig(optCliEnt, 0)
+
     }
+
+
 }
 
 if(optCliCrlRepVideo){
     optCliCrlRepVideo.addEventListener('click', actualizarConfiguracionCliente);
     if(getCookie("GLL_CONTROL_REP_VIDEO") === "CONTINUA"){
         optCliCrlRepVideo.checked = true;
+        applyStyleToTextOptCliConfig(optCliCrlRepVideo, 1)
+    }else{
+        applyStyleToTextOptCliConfig(optCliCrlRepVideo, 0)
     }
 }
 
@@ -1006,6 +1027,9 @@ if(optCliEntMob){
     optCliEntMob.addEventListener('click', actualizarConfiguracionCliente);
     if(getCookie("GLL_CONTROL_ENTRENAMIENTO") === "SEMANAL"){
         optCliEntMob.checked = true;
+        applyStyleToTextOptCliConfig(optCliEntMob, 1)
+    }else{
+        applyStyleToTextOptCliConfig(optCliCrlRepVideo, 0)
     }
 }
 
@@ -1013,6 +1037,9 @@ if(optCliCrlRepVideoMob){
     optCliCrlRepVideoMob.addEventListener('click', actualizarConfiguracionCliente);
     if(getCookie("GLL_CONTROL_REP_VIDEO") === "CONTINUA"){
         optCliCrlRepVideoMob.checked = true;
+        applyStyleToTextOptCliConfig(optCliCrlRepVideoMob, 1)
+    }else{
+        applyStyleToTextOptCliConfig(optCliCrlRepVideo, 0)
     }
 }
 
@@ -1024,11 +1051,15 @@ function actualizarConfiguracionCliente(e){
     if(tipoConfiguracion === TipoConfiguracion.CTRL_REP_VIDEO){
         varianteURI = "ctrl-rep-video";
         valor = getCookie("GLL_CONTROL_REP_VIDEO");
-        valor = valor === "REPETICION" ? "CONTINUA" : "REPETICION";
+        valor ===  "REPETICION" ? (  valor = "CONTINUA", applyStyleToTextOptCliConfig(input, 1))
+            : (  valor =  "REPETICION",applyStyleToTextOptCliConfig(input, 0));
+
+
     } else {
         varianteURI = "ctrl-entrenamiento";
         valor = getCookie("GLL_CONTROL_ENTRENAMIENTO");
-        valor = valor === "DIARIA" ? "SEMANAL" : "DIARIA";
+        valor === "DIARIA" ? (  valor = "SEMANAL", applyStyleToTextOptCliConfig(input, 1))
+            : (   valor = "DIARIA" , applyStyleToTextOptCliConfig(input, 0));
     }
 
     $.ajax({
@@ -1039,6 +1070,7 @@ function actualizarConfiguracionCliente(e){
         success: function () {
             if(tipoConfiguracion === TipoConfiguracion.CTRL_REP_VIDEO){
                 document.cookie = "GLL_CONTROL_REP_VIDEO="+valor;
+
             } else {
                 document.cookie = "GLL_CONTROL_ENTRENAMIENTO="+valor;
             }
@@ -1046,6 +1078,8 @@ function actualizarConfiguracionCliente(e){
         error: function (xhr) {
             exception(xhr);
             input.checked = !input.checked;
+            applyStyleToTextOptCliConfig(input, !input.checked);
+
         },
         complete: function () {}
     });

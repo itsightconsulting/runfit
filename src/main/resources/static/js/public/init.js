@@ -86,6 +86,7 @@ function checkBoxes() {
                     $("." + clase + "").fadeIn();
                   }
         } else{
+
                _self.prop('checked', true)
                $("." + clase + "").fadeIn();
         }

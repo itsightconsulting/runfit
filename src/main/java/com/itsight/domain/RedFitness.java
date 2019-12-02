@@ -131,6 +131,11 @@ public class RedFitness implements Serializable {
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "redFitness", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Chat chat;
 
+    @Temporal(TemporalType.DATE)
+    @JsonSerialize(using=JsonDateSimpleSerializer.class)
+    @JsonDeserialize(using=JsonDateSimpleDeserializer.class)
+    private Date fechaSuspension;
+
     public RedFitness(){
     }
 
