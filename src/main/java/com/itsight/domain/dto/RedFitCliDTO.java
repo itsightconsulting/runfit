@@ -47,6 +47,9 @@ public class RedFitCliDTO implements Serializable {
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
     private Date cliFechaNacimiento;
 
+    @JsonSerialize(using = JsonDateSimpleSerializer.class)
+    private Date fechaSuspension;
+
     private int rows;
 
     private List<String> mesesCliSuspendidos;
@@ -69,9 +72,9 @@ public class RedFitCliDTO implements Serializable {
         this.rows = rows;
     }
 
-    public RedFitCliDTO(Integer id, String cliNombreCompleto, Date fechaCreacion,Integer cliId) {
+    public RedFitCliDTO(Integer id, String cliNombreCompleto, Date fechaSuspension,Integer cliId) {
         this.id = id;
-        this.fechaCreacion = fechaCreacion;
+        this.fechaSuspension = fechaSuspension;
         this.cliNombreCompleto = cliNombreCompleto;
         this.cliId = cliId;
     }

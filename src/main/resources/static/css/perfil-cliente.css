@@ -94,7 +94,7 @@
 
 .steps ul.distance li {
     display: inline-block;
-    max-width: 89px;
+    max-width: 88px;
     margin-right: 10px;
     text-align: center
 }
@@ -968,6 +968,45 @@ input[type=range]:focus::-ms-fill-upper {
     display: block
 }
 
+
+
+.chk-content:hover input ~ .checkmark2 {
+    background-color: #ccc
+}
+
+
+
+
+.chk-content .checkmark2 {
+    position: absolute;
+    top: 6px;
+    left: 0;
+    height: 16px;
+    width: 16px;
+    background-color: #eee
+}
+
+.chk-content .checkmark2:after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 5.5px;
+    top: 1.5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 1px 1px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg)
+}
+
+
+
+.chk-content input:checked ~ .checkmark2:after {
+    display: block
+}
+
 hr {
     border-top: 1px solid #d3d3d3
 }
@@ -1325,4 +1364,8 @@ ul.distance p{
 .display-table {
     display: table;
     width: 100%
+}
+
+svg.disabled{
+    pointer-events: none;
 }

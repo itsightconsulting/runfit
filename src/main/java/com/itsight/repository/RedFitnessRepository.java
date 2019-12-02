@@ -63,18 +63,18 @@ public interface RedFitnessRepository extends JpaRepository<RedFitness, Integer>
     void updateFlagActivoById(Integer id, boolean flag);
 
     @Modifying
-    @Query("UPDATE RedFitness R SET R.flagActivo = ?3 WHERE R.id = ?1 AND R.trainer.id = ?2")
+    @Query("UPDATE RedFitness R SET R.flagActivo = ?3 , R.fechaSuspension = null  WHERE R.id = ?1 AND R.trainer.id = ?2")
     void updateFlagActivoByIdAndTrainerId(int id, Integer trainerId, boolean flagActivo);
 
-    @Query("SELECT NEW com.itsight.domain.dto.RedFitCliDTO(R.id,concat(C.nombres,' ', C.apellidos), R.fechaCreacion, C.id ) " +
+    @Query("SELECT NEW com.itsight.domain.dto.RedFitCliDTO(R.id,concat(C.nombres,' ', C.apellidos), R.fechaSuspension, C.id ) " +
             "FROM RedFitness R JOIN R.cliente C " +
             "WHERE R.trainer.id = ?1 " +
             "AND R.flagActivo = false " +
-            "AND to_char(R.fechaCreacion, 'YYYY-MM') = ?2")
+            "AND to_char(R.fechaSuspension, 'YYYY-MM') = ?2")
     List<RedFitCliDTO> findClientesSuspendidosByTrainerId(Integer trainerId, String mes);
 
     @Query(value="SELECT string_agg(PS.periodo,',') mesesCliSuspendidos " +
-            "FROM (SELECT DISTINCT to_char(RF.fecha_creacion,'YYYYMM') AS periodo " +
+            "FROM (SELECT DISTINCT to_char(RF.fecha_suspension,'YYYYMM') AS periodo " +
             "FROM red_fitness RF INNER JOIN cliente C ON rf.cliente_id = c.security_user_id  " +
             "WHERE RF.trainer_id = ?1 AND RF.flag_activo = false ORDER BY periodo ASC) PS",nativeQuery = true)
     String getMesesCliSuspendidos(Integer trainerId);
