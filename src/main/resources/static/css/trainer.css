@@ -330,6 +330,23 @@ a.star:hover .svg, a.star.selected .svg {
     bottom: 0;
     margin: auto; }
 
+.vid-container{
+    padding-top: 15%;
+}
+
+button.close-btn{
+    background-color: transparent;
+        font-size: 40px;
+        color: white;
+        opacity: 1;
+        width: 50px;
+        height: 50px;}
+.close-btn:hover{
+    color: white;
+    opacity: 0.8;
+    background-color: #6A6A6A;
+    border-radius: 50%;}
+
 .only_mobile {
     display: none; }
 

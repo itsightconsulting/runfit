@@ -2525,7 +2525,9 @@ ul.tabs {
 .steps .ficha-01 .bg-image {
   position: absolute;
   bottom: 0;
-  left: -45%
+  left: -25%;
+  width: 1237px;
+  height: 800px;
 }
 
 .steps .ficha-02 {
