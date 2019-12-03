@@ -542,18 +542,14 @@ canvas{
 #dvEsfuerzo p, #dvCumplimiento p{
     text-align: center;
 }
-<<<<<<< HEAD
 
-.horizontal-divider{
-  border-right: 1px solid #3d3f41;
-=======
-
-
-=======
 .horizontal-divider {
     border-right: 1px solid #3d3f41;
 }
->>>>>>> 09d331df42378f6c8516ea263232a662241c9cb7
+
+.resumen-metrica .fa{
+    padding-top: 12px;
+}
 
 .chk-content {
     display: block;

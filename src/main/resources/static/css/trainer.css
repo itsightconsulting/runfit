@@ -346,6 +346,10 @@ button.close-btn{
     opacity: 0.8;
     background-color: #6A6A6A;
     border-radius: 50%;}
+span.rf-dia-elemento-nombre {
+    position: relative;
+    bottom: -2px;
+}
 
 .only_mobile {
     display: none; }
