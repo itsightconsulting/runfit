@@ -297,10 +297,15 @@ p.cond-fisica-porc{
 }
 
 select{
-    background-color: #2A242C;
     border-radius: 15px;
     border: 1px solid;
     height: 40px;
+    width: 115px;
+    background: url(/img/iconos/icon_flecha3.svg) no-repeat;
+    background-size: 15px;
+    -webkit-appearance: none;
+    background-position-x: 85px;
+    background-position-y: center;
     box-shadow: 0 0 0;
     color: #a8fa00;
     padding: 0 15px;
@@ -415,7 +420,6 @@ canvas{
     display:inline-block;
     padding-right:40px;
     position: relative;
-    bottom:-20px;
 }
 .mapa g {
     fill: #ffff;
