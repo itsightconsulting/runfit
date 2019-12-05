@@ -197,7 +197,7 @@ function abrirCalendario(semanasIxs,edicion,mes) {
         calendarBody += `</div>`;
     })
 
-    const iconCalendar = document.querySelector('#CalendarioRf');
+    const iconCalendar = document.querySelector('#CalasasasendarioRf');
     if(edicion){
         if(iconCalendar.getAttribute('data-content') == ''){
             iconCalendar.setAttribute('data-content', reconstruirCalendario(calendarBody, anioFechaReferencial, mesFechaReferencial, meses[mesFechaReferencial]));

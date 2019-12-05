@@ -79,8 +79,6 @@ public class TrainerController extends BaseController{
     @GetMapping(value = "")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView principal(Model model) {
-        System.out.println("Demo log");
-        System.out.println("Demo logger2");
         model.addAttribute("lstTipoDocumento", tipoDocumentoService.findAll());
         model.addAttribute("lstTipoUsuario", perfilService.listAll());
         model.addAttribute("lstRol", rolService.findAll());

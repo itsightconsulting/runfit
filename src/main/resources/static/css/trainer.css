@@ -149,9 +149,11 @@ span.text_green {
 
 select {
     background: url(/img/select.png) no-repeat 96% #fff !important;
-    -webkit-appearance: none;
-    -moz-appearance: none;
+    -webkit-appearance: none!important;
+    -moz-appearance: none!important;
     padding-right: 40px !important; }
+
+
 
 .input-group {
     width: 380px; }
@@ -1693,7 +1695,7 @@ section.consejos span.msj-no-data , section.consejos-favs span.msj-no-data{
     display: flex;
     justify-content: space-between; }
 .editor_text .block {
-    text-align: right; }
+    text-align: left; }
 .editor_text .logo {
     max-width: 95px; }
 .editor_text section {
@@ -1705,7 +1707,7 @@ section.consejos span.msj-no-data , section.consejos-favs span.msj-no-data{
     border-radius: 7px;
     border: none;
     padding: 2px 8px;
-    background: url(./img/selectmini.png) no-repeat 85% #fff !important; }
+    background-size: 18px 10px!important; }
 .editor_text #selectZoom {
     margin-bottom: 15px;
 }
@@ -1738,6 +1740,24 @@ section.consejos span.msj-no-data , section.consejos-favs span.msj-no-data{
 .editor_text span:last-child {
     padding-right: 10px; }
 
+#tabRutina select {
+    -webkit-appearance: menulist;
+}
+
+
+.btn.active, .btn:active {
+    background-image: none;
+    outline: 0;
+    border-style: outset;
+    /* -webkit-box-shadow: inset 0 3px 5px rgba(0,0,0,.125); */
+    border: none;
+    /* box-shadow: inset 0 3px 5px rgba(0,0,0,.125); */
+}
+
+.title_carousel button:active{
+    -webkit-box-shadow: unset;
+    box-shadow: unset;
+}
 .scroll_rut {
     overflow: auto;
     white-space: nowrap;
@@ -1792,10 +1812,17 @@ section.consejos span.msj-no-data , section.consejos-favs span.msj-no-data{
     padding: 5px 0;
     display: flex;
     justify-content: space-between; }
+
 .scroll_rut .days_week article .sub-header span .svg {
-    height: 12px;
+    height: 9px;
     fill: #b5b6b6;
     margin-right: 5px; }
+
+.scroll_rut .days_week article .sub-header span .svg.time {
+    height: 11px;
+    fill: #b5b6b6;
+    margin-right: 5px; }
+
 .scroll_rut .days_week article .rt-elem {
     min-height: 518px;
     border-radius: 8px;
@@ -1818,11 +1845,13 @@ section.consejos span.msj-no-data , section.consejos-favs span.msj-no-data{
     transform: rotate(180deg);
     transition: all .5s; }
 .scroll_rut .days_week article .rt-elem .elem .svg{
-    height: 20px;
+    height: 13px;
     position: relative;
     max-width: 20px;
     width: 20px;
     margin-right: 5px;
+    cursor: pointer;
+    margin-top: 2px;
 }
 
 .scroll_rut .days_week article .inputs-init .svg,
@@ -1830,7 +1859,9 @@ section.consejos span.msj-no-data , section.consejos-favs span.msj-no-data{
     height: 20px;
     position: relative;
     top: 6px;
-    max-width: 20px; }
+    max-width: 20px;
+    cursor : pointer;
+}
 .scroll_rut .days_week article .inputs-init .elem button.btn.add ,
 .scroll_rut .days_week article .rt-elem .elem button.add-init-element
 {
@@ -1840,7 +1871,9 @@ section.consejos span.msj-no-data , section.consejos-favs span.msj-no-data{
 .scroll_rut .days_week article .rt-elem .elem button.add-init-element .svg{
     fill: #b3b3b3;
     width: 15px;
-    margin-right: 10px;}
+    margin-right: 10px;
+    cursor : pointer
+}
 .scroll_rut .days_week article .rt-elem .elem ul li {
     font-family: Montserrat-Regular;
     margin: 20px 0;
@@ -1895,11 +1928,17 @@ section.consejos span.msj-no-data , section.consejos-favs span.msj-no-data{
 }
 .scroll_rut .days_week article .rf-dia-pre-elemento
 {
--webkit-box-shadow: 6px 15px 35px -20px rgba(0, 0, 0, 0.4);
--moz-box-shadow: 6px 15px 35px -20px rgba(0, 0, 0, 0.4);
-box-shadow: 6px 15px 35px -20px rgba(0, 0, 0, 0.4);
+    -webkit-box-shadow: 6px 15px 35px -20px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 6px 15px 35px -20px rgba(0, 0, 0, 0.4);
+    box-shadow: 6px 15px 35px -20px rgba(0, 0, 0, 0.4);
 }
 
+.scroll_rut .days_week article .rf-dia-elemento-nombre
+{
+    float: none;
+    display: flex;
+    word-break: break-word;
+}
 .scroll_rut .days_week article .rt-elem .elem ul li .col-xs-4 {
     text-align: center; }
 .scroll_rut .days_week article .rt-elem .elem ul li .time {
@@ -1945,6 +1984,25 @@ box-shadow: 6px 15px 35px -20px rgba(0, 0, 0, 0.4);
 .rut-dots .btn .svg {
     width: 20px;
     height: 20px; }
+
+#btnCerrarAudio{
+    opacity: .6;
+    background: grey;
+    border-radius: 50%;
+    padding-left: 5px;
+    padding-right: 5px;
+    color: white;
+}
+
+.btn-cerrar-video {
+    background: #bdafaf!important;
+    border-radius: 50%!important;
+    padding-left: 8px!important;
+    padding-right: 8px!important;
+    color: white;
+    font-size: 35px;
+    float: right;
+}
 
 #tblResumen {
     margin: 0;
@@ -2365,7 +2423,7 @@ button.note-color-fuente, button.note-bg-color {
 
 #editorContent .close{
   float:inherit;
-  padding-left: 250px;
+  margin-left: 250px;
   position: relative;
   top: -35px;
 }
@@ -2395,6 +2453,13 @@ button.note-color-fuente, button.note-bg-color {
 
 .scroll_rut .days_week article .rt-elem .elem .svg.ele-delete {
     height: 17px;
+    cursor: pointer;
+    margin-top: 0;
+}
+
+.sub-elemento-nombre{
+    display: flex;
+    word-break: break-word;
 }
 
 /* SPINNER */
@@ -2670,4 +2735,52 @@ button.btn-darkgrey:hover {
 
 .flechas span{
     cursor: pointer;
+}
+
+.mCS-3d-dark.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar, .mCS-3d-dark.mCSB_scrollTools .mCSB_dragger.mCSB_dragger_onDrag .mCSB_dragger_bar, .mCS-3d-dark.mCSB_scrollTools .mCSB_dragger:active .mCSB_dragger_bar, .mCS-3d-dark.mCSB_scrollTools .mCSB_dragger:hover .mCSB_dragger_bar, .mCS-3d.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar, .mCS-3d.mCSB_scrollTools .mCSB_dragger.mCSB_dragger_onDrag .mCSB_dragger_bar, .mCS-3d.mCSB_scrollTools .mCSB_dragger:active .mCSB_dragger_bar, .mCS-3d.mCSB_scrollTools .mCSB_dragger:hover .mCSB_dragger_bar {
+    background: url(/img/scroll_black.png) no-repeat!important;
+    -webkit-appearance: none!important;
+    appearance: none!important;
+    width: 76px!important;
+    height: 19px!important;
+    cursor: pointer;
+}
+
+.mCS-3d-dark.mCSB_scrollTools_horizontal .mCSB_draggerRail, .mCS-3d.mCSB_scrollTools_horizontal .mCSB_draggerRail {
+    height: 1px!important;
+    margin: 12px 0!important;
+}
+
+
+.mCSB_scrollTools.mCSB_scrollTools_horizontal {
+    height: 26px!important;
+}
+
+
+.mCSB_draggerContainer::before {
+    content: url(/img/right-scroll.png);
+    width: 10px;
+    height: 20px;
+    position: absolute;
+    left: -30px;
+    top: 0;
+    bottom: 0;
+    margin: auto; }
+.mCSB_draggerContainer::after {
+    content: url(/img/left-scroll.png);
+    width: 10px;
+    height: 20px;
+    position: absolute;
+    right: -25px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+.mCSB_scrollTools.mCSB_scrollTools_horizontal a+.mCSB_draggerContainer {
+    margin: 0 40px!important;
+}
+
+.ds-flex{
+    display: flex;
 }

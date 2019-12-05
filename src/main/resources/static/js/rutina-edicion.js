@@ -15,6 +15,7 @@ const dvMesActual = document.querySelector('.dv-mes-actual');
 const dvSeleccionMesDots = document.querySelector('.rut-dots');
 const videoMedia = document.querySelector('#VideoMedia');
 const audioMedia = document.querySelector('#AudioMedia');
+
 let $menuTargetInput = '';
 let indexGlobal = 0;
 let $body = $("html,body");
@@ -81,7 +82,9 @@ function init(){
 
         editorRutinaContenido.addEventListener('click', eventosEditorRutina);
         $semanario.addEventListener('focusout', principalesEventosFocusOutSemanario);
-      //  $semanario.addEventListener('focusin', principalEventoFocusIn);
+        $semanario.addEventListener('mouseup', eventoMouseUp);
+
+        //  $semanario.addEventListener('focusin', principalEventoFocusIn);
         $semanario.addEventListener('click', principalesEventosClickRutina);
         $selectZoom.addEventListener('change', eventoSelectZoom);
         tabGrupoAudios.addEventListener('click', principalesEventosTabGrupoAudios);
@@ -99,7 +102,10 @@ function init(){
         $(dvEditor).click(eventosCalendario);
         dvSeleccionMesDots.addEventListener('click' , eventoClickSeleccionMesDots);
         imgtoSvgEvent();
-
+        modalEventos();
+        $('#myTabRutina').on('hidden.bs.popover', function (e) {
+            $(e.target).data("bs.popover").inState.click = false;
+        });
         $(document).bind("click", function(e) {
             const input= e.target;
             const clases = input.classList;
@@ -119,40 +125,18 @@ function init(){
             $('video').trigger('pause');
             $('audio').trigger('pause');
         });
-/*
-           calendarioTmp();
 
-          instanciarDatosFitnessCliente();
-
-
-           tabFichaTecnica.addEventListener('click', principalesEventosTabFichaTecnica);
-           tabFichaTecnica.addEventListener('focusout', principalesEventosFocusOutTabFichaTecnica);
-           rutinarioCe.addEventListener('click', genericoRutinarioCe);
-           cboSubCategoriaId.addEventListener('change', cargarListaSubCategoriaEjercicio);
-           cboSubCategoriaIdSec.addEventListener('change', cargarListaSubCategoriaEjercicio);
-           cboEspSubCategoriaIdSec.addEventListener('change', cargarReferenciasMiniPlantilla);
-           btnGuardarMini.addEventListener('click', guardarMiniPlantilla);
-           btnActualizarMvz.addEventListener('click', actualizarMetricasVelocidadBD);
-           shortcutRutinario.addEventListener('click', abrirAtajoRutinario);
-           btnVerDetSemanas.addEventListener('click', FichaSeccion.newAlertaInfoSemanas);
-           btnComprobarMacro.addEventListener('click', MacroCiclo.comprobar);
-           btnGenerarRutinaCompleta.addEventListener('click', MacroCiclo.generarRutinaCompleta);
-           Array.from(nivelAtletaRdBtn.querySelectorAll('.chkNivel')).forEach(v=>v.addEventListener('change', MacroCiclo.instanciarKilometrajeBase));
-           Array.from(distAtletaRdBtn.querySelectorAll('.chkDistancia')).forEach(v=>v.addEventListener('change', MacroCiclo.instanciarKilometrajeBase));
-           fInitMacro.addEventListener('change', FichaSet.setTotalSemanas);
-           fFinMacro.addEventListener('change', FichaSet.setTotalSemanas);
-           //btnCopiarMini.addEventListener('click', copiarMiniPlantilla);
-           window.addEventListener('scroll', scrollGlobal);//Scroll event para regresar al techo del container
-           instanciarMarcoEditor();
-           instanciaMediaBD();
-           instanciaPerfectScrollBar();
-           //setFechaActual(document.querySelectorAll('input[type="date"]'));
-           //obtenerSemanasEnviadas();
- */
           instanciarTooltips();
 
     });
 
+}
+
+function modalEventos(){
+
+    $(dvEditor).on('hidden.bs.popover', function (e) {
+        $(e.target).data("bs.popover").inState.click = false;
+    });
 }
 
 function eventoMenuDvMesActualContextMenu(e){
@@ -238,8 +222,8 @@ function eventosClickMenuOptElem(e) {
             const ixs = RutinaIx.getIxsForElemento($menuTargetInput);
             let elemento = RutinaDOMQueries.getElementoByIxs(ixs);
             const type = elemento.getAttribute('data-type');
+
             if (type == 2) {
-                ;
                 const collapsable = elemento.querySelector('a[data-toggle="collapse"]');
                 const panelCollapsable = elemento.querySelector('.panel-collapse');
                 collapsable.classList.add('collapsed');
@@ -248,8 +232,10 @@ function eventosClickMenuOptElem(e) {
                 panelCollapsable.setAttribute('aria-expanded', "false");
             }
 
-            if (elemento.children.length != 3) {
+            if ((type == 2 && elemento.children.length < 3) || (type == 1 && elemento.children.length < 2)) {
                 let elementoNota = elemento.querySelector('.rf-dia-elemento-nombre').getAttribute('data-content');
+
+
                 let notaInput = document.createElement('div');
                 notaInput.className = 'panel-heading';
                 notaInput.innerHTML = `
@@ -547,6 +533,7 @@ function eventosEditorRutina(e){
     const parentClases = inputParent ? inputParent.classList : '';
     const dvDots = $('.rut-dots');
     if(clases.contains('adelantar-semana') || parentClases.contains('adelantar-semana')){
+
         e.preventDefault();
         const numSem = Number($semActual.textContent);
         const totalSem = $rutina.totalSemanas;
@@ -688,7 +675,6 @@ function principalesEventosFocusOutSemanario(e) {
     }
     else if(clases.contains('in-ele-dia-esp-pos')){
 
-        debugger
         const valor = input.value.trim();
         if(valor.length > 1){
             
@@ -790,25 +776,25 @@ function principalesEventosFocusOutSemanario(e) {
 
     else if(clases.contains('nueva-nota')){
 
-
         const nota = input.value.trim();
         const ixs = RutinaIx.getIxsForElemento(input);
         let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
         const divNota = e.target.parentElement.parentElement;
+        const iconoNota = tempElemento.querySelector(`.notes .gr`);
+        let anteriorNota;
+        anteriorNota = iconoNota ?  iconoNota.getAttribute('data-content') : '';
 
-        let anteriorNota = tempElemento.querySelector(`.rf-dia-elemento-nombre`).getAttribute('data-content');anteriorNota = anteriorNota == undefined?'':anteriorNota;
         if(anteriorNota.trim() != nota){
-
-            if(tempElemento.querySelector('.notes .gr')==undefined){
+            if(!iconoNota){
                 tempElemento.querySelector('.notes').appendChild(htmlStringToElement(RutinaElementoHTML.iconoNotaT(nota)));
             }else{
                 if(nota.length == 0){
-                    tempElemento.querySelector(`.rf-dia-elemento-nombre`).setAttribute('data-content', '');
-                    tempElemento.querySelector(`.notes .gr`).setAttribute('data-content', '');
-
+                    iconoNota.setAttribute('data-content', '');
+                    iconoNota.setAttribute('data-content', nota);
+                }else{
+                    iconoNota.setAttribute('data-content', nota);
                 }
             }
-            tempElemento.querySelector(`.rf-dia-elemento-nombre`).setAttribute('data-content', nota);
             let i=0;
             ElementoOpc.descomprimirDetalle(tempElemento);
             while((tempElemento = tempElemento.previousElementSibling) != null) i++;
@@ -819,6 +805,9 @@ function principalesEventosFocusOutSemanario(e) {
             divNota.remove();
             ElementoOpc.descomprimirDetalle(tempElemento);
         }
+
+        instanciarTooltips();
+        instanciarPopovers();
     }
 
     else if(clases.contains('nueva-nota-sbe')){
@@ -835,13 +824,12 @@ function principalesEventosFocusOutSemanario(e) {
                 tempSubEle.querySelector('.notes').appendChild(htmlStringToElement(RutinaElementoHTML.iconoNotaT(nota)));
             }else{
                 if(nota.length == 0){
-                    tempSubEle.querySelector('.notes .gr').remove();
                     tempSubEle.querySelector(`.rf-sub-elemento-nombre`).setAttribute('data-content', '');
                     tempSubEle.querySelector(`.notes .gr`).setAttribute('data-content', '');
+                    tempSubEle.querySelector('.notes .gr').remove();
+
                 }
             }
-            tempSubEle.querySelector(`.rf-sub-elemento-nombre`).setAttribute('data-content', nota);
-
             let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
             let i = 0, k = 0;
             while ((tempElemento = tempElemento.previousElementSibling) != null) i++;
@@ -850,6 +838,8 @@ function principalesEventosFocusOutSemanario(e) {
 
             actualizarSubElementoNotaBD(nota, ixs.numSem, ixs.diaIndex, (posElemento = i), (postSubElemento = k));
             divNota.remove();
+            instanciarPopovers();
+
         }else{
            divNota.remove();
         }
@@ -886,7 +876,6 @@ function eventosCalendario(e){
         const semActual = Number(document.querySelector('#nroSemanaActual').textContent)-1;
 
         if(semActual != $refIxsSemCalendar[input.getAttribute('data-index')]) {
-             debugger
             const semana = $refIxsSemCalendar[input.getAttribute('data-index')];
             const dvDots = $('.rut-dots');
             const dots = dvDots.find('div');
@@ -949,8 +938,9 @@ function cambiarFamiliaFuenteElemento(e){
 }
 
 function principalesEventosClickRutina(e) {
-    const clases = e.target.classList;
     let input = e.target;
+    input.tagName === 'path' ? input = input.parentElement : null;
+    const clases = input.classList;
 
     if($(input).closest('button').hasClass('add-init-element')){
         const btnAgregar = $(input).closest('button')[0];
@@ -1124,12 +1114,12 @@ function principalesEventosClickRutina(e) {
          let i=0;
          while((elemento = elemento.previousElementSibling))i++;
          RutinaAdd.nuevoElemento(ixs.numSem, ixs.diaIndex, i, '');
+
          agregarElementoEnBlancoBD(ixs.numSem, ixs.diaIndex, ElementoTP.NO_DEFINIDO, (posRefElemento = i), Estrategia.INSERT_DESPUES);
      }
 
 
      else if(clases.contains('insertar-debajo-sub')){
-         
          e.stopPropagation();
          let ixs = RutinaIx.getIxsForSubElemento(input);
          let elemento = RutinaDOMQueries.getElementoByIxs(ixs);
@@ -1216,6 +1206,11 @@ function principalesEventosClickRutina(e) {
             const audioDuracion = arrDuracion[0];
             const videoDuracion = arrDuracion[1];
 
+       /*     const btnCerrarVideo = htmlStringToElement(`<button id="btnCerrarVideo" type="button" style="opacity: .8;" class="close" data-dismiss="modal"
+                                                                     aria-label="Close"><span aria-hidden="true">×</span></button>`);
+*/
+    //       $('.media-canvas div').append(btnCerrarVideo);
+
 
             if (audioDuracion > videoDuracion) {
 
@@ -1242,7 +1237,7 @@ function principalesEventosClickRutina(e) {
                 audioMedia.addEventListener("timeupdate",
                     function (ev) {
                         const vid = document.getElementById('VideoMedia');
-                        const currentTime = ev.target.currentTime;
+                        const currentTime = Math.floor(ev.target.currentTime);
 
                         if (currentTime <= vid.duration) {
                             vid.currentTime = currentTime;
@@ -1333,6 +1328,8 @@ function principalesEventosClickRutina(e) {
         });
 
     }
+
+    imgtoSvgEvent();
     /*} else if (inpTargetClasses.contains("rf-sub-elemento-nombre")) {
 
         const ixs = RutinaIx.getIxsForSubElemento($menuTargetInput);
@@ -1401,6 +1398,17 @@ function principalesEventosClickRutina(e) {
     }*/
 }
 
+
+function eventoMouseUp(e) {
+
+    const clases = e.target.classList;
+    let input = e.target;
+
+    if(clases.contains("rf-dia-elemento-nombre")){
+      $eleGenerico = input;
+    }
+
+}
 function eventoClickSeleccionMesDots(e){
 
    const input = e.target;
@@ -1413,25 +1421,25 @@ function eventoClickSeleccionMesDots(e){
        const valorActivo = Number(divActivo.getAttribute('data-value'));
        const incrementadorSem = (valorInput - valorActivo);
        const nuevoNumSem =  numSem + incrementadorSem;
+       const totalSem = $rutina.totalSemanas;
 
        if(nuevoNumSem < 1){
          $.smallBox({color: "alert", content: "<i>No existe semana anterior a la actual...<i>"})
        }else if(!(nuevoNumSem > $rutina.totalSemanas)){
            divActivo.classList.remove('active');
            const proxDv = dvPadre.find('.prox')[0];
-           valorActivo !== 3 ?  proxDv.classList.remove('prox') : '';
+           if(proxDv) {
+               valorActivo !== 3  ? proxDv.classList.remove('prox') : '';
+           }
            input.classList.toggle('active');
 
-           if(input.nextElementSibling.tagName.toLowerCase() !== 'button' || nuevoNumSem !== $rutina.totalSemanas) {
+           if(input.nextElementSibling.tagName.toLowerCase() !== 'button' && nuevoNumSem !== $rutina.totalSemanas) {
                input.nextElementSibling.classList.toggle('prox');
            }
          avanzarRetrocederSemana((nuevoNumSem - 1), 2);
        }
     }
     else if($(input).closest('svg').parent().hasClass('pagination-control')){
-       debugger
-
-
        const dvPadre =  $(input).closest('div.rut-dots');
        const nextPage = numSem   % 4 === 0 ?  numSem    :   ( Math.ceil((numSem )/4)*4 );
        const divActivo =dvPadre.find('.active')[0];
@@ -1752,17 +1760,25 @@ function principalesDivEditor(e){
     else if(clases.contains('copiar-full-semana')) {
         RutinaOpc.abrirCopiadorSemana(input);
 
-    }
-    else if(clases.contains('abrir-calendario')){
-        const qFechaInicio = RutinaGet.getFechaInicioSemanaEdicion();
-        RutinaOpc.abrirCalendario(RutinaGet.getCalendarioSemanaIxs(qFechaInicio.anio, qFechaInicio.mes), false, qFechaInicio.mes);
-    }
-    else if(clases.contains('abrir-indicador-pulso')){
-        const semIndex = Number(document.querySelector('#nroSemanaActual').textContent)-1;
-        const metricas = $rutina.semanas[semIndex].metricas;
-        Indicadores.abrirIndicador1(metricas);
 
     }
+    else if(clases.contains('abrir-calendario')){
+
+        if(!$('.abrir-calendario').next().hasClass('popover')) {
+            const qFechaInicio = RutinaGet.getFechaInicioSemanaEdicion();
+            RutinaOpc.abrirCalendario(RutinaGet.getCalendarioSemanaIxs(qFechaInicio.anio, qFechaInicio.mes), false, qFechaInicio.mes);
+        }
+    }
+    else if(clases.contains('abrir-indicador-pulso')){
+
+        if(!$('.abrir-indicador-pulso').next().hasClass('popover')) {
+
+            const semIndex = Number(document.querySelector('#nroSemanaActual').textContent) - 1;
+            const metricas = $rutina.semanas[semIndex].metricas;
+            Indicadores.abrirIndicador1(metricas);
+        }
+       }
+
 
 }
 
@@ -1782,7 +1798,9 @@ function avanzarRetrocederSemana(numSem, action){
             $rutina = new Rutina(rutinaData);
             $rutina.initEspecifico(semana, numSem);
             instanciarTooltips();
-       //   generarDiasEnviados();
+            imgtoSvgEvent();
+
+           //   generarDiasEnviados();
        //   parentDiv.removeAttribute('hidden');
         }
     });
