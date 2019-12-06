@@ -1929,9 +1929,11 @@ section.consejos span.msj-no-data , section.consejos-favs span.msj-no-data{
 .scroll_rut .days_week article .rt-elem .elem input.item-minutos{
     width: 70%;
     border: none;
-    border-bottom: 1px solid #ccc;
     text-align: center;
+    border-bottom: 1px solid #ccc;
+
 }
+
 
 .scroll_rut .days_week article .inputs-init input.item-inp , .scroll_rut .days_week article .rf-dia-pre-elemento input{
     width: 100%;
@@ -2805,3 +2807,8 @@ button.btn-darkgrey:hover {
 .ds-flex{
     display: flex;
 }
+
+#datosRutina{
+    float: right;
+}
+

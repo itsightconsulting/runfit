@@ -2685,14 +2685,14 @@ RutinaElementoHTML = (function(){
                        <div class="col-xs-12 ds-flex">
                         <div class="notes">
                           ${sEle.mediaAudio != undefined && sEle.mediaAudio != '' ? `<div class="ong reprod-audio" rel="tooltip" data-media="${sEle.mediaAudio}" data-original-title="Audio"></div>` : ''}
-                          ${sEle.nota != undefined && sEle.nota != '' ? `<div class="gr" rel="tooltip" data-original-title="Nota"></div>` : ''}
+                          ${sEle.nota != undefined && sEle.nota != '' ? `<div class="gr" rel="tooltip" data-placement="bottom" data-toggle="popover" data-content="${sEle.nota != undefined ? sEle.nota : ''}" data-trigger="hover"></div>` : ''}
                         </div>
                           ${sEle.mediaVideo != undefined && sEle.mediaVideo !== '' ? RutinaElementoHTML.iconoVideoPlay(sEle.mediaVideo) : ''}
                          <span class="pull-left"> 
                             ${sEle.nombre.trim() !== '' ?  `<i> <img class="svg insertar-debajo-sub ele-add" src="${_ctx}img/iconos-trainers/icon_add.svg" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-ele-index="${eleIndex}" data-dia-index="${diaIndex}" data-index="${ix}"></i>`
                               : `<i> <img class="svg eliminar-subele-vacio  ele-delete" src="${_ctx}img/iconos-trainers/icon_trash.svg" rel="tooltip" data-placement="bottom" data-original-title="Eliminar" data-ele-index="${eleIndex}" data-dia-index="${diaIndex}" data-index="${ix}"></i>`  }
                          </span>
-                         <span class="sub-elemento-nombre rf-sub-elemento-nombre" data-index="${ix}" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="${sEle.nota != undefined ? sEle.nota : ''}" data-trigger="hover">${sEle.nombre}</span>
+                         <span class="sub-elemento-nombre rf-sub-elemento-nombre" data-index="${ix}" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" contenteditable="true" >${sEle.nombre}</span>
                       </div>
                      </div>
                     </li>

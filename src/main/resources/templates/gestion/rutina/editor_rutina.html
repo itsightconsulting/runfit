@@ -33,7 +33,7 @@
 </head>
 <body style="background-color: #fff;">
 <input type="hidden" th:value="${rutina}" id="rutinaData"/>
-
+<input type="hidden" th:value="${mejorasRutina}" id="mejoraRutinaData"/>
 
 <div id="wrapper">
     <header>
@@ -128,10 +128,18 @@
     </div>
        <div id="editorContent">
       <div class="container-t">
-        <h2 class="title_carousel">
+       <div class="row">
+           <div id="datosRutina">
+               <h4 class="rf-ct-black" id="nombresCliente"></h4>
+               <h5 class="rf-ct-black" id="etapaRutina"></h5>
+           </div>
+          <h2 class="title_carousel">
             <button class="btn retroceder-semana"><img th:src="@{/img/arrow-left2.png}"></button> <div class="dv-mes-actual"> <span id="semanaTitulo" class="semana-num">semana </span><span id="nroSemanaActual" class="semana-num">1</span>  - <span id="mesSemanaTitulo"> enero</span> </div>
             <button class="btn adelantar-semana"><img th:src="@{/img/arrow-right2.png}"></button>
-        </h2>
+          </h2>
+
+       </div>
+
         <div class="rut-dots">
             <div class="dot active" data-value="0"></div>
             <div class="dot prox" data-value="1"></div>
@@ -139,8 +147,10 @@
             <div class="dot" data-value="3"></div>
             <button class="btn pagination-control"><img class="svg" th:src="@{/img/iconos-trainers/icon_add.svg}"></button>
         </div>
+
     </div>
       <div class="scroll_rut mCustomScrollbar">
+
          <div class="days_week" id="rutinaSemana">
 
          </div>

@@ -1,4 +1,7 @@
 const rutinaData = JSON.parse($('#rutinaData').val());
+const mejorasRutinaData = JSON.parse($('#mejoraRutinaData').val());
+const arraySemanas = [mejorasRutinaData.semGe,mejorasRutinaData.semEs, mejorasRutinaData.semPr, ];
+const nombreEtapa = ["General" , "Especifica" , "Competitiva" , "Recuperación" ];
 const editorRutinaContenido = document.querySelector('#editorContent');
 const $semActual = document.querySelector('#nroSemanaActual');
 const $semanario = document.querySelector('#rutinaSemana');
@@ -75,9 +78,13 @@ function init(){
         if(uriParam){
           let semanaIdx = atob(uriParam);
             $('#nroSemanaActual').text(Number(semanaIdx)+1);
+
+            setEtapaRutina(semanaIdx + 1);
             $rutina.initEspecifico(semana,semanaIdx)
         }else{
              $rutina.init(semana);
+            setEtapaRutina(1);
+
         }
 
         editorRutinaContenido.addEventListener('click', eventosEditorRutina);
@@ -103,6 +110,7 @@ function init(){
         dvSeleccionMesDots.addEventListener('click' , eventoClickSeleccionMesDots);
         imgtoSvgEvent();
         modalEventos();
+        setNombreCliente();
         $('#myTabRutina').on('hidden.bs.popover', function (e) {
             $(e.target).data("bs.popover").inState.click = false;
         });
@@ -127,10 +135,55 @@ function init(){
         });
 
           instanciarTooltips();
-
+          setNombreCliente();
     });
 
 }
+
+function getEtapaRutina(semana){
+    let acc = 0;
+    let etapaIx;
+
+    arraySemanas.every( (item , index) => {
+        acc = acc + item;
+
+        if( index > 0){
+            if( (acc - item) < semana && semana <= acc){
+                etapaIx = index;
+                return false;
+            }else if(index === (arraySemanas.length - 1) ){
+                etapaIx = index + 1;
+                return false;
+            }else{
+                return true;
+
+            }
+
+        }else{
+            if( semana <= acc){
+                etapaIx = index;
+                return false;
+            }
+                return true;
+        }
+    });
+
+    return etapaIx;
+}
+
+
+function setEtapaRutina(semana){
+   const etapaIx =  getEtapaRutina(semana);
+   $('#etapaRutina').text("Etapa : " +  nombreEtapa[etapaIx]);
+}
+
+
+function setNombreCliente(){
+    const nombres = atob(getParamFromURL("nm"));
+    $('#nombresCliente').text(nombres);
+}
+
+
 
 function modalEventos(){
 
@@ -592,8 +645,8 @@ function eventosEditorRutina(e){
 
     }
 
-
 }
+
 
 function principalesEventosFocusOutSemanario(e) {
     const clases = e.target.classList;
@@ -1770,9 +1823,7 @@ function principalesDivEditor(e){
         }
     }
     else if(clases.contains('abrir-indicador-pulso')){
-
         if(!$('.abrir-indicador-pulso').next().hasClass('popover')) {
-
             const semIndex = Number(document.querySelector('#nroSemanaActual').textContent) - 1;
             const metricas = $rutina.semanas[semIndex].metricas;
             Indicadores.abrirIndicador1(metricas);
@@ -1792,6 +1843,8 @@ function eventoSelectZoom(e){
 function avanzarRetrocederSemana(numSem, action){
 
     obtenerEspecificaSemana(numSem, action).then((semana)=> {
+        debugger
+        setEtapaRutina(numSem + 1);
        if(semana != undefined) {
            // $('#rutinaSemana').html(`<h1 style="padding-left: 18%; font-size: 5em;">Por favor espere... <i class="fa fa-spinner fa-spin"></i></h1>`);
             //Importante mantener el orden para el correcto funcionamiento
