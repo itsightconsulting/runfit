@@ -166,7 +166,7 @@ p.masc-age-prom, strong.masc-porc, p.masc-porc-age {
 }
 
 .nombre-canal{
-  padding-top: 44px;
+  padding-top: 51px;
   padding-left: 35px;
   color: #c2ccac;
   text-align: right;
@@ -195,7 +195,7 @@ p.masc-age-prom, strong.masc-porc, p.masc-porc-age {
 }
 
 .canal-graph{
-  padding-top: 30px;
+  padding-top: 39px;
 }
 
 .canal-porc-sexo svg , .tipo-servicio-porc svg{
@@ -427,6 +427,7 @@ canvas{
 }
 .separador-col{
     border-left: 1px solid #565a4d;
+    padding-top: 20px;
 }
 
 .hr-servicios{

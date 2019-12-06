@@ -4,7 +4,7 @@ let sectionConsolidado = document.querySelector('section#consolidado');
 let dvCanalVenta = document.querySelector('.canal-venta');
 const selectElemYear = document.getElementById('graphYearFilter');
 let $chartMiniPorc = {};
-var dataClientes;
+var dataClientes;GraficoServiciosUsados
 let canalesVenta = ["Recomendación", "Vía correo", "Google", "Facebook", "Twitter", "Instagram", "Otro"];
 let serviciosTipos = ["Running", "General"];
 let arrColorFem = ['#FF00EB', '#c42bba', '#bc49b3', '#8c4b86', '#6b5269','#665e5e'];
@@ -71,20 +71,12 @@ function obtenerDataEstadisticas(){
                 setGraficosEdadFem(dataNoDuplFem);
                 setGraficosEdadMasc(dataNoDuplMasc);
 
-           //     setGraficoServicios(dataNoDuplicados);
+              // setGraficoServicios(dataNoDuplicados);
 
                 if(perfil === 1) //Trainer
                 {
-
-
-                    const hrServicios = document.querySelector('.hr-servicios');
-                    const dvServicios = document.querySelector('.dv-servicios');
-                    dvServicios.style.paddingTop = '200px';
-                    dvServicios.style.paddingBottom = '150px';
-
-                    hrServicios.parentNode.removeChild(hrServicios);
-                    dvCanalVenta.parentNode.removeChild(dvCanalVenta);
-                    obtenerInformacionTopServicios();
+                   obtenerInformacionTopServicios();
+                    setGraficoCanalVenta(dataNoDuplicados);
 
                 }else{
 
@@ -240,6 +232,8 @@ function obtenerTotalClientesServicioxTrainer(){
     let url = perfil === 1 ? "gestion/trainer/servicio/total/obtener"
         :  "gestion/cliente/servicio/trainer/total/obtener?id="+id;
 
+    console.log("c",url);
+
     $.ajax({
         type: "GET",
         url: _ctx + url,
@@ -247,6 +241,8 @@ function obtenerTotalClientesServicioxTrainer(){
         success: function(data){
 
             totalClientesServicio = data;
+
+
 
             graficoServiciosUsados(totalClientesServicio, serviciosTop);
             //generarGraficoServiciosTrainer(totalClientesServicio,serviciosTop);
@@ -383,6 +379,7 @@ function setGraficosCondFisFem(dataNoDuplFem){
 
 
 function setGraficoServicios(dataNoDuplicados){
+
     let arrTipoServicio = dataNoDuplicados.map(({predeterminadaFichaId}) => predeterminadaFichaId);
     let graphTipoServicioData =  getDataGraficoTipoServicio(arrTipoServicio);
 
@@ -2347,6 +2344,8 @@ function setDataServicioDistrSexo(data, graphGeneralData){
 
 function graficoServiciosUsados(  totalServicios, dataServicio){
 
+    console.log("a" , totalServicios, "b" , dataServicio);
+
     let porcentajes = dataServicio.map( e => Math.round((e.qtyClientes/totalServicios)*100));
     let suma = porcentajes.reduce(  (a,b) => a+b);
 
@@ -2857,7 +2856,7 @@ function graficoDistribucionLocalizacion(dataLocalizacion, porcentajes, tipo){
                 footerFontSize:12
             }, layout: {
                 padding: {
-                    right: 15 ,
+                    right: 18 ,
                     top: 30 //set that fits the best
                 }
             },
@@ -3152,7 +3151,6 @@ function generarPorcentajeCondFisica(arr, sexo){
 }
 
 function getPorcentaje(arr){
-    debugger
     const total = arr.reduce( (a,b) => a+b);
     const porcArr = arr.map( e =>  Math.round((e/total)*100));
     const roundedPerc =  roundedPercentage(porcArr,100);
