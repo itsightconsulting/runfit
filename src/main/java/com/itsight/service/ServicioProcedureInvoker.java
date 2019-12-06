@@ -12,4 +12,6 @@ public interface ServicioProcedureInvoker {
 
     List<ServicioPOJO> getTopServiciobyTrainerId(int trainerId);
 
+    List<ServicioPOJO> getTopServiciobyTrainerIdEmpresa(int trainerId);
+
 }

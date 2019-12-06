@@ -359,6 +359,8 @@ select{
 
 .tipo-servicio-porc{
     float: right;
+    position: relative;g
+    left: 8px;
 }
 
 .tipo-servicio-porc p{

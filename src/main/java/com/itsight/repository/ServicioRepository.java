@@ -51,9 +51,15 @@ public interface ServicioRepository extends JpaRepository<Servicio, Integer>{
             "    CS.cliente_id IN (" +
             "            SELECT RF.cliente_id  from red_fitness RF where RF.trainer_id = ?1" +
             "            AND EXTRACT(DAY FROM RF.fecha_creacion- CS.fecha_creacion) < 1)", nativeQuery = true)
-
-
     Integer getTotalClientesByTrainerId(Integer trainerId);
+
+    @Query(value = "    SELECT COUNT(*)" +
+            "    FROM cliente_servicio CS" +
+            "    INNER JOIN servicio S ON  S.servicio_id = CS.servicio_id" +
+            "    WHERE S.trainer_id = ?1", nativeQuery =  true)
+    Integer getTotalClientesByTrainerIdEmpresa(Integer trainerId);
+
+
 
     @Query(value = "SELECT count(*) " +
             "FROM cliente_servicio CS", nativeQuery = true)

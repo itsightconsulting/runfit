@@ -8,6 +8,8 @@ public interface ClienteFitnessProcedureInvoker {
 
     public ClienteFitnessPOJO getById(Integer id);
     public List<ClienteFitnessPOJO> getDistribucionMercado(Integer id);
+    public List<ClienteFitnessPOJO> getDistribucionMercadoEmpresa(Integer id);
+
 
 
 }

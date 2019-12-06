@@ -57,20 +57,16 @@ function obtenerDataEstadisticas(){
         type: "GET",
         url: _ctx + url,
         success: function (data) {
-
             if(data.length > 0){
                 dataClientes = data;
-
                 sectionConsolidado.style.visibility = 'visible';
                 //Masculino
                 const dataNoDuplicados = quitarDuplicados(data, 'id');
                 const dataNoDuplMasc = dataNoDuplicados.filter( e => e.sexo === 1);
                 const dataNoDuplFem = dataNoDuplicados.filter( e => e.sexo === 2);
                 cantidadUsuarios = dataNoDuplicados.length;
-
                 setGraficosEdadFem(dataNoDuplFem);
                 setGraficosEdadMasc(dataNoDuplMasc);
-
               // setGraficoServicios(dataNoDuplicados);
 
                 if(perfil === 1) //Trainer
@@ -2466,7 +2462,8 @@ function graficoServiciosUsados(  totalServicios, dataServicio){
                 },
                 layout: {
                     padding: {
-                        left: 50
+                        left: 50,
+                        top : 50
                     }
                 },
                 legend: {
@@ -2761,7 +2758,7 @@ function graficoDistribucionLocalizacion(dataLocalizacion, porcentajes, tipo){
     canv.id = 'graficoDistribucionLocalizacion';
 
     //setear altura de acuerdo a la cantidad de departamentos / distritos
-    canv.height= ( porcentajes.length * 15)+ 40 // 200;
+    canv.height= ( porcentajes.length * 15)+ 50 // 200;
     parentDv.appendChild(canv)
 
     let canvas = document.getElementById('graficoDistribucionLocalizacion');
@@ -3119,7 +3116,7 @@ function generarPorcentajeSexoCanalDOM(arr, index){
     const dvPorcCanalxSexo =   $('.canal-porc-sexo div div')[index];
 
     arr.map( function(element) {
-            let porcCanal  = htmlStringToElement(`<p class="text-left">${element} %</p>`)  ;
+            let porcCanal  = htmlStringToElement(`<p class="text-center">${element} %</p>`)  ;
             dvPorcCanalxSexo.append(porcCanal);
 
         }
