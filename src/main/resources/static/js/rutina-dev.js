@@ -1671,17 +1671,16 @@ ElementoOpc = (function(){
             $kmsActualizar = input.textContent.trim();
         },
         actualizarTiempoElemento: (ixs, minutos)=>{
-            debugger
             let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs), i=0;
             let initTempElemento = tempElemento;
             const eleType = initTempElemento.getAttribute('data-type');
             const nombreEle = initTempElemento.querySelector('.rf-dia-elemento-nombre').textContent.trim().toUpperCase();
-
             while((tempElemento = tempElemento.previousElementSibling) != null) i++;
             RutinaSet.setElementoMinutos(ixs.numSem, ixs.diaIndex, (posEle = i), minutos);
+            debugger
             const totalMin = DiaFunc.obtenerTotalMinutosDia(ixs.diaIndex);
             RutinaSet.setDiaTiempoTotal(ixs.numSem, ixs.diaIndex, totalMin);
-           RutinaDOMQueries.getDiaByIx(ixs.diaIndex).querySelector(`.horas-totales`).textContent = parseNumberToHours(totalMin);
+            RutinaDOMQueries.getDiaByIx(ixs.diaIndex).querySelector(`.horas-totales`).textContent = parseNumberToHours(totalMin);
 
             if(RutinaValidator.esZ(nombreEle)){
                 let anteriorMinutos = $tiempoActualizar;

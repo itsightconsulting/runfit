@@ -645,7 +645,7 @@ function instanciarPopovers(){
 function parseNumberToHours(minutos){
     let h = Math.floor(minutos/60);
     let m = minutos%60;
-    return h+ "' "+ (m%60<10?"0"+String(m%60):m%60) + "\"";
+    return h+ "h "+ (m%60<10?"0"+String(m%60):m%60) + "\'";
 }
 
 function parseNumberToHoursNoExcedent(minutos, spaceBefore){
