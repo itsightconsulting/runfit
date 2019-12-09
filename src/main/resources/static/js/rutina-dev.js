@@ -1671,6 +1671,7 @@ ElementoOpc = (function(){
             $kmsActualizar = input.textContent.trim();
         },
         actualizarTiempoElemento: (ixs, minutos)=>{
+            debugger
             let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs), i=0;
             let initTempElemento = tempElemento;
             const eleType = initTempElemento.getAttribute('data-type');

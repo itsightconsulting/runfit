@@ -90,8 +90,6 @@ function init(){
         editorRutinaContenido.addEventListener('click', eventosEditorRutina);
         $semanario.addEventListener('focusout', principalesEventosFocusOutSemanario);
         $semanario.addEventListener('mouseup', eventoMouseUp);
-
-        //  $semanario.addEventListener('focusin', principalEventoFocusIn);
         $semanario.addEventListener('click', principalesEventosClickRutina);
         $selectZoom.addEventListener('change', eventoSelectZoom);
         tabGrupoAudios.addEventListener('click', principalesEventosTabGrupoAudios);
