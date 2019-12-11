@@ -2815,8 +2815,8 @@ Indicadores = (function(){
                     divMet.appendChild(htmlStringToElement(
                         `<div class="col-md-3 col-sm-4 col-xs-4">
                                 <div class="box_tiempo">
-                                  <div class="text-center col-xs-7"><span>${e.m}</i></span><span>${fPasoKm}</span></div>
-                                  <div class="text-center col-xs-5"><img class="svg" src="${_ctx}img/iconos/icon_cronometro.svg"><span>${fPasoTotal}</span></div>
+                                  <div class="text-center col-xs-7"><span>${e.m}</i></span><hr class="divider-shadow"><span>${fPasoKm}</span></div>
+                                  <div class="text-center col-xs-5 no_padding"><img class="svg" src="${_ctx}img/iconos/icon_cronometro.svg"><span>${fPasoTotal}</span></div>
                                 </div>
                               </div>`
                     ));

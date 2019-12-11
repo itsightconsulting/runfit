@@ -420,6 +420,7 @@ canvas{
     display:inline-block;
     padding-right:40px;
     position: relative;
+    top: 25px;
 }
 .mapa g {
     fill: #ffff;

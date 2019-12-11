@@ -787,13 +787,24 @@ section.ritmos_tiempo .box_tiempo {
       font-family: GothamHTF-Book;
       text-transform: uppercase;
       font-style: normal; }
-  section.ritmos_tiempo .box_tiempo .col-xs-7 span:first-child {
+  /*section.ritmos_tiempo .box_tiempo .col-xs-7 span:first-child {
     border-bottom: 1px solid #fff;
     -webkit-box-shadow: 0px 3px 4px -4px #fff;
     -moz-box-shadow: 0px 3px 4px -4px #fff;
     box-shadow: 0px 3px 4px -4px #fff; }
   section.ritmos_tiempo .box_tiempo:nth-child(4n + 4) {
-    margin-right: 0; }
+    margin-right: 0; }*/
+    .box_tiempo .divider-shadow{
+        margin: 1px 0;
+        border: none;
+        width: 90px;
+        margin-left: -15px;
+        border-bottom: 1px solid white;
+        box-shadow: 0px 1px 7px 2px white;
+    }
+    .box_tiempo .col-xs-5{
+        right:-5px;
+    }
 
 .icons {
   float: right;
@@ -1191,7 +1202,7 @@ section.ritmos_tiempo .box_tiempo {
       section.ritmos_tiempo .box_tiempo .svg {
         width: 12px;
         height: 12px; }
-  h2.title_carousel {
+      h2.title_carousel {
     font-size: 18px; }
   #carousel-semanal .owl-nav {
     top: -78px; }
@@ -1431,7 +1442,10 @@ a[aria-expanded="true"] .svg.moreview {
       height: 22px;
       margin-right: 10px; }
     .resultados li .pull-right .time span {
-      width: auto; } }
+      width: auto; }
+    .box_tiempo .divider-shadow{
+      margin-left:0;
+      width:auto;}}
 
 .content-videoteca {
   display: inline-block;
