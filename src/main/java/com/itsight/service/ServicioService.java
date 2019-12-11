@@ -22,4 +22,7 @@ public interface ServicioService extends BaseService<Servicio, Integer> {
 
     Integer getTotalClientesServicio();
 
+    Integer getTotalClientesByTrainerIdEmpresa(Integer trainerId);
+
+
 }

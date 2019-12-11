@@ -547,7 +547,7 @@ MacroCiclo = (function(){
                             objFirtsWeek.fechaInicio = moment(fIni).add((i*7), 'd').format('DD/MM/YYYY');
                             objFirtsWeek.fechaFin = moment(fIni).add((i*7)+diasParaFull, 'd').format('DD/MM/YYYY');
                             objFirtsWeek.flagFull = refDia == 1 ? true : false;
-                            const literales = ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado", "Domingo"];//Artificio temporal(2 domingos)
+                            const literales = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];//Artificio temporal(2 domingos)
                             const dias = [];
                             for(let i=0; i<diasParaFull+1; i++){
                                 const fechaParse = parseFromStringToDate2(moment(fIni).add((i), 'd').format('DD/MM/YYYY'));
@@ -786,7 +786,7 @@ MacroValidacion = (function(){
         formulario: ()=>{
 
 
-            const arrayDay = ["domingo", "lunes", "martes", "miercoles", "jueves", "viernes", "sábado"];
+            const arrayDay = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
 
             $("#frm_registro").validate({
                 highlight: function (element) {

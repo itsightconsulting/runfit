@@ -3,10 +3,12 @@ package com.itsight.controller;
 import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.Cliente;
+import com.itsight.domain.Trainer;
 import com.itsight.domain.dto.ClienteDTO;
 import com.itsight.domain.dto.ConfiguracionClienteDTO;
 import com.itsight.domain.dto.QueryParamsDTO;
 import com.itsight.domain.dto.ResPaginationDTO;
+import com.itsight.domain.pojo.ClienteFitnessPOJO;
 import com.itsight.domain.pojo.ServicioPOJO;
 import com.itsight.domain.pojo.TycClientePOJO;
 import com.itsight.domain.pojo.UsuarioPOJO;
@@ -40,19 +42,23 @@ public class ClienteController extends BaseController {
 
     private ServicioService servicioService;
 
+    private TrainerService trainerService;
+
     @Autowired
     public ClienteController(ClienteService clienteService,
                              SecUserProcedureInvoker secUserProcedureInvoker,
                              ClienteProcedureInvoker clienteProcedureInvoker,
                              RedFitnessService redFitnessService,
                              ServicioProcedureInvoker servicioProcedureInvoker,
-                             ServicioService servicioService) {
+                             ServicioService servicioService,
+                             TrainerService trainerService) {
         this.clienteService = clienteService;
         this.secUserProcedureInvoker = secUserProcedureInvoker;
         this.clienteProcedureInvoker = clienteProcedureInvoker;
         this.redFitnessService = redFitnessService;
         this.servicioProcedureInvoker = servicioProcedureInvoker;
         this.servicioService = servicioService;
+        this.trainerService = trainerService;
     }
 
     @GetMapping(value = "/videoteca")
@@ -87,73 +93,76 @@ public class ClienteController extends BaseController {
         return clienteService.actualizar(cliente, rols);
     }
 
-    @GetMapping(value = "/distribucion-departamento/obtener")
-    public @ResponseBody List<ClienteDTO> getDistribucionDepartamentoCliente(){
 
-        Integer trainerId = null;
-        List<ClienteDTO> lstDistribucionCliente =clienteProcedureInvoker.getDistribucionDepartamentoCliente(trainerId);
-
-     return lstDistribucionCliente;
-
-    }
 
     @GetMapping(value = "/distribucion-departamento/trainer/obtener")
     public @ResponseBody List<ClienteDTO> getDistribucionDepartamentoClientexTrainer(@RequestParam Integer id){
 
-        List<ClienteDTO> lstDistribucionCliente =clienteProcedureInvoker.getDistribucionDepartamentoCliente(id);
+        Trainer trainer = trainerService.findOne(id);
+        List<ClienteDTO> lstDistribucionCliente = null;
+
+        if(trainer!=null){
+            //TRAINER
+            if(trainer.getTipoTrainer().getId() != 2){
+                lstDistribucionCliente = clienteProcedureInvoker.getDistribucionDepartamentoCliente(id);
+            }else{ //EMPRESA
+                lstDistribucionCliente = clienteProcedureInvoker.getDistribucionDepartamentoClientexEmpresa(id);
+            }
+        }
 
         return lstDistribucionCliente;
     }
 
-    @GetMapping(value = "/distribucion-provincia/obtener")
-    public @ResponseBody List<ClienteDTO> getDistribucionProvinciaCliente(){
 
-        Integer trainerId = null;
-        List<ClienteDTO> lstDistribucionCliente =clienteProcedureInvoker.getDistribucionProvinciaCliente(trainerId);
-
-        return lstDistribucionCliente;
-
-    }
-
-    @GetMapping(value = "/distribucion-provincia/trainer/obtener")
-    public @ResponseBody List<ClienteDTO> getDistribucionProvinciaClientexTrainer(@RequestParam Integer id){
-
-        List<ClienteDTO> lstDistribucionCliente =clienteProcedureInvoker.getDistribucionProvinciaCliente(id);
-
-        return lstDistribucionCliente;
-    }
-
-    @GetMapping(value = "/distribucion-distrito/obtener")
-    public @ResponseBody List<ClienteDTO> getDistribucionDistritoLimaCliente(){
-
-        Integer trainerId = null;
-        List<ClienteDTO> lstDistribucionCliente =clienteProcedureInvoker.getDistribucionDistritoCliente(trainerId);
-
-        return lstDistribucionCliente;
-
-    }
 
     @GetMapping(value = "/distribucion-distrito/trainer/obtener")
     public @ResponseBody List<ClienteDTO> getDistribucionDistritoLimaClientexTrainer(@RequestParam Integer id){
 
-        List<ClienteDTO> lstDistribucionCliente =clienteProcedureInvoker.getDistribucionDistritoCliente(id);
+        Trainer trainer = trainerService.findOne(id);
+        List<ClienteDTO> lstDistribucionCliente = null;
+
+        if(trainer!=null){
+            //TRAINER
+            if(trainer.getTipoTrainer().getId() != 2){
+                lstDistribucionCliente = clienteProcedureInvoker.getDistribucionDistritoCliente(id);
+            }else{ //EMPRESA
+                lstDistribucionCliente = clienteProcedureInvoker.getDistribucionDistritoClientexEmpresa(id);
+            }
+        }
 
         return lstDistribucionCliente;
     }
 
     @GetMapping(value = "/servicio/trainer/top/obtener")
     public @ResponseBody List<ServicioPOJO> getTopServiciosClientexTrainer(@RequestParam Integer id){
+        Trainer trainer = trainerService.findOne(id);
+        List<ServicioPOJO> lstServicio = null;
 
-        List<ServicioPOJO> lstServicio = servicioProcedureInvoker.getTopServiciobyTrainerId(id);
-
+        if(trainer!=null){
+            //TRAINER
+            if(trainer.getTipoTrainer().getId() != 2){
+                lstServicio = servicioProcedureInvoker.getTopServiciobyTrainerId(id);
+            }else{ //EMPRESA
+                lstServicio = servicioProcedureInvoker.getTopServiciobyTrainerIdEmpresa(id);
+            }
+        }
         return lstServicio;
     }
 
     @GetMapping(value = "/servicio/trainer/total/obtener")
     public @ResponseBody int getTotalClientesServiciosxTrainer(@RequestParam Integer id){
 
-        Integer total = servicioService.getTotalClientesByTrainerId(id);
+        Trainer trainer = trainerService.findOne(id);
+        Integer total = null;
 
+        if(trainer!=null){
+            //TRAINER
+            if(trainer.getTipoTrainer().getId() != 2){
+                total = servicioService.getTotalClientesByTrainerId(id);
+            }else{ //EMPRESA
+                total = servicioService.getTotalClientesByTrainerIdEmpresa(id);
+            }
+        }
         return total;
     }
 

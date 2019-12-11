@@ -47,6 +47,22 @@ public class ClienteProcedureInvokerImpl implements ClienteProcedureInvoker {
     }
 
     @Override
+    public List<ClienteDTO> getDistribucionDepartamentoClientexEmpresa(Integer trainerId) {
+        StoredProcedureQuery storedProcedureQuery = entityManager.createStoredProcedureQuery("func_distr_ubi_empresa_q_dynamic_where", "resultMappingClienteDistribucionDepartamento");
+        storedProcedureQuery.registerStoredProcedureParameter(0, Integer.class, ParameterMode.IN);
+        storedProcedureQuery.setParameter(0, trainerId);
+        return  storedProcedureQuery.getResultList();
+    }
+
+    @Override
+    public List<ClienteDTO> getDistribucionDistritoClientexEmpresa(Integer trainerId) {
+        StoredProcedureQuery storedProcedureQuery = entityManager.createStoredProcedureQuery("func_distr_ubi_lima_distrito_empresa_q_dynamic_where", "resultMappingClienteDistribucionDistrito");
+        storedProcedureQuery.registerStoredProcedureParameter(0, Integer.class, ParameterMode.IN);
+        storedProcedureQuery.setParameter(0, trainerId);
+        return  storedProcedureQuery.getResultList();
+    }
+
+    @Override
     public List<ClienteDTO> getDistribucionProvinciaCliente(Integer trainerId) {
         StoredProcedureQuery storedProcedureQuery = entityManager.createStoredProcedureQuery("func_distr_ubi_provincia_q_dynamic_where", "resultMappingClienteDistribucionProvincia");
         storedProcedureQuery.registerStoredProcedureParameter(0, Integer.class, ParameterMode.IN);

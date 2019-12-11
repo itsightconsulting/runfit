@@ -40,4 +40,16 @@ public class ServicioProcedureInvokerImpl implements ServicioProcedureInvoker {
     }
 
 
+    @Override
+    public List<ServicioPOJO> getTopServiciobyTrainerIdEmpresa(int trainerId) {
+        StoredProcedureQuery storedProcedureQuery = entityManager.createStoredProcedureQuery("func_get_count_servicio_by_trainer_id_empresa","resultMappingTopServiciosByTrainerId");
+        storedProcedureQuery.registerStoredProcedureParameter(0, Integer.class, ParameterMode.IN);
+        storedProcedureQuery.setParameter(0, trainerId);
+        return storedProcedureQuery.getResultList();
+    }
+
+
+
+
+
 }

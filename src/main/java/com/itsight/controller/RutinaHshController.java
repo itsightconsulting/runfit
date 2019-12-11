@@ -3,9 +3,11 @@ package com.itsight.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itsight.constants.ViewConstant;
+import com.itsight.domain.RuConsolidado;
 import com.itsight.domain.Rutina;
 import com.itsight.domain.dto.ResponseDTO;
 import com.itsight.domain.dto.RutinaDTO;
+import com.itsight.domain.pojo.RuConsolidadoPOJO;
 import com.itsight.domain.pojo.RutinaPOJO;
 import com.itsight.service.*;
 import com.itsight.util.Enums;
@@ -33,6 +35,8 @@ public class RutinaHshController {
     private RedFitnessService redFitnessService;
 
     private RuConsolidadoService ruConsolidadoService;
+
+
 
     @Value("${domain.name}")
     private String domainName;
@@ -64,6 +68,8 @@ public class RutinaHshController {
                 //Se obtiene la última rutina del cliente
                 Rutina rutina = rutinaService.findLastByRedFitnessId(redFitId);
                 if (rutina.getId() != null) {
+
+
                     //rutina.getSemanaIds()[0]:  Obtener el id de la primera semana de la rutina y la guardamos en session del entrenador
                     session.setAttribute("edicionRutinaId", rutina.getId());
                     session.setAttribute("edicionUsuarioId", runneId);
@@ -91,11 +97,14 @@ public class RutinaHshController {
                 //Se obtiene la última rutina del cliente
                 Rutina rutina = rutinaService.findLastByRedFitnessId(redFitId);
                 if (rutina.getId() != null) {
+                    RuConsolidado ruConsolidado = ruConsolidadoService.findOne(rutina.getId());
                     //rutina.getSemanaIds()[0]:  Obtener el id de la primera semana de la rutina y la guardamos en session del entrenador
                     session.setAttribute("edicionRutinaId", rutina.getId());
                     session.setAttribute("edicionUsuarioId", runneId);
                     session.setAttribute("semanaRutinaId", rutina.getSemanaIds()[0]);
                     session.setAttribute("semanaIds", rutina.getSemanaIds());
+                    RuConsolidadoPOJO  ruMejora = new RuConsolidadoPOJO(ruConsolidado.getMejoras()) ;
+                    model.addAttribute("mejorasRutina" , new ObjectMapper().writeValueAsString(ruMejora.getMejoras()));
                     model.addAttribute("rutina", new ObjectMapper().writeValueAsString(new RutinaPOJO(rutina)));
                     model.addAttribute("lstCategoriaEjercicio", categoriaEjercicioService.encontrarCategoriaConSusDepedencias());
                     return new ModelAndView(ViewConstant.MAIN_RUTINA_EDITOR);

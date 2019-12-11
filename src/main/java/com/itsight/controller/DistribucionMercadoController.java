@@ -6,10 +6,7 @@ import com.itsight.domain.Trainer;
 import com.itsight.domain.dto.ClienteDTO;
 import com.itsight.domain.pojo.ClienteFitnessPOJO;
 import com.itsight.domain.pojo.ServicioPOJO;
-import com.itsight.service.ClienteFitnessProcedureInvoker;
-import com.itsight.service.ServicioProcedureInvoker;
-import com.itsight.service.ServicioService;
-import com.itsight.service.TrainerProcedureInvoker;
+import com.itsight.service.*;
 import com.itsight.service.impl.TrainerProcedureInvokerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,19 +24,21 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/gestion/distribucion-mercado")
-public class DistribuciónMercadoController {
+public class DistribucionMercadoController {
 
  private ClienteFitnessProcedureInvoker clienteFitnessProcedureInvoker;
  private ServicioProcedureInvoker servicioProcedureInvoker;
  private ServicioService servicioService;
+ private TrainerService trainerService;
 
 @Autowired
- public DistribuciónMercadoController(ClienteFitnessProcedureInvoker clienteFitnessProcedureInvoker,
+ public DistribucionMercadoController(ClienteFitnessProcedureInvoker clienteFitnessProcedureInvoker,
                                       ServicioProcedureInvoker servicioProcedureInvoker,
-                                      ServicioService servicioService) {
+                                      ServicioService servicioService,TrainerService trainerService) {
         this.clienteFitnessProcedureInvoker = clienteFitnessProcedureInvoker;
         this.servicioProcedureInvoker = servicioProcedureInvoker;
         this.servicioService = servicioService;
+        this.trainerService = trainerService;
 }
 
  @GetMapping(value = "")
@@ -65,9 +64,20 @@ public class DistribuciónMercadoController {
  public @ResponseBody
  List<ClienteFitnessPOJO> obtenerInfoCompletaClientesXTrainerId(@RequestParam Integer id) {
 
-  List<ClienteFitnessPOJO> fichaClienteFitness = clienteFitnessProcedureInvoker.getDistribucionMercado(id);
+  Trainer trainer = trainerService.findOne(id);
+  List<ClienteFitnessPOJO> fichaClienteFitness = null;
+
+  if(trainer!=null){
+  //TRAINER
+    if(trainer.getTipoTrainer().getId() != 2){
+      fichaClienteFitness = clienteFitnessProcedureInvoker.getDistribucionMercado(id);
+    }else{ //EMPRESA
+      fichaClienteFitness = clienteFitnessProcedureInvoker.getDistribucionMercadoEmpresa(id);
+    }
+  }
 
   return fichaClienteFitness;
+
  }
 
  @GetMapping(value = "/servicio/obtener")

@@ -1703,7 +1703,7 @@ function graficoDistribucionEtapa(etapasPorc){
                 position: 'average'
             },
             layout: {
-                padding: 10  //set that fits the best
+                padding: 17  //set that fits the best
 
             },
             plugins:{
@@ -1747,7 +1747,7 @@ function graficoDistribucionEtapa(etapasPorc){
 
                 var text = "%",
                     textX = Math.round((width - ctx.measureText(text).width) / 2),
-                    textY = (height / 2 ) + 6;
+                    textY = (height / 2 ) + 10;
 
                 ctx.fillText(text, textX, textY);
                 ctx.save();            }

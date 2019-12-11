@@ -13,6 +13,11 @@
 
   List<ClienteDTO> getDistribucionDistritoCliente(Integer trainerId);
 
+  List<ClienteDTO> getDistribucionDepartamentoClientexEmpresa(Integer trainerId);
+
+  List<ClienteDTO> getDistribucionDistritoClientexEmpresa(Integer trainerId);
+
+
   List<ClienteDTO> getDistribucionProvinciaCliente(Integer trainerId);
 
 

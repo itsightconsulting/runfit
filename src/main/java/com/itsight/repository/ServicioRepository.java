@@ -41,12 +41,25 @@ public interface ServicioRepository extends JpaRepository<Servicio, Integer>{
                    "LIMIT 1", nativeQuery = true)
     String findTrainerCorreoById(Integer servicioId);
 
-    @Query(value = "SELECT count(*) " +
-            "FROM cliente_servicio CS " +
-            "INNER JOIN servicio S ON  S.servicio_id = CS.servicio_id " +
-            "INNER JOIN trainer T ON T.security_user_id = S.trainer_id " +
-            "WHERE T.security_user_id =?1", nativeQuery = true)
+    @Query(value = "    SELECT COUNT(*)" +
+            "    FROM cliente_servicio CS" +
+            "    INNER JOIN servicio S ON  S.servicio_id = CS.servicio_id" +
+            "    WHERE S.trainer_id = ( SELECT CASE WHEN TF.tr_emp_id IS NULL THEN TF.trainer_id ELSE TF.tr_emp_id END" +
+            "    FROM trainer_ficha TF" +
+            "    WHERE TF.trainer_id = ?1)" +
+            "    AND" +
+            "    CS.cliente_id IN (" +
+            "            SELECT RF.cliente_id  from red_fitness RF where RF.trainer_id = ?1" +
+            "            AND EXTRACT(DAY FROM RF.fecha_creacion- CS.fecha_creacion) < 1)", nativeQuery = true)
     Integer getTotalClientesByTrainerId(Integer trainerId);
+
+    @Query(value = "    SELECT COUNT(*)" +
+            "    FROM cliente_servicio CS" +
+            "    INNER JOIN servicio S ON  S.servicio_id = CS.servicio_id" +
+            "    WHERE S.trainer_id = ?1", nativeQuery =  true)
+    Integer getTotalClientesByTrainerIdEmpresa(Integer trainerId);
+
+
 
     @Query(value = "SELECT count(*) " +
             "FROM cliente_servicio CS", nativeQuery = true)

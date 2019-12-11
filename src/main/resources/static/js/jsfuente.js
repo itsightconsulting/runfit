@@ -149,7 +149,7 @@ const ResponseCode = Object.freeze({
     VF_USUARIO_REPETIDO: -150,
 });
 
-const dias = ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado"];
+const dias = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
 const exceptNames = {"-9": "EX_NULL_POINTER", "-10": "EX_NULL_POINTER", "-99": "EX_NUMBER_FORMAT", "-100": "EX_MAX_SIZE_MULTIPART", "-101": "EX_MAX_UPLOAD_SIZE"};
 const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 const _idiomas = [{cd: "es", nombre: "Español"},{cd: "en", nombre:	"Inglés"},{cd: "pt", nombre: "Portugués"},{cd: "de", nombre:	"Alemán"},{cd: "ar", nombre:	"Árabe"},{cd: "bn", nombre:	"Bengalí"},{cd: "zh", nombre:	"Chino"},{cd: "ko", nombre:	"Coreano"},{cd: "fr", nombre:	"Francés"},{cd: "hi", nombre:	"Hindi"},{cd: "it", nombre:	"Italiano"},{cd: "ja", nombre:	"Japonés"},{cd: "ru", nombre:	"Ruso"}];
@@ -645,7 +645,7 @@ function instanciarPopovers(){
 function parseNumberToHours(minutos){
     let h = Math.floor(minutos/60);
     let m = minutos%60;
-    return h+ "' "+ (m%60<10?"0"+String(m%60):m%60) + "\"";
+    return h+ "h "+ (m%60<10?"0"+String(m%60):m%60) + "\'";
 }
 
 function parseNumberToHoursNoExcedent(minutos, spaceBefore){

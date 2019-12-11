@@ -137,7 +137,14 @@ public class ServicioServiceImpl extends BaseServiceImpl<ServicioRepository> imp
     }
 
     @Override
+    public Integer getTotalClientesByTrainerIdEmpresa(Integer trainerId) {
+        return repository.getTotalClientesByTrainerIdEmpresa(trainerId);
+    }
+
+    @Override
     public Integer getTotalClientesServicio() {
         return repository.getTotalClientesServicios();
     }
+
+
 }

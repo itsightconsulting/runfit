@@ -79,8 +79,6 @@ public class TrainerController extends BaseController{
     @GetMapping(value = "")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView principal(Model model) {
-        System.out.println("Demo log");
-        System.out.println("Demo logger2");
         model.addAttribute("lstTipoDocumento", tipoDocumentoService.findAll());
         model.addAttribute("lstTipoUsuario", perfilService.listAll());
         model.addAttribute("lstRol", rolService.findAll());
@@ -146,7 +144,16 @@ public class TrainerController extends BaseController{
     List<ClienteFitnessPOJO> obtenerInfoCompletaClientes(HttpSession session) {
 
         Integer trainerId = Integer.parseInt(session.getAttribute("id").toString());
-        List<ClienteFitnessPOJO> fichaClienteFitness = clienteFitnessProcedureInvoker.getDistribucionMercado(trainerId);
+        Trainer trainer = trainerService.findOne(trainerId);
+        List<ClienteFitnessPOJO> fichaClienteFitness;
+        //TRAINER
+        if(trainer.getTipoTrainer().getId() != 2){
+
+            fichaClienteFitness = clienteFitnessProcedureInvoker.getDistribucionMercado(trainerId);
+
+        }else{ //EMPRESA
+             fichaClienteFitness = clienteFitnessProcedureInvoker.getDistribucionMercadoEmpresa(trainerId);
+        }
 
         return fichaClienteFitness;
     }
@@ -156,8 +163,14 @@ public class TrainerController extends BaseController{
     public @ResponseBody List<ClienteDTO> getDistribucionDepartamentoClientexTrainer(HttpSession session){
 
         Integer trainerId = Integer.parseInt(session.getAttribute("id").toString());
-        List<ClienteDTO> lstDistribucionCliente =clienteProcedureInvoker.getDistribucionDepartamentoCliente(trainerId);
+        List<ClienteDTO> lstDistribucionCliente;
+        Trainer trainer = trainerService.findOne(trainerId);
 
+        if(trainer.getTipoTrainer().getId() != 2){
+            lstDistribucionCliente = clienteProcedureInvoker.getDistribucionDepartamentoCliente(trainerId);
+        }else{
+            lstDistribucionCliente = clienteProcedureInvoker.getDistribucionDepartamentoClientexEmpresa(trainerId);
+        }
         return lstDistribucionCliente;
 
     }
@@ -166,8 +179,9 @@ public class TrainerController extends BaseController{
     public @ResponseBody List<ClienteDTO> getDistribucionProvinciaClientexTrainer(HttpSession session){
 
         Integer trainerId = Integer.parseInt(session.getAttribute("id").toString());
-        List<ClienteDTO> lstDistribucionCliente =clienteProcedureInvoker.getDistribucionProvinciaCliente(trainerId);
-
+        Trainer trainer = trainerService.findOne(trainerId);
+        List<ClienteDTO> lstDistribucionCliente;
+        lstDistribucionCliente  = clienteProcedureInvoker.getDistribucionProvinciaCliente(trainerId);
         return lstDistribucionCliente;
     }
 
@@ -175,8 +189,14 @@ public class TrainerController extends BaseController{
     public @ResponseBody List<ClienteDTO> getDistribucionDistritoLimaClientexTrainer(HttpSession session){
 
         Integer trainerId = Integer.parseInt(session.getAttribute("id").toString());
-        List<ClienteDTO> lstDistribucionCliente =clienteProcedureInvoker.getDistribucionDistritoCliente(trainerId);
+        List<ClienteDTO> lstDistribucionCliente;
+        Trainer trainer = trainerService.findOne(trainerId);
 
+        if(trainer.getTipoTrainer().getId() != 2) {
+            lstDistribucionCliente = clienteProcedureInvoker.getDistribucionDistritoCliente(trainerId);
+        }else{
+            lstDistribucionCliente = clienteProcedureInvoker.getDistribucionDistritoClientexEmpresa(trainerId);
+        }
         return lstDistribucionCliente;
     }
 
@@ -192,8 +212,16 @@ public class TrainerController extends BaseController{
     public @ResponseBody List<ServicioPOJO> getTopServiciosxTrainer(HttpSession session){
 
         Integer trainerId = Integer.parseInt(session.getAttribute("id").toString());
-        List<ServicioPOJO> lstServicio = servicioProcedureInvoker.getTopServiciobyTrainerId(trainerId);
 
+        List<ServicioPOJO> lstServicio;
+        Trainer trainer = trainerService.findOne(trainerId);
+
+        if(trainer.getTipoTrainer().getId() != 2) {
+
+            lstServicio = servicioProcedureInvoker.getTopServiciobyTrainerId(trainerId);
+        }else{
+            lstServicio = servicioProcedureInvoker.getTopServiciobyTrainerIdEmpresa(trainerId);
+        }
         return lstServicio;
     }
 
@@ -201,9 +229,15 @@ public class TrainerController extends BaseController{
     public @ResponseBody int getTotalClientesServiciosxTrainer(HttpSession session){
 
         Integer trainerId = Integer.parseInt(session.getAttribute("id").toString());
-        Integer total = servicioService.getTotalClientesByTrainerId(trainerId);
+        Integer total;
+        Trainer trainer = trainerService.findOne(trainerId);
 
-        return total;
+        if(trainer.getTipoTrainer().getId() != 2) {
+            total = servicioService.getTotalClientesByTrainerId(trainerId);
+        }else{//Empresa
+            total = servicioService.getTotalClientesByTrainerIdEmpresa(trainerId);
+        }
+          return total;
     }
 
 
