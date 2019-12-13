@@ -2810,12 +2810,15 @@ button.btn-darkgrey:hover {
 /*#datosRutina{
     float: right;
 }*/
-/*acá comienza la cagada*/
+/*acá comienza*/
 #datosRutina{
     display: inline-block;
     right: 20px;
     position: absolute;
     width: 185px;
+}
+#nombresCliente, #etapaRutina {
+    margin-right: 20px;
 }
 .menu-dots{
   list-style: none;
