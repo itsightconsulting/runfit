@@ -2807,8 +2807,110 @@ button.btn-darkgrey:hover {
 .ds-flex{
     display: flex;
 }
-
-#datosRutina{
+/*#datosRutina{
     float: right;
+}*/
+/*acá comienza la cagada*/
+#datosRutina{
+    display: inline-block;
+    right: 20px;
+    position: absolute;
+    width: 185px;
 }
+.menu-dots{
+  list-style: none;
+  position:absolute;
+  right:20px;
+}
+.menu-dots li{
+  display: inline-block;
+}
+.circle {
+	border-radius: 50%;
+	filter: alpha(opacity=60);
+	opacity: 1;
+	-webkit-box-shadow: 0 0 1px 0px rgb( 255, 255, 255);
+	width: 20px;
+	height: 20px;
+	z-index: 86;
+}
+
+li.active .circle .mini-circle {
+	display:block;
+
+}
+.dot-1{
+    border: 3px solid #10FF01;
+}
+.dot-1:after{
+    content: '';
+    width: 28px;
+    height: 5px;
+    background-color: #10FF01;
+    position: absolute;
+    top: 10px;
+    left: 19px;
+}
+
+.dot-2{
+    border: 3px solid #F0FF01;
+}
+.dot-2:after{
+    content: '';
+    width: 28px;
+    height: 5px;
+    background-color: #F0FF01;
+    position: absolute;
+    top: 10px;
+    left: 65px;
+}
+.dot-3{
+    border: 3px solid #FF0101;
+}
+.dot-3:after{
+    content: '';
+    width: 29px;
+    height: 5px;
+    background-color:#FF0101;
+    position: absolute;
+    top: 10px;
+    left: 111px;
+}
+.dot-4{
+    border: 3px solid #0137FF;
+}
+li{
+  margin-left:20px;
+}
+li:first-child{
+  margin-left:0px;
+}
+
+.mini-circle{
+  height: 8px;
+  width: 8px;
+  background-color: black;
+  position: absolute;
+  border-radius: 50%;
+  display:none;
+  top:8px;
+}
+.dot-1 .mini-circle{
+  left: 6px;
+  background-color: #10FF01;
+}
+.dot-2 .mini-circle{
+  left: 53px;
+  background-color: #F0FF01;
+}
+.dot-3 .mini-circle{
+  left: 99px;
+  background-color: #FF0101;
+}
+.dot-4 .mini-circle{
+  left: 146px;
+  background-color: #0137FF;
+}
+
+
 

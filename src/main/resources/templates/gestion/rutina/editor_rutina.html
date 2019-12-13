@@ -129,13 +129,27 @@
        <div id="editorContent">
       <div class="container-t">
        <div class="row">
-           <div id="datosRutina">
-               <h4 class="rf-ct-black" id="nombresCliente"></h4>
-               <h5 class="rf-ct-black" id="etapaRutina"></h5>
-           </div>
           <h2 class="title_carousel">
             <button class="btn retroceder-semana"><img th:src="@{/img/arrow-left2.png}"></button> <div class="dv-mes-actual"> <span id="semanaTitulo" class="semana-num">semana </span><span id="nroSemanaActual" class="semana-num">1</span>  - <span id="mesSemanaTitulo"> enero</span> </div>
             <button class="btn adelantar-semana"><img th:src="@{/img/arrow-right2.png}"></button>
+              <div id="datosRutina">
+                  <h4 class="rf-ct-black" id="nombresCliente"></h4>
+                  <h5 class="rf-ct-black" id="etapaRutina"></h5>
+                  <ul class="menu-dots">
+                      <li>
+                          <a href="#dot-one"><div class="circle dot-1"><div class="mini-circle"></div></div></a>
+                      </li>
+                      <li>
+                          <a href="#dot-two"><div class="circle dot-2"><div class="mini-circle"></div></div></a>
+                      </li>
+                      <li>
+                          <a href="#dot-three"><div class="circle dot-3"><div class="mini-circle"></div></div></a>
+                      </li>
+                      <li>
+                          <a href="#dot-four"><div class="circle dot-4"><div class="mini-circle"></div></div></a>
+                      </li>
+                  </ul>
+              </div>
           </h2>
 
        </div>
