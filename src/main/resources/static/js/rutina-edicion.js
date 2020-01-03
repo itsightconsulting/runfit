@@ -172,20 +172,16 @@ function getEtapaRutina(semana){
 
 function setEtapaRutina(semana){
    const etapaIx =  getEtapaRutina(semana);
+   const actualEtapa =  document.querySelector('#datosRutina .etapa-dots li.active');
+   actualEtapa ? actualEtapa.classList.remove('active') : null;
    document.querySelectorAll('#datosRutina .etapa-dots li')[etapaIx].classList.add('active')
-
    $('[data-toggle="tooltip"]').tooltip();
-
-    //$('#etapaRutina').text("Etapa : " +  nombreEtapa[etapaIx]);
 }
-
 
 function setNombreCliente(){
     const nombres = atob(getParamFromURL("nm"));
     $('#nombresCliente').text(nombres);
 }
-
-
 
 function modalEventos(){
 

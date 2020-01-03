@@ -2818,12 +2818,12 @@ button.btn-darkgrey:hover {
 ul.etapa-dots li .tooltip {
     font-size: 12px!important;
 }
-
 .etapa-dots{
   list-style: none;
   position:relative;
   display: inline-block;
 }
+
 .etapa-dots li{
   display: inline-block;
 }
