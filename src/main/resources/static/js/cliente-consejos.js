@@ -190,7 +190,6 @@ function actualizarEstadoFavorito(id, favStatus,input) {
         dataType: "json",
         data: params,
         success: function (data) {
-         debugger
           if( data === -1 || data === -2){
 
               if(favStatus  === 1){
@@ -220,7 +219,6 @@ function actualizarEstadoFavorito(id, favStatus,input) {
 
 function generarListaAudios(listaAudios) {
 
-    debugger
     $('.msj-busqueda').remove();
     $('#inpSearch').val("");
     ulConsejos.html("");
@@ -258,7 +256,6 @@ function generarListaAudios(listaAudios) {
         });
 
     }else{
-        debugger
         const mensajeNoData = htmlStringToElement(`<span class="msj-no-data"> El entrenador no cuenta con clips de audio para consultar. </span> `);
         ulConsejos.parent().append(mensajeNoData);
     }

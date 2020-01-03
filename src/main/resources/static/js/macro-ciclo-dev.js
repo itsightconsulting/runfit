@@ -530,7 +530,6 @@ MacroCiclo = (function(){
                 if($('#frm_registro').valid()){
                     const $chelmoMacro = [];
                     //Semanas
-                    debugger
                     const numSemBase = FichaGet.obtenerBase().numSem;
                     const numSemBaseIx = numSemBase -1;
                     const cantSemExcedentes = ($baseAfterComprobacion.distancia == 10 ? 1 : $baseAfterComprobacion.distancia == 21 ? 2 : 3);

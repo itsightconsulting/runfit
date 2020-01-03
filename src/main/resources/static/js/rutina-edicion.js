@@ -172,7 +172,11 @@ function getEtapaRutina(semana){
 
 function setEtapaRutina(semana){
    const etapaIx =  getEtapaRutina(semana);
-   $('#etapaRutina').text("Etapa : " +  nombreEtapa[etapaIx]);
+   document.querySelectorAll('#datosRutina .etapa-dots li')[etapaIx].classList.add('active')
+
+   $('[data-toggle="tooltip"]').tooltip();
+
+    //$('#etapaRutina').text("Etapa : " +  nombreEtapa[etapaIx]);
 }
 
 
@@ -1841,8 +1845,7 @@ function eventoSelectZoom(e){
 function avanzarRetrocederSemana(numSem, action){
 
     obtenerEspecificaSemana(numSem, action).then((semana)=> {
-        debugger
-        setEtapaRutina(numSem + 1);
+       setEtapaRutina(numSem + 1);
        if(semana != undefined) {
            // $('#rutinaSemana').html(`<h1 style="padding-left: 18%; font-size: 5em;">Por favor espere... <i class="fa fa-spinner fa-spin"></i></h1>`);
             //Importante mantener el orden para el correcto funcionamiento

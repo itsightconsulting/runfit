@@ -1677,7 +1677,6 @@ ElementoOpc = (function(){
             const nombreEle = initTempElemento.querySelector('.rf-dia-elemento-nombre').textContent.trim().toUpperCase();
             while((tempElemento = tempElemento.previousElementSibling) != null) i++;
             RutinaSet.setElementoMinutos(ixs.numSem, ixs.diaIndex, (posEle = i), minutos);
-            debugger
             const totalMin = DiaFunc.obtenerTotalMinutosDia(ixs.diaIndex);
             RutinaSet.setDiaTiempoTotal(ixs.numSem, ixs.diaIndex, totalMin);
             RutinaDOMQueries.getDiaByIx(ixs.diaIndex).querySelector(`.horas-totales`).textContent = parseNumberToHours(totalMin);

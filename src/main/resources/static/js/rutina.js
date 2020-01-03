@@ -1581,7 +1581,6 @@ DiaOpc = (function(){
             if(clases.contains('rf-semanario-sels')){
                 $subEleElegidos = $subEleElegidos.filter(e=> {return !(e[0]==diaIndex && e[2]==subEleIndex)});
             }else{
-                debugger
                 const ops = e.previousElementSibling;
                 const mV = ops.querySelector('.reprod-video') != undefined ? ops.querySelector('.reprod-video').dataset.media : null;
                 const mA = ops.querySelector('.reprod-audio') != undefined ? ops.querySelector('.reprod-audio').dataset.media : null;
@@ -2443,7 +2442,6 @@ RutinaElementoHTML = (function(){
             instanciarElementosDiaPopover(listaDiv);
         },
         adjuntarSubElementos: (ixs, via)=>{
-            debugger
             const newSubEleS = [];
             let elemento = RutinaDOMQueries.getElementoByIxs(ixs);
             const divSubEle = elemento.querySelector('.detalle-lista');

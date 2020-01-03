@@ -187,7 +187,6 @@ function obtenerCategorias(){
         blockLoading: false,
         noOne: true,
         success: (data) =>  {
-            debugger
             dataCategorias = data;
             const dvSlider = document.querySelector('section#listaCategoria .range-slider').parentElement;
             const clasesSlider = dvSlider.classList;
@@ -720,8 +719,6 @@ function categoriaClickEvent(e){
         generarCategoriasPlantillas(dataCategorias);
     }
     else if(editElement){
-
-        debugger
         const nombre = editElement.getAttribute("data-nombre");
         const categoriaId = editElement.getAttribute("data-categoria-id");
         const tipoCategoria = Number(editElement.getAttribute("data-tipo"));
@@ -803,7 +800,6 @@ function subCategoriaClickEvent(e){
             favoritosSubCategoria.splice(index,1);
             dataSubCategorias[dataSubCategoriaIx].favorito =  false;
         }else{
-            debugger
             starClases.add('selected');
             const subcategoriaId =  starElement.getAttribute('data-subcategoria-id');
             !favoritosSubCategoria.includes(subcategoriaId) ? favoritosSubCategoria.push(Number(subcategoriaId)) : null;

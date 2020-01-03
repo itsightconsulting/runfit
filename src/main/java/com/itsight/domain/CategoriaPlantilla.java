@@ -22,6 +22,7 @@ import java.util.List;
                         @StoredProcedureParameter(name = "_tipo", mode = ParameterMode.IN , type = Integer.class),
                         @StoredProcedureParameter(name = "result", mode = ParameterMode.OUT, type = Boolean.class)
                 })
+
 })
 public class CategoriaPlantilla extends AuditingEntity {
 

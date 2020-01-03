@@ -2807,25 +2807,24 @@ button.btn-darkgrey:hover {
 .ds-flex{
     display: flex;
 }
-/*#datosRutina{
-    float: right;
-}*/
-/*acá comienza*/
+
 #datosRutina{
     display: inline-block;
     right: 20px;
     position: absolute;
-    width: 185px;
+    width: 250px;
 }
-#nombresCliente, #etapaRutina {
-    margin-right: 20px;
+
+ul.etapa-dots li .tooltip {
+    font-size: 12px!important;
 }
-.menu-dots{
+
+.etapa-dots{
   list-style: none;
-  position:absolute;
-  right:20px;
+  position:relative;
+  display: inline-block;
 }
-.menu-dots li{
+.etapa-dots li{
   display: inline-block;
 }
 .circle {
@@ -2842,35 +2841,35 @@ li.active .circle .mini-circle {
 	display:block;
 
 }
-.dot-1{
-    border: 3px solid #10FF01;
+.dot-1ra-etapa{
+    border: 3px solid #28a905;
 }
-.dot-1:after{
+.dot-1ra-etapa:after{
     content: '';
     width: 28px;
     height: 5px;
-    background-color: #10FF01;
+    background-color: #28a905;
     position: absolute;
     top: 10px;
     left: 19px;
 }
 
-.dot-2{
-    border: 3px solid #F0FF01;
+.dot-2da-etapa{
+    border: 3px solid #ffcf00;
 }
-.dot-2:after{
+.dot-2da-etapa:after{
     content: '';
     width: 28px;
     height: 5px;
-    background-color: #F0FF01;
+    background-color: #ffcf00;
     position: absolute;
     top: 10px;
     left: 65px;
 }
-.dot-3{
+.dot-3ra-etapa{
     border: 3px solid #FF0101;
 }
-.dot-3:after{
+.dot-3ra-etapa:after{
     content: '';
     width: 29px;
     height: 5px;
@@ -2879,8 +2878,8 @@ li.active .circle .mini-circle {
     top: 10px;
     left: 111px;
 }
-.dot-4{
-    border: 3px solid #0137FF;
+.dot-4ta-etapa{
+    border: 3px solid #2a5aff;
 }
 li{
   margin-left:20px;
@@ -2898,21 +2897,21 @@ li:first-child{
   display:none;
   top:8px;
 }
-.dot-1 .mini-circle{
+.dot-1ra-etapa .mini-circle{
   left: 6px;
-  background-color: #10FF01;
+  background-color: #28a905;
 }
-.dot-2 .mini-circle{
+.dot-2da-etapa .mini-circle{
   left: 53px;
-  background-color: #F0FF01;
+  background-color: #ffcf00;
 }
-.dot-3 .mini-circle{
+.dot-3ra-etapa .mini-circle{
   left: 99px;
   background-color: #FF0101;
 }
-.dot-4 .mini-circle{
+.dot-4ta-etapa .mini-circle{
   left: 146px;
-  background-color: #0137FF;
+  background-color: #2a5aff;
 }
 
 
