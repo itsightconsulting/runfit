@@ -139,7 +139,7 @@
 
 @media only screen and (max-width: 420px) {
   .login .show-pass{
-    right: 0;
+    right: 25px;
   }
 }
 
@@ -2030,26 +2030,25 @@ ul.tabs {
 @media only screen and (max-width: 800px) {
   .time-line ol::before {
     left: 20px;
+    top: 65px;
   }
   .time-line ol li {
     height: auto;
-    margin-bottom: 50px;
+    margin-bottom: 0px;
     padding-left: 60px
   }
   .time-line ol li::before {
     width: 40px;
     height: 40px;
     padding: 2px;
-    font-size: 24px
+    font-size: 24px;
+    top: 40px;
   }
   .time-line ol li .item h2 {
     font-size: 20px
   }
   .time-line ol li .item h2 span {
     display: inline
-  }
-  .time-line ol li .item img.icon-img {
-    margin-top: 25px
   }
 }
 
