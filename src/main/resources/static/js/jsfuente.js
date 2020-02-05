@@ -10,6 +10,7 @@ let $gbInterval = 0;
 var _URL = window.URL || window.webkitURL;
 
 $('#view_register').attr('hidden', 'hidden');
+
 const ClaseEditor = Object.freeze([
     {id: 1, clase: 'rf-n', tipo: 1},
     {id: 2, clase: 'rf-k', tipo: 1},

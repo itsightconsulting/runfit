@@ -19,9 +19,6 @@ public class EmailServiceImpl extends EmailGeneric implements EmailService {
     @Value("${spring.profiles.active}")
     private String profile;
 
-    @Value("${spring.mail.username}")
-    private String emitterMail;
-
     private JavaMailSender emailSender;
 
     private BandejaTemporalRepository bandejaTemporalRepository;
@@ -46,7 +43,7 @@ public class EmailServiceImpl extends EmailGeneric implements EmailService {
             }
 
             if(profile.equals("qa-aws")){
-                receptor = "yoselin.rodriguez@itsight.pe";
+                receptor = "info@runfit.pe";
                 preparator = mimeMessagePreparator(asunto, receptor, contenido);
                 emailSender.send(preparator);
             }
@@ -74,7 +71,7 @@ public class EmailServiceImpl extends EmailGeneric implements EmailService {
             }
             //Block development/qa
             if(profile.equals("qa-aws")){
-                String receptorDev = "yoselin.rodriguez@itsight.pe";
+                String receptorDev = "info@runfit.pe";
                 preparator = mimeMessagePreparatorForRecepientsBbc(asunto, receptorDev, contenido);
                 emailSender.send(preparator);
                 return;
@@ -104,7 +101,7 @@ public class EmailServiceImpl extends EmailGeneric implements EmailService {
 
             //Block development/qa
             if(profile.equals("qa-aws")){
-                String receptorDev = "yoselin.rodriguez@itsight.pe";
+                String receptorDev = "info@runfit.pe";
                 preparator = mimeMessagePreparatorForRecepientsBbc(asunto, receptorDev, contenido);
                 emailSender.send(preparator);
             }
