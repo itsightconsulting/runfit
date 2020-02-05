@@ -49,7 +49,7 @@ public class EmailServiceImpl extends EmailGeneric implements EmailService {
             }
 
 
-            if(profile.equals("development")){
+            if(profile.equals("development") || profile.equals("qa-azure")){
                 Integer ixUrl = contenido.indexOf("href=");
                 String url = ixUrl == -1 ? "" : contenido.substring(contenido.indexOf("href=")+6).split("'")[0];
                 bandejaTemporalRepository.save(new BandejaTemporal(asunto, contenido, url));
@@ -106,7 +106,7 @@ public class EmailServiceImpl extends EmailGeneric implements EmailService {
                 emailSender.send(preparator);
             }
 
-            if(profile.equals("development")){
+            if(profile.equals("development") || profile.equals("qa-azure")){
                 Integer ixUrl = contenido.indexOf("href=");
                 String url = ixUrl == -1 ? "" : contenido.substring(contenido.indexOf("href=")+6).split("'")[0];
                 bandejaTemporalRepository.save(new BandejaTemporal(asunto, contenido, url));
