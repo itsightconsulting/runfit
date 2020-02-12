@@ -137,6 +137,11 @@
   font-size: 1.6em;
 }
 
+.show-pass-form{
+  cursor: pointer;
+  color: #A8FA00;
+}
+
 @media only screen and (max-width: 420px) {
   .login .show-pass{
     right: 25px;
@@ -955,6 +960,14 @@ h1 {
   background-color: #fff
 }
 
+.nombre-asesor-perfil{
+  max-width: 250px;
+  width: 100%;
+  text-align: center;
+  font-size: 18px;
+  padding-top: 10px;
+}
+
 .avatar-form-button {
   background-color: #d3d3d3;
   border-radius: 15px;
@@ -1616,6 +1629,17 @@ ul.tabs {
 }
 
 @media only screen and (max-width: 800px) {
+
+
+  .nombre-asesor-perfil{
+    max-width: 100% !important;
+    width: 100%;
+    text-align: center;
+    font-size: 17px !important;
+    padding-top: 10px;
+    margin-bottom: -20px;
+  }
+
   .modal .modal-dialog {
     width: 80%;
   }
@@ -2358,6 +2382,11 @@ ul.tabs {
   font-family: Gotham-HTF-Bold;
   margin-bottom: 22px;
   text-transform: uppercase
+}
+
+.tyc h2.msg-informativo {
+  font-family: Gotham-HTF-Bold;
+  margin-bottom: 22px;
 }
 
 .tyc p {
@@ -3561,6 +3590,10 @@ button.btn:hover {
   /*text-align: center;*/
   margin-left: 25px;
   width: 64px;
+}
+
+.credentials-register>.password{
+  margin-bottom: 5px !important;
 }
 
 hr {

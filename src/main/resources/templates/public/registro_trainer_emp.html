@@ -58,7 +58,7 @@
                                     <textarea class="form-control" id="Acerca" name="Acerca"></textarea>
                                 </div>
                                 <div class="form-group">
-                                    <label>MÉTODO DE TRABAJO<span class="obligatorio">*</span></label>
+                                    <label>MÉTODO DE TRABAJO</label>
                                     <textarea style="overflow: auto" class="form-control" rows="4" type="text" id="MetodoTrabajo" name="MetodoTrabajo"></textarea>
                                 </div>
                                 <div class="form-group">
@@ -286,13 +286,13 @@
                                         </button>
                                         <input type="file" accept="application/pdf" class="inp-svc-tyc hidden" id="inpCondServicio" name="inpCondServicio">
                                         <button rel="tooltip"
-                                                title="OPCIONAL: Subir un archivo pdf con los términos y condiciones del servicio que esta por agregar"
+                                                title="OPCIONAL: Subir un archivo pdf con los términos y condiciones del servicio que está por agregar"
                                                 id="btnSubirCondServicio" class="btn btn-default btn-white" onclick="javascript:document.getElementById('inpCondServicio').click()" type="button">
                                             <i class="fa fa-cloud-upload fa-fw"></i> ADJUNTAR T&C
                                         </button>
                                         <i class="fa fa-exclamation-circle tyc-fa-ec"
                                            rel="tooltip"
-                                           title="OPCIONAL: Subir un archivo pdf con los términos y condiciones del servicio que esta por agregar"></i>
+                                           title="OPCIONAL: Subir un archivo pdf con los términos y condiciones del servicio que está por agregar"></i>
                                         <img class="del-tyc-svc hidden" rel="tooltip" title="Remover archivo T&C" src="/img/iconos/icon_trash.svg">
                                     </div>
                                     <h4 class="sub-title st-tarifario hidden">TARIFARIOS
@@ -483,8 +483,8 @@
                                         <label for="TitularNumDoc">NÚMERO DOCUMENTO</label><input class="form-control mg-bt-10" id="TitularNumDoc" name="TitularNumDoc" type="text" placeholder="Número de documento de identidad" style="margin-top: 10px">
                                         <label for="NumeroSoles">NÚMERO DE CUENTA EN SOLES</label><input class="form-control mg-bt-10" id="NumeroSoles" name="NumeroSoles" type="text" placeholder="Número de cuenta soles">
                                         <label for="NumeroDolares">NÚMERO DE CUENTA EN DÓLARES</label><input class="form-control mg-bt-10" id="NumeroDolares" name="NumeroDolares" type="text" placeholder="Número de cuenta dólares">
-                                        <label for="InterbancarioSoles">INTERBANCARIO EN SOLES</label><input class="form-control mg-bt-10" id="InterbancarioSoles" name="InterbancarioSoles" type="text" placeholder="Número de código interbancario soles">
-                                        <label for="InterbancarioDolares">INTERBANCARIO EN DÓLARES</label><input class="form-control mg-bt-10" id="InterbancarioDolares" name="InterbancarioDolares" type="text" placeholder="Número de código interbancario dólares">
+                                        <label for="InterbancarioSoles">CÓDIGO INTERBANCARIO EN SOLES</label><input class="form-control mg-bt-10" id="InterbancarioSoles" name="InterbancarioSoles" type="text" placeholder="Número de código interbancario soles">
+                                        <label for="InterbancarioDolares">CÓDIGO INTERBANCARIO EN DÓLARES</label><input class="form-control mg-bt-10" id="InterbancarioDolares" name="InterbancarioDolares" type="text" placeholder="Número de código interbancario dólares">
                                         <button class="btn btn-default btn-black" type="button" id="btnNuevaInfoPago"><i class="fa fa-fw fa-plus-circle"></i> AGREGAR INFORMACIÓN PAGO</button>
                                     </div>
                                     <hr>
@@ -761,7 +761,6 @@
                     required: true
                 },
                 MetodoTrabajo:{
-                    required: true,
                     rangelength: [5, 1000]
                 },
                 Resultados: {

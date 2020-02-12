@@ -34,7 +34,6 @@ public class TrainerFichaDTO implements Serializable {
     @Size(min = 8, max = 1820)
     private String estudios;
     @Size(min = 5, max = 1000)
-    @NotNull
     private String metodoTrabajo;
     @Size(min = 20, max = 1820)
     private String experiencias;

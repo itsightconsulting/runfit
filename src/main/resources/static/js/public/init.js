@@ -58,7 +58,7 @@ function SlashBanner() {
 }
 
 function specificCheckBoxes(id) {
-    $("#"+id+" .chk-content").click(function() {
+    $("#" + id + " .chk-content").click(function () {
         var _self = $(this).find('input')
         var clase = _self.attr("data-body");
         if (_self.is(':checked')) {
@@ -72,29 +72,29 @@ function specificCheckBoxes(id) {
 }
 
 function checkBoxes() {
-    $(".chk-content").click(function() {
+    $(".chk-content").click(function () {
         var _self = $(this).find('input');
         var tipoElemento = _self.attr("type");
 
-        if(tipoElemento !== "radio"){
+        if (tipoElemento !== "radio") {
             var clase = _self.attr("data-body");
-             if (_self.is(':checked')) {
-                   $("." + clase + "").fadeOut();
-                    _self.prop('checked', false);
-             } else {
-                    _self.prop('checked', true);
-                    $("." + clase + "").fadeIn();
-                  }
-        } else{
+            if (_self.is(':checked')) {
+                $("." + clase + "").fadeOut();
+                _self.prop('checked', false);
+            } else {
+                _self.prop('checked', true);
+                $("." + clase + "").fadeIn();
+            }
+        } else {
 
-               _self.prop('checked', true)
-               $("." + clase + "").fadeIn();
+            _self.prop('checked', true)
+            $("." + clase + "").fadeIn();
         }
     })
 }
 
 function activeItems() {
-    $(".list_items .chk-content").click(function() {
+    $(".list_items .chk-content").click(function () {
         var _self = $(this).find('input');
         var parent = $(this).parent().parent();
         if (_self.is(':checked')) {
@@ -132,7 +132,7 @@ function carousel() {
 }
 
 function day_of_week() {
-    $(".days-of-week li").click(function() {
+    $(".days-of-week li").click(function () {
         $(".days-of-week li").removeClass("active");
         $(this).addClass("active");
     })
@@ -143,28 +143,28 @@ var map;
 function initMap() {
 
     var mapa = document.getElementById('map');
-    if(mapa != null) {
+    if (mapa != null) {
         map = new google.maps.Map(document.getElementById('map'), {
-            center: { lat: -12.046374, lng: -77.042793 },
+            center: {lat: -12.046374, lng: -77.042793},
             zoom: 12,
             gestureHandling: 'greedy'
         });
     }
 
-    if(document.querySelector('#pac-input') !== null){
+    if (document.querySelector('#pac-input') !== null) {
         initMapBoxSearch();
     }
 
 }
 
-function initMapBoxSearch(){
+function initMapBoxSearch() {
     // Create the search box and link it to the UI element.
     var input = document.getElementById('pac-input');
     var searchBox = new google.maps.places.SearchBox(input);
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
     // Bias the SearchBox results towards current map's viewport.
-    map.addListener('bounds_changed', function() {
+    map.addListener('bounds_changed', function () {
         searchBox.setBounds(map.getBounds());
     });
 
@@ -172,7 +172,7 @@ function initMapBoxSearch(){
     // Listen for the event fired when the user selects a prediction and retrieve
     // more details for that place.
 
-    searchBox.addListener('places_changed', function() {
+    searchBox.addListener('places_changed', function () {
         var places = searchBox.getPlaces();
 
         if (places.length == 0) {
@@ -180,14 +180,14 @@ function initMapBoxSearch(){
         }
 
         // Clear out the old markers.
-        markers.forEach(function(marker) {
+        markers.forEach(function (marker) {
             marker.setMap(null);
         });
         markers = [];
 
         // For each place, get the icon, name and location.
         var bounds = new google.maps.LatLngBounds();
-        places.forEach(function(place) {
+        places.forEach(function (place) {
             if (!place.geometry) {
                 console.log("Returned place contains no geometry");
                 return;
@@ -207,15 +207,15 @@ function initMapBoxSearch(){
 function changecolor() {
     var scroll = $(window).scrollTop();
     if (scroll > 0) {
-        $("nav").css({ "background-color": "#000" });
+        $("nav").css({"background-color": "#000"});
     } else {
-        $("nav").css({ "background-color": "transparent" });
+        $("nav").css({"background-color": "transparent"});
     }
 }
 
 function tabColaboradores() {
     $(".deportistas .item").addClass("active");
-    $(".deportistas .item").click(function() {
+    $(".deportistas .item").click(function () {
         $(".deportistas .item").removeClass("active");
         $(this).addClass("active");
         var data = $(this).attr('data-info')
@@ -223,17 +223,17 @@ function tabColaboradores() {
         //change image
         var img = $(".deportistas .item");
 
-        img.each(function(x, item) {
+        img.each(function (x, item) {
             let name = $(this).attr('data-info')
-            if(!($(this).hasClass("active"))) {
-                $(this).find('img').attr('src', _ctx+'img/public/' + name + '-bn.png')
+            if (!($(this).hasClass("active"))) {
+                $(this).find('img').attr('src', _ctx + 'img/public/' + name + '-bn.png')
             }
         })
         $('.' + data + '-tab').fadeIn();
-        $(this).find('img').attr('src', _ctx+'img/public/' + data + '.png')
+        $(this).find('img').attr('src', _ctx + 'img/public/' + data + '.png')
     });
 
-    $(".atleta-nom").click(function() {
+    $(".atleta-nom").click(function () {
         var nm = $(this).attr('data-info');
         $(`.deportistas .item[data-info="${nm}"]`).click();
     });
@@ -241,7 +241,7 @@ function tabColaboradores() {
 
 function next_step(sheetNumber, toSheetNumber) {
     const checkList = validationByNumSheet(sheetNumber, toSheetNumber);
-    if(checkList.isValid){
+    if (checkList.isValid) {
         if ($(".ficha-01").hasClass("active")) {
             $(".ficha-01").removeClass("active");
             $('.step-01').removeClass("active");
@@ -254,37 +254,37 @@ function next_step(sheetNumber, toSheetNumber) {
             $('.step-02').removeClass("active");
             $(".ficha-03").addClass("active");
             $('.step-03').addClass("active");
-            $(window).scrollTop( 200);
+            $(window).scrollTop(200);
             time_line();
         }
-    }else{
+    } else {
         smallBoxAlertValidation(checkList.inputs);
     }
 }
 
-function smallBoxAlertValidation(inputsNotPassed){
-    const tout = (2000*(inputsNotPassed.length)) + 4000;
-    let arrCamps = inputsNotPassed.map(v=>{
+function smallBoxAlertValidation(inputsNotPassed) {
+    const tout = (2000 * (inputsNotPassed.length)) + 4000;
+    let arrCamps = inputsNotPassed.map(v => {
         const previous = v.previousElementSibling;
         const preText = previous ? previous.textContent : "";
-        if(v.type === 'radio' || v.type === 'checkbox'){
+        if (v.type === 'radio' || v.type === 'checkbox') {
             const attrAka = v.getAttribute('data-aka');
-            if(attrAka){
+            if (attrAka) {
                 return attrAka.toUpperCase();
             } else {
                 const label = v.parentElement.parentElement.parentElement.previousElementSibling;
-                if(label && label.tagName === "LABEL"){
+                if (label && label.tagName === "LABEL") {
                     const nomFinal = label.textContent;
                     return nomFinal;
                 }
             }
-        }else{
+        } else {
             const nomFinal = !preText ? v.getAttribute('data-aka').toUpperCase() : preText;
             return nomFinal;
         }
     });
-    let strCamps = Array.from(new Set(arrCamps)).map(e=>`<i class="fa fa-dot-circle-o fa-fw"></i>${e}<br>`).join('');
-    if(strCamps){
+    let strCamps = Array.from(new Set(arrCamps)).map(e => `<i class="fa fa-dot-circle-o fa-fw"></i>${e}<br>`).join('');
+    if (strCamps) {
         $.smallBox(
             {
                 color: '#cc4d4d',
@@ -297,11 +297,12 @@ function smallBoxAlertValidation(inputsNotPassed){
         )
     }
 }
-d  = [];
 
-function smallBoxAlertValidation2(inputsNotPassed){
-    const tout = (2000*(inputsNotPassed.length)) + 4000;
-    const strCamps = inputsNotPassed.map(v=>`<i class="fa fa-dot-circle-o fa-fw"></i>
+d = [];
+
+function smallBoxAlertValidation2(inputsNotPassed) {
+    const tout = (2000 * (inputsNotPassed.length)) + 4000;
+    const strCamps = inputsNotPassed.map(v => `<i class="fa fa-dot-circle-o fa-fw"></i>
                                             ${v}<br>`).join('');
     $.smallBox(
         {
@@ -315,25 +316,25 @@ function smallBoxAlertValidation2(inputsNotPassed){
     )
 }
 
-function validationByNumSheet(numSheet, sheetNumberTo){
+function validationByNumSheet(numSheet, sheetNumberTo) {
     let continuosValidator = true;
     const inptsNoPassed = [];
     let alls = getAllInputsByNumberSheet(numSheet);
-    if(numSheet == "1" && sheetNumberTo === 3){
+    if (numSheet == "1" && sheetNumberTo === 3) {
         alls = alls.concat(getAllInputsByNumberSheet(2));
     }
 
-    if(numSheet == "1" && sheetNumberTo === 2){
+    if (numSheet == "1" && sheetNumberTo === 2) {
         try {
             getCondicionesMejora();
-        }catch (e) {
+        } catch (e) {
 
         }
 
     }
-    alls.forEach(v=>{
+    alls.forEach(v => {
         const isValid = $("#frm_registro").validate().element(v);
-        if(!isValid){
+        if (!isValid) {
             continuosValidator = false;
             inptsNoPassed.push(v);
         }
@@ -341,7 +342,7 @@ function validationByNumSheet(numSheet, sheetNumberTo){
     return {isValid: continuosValidator, inputs: inptsNoPassed};
 }
 
-function getAllInputsByNumberSheet(numSheet){
+function getAllInputsByNumberSheet(numSheet) {
     const sheetContainer = document.querySelector(`div.inpts-${numSheet}`);
     const inputs = Array.from(sheetContainer.querySelectorAll(`input.form-control`));
     const rgsInputs = Array.from(sheetContainer.querySelectorAll(`input[type="range"]`));
@@ -349,56 +350,54 @@ function getAllInputsByNumberSheet(numSheet){
     const selects = Array.from(sheetContainer.querySelectorAll(`select.form-control`));
     const rdsButtons = Array.from(sheetContainer.querySelectorAll(`input[type="radio"]`));
     const fRdsButtons = Array.from(
-        new Set(rdsButtons.map(v=>v.name))
-    ).map(v=>document.querySelector(`input[name="${v}"]`)).filter(e=>e!=null);
+        new Set(rdsButtons.map(v => v.name))
+    ).map(v => document.querySelector(`input[name="${v}"]`)).filter(e => e != null);
 
     const chkbuttons = Array.from(sheetContainer.querySelectorAll(`input[type="checkbox"]`));
     const fChkbuttons = Array.from(
-        new Set(chkbuttons.map(v=>v.name))
-    ).map(v=>document.querySelector(`input[name="${v}"]`)).filter(e=>e!=null);
+        new Set(chkbuttons.map(v => v.name))
+    ).map(v => document.querySelector(`input[name="${v}"]`)).filter(e => e != null);
     const alls = inputs.concat(selects).concat(fRdsButtons).concat(fChkbuttons).concat(txtAreas).concat(rgsInputs);
     return alls;
 }
 
-function next_step_cs(i){
+function next_step_cs(i) {
     const activeNumSheet = document.querySelector('.step.active').getAttribute('data-num-sheet');
     const sheetNumberTo = i;
     const checkList = activeNumSheet == 3 || activeNumSheet > i ? {isValid: true} : validationByNumSheet(activeNumSheet, sheetNumberTo);
-    if(skip_validation || checkList.isValid){
+    if (skip_validation || checkList.isValid) {
         const all = document.querySelectorAll('.fade-ficha');
         const sels = document.querySelectorAll('.step');
-        all.forEach((v,ii)=>{
+        all.forEach((v, ii) => {
             v.classList.remove('active');
             sels[ii].classList.remove('active')
         });
-        all[i-1].classList.add('active');
-        sels[i-1].classList.add('active');
-    }
-    else {
+        all[i - 1].classList.add('active');
+        sels[i - 1].classList.add('active');
+    } else {
         smallBoxAlertValidation(checkList.inputs);
     }
     time_line();
 }
 
-function next_step_cs_rt(i){
+function next_step_cs_rt(i) {
     trimAllInputs(frm);
     const activeNumSheet = document.querySelector('.step.active').getAttribute('data-num-sheet');
     const sheetNumberTo = i;
     const checkList = activeNumSheet == 3 || activeNumSheet > i ? {isValid: true} : validationByNumSheet(activeNumSheet, sheetNumberTo);
 
-    if(skip_validation || checkList.isValid){
+    if (skip_validation || checkList.isValid) {
         const all = document.querySelectorAll('.tab-pane');
         const sels = document.querySelectorAll('.step');
-        all.forEach((v,ii)=>{
+        all.forEach((v, ii) => {
             v.classList.remove('active');
             v.classList.remove('in');
             sels[ii].parentElement.classList.remove('active');
         });
-        all[i-1].classList.add('active');
-        all[i-1].classList.add('in');
-        sels[i-1].parentElement.classList.add('active');
-    }
-    else {
+        all[i - 1].classList.add('active');
+        all[i - 1].classList.add('in');
+        sels[i - 1].parentElement.classList.add('active');
+    } else {
         smallBoxAlertValidation(checkList.inputs);
     }
 }
@@ -408,21 +407,21 @@ function openMenuMobile() {
         var menu = $(".menu_mobile")
         if (menu.hasClass('active')) {
             menu.removeClass('active');
-            $("html,body").css('overflow','auto');
+            $("html,body").css('overflow', 'auto');
         } else {
             menu.addClass('active');
-            $("html,body").css('overflow','hidden');
+            $("html,body").css('overflow', 'hidden');
         }
     })
 }
 
 function openLogin() {
-        var login = $(".login")
-        if (login.hasClass('active')) {
-            login.removeClass('active')
-        } else {
-            login.addClass('active')
-        }
+    var login = $(".login")
+    if (login.hasClass('active')) {
+        login.removeClass('active')
+    } else {
+        login.addClass('active')
+    }
 }
 
 function goLogin() {
@@ -436,12 +435,12 @@ function goRegister() {
     $(".login-register").removeClass('hidden');
 }
 
-$(function() {
+$(function () {
     remarcarPaginaVisitada();
-    if($(window).scrollTop()>0){
-        $("nav").css({ "background-color": "#000" });
+    if ($(window).scrollTop() > 0) {
+        $("nav").css({"background-color": "#000"});
     }
-    $(window).scroll(function() {
+    $(window).scroll(function () {
         changecolor()
     });
     FullHeightBanner();
@@ -457,88 +456,88 @@ $(function() {
     scrollSidebar();
 })
 
-function remarcarPaginaVisitada(){
+function remarcarPaginaVisitada() {
     try {
         //Remarcar página visitada
         const pubMenu = document.querySelector(`a[href="${window.location.pathname}"]`);
 
-        if(pubMenu != undefined){
+        if (pubMenu != undefined) {
             const menu = pubMenu.parentElement;
-            if(menu.parentElement.classList.contains('dropdown-menu')){
-            }else{
+            if (menu.parentElement.classList.contains('dropdown-menu')) {
+            } else {
                 menu.classList.add('active');
             }
         }
-    }catch (e) {
+    } catch (e) {
         console.log(e);
     }
 }
 
-function submitReuseLogin(){
+function submitReuseLogin() {
     const frmLogin = document.getElementById('login-form');
-    if($(frmLogin).valid()){
+    if ($(frmLogin).valid()) {
         const btnLogin = document.getElementById('btn-login');
-        btnLogin.setAttribute('disabled','disabled');
+        btnLogin.setAttribute('disabled', 'disabled');
         frmLogin.submit();
     }
 }
 
-function trimAllInputs(frm){
-    frm.querySelectorAll('input').forEach(e=>{
-        if(e.type !== 'file'){
+function trimAllInputs(frm) {
+    frm.querySelectorAll('input').forEach(e => {
+        if (e.type !== 'file') {
             e.value = e.value.trim();
         }
     });
-    frm.querySelectorAll('textarea').forEach(e=>e.value = e.value.trim());
+    frm.querySelectorAll('textarea').forEach(e => e.value = e.value.trim());
 }
 
-function hideNavBar(){
+function hideNavBar() {
     document.querySelector('nav').classList.add('hide');
 }
 
-function validLoginForm(){
-        $("#login-form").validate({
-            // Rules for form validation}
-            errorClass: 'help-block',
-            highlight: function (element) {
-                $(element).parent().removeClass('state-success').addClass("state-error");
-                $(element).removeClass('valid');
+function validLoginForm() {
+    $("#login-form").validate({
+        // Rules for form validation}
+        errorClass: 'help-block',
+        highlight: function (element) {
+            $(element).parent().removeClass('state-success').addClass("state-error");
+            $(element).removeClass('valid');
+        },
+        unhighlight: function (element) {
+            $(element).parent().removeClass("state-error").addClass('state-success');
+            $(element).addClass('valid');
+        },
+        rules: {
+            username: {
+                required: true,
+                rangelength: [7, 40]
             },
-            unhighlight: function (element) {
-                $(element).parent().removeClass("state-error").addClass('state-success');
-                $(element).addClass('valid');
-            },
-            rules: {
-                username: {
-                    required: true,
-                    rangelength: [7, 40]
-                },
-                password: {
-                    required: true,
-                    rangelength: [8, 30]
-                }
-            },
-            // Messages for form validation
-            messages: {
-                username: {
-                    required: 'Por favor ingresa tu nombre de usuario',
-                },
-                password: {
-                    required: 'Por favor ingresa tu password'
-                }
-            },
-
-            // Do not change code below
-            errorPlacement: function (error, element) {
-                error.insertAfter(element.parent());
+            password: {
+                required: true,
+                rangelength: [8, 30]
             }
-        });
+        },
+        // Messages for form validation
+        messages: {
+            username: {
+                required: 'Por favor ingresa tu nombre de usuario',
+            },
+            password: {
+                required: 'Por favor ingresa tu password'
+            }
+        },
+
+        // Do not change code below
+        errorPlacement: function (error, element) {
+            error.insertAfter(element.parent());
+        }
+    });
 }
 
 function FullHeightBanner() {
     var altura = window.innerHeight;
     var ancho = window.innerWidth;
-    if(ancho > 800) {
+    if (ancho > 800) {
         $(".banner .bg-image").height(altura);
     }
 };
@@ -548,23 +547,24 @@ function FullHeightBanner() {
     validLoginForm();
 })();
 
-function setFullNameForPublicMenuInMobile(){
+function setFullNameForPublicMenuInMobile() {
     const authName = $('#AuthName').text();
     const gll_nombre = atob(getCookiePb('GLL_NOMBRE_COMPLETO'));
-    if(gll_nombre){
+    if (gll_nombre) {
         $('.iniciar-sesion-mobile').addClass('hidden');
         const menu = document.getElementById('FullNameOnlyMenu');
-        if(!menu){}else{
-            if(gll_nombre.includes(" xxx")){
+        if (!menu) {
+        } else {
+            if (gll_nombre.includes(" xxx")) {
                 menu.textContent = gll_nombre.substr(0, gll_nombre.indexOf(" xxx"));
             } else {
                 menu.textContent = gll_nombre;
             }
         }
-    } else{//Escondemos el boton de cerrar sesión
+    } else {//Escondemos el boton de cerrar sesión
         $('.cerrar-sesion-mobile').addClass('hidden');
     }
-    if(authName === "anonymousUser" || !authName){
+    if (authName === "anonymousUser" || !authName) {
         document.getElementById('FullNameOnlyMenu').textContent = "";
     }
 }
@@ -573,7 +573,7 @@ function getCookiePb(cname) {
     var name = cname + "=";
     var decodedCookie = decodeURIComponent(document.cookie);
     var ca = decodedCookie.split(';');
-    for(var i = 0; i <ca.length; i++) {
+    for (var i = 0; i < ca.length; i++) {
         var c = ca[i];
         while (c.charAt(0) == ' ') {
             c = c.substring(1);
@@ -586,8 +586,8 @@ function getCookiePb(cname) {
 }
 
 function scrollSidebar() {
-    $(window).on("load",function(){
-        if($(".sidebar")[0]){
+    $(window).on("load", function () {
+        if ($(".sidebar")[0]) {
             $(".sidebar .mCustomScrollbar ").mCustomScrollbar();
         }
     });
@@ -595,9 +595,9 @@ function scrollSidebar() {
 
 
 var passField = $('#login-form input[type=password]');
-$('.show-pass').hover(function() {
+$('.show-pass').hover(function () {
     passField.attr('type', 'text');
-}, function() {
+}, function () {
     passField.attr('type', 'password');
 });
 

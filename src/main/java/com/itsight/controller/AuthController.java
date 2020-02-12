@@ -113,7 +113,7 @@ public class AuthController extends BaseController {
         if(username == null || username.trim().equals("")){
             throw new CustomValidationException(Utilitarios.jsonResponse(Enums.Msg.VALIDACION_FALLIDA.get()));
         }
-        return Utilitarios.jsonResponse(securityUserService.recuperarPassword(username));
+        return Utilitarios.jsonResponse(securityUserService.recuperarPassword(username.toLowerCase()));
     }
 
     @GetMapping(value = "/p/cambiar/password/{hshId}")

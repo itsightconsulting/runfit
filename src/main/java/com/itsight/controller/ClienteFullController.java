@@ -129,7 +129,12 @@ public class ClienteFullController {
         RuCliPOJO rutina = rutinaProcedureInvoker.getLastByClienteId(id, 1);
         String postIds = configuracionClienteService.obtenerPostIdFavoritos(id);
         model.addAttribute("postsFavoritos" , postIds);
-        model.addAttribute("tipoRutina" , rutina.getTipoRutina());
+        if(rutina == null){
+            model.addAttribute("tipoRutina" , 0);
+        }else {
+            model.addAttribute("tipoRutina" , rutina.getTipoRutina());
+
+        }
         return new ModelAndView(ViewConstant.MAIN_CONSEJOS_CLIENTE);
     }
 

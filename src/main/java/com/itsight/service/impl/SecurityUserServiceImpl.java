@@ -2,7 +2,6 @@ package com.itsight.service.impl;
 
 import com.itsight.advice.CustomValidationException;
 import com.itsight.domain.Correo;
-import com.itsight.domain.SecurityUser;
 import com.itsight.domain.UsuarioRecover;
 import com.itsight.domain.dto.PasswordDTO;
 import com.itsight.repository.SecurityUserRepository;
@@ -48,21 +47,21 @@ public class SecurityUserServiceImpl implements SecurityUserService {
     @Override
     public String recuperarPassword(String username) throws CustomValidationException {
         String idAndEnabled = securityUserRepository.findIdAndEnabledByUsername(username);
-        if(idAndEnabled == null){
+        if (idAndEnabled == null) {
             throw new CustomValidationException(USUARIO_NO_EXISTE.get(), EX_VALIDATION_FAILED.get());
         }
         Boolean isEnabled = Boolean.valueOf(idAndEnabled.split("\\|")[1]);
 
-        if(!isEnabled){
+        if (!isEnabled) {
             throw new CustomValidationException(USUARIO_INACTIVO.get(), EX_VALIDATION_FAILED.get());
         }
 
-        Integer secUserId =  Integer.parseInt(idAndEnabled.split("\\|")[0]);
+        Integer secUserId = Integer.parseInt(idAndEnabled.split("\\|")[0]);
 
         UsuarioRecover usuRec = usuarioRecoverRepository.findById(secUserId).orElse(null);
         Date nowPlusOne = Date.from(Instant.now().plus(1, ChronoUnit.DAYS));
         String schema = Utilitarios.getRandomString(10);
-        if(usuRec == null){
+        if (usuRec == null) {
             usuarioRecoverRepository.save(new UsuarioRecover(secUserId, schema, true, nowPlusOne));
         } else {
             usuRec.setFlagRecover(true);
@@ -84,16 +83,16 @@ public class SecurityUserServiceImpl implements SecurityUserService {
 
     @Override
     public String cambiarPassword(PasswordDTO passwordDTO, Integer id) throws CustomValidationException {
-        if(!passwordDTO.getNuevaPassword().equals(passwordDTO.getNuevaPasswordRe())){
+        if (!passwordDTO.getNuevaPassword().equals(passwordDTO.getNuevaPasswordRe())) {
             throw new CustomValidationException(VALIDACION_FALLIDA.get(), EX_VALIDATION_FAILED.get());
         }
 
         UsuarioRecover usuRec = usuarioRecoverRepository.findById(id).orElse(null);
-        if(usuRec == null || !usuRec.isFlagRecover()){
+        if (usuRec == null || !usuRec.isFlagRecover()) {
             throw new CustomValidationException(ENLACE_RECUPERACION_PASS_UTILIZADO.get(), EX_VALIDATION_FAILED.get());
         }
 
-        if(usuRec.getFechaLimite().before(new Date())){
+        if (usuRec.getFechaLimite().before(new Date())) {
             throw new CustomValidationException(ENLACE_CADUCADO.get(), EX_VALIDATION_FAILED.get());
         }
         usuRec.setFlagRecover(false);

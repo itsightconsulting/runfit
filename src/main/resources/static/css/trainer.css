@@ -2884,9 +2884,6 @@ li.active .circle .mini-circle {
 li{
   margin-left:20px;
 }
-li:first-child{
-  margin-left:0px;
-}
 
 .mini-circle{
   height: 8px;

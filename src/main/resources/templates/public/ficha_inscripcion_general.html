@@ -558,7 +558,7 @@
                       <textarea id="HistorialDeportivoAnt" name="HistorialDeportivoAnt" data-aka="Historial deportivo infancia/juventud" class="form-control"></textarea>
                     </div>
                     <div class="form-group">
-                      <label>Actual (desde cuándo, periocidad, tiempo y actividades que realizas)<span class="obligatorio">*</span></label>
+                      <label>Actual (desde cuándo, periocidad, tiempo y actividades físicas que realizas)<span class="obligatorio">*</span></label>
                       <textarea id="HistorialDeportivoAct" name="HistorialDeportivoAct" data-aka="Historial deportivo actual" class="form-control"></textarea>
                     </div>
                   </li>
@@ -753,6 +753,9 @@
                         <div class="form-group password"><span class="fa fa-unlock-alt" style="color: #a8fa00 !important;"></span>
                           <label style="width: 112px !important;" for="Password">Contraseña</label>
                           <input type="password" class="form-control" id="Password" name="Password" style="padding: 6px 12px;width: 30%" aria-invalid="false">
+                        </div>
+                        <div class="form-group" style="padding-left: 5px; cursor: pointer" onclick="javascript:showPasswordFichas(this)">
+                          <span class="show-pass-form fa fa-eye fa-fw" style="color: #a8fa00;"></span><span id="FishEyeShow"> Mostrar</span><span id="FishEyeHide" style="display: none"> Ocultar</span>
                         </div>
                       </div>
                     </div>
@@ -1402,7 +1405,7 @@
             rangelength: [2,500]
           },
           RecomMedica:{
-            rangelength: [5,500]
+            rangelength: [2,500]
           },
           FlagEmbarazo: {
             required: function(){

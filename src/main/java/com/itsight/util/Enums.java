@@ -187,7 +187,7 @@ public class Enums {
         POST_LINK_EXP_PR("El vínculo ha expirado, para poder registrarse debe comunicarse con la plataforma, en la parte inferior de la página encontrará un apartado con datos de contacto."),
         CONTACTO_TRAINER("El asesor ha sido notificado y pronto se pondrá en contacto. Que tenga usted un buen día!"),
         CONSULTA_CONTACTO_ENVIADA("Su consulta ha sido enviada, tan pronto como podamos, atenderemos su consulta. Gracias por comunicarse con nosotros."),
-        APROBACION_FINAL_PERFIL_TRAINER("Usted ha aprobado satisfactoriamente el perfil del trainer. Este último acaba de ser notificado."),
+        APROBACION_FINAL_PERFIL_TRAINER("Usted ha aprobado satisfactoriamente el perfil del asesor. Este último acaba de ser notificado."),
         APROBACION_FINAL_PERFIL_TRAINER_RE("El trainer ya ha sido aprobado con anterioridad."),
         PERFIL_APROBADO_ANTERIORMENTE("El perfil del entrenador que quieres visitar ya ha sido aprobado con anterioridad."),
         PERFIL_EN_REVISION("El perfil del entrenador que quieres visitar ya ha sido observado con anterioridad."),

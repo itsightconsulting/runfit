@@ -3,558 +3,583 @@
       xmlns:th="http://www.thymeleaf.org"
       th:with="version = ${#servletContext.getAttribute('version')}">
 <head>
-  <title>Perfil empresa | Fitness | Runfit</title>
-  <th:block th:insert="html-commons/p/meta :: fg-meta"></th:block>
-  <th:block th:insert="html-commons/p/css  :: fg-css"></th:block>
+    <title>Perfil empresa | Fitness | Runfit</title>
+    <th:block th:insert="html-commons/p/meta :: fg-meta"></th:block>
+    <th:block th:insert="html-commons/p/css  :: fg-css"></th:block>
 </head>
-  <body>
-    <nav th:replace="html-commons/p/header :: fg-header"></nav>
-    <div th:replace="html-commons/reu-login :: fg-login"></div>
-    <div id="wrapper">
-      <div class="section banner home">
+<body>
+<nav th:replace="html-commons/p/header :: fg-header"></nav>
+<div th:replace="html-commons/reu-login :: fg-login"></div>
+<div id="wrapper">
+    <div class="section banner home">
         <div class="bg-image-x">
             <img class="banner-home" th:src="@{/img/public/trainers-shadow.jpg}+'?'+${version}"/>
         </div>
-      </div>
-      <section class="trainers-form">
-        <div class="row">
-          <div class="container">
-            <div class="col-md-5">
-              <div class="avatar-form">
-                <div class="avatar-form-content" id="ImagenPerfil">
-                    <img src="https://media1.tenor.com/images/b18603537d3dbdd776f2907e3187a5c4/tenor.gif?itemid=11580546" style="max-height: 100% !important;height: 100%"/>
-                </div>
-                <div class="div-btn-emp-trainer">
-                    <button onclick="irARegistrosTrainer();" class="btn btn-white btn-emp-trainer"  rel="tooltip" title="Clickee aquí para registrar un nuevo trainer para la empresa">
-                        IR A REGISTRAR STAFF
-                    </button>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-7">
-              <ul class="nav nav-tabs">
-                <li class="active"><a data-toggle="tab" href="#about"><span>ACERCA DE MÍ</span></a></li>
-                <li class="hidden"><a data-toggle="tab" href="#staff"><span>STAFF</span></a></li>
-                <li><a data-toggle="tab" href="#service"><span>SERVICIOS</span></a></li>
-              </ul>
-              <div class="tab-content">
-                <div class="tab-pane fade in active" id="about">
-                  <form>
-                    <div class="form-group">
-                      <label>NOMBRE</label>
-                      <p id="NombreFull"></p>
-                    </div>
-                    <div class="form-group hidden" id="txtSexo">
-                          <label>SEXO</label>
-                          <p id="Sexo"></p>
-                    </div>
-                    <div class="form-group" id="dvEspecialidad">
-                      <label>ESPECIALIDAD</label>
-                      <p id="Especialidad"></p>
-                    </div>
-                    <div class="form-group">
-                      <label>DEPORTE O ACTIVIDADES QUE REALIZAS</label>
-                      <ul id="Disciplinas" class="list-description">
-                      </ul>
-                    </div>
-                    <div class="form-group">
-                      <label>ACERCA DE MI</label>
-                      <p id="Acerca"></p>
-                    </div>
-                    <div class="form-group">
-                      <label>IDIOMAS QUE DOMINO</label>
-                      <p id="Idiomas"></p>
-                    </div>
-                    <div class="form-group" id="dvEstudios">
-                      <label>ESTUDIOS Y CERTIFICACIONES</label>
-                      <ul id="Estudios" class="list-description">
-                      </ul>
-                    </div>
-                    <div class="form-group">
-                      <label>MÉTODO DE TRABAJO</label>
-                      <p id="MetodoTrabajo"></p>
-                    </div>
-                    <div class="form-group" id="dvExperiencias">
-                      <label>EXPERIENCIA LABORAL</label>
-                      <ul id="Experiencias" class="list-description">
-                      </ul>
-                    </div>
-                    <div class="form-group">
-                      <label>RESULTADOS OBTENIDOS COMO PROFESIONAL</label>
-                      <ul id="Resultados" class="list-description">
-                      </ul>
-                    </div>
-                    <div class="form-group">
-                      <label>SELECCIONA EL NIVEL DE RENDIMIENTO DE LAS PERSONAS QUE ASESORAS</label>
-                      <ul id="Niveles" class="list-description">
-                      </ul>
-                    </div>
-                    <div class="form-group">
-                      <label>CENTRO DE TRABAJO</label>
-                      <p id="CentroTrabajo"></p>
-                    </div>
-                    <div class="form-group hidden" id="lblRangoMapa">
-                        <label>RANGO DE ATENCIÓN PRESENCIAL</label>
-                        <div class="map" id="map"></div>
-                    </div>
-                    <div class="form-group" id="dvEspecialidades">
-                      <label>ESPECIALIDADES QUE DOMINO</label>
-                      <ul id="Especialidades" class="list-description">
-                      </ul>
-                    </div>
-                    <div class="form-group">
-                      <label>FORMA DE TRABAJO</label>
-                      <ul id="FormasTrabajo" class="list-description">
-                      </ul>
-                    </div>
-                    <div class="form-group" id="dvHorario">
-                        <label>HORARIO LABORAL</label>
-                        <p id="Horario">
-                    </div>
-                    <div class="form-group hidden" id="lblGaleriaFotos">
-                      <label>GALERÍA DE FOTOS</label>
-                      <div class="row">
-                        <div class="col-md-12" id="ImgsGaleria">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="form-group hidden" id="lblRedes">
-                        <label>REDES SOCIALES</label>
-                        <div class="form-group rs">
-                            <div class="col-xs-12 no_padding">
-                                <a href="#" target="_blank" id="RsFb"><img th:src="@{/img/public/fb.png} +'?'+ ${version}"/></a>
-                                <a href="#" target="_blank" id="RsIn"><img th:src="@{/img/public/ins.png} +'?'+ ${version}"/></a>
-                                <a href="#" target="_blank" id="RsYo"><img th:src="@{/img/public/youtube.png} +'?'+ ${version}"/></a>
-                            </div>
-                        </div>
-                    </div>
-                  </form>
-                </div>
-                <div class="tab-pane fade" id="staff" style="padding: 0px 0px 20px">
-                    <form>
-                        <h1 class="title-form">DALE UN VISTAZO A NUESTROS ASESORES</h1>
-                        <div>
-                            <ul class="staff" id="Staffs">
-                            </ul>
-                        </div>
-                    </form>
-                </div>
-                <div class="tab-pane fade" id="service">
-                      <h1 class="title-form">DALE UN VISTAZO A NUESTROS SERVICIOS </h1>
-                      <form>
-                          <div class="ver-servicios">
-                              <div id="NomServicios" class="form-group">
-                              </div>
-                          </div>
-                          <div class="form-group">
-                              <label>DESCRIPCIÓN</label>
-                              <p id="DescripcionServicio"></p>
-                          </div>
-                          <div class="form-group" id="MainIncluyeServicios">
-                              <label>QUE INCLUYE</label>
-                              <ul id="IncluyeServicio" class="list-counter">
-                                  <li></li>
-                              </ul>
-                          </div>
-                          <div class="form-group">
-                              <label>INFORMACIÓN ADICIONAL</label>
-                              <p id="InfoAdicional"></p>
-                          </div>
-                          <div id="EnlaceTYC" class="form-group hidden">
-                            <label>TÉRMINOS Y CONDICIONES:
-                                <a href="#"><i rel="tooltip" title="Ver términos y condiciones" class="fa fa-fw fa-eye" data-target="#modalTYC" data-toggle="modal"></i></a>
-                            </label>
-                          </div>
-                          <!-- TARIFARIOS -->
-                          <h4 id="CabeceraTarifarios" class="sub-title">TARIFARIOS</h4>
-                          <div class="row">
-                              <div class="col col-md-12 text-center" id="Tarifarios">
-                              </div>
-                          </div>
-                          <!-- DETALLE PAQUETE -->
-                          <div class="clase-tarifario collapse in" id="contentTarifario">
-                              <div class="form-group txt-tar">
-                                  <div class="row">
-                                      <div class="col-xs-7">
-                                          <label>NOMBRE:</label>
-                                      </div>
-                                      <div class="col-xs-5">
-                                          <label id="NombreTarifario" class="txt-tarifario-right"></label>
-                                      </div>
-                                  </div>
-                              </div>
-                              <div class="form-group txt-tar">
-                                  <div class="row">
-                                      <div class="col-xs-7">
-                                          <label>FRECUENCIA:</label>
-                                      </div>
-                                      <div class="col-xs-5">
-                                          <label id="FrecuenciaPaquete" class=" txt-tarifario-right"></label>
-                                      </div>
-                                  </div>
-                              </div>
-                              <div class="form-group txt-tar">
-                                  <div class="row">
-                                      <div class="col-xs-7">
-                                          <label>CANTIDAD DE PERSONAS:</label>
-                                      </div>
-                                      <div class="col-xs-5 text-right">
-                                          <ul class="counter">
-                                              <li class="result">
-                                                  <input class="counter-input" id="txtCantidadPersonas" type="text" value="0" disabled="disabled">
-                                              </li>
-                                          </ul>
-                                      </div>
-                                  </div>
-                              </div>
-                              <div class="form-group txt-tar">
-                                  <div class="row">
-                                      <div class="col-xs-7">
-                                          <label>CANTIDAD DE MESES:</label>
-                                      </div>
-                                      <div class="col-xs-5 text-right">
-                                          <ul class="counter">
-                                              <li class="result">
-                                                  <input class="counter-input" disabled="disabled" id="txtCantidadMeses" type="text" value="0">
-                                              </li>
-                                          </ul>
-                                      </div>
-                                  </div>
-                              </div>
-                              <div class="form-group txt-tar">
-                                  <div class="row">
-                                      <div class="col-xs-7">
-                                          <label>CANTIDAD DE SESIONES:</label>
-                                      </div>
-                                      <div class="col-xs-5 text-right">
-                                          <ul class="counter">
-                                              <li class="result">
-                                                  <input class="counter-input" disabled="disabled" id="txtCantidadSesiones" type="text" value="0">
-                                              </li>
-                                          </ul>
-                                      </div>
-                                  </div>
-                              </div>
-                              <div class="form-group txt-tar">
-                                  <div class="row">
-                                      <div class="col-xs-7">
-                                          <label style="margin: 5px 0px !important;">PRECIO TOTAL:</label>
-                                      </div>
-                                      <div class="col-xs-5 text-right" style="margin: 5px 0px !important;">
-                                          <input id="PrecioPaquete" class="price" type="text" value="0.00" disabled="disabled">
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                          <!-- END DETALLE PAQUETE -->
-                          <!-- END TARIFARIOS-->
-                          <h4 class="title-metodo-pago">MÉTODOS DE PAGO</h4>
-                          <div class="row">
-                              <div class="col col-md-12" id="MediosPagosAgregados" style="padding-bottom:15px">
-                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="1"><img th:src="@{/img/money.png}"></a>
-                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="2"><img th:src="@{/img/mastercard.png}"></a>
-                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="3"><img th:src="@{/img/visa.png}"></a>
-                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="4"><img th:src="@{/img/amex.png}"></a>
-                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="5"><img th:src="@{/img/diners-club.png}"></a>
-                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="6"><img th:src="@{/img/discover.png}"></a>
-                              </div>
-                          </div>
-                          <h4 class="title-icon-ver title-cuentas-bancarias">CUENTAS BANCARIAS
-                              <i rel="tooltip" data-placement="bottom" data-original-title="Ver las cuentas registradas" onclick="verCuentasBancariasNoOps();"></i>
-                          </h4>
-                          <div class="form-group hidden" id="divNotaFinal">
-                              <label>Nota</label>
-                              <p id="NotaFinal"></p>
-                          </div>
-                          <input type="hidden" id="HshTrainerId" th:value="${hshTrainerId}">
-                      </form>
-                </div>
-                <button class="btn btn-default btn-black" type="button" id="btnGuardarGeneral">FINALIZAR REGISTRO</button>
-                <hr>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
-    <!-- MODALS -->
-    <script th:inline="javascript">
-        const body = document.querySelector('body');
-    </script>
-    <th:block th:insert="public/modals-trainer :: fg-modals-p-trainer"></th:block>
-    <footer th:replace="html-commons/p/footer :: fg-footer"></footer>
-    <th:block th:insert="html-commons/p/js :: fg-js"></th:block>
-    <script th:src="@{/js/hashids.min.js}+'?'+${version}"></script>
-    <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPnQe-1f0b5KmTQXUMED0_n9-Vx3Y4ixc&amp;callback=initMap" type="text/javascript"></script>
-    <script th:inline="javascript">
-      let $perfil = {};
-      const tabService = document.getElementById('service');
-      const btnGuardarGeneral = document.getElementById('btnGuardarGeneral');
-      let ccBancarias = [];
-      let servicios = [];
-      let selServicioId = -1;
+    <section class="trainers-form">
+        <div class="row">
+            <div class="container">
+                <div class="col-md-5">
+                    <div class="avatar-form">
+                        <div class="avatar-form-content" id="ImagenPerfil">
+                            <img src="https://media1.tenor.com/images/b18603537d3dbdd776f2907e3187a5c4/tenor.gif?itemid=11580546"
+                                 style="max-height: 100% !important;height: 100%"/>
+                        </div>
+                        <div class="nombre-asesor-perfil" id="PerfilNombreAsesor"></div>
+
+                        <div class="div-btn-emp-trainer">
+                            <button onclick="irARegistrosTrainer();" class="btn btn-white btn-emp-trainer" rel="tooltip"
+                                    title="Clickee aquí para registrar un nuevo trainer para la empresa">
+                                IR A REGISTRAR STAFF
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#about"><span>ACERCA DE MÍ</span></a></li>
+                        <li class="hidden"><a data-toggle="tab" href="#staff"><span>STAFF</span></a></li>
+                        <li><a data-toggle="tab" href="#service"><span>SERVICIOS</span></a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active" id="about">
+                            <form>
+                                <div class="form-group">
+                                    <label>NOMBRE</label>
+                                    <p id="NombreFull"></p>
+                                </div>
+                                <div class="form-group hidden" id="txtSexo">
+                                    <label>SEXO</label>
+                                    <p id="Sexo"></p>
+                                </div>
+                                <div class="form-group" id="dvEspecialidad">
+                                    <label>ESPECIALIDAD</label>
+                                    <p id="Especialidad"></p>
+                                </div>
+                                <div class="form-group">
+                                    <label>DEPORTE O ACTIVIDADES QUE REALIZAS</label>
+                                    <ul id="Disciplinas" class="list-description">
+                                    </ul>
+                                </div>
+                                <div class="form-group">
+                                    <label>ACERCA DE MI</label>
+                                    <p id="Acerca"></p>
+                                </div>
+                                <div class="form-group">
+                                    <label>IDIOMAS QUE DOMINO</label>
+                                    <p id="Idiomas"></p>
+                                </div>
+                                <div class="form-group" id="dvEstudios">
+                                    <label>ESTUDIOS Y CERTIFICACIONES</label>
+                                    <ul id="Estudios" class="list-description">
+                                    </ul>
+                                </div>
+                                <div class="form-group">
+                                    <label>MÉTODO DE TRABAJO</label>
+                                    <p id="MetodoTrabajo"></p>
+                                </div>
+                                <div class="form-group" id="dvExperiencias">
+                                    <label>EXPERIENCIA LABORAL</label>
+                                    <ul id="Experiencias" class="list-description">
+                                    </ul>
+                                </div>
+                                <div class="form-group">
+                                    <label>RESULTADOS OBTENIDOS COMO PROFESIONAL</label>
+                                    <ul id="Resultados" class="list-description">
+                                    </ul>
+                                </div>
+                                <div class="form-group">
+                                    <label>SELECCIONA EL NIVEL DE RENDIMIENTO DE LAS PERSONAS QUE ASESORAS</label>
+                                    <ul id="Niveles" class="list-description">
+                                    </ul>
+                                </div>
+                                <div class="form-group">
+                                    <label>CENTRO DE TRABAJO</label>
+                                    <p id="CentroTrabajo"></p>
+                                </div>
+                                <div class="form-group hidden" id="lblRangoMapa">
+                                    <label>RANGO DE ATENCIÓN PRESENCIAL</label>
+                                    <div class="map" id="map"></div>
+                                </div>
+                                <div class="form-group" id="dvEspecialidades">
+                                    <label>ESPECIALIDADES QUE DOMINO</label>
+                                    <ul id="Especialidades" class="list-description">
+                                    </ul>
+                                </div>
+                                <div class="form-group">
+                                    <label>FORMA DE TRABAJO</label>
+                                    <ul id="FormasTrabajo" class="list-description">
+                                    </ul>
+                                </div>
+                                <div class="form-group" id="dvHorario">
+                                    <label>HORARIO LABORAL</label>
+                                    <p id="Horario">
+                                </div>
+                                <div class="form-group hidden" id="lblGaleriaFotos">
+                                    <label>GALERÍA DE FOTOS</label>
+                                    <div class="row">
+                                        <div class="col-md-12" id="ImgsGaleria">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group hidden" id="lblRedes">
+                                    <label>REDES SOCIALES</label>
+                                    <div class="form-group rs">
+                                        <div class="col-xs-12 no_padding">
+                                            <a href="#" target="_blank" id="RsFb"><img
+                                                    th:src="@{/img/public/fb.png} +'?'+ ${version}"/></a>
+                                            <a href="#" target="_blank" id="RsIn"><img
+                                                    th:src="@{/img/public/ins.png} +'?'+ ${version}"/></a>
+                                            <a href="#" target="_blank" id="RsYo"><img
+                                                    th:src="@{/img/public/youtube.png} +'?'+ ${version}"/></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane fade" id="staff" style="padding: 0px 0px 20px">
+                            <form>
+                                <h1 class="title-form">DALE UN VISTAZO A NUESTROS ASESORES</h1>
+                                <div>
+                                    <ul class="staff" id="Staffs">
+                                    </ul>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane fade" id="service">
+                            <h1 class="title-form">DALE UN VISTAZO A NUESTROS SERVICIOS </h1>
+                            <form>
+                                <div class="ver-servicios">
+                                    <div id="NomServicios" class="form-group">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>DESCRIPCIÓN</label>
+                                    <p id="DescripcionServicio"></p>
+                                </div>
+                                <div class="form-group" id="MainIncluyeServicios">
+                                    <label>QUE INCLUYE</label>
+                                    <ul id="IncluyeServicio" class="list-counter">
+                                        <li></li>
+                                    </ul>
+                                </div>
+                                <div class="form-group">
+                                    <label>INFORMACIÓN ADICIONAL</label>
+                                    <p id="InfoAdicional"></p>
+                                </div>
+                                <div id="EnlaceTYC" class="form-group hidden">
+                                    <label>TÉRMINOS Y CONDICIONES:
+                                        <a href="#"><i rel="tooltip" title="Ver términos y condiciones"
+                                                       class="fa fa-fw fa-eye" data-target="#modalTYC"
+                                                       data-toggle="modal"></i></a>
+                                    </label>
+                                </div>
+                                <!-- TARIFARIOS -->
+                                <h4 id="CabeceraTarifarios" class="sub-title">TARIFARIOS</h4>
+                                <div class="row">
+                                    <div class="col col-md-12 text-center" id="Tarifarios">
+                                    </div>
+                                </div>
+                                <!-- DETALLE PAQUETE -->
+                                <div class="clase-tarifario collapse in" id="contentTarifario">
+                                    <div class="form-group txt-tar">
+                                        <div class="row">
+                                            <div class="col-xs-7">
+                                                <label>NOMBRE:</label>
+                                            </div>
+                                            <div class="col-xs-5">
+                                                <label id="NombreTarifario" class="txt-tarifario-right"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group txt-tar">
+                                        <div class="row">
+                                            <div class="col-xs-7">
+                                                <label>FRECUENCIA:</label>
+                                            </div>
+                                            <div class="col-xs-5">
+                                                <label id="FrecuenciaPaquete" class=" txt-tarifario-right"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group txt-tar">
+                                        <div class="row">
+                                            <div class="col-xs-7">
+                                                <label>CANTIDAD DE PERSONAS:</label>
+                                            </div>
+                                            <div class="col-xs-5 text-right">
+                                                <ul class="counter">
+                                                    <li class="result">
+                                                        <input class="counter-input" id="txtCantidadPersonas"
+                                                               type="text" value="0" disabled="disabled">
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group txt-tar">
+                                        <div class="row">
+                                            <div class="col-xs-7">
+                                                <label>CANTIDAD DE MESES:</label>
+                                            </div>
+                                            <div class="col-xs-5 text-right">
+                                                <ul class="counter">
+                                                    <li class="result">
+                                                        <input class="counter-input" disabled="disabled"
+                                                               id="txtCantidadMeses" type="text" value="0">
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group txt-tar">
+                                        <div class="row">
+                                            <div class="col-xs-7">
+                                                <label>CANTIDAD DE SESIONES:</label>
+                                            </div>
+                                            <div class="col-xs-5 text-right">
+                                                <ul class="counter">
+                                                    <li class="result">
+                                                        <input class="counter-input" disabled="disabled"
+                                                               id="txtCantidadSesiones" type="text" value="0">
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group txt-tar">
+                                        <div class="row">
+                                            <div class="col-xs-7">
+                                                <label style="margin: 5px 0px !important;">PRECIO TOTAL:</label>
+                                            </div>
+                                            <div class="col-xs-5 text-right" style="margin: 5px 0px !important;">
+                                                <input id="PrecioPaquete" class="price" type="text" value="0.00"
+                                                       disabled="disabled">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- END DETALLE PAQUETE -->
+                                <!-- END TARIFARIOS-->
+                                <h4 class="title-metodo-pago">MÉTODOS DE PAGO</h4>
+                                <div class="row">
+                                    <div class="col col-md-12" id="MediosPagosAgregados" style="padding-bottom:15px">
+                                        <a href="javascript:void(0);" class="cc-elegido hidden" data-id="1"><img
+                                                th:src="@{/img/money.png}"></a>
+                                        <a href="javascript:void(0);" class="cc-elegido hidden" data-id="2"><img
+                                                th:src="@{/img/mastercard.png}"></a>
+                                        <a href="javascript:void(0);" class="cc-elegido hidden" data-id="3"><img
+                                                th:src="@{/img/visa.png}"></a>
+                                        <a href="javascript:void(0);" class="cc-elegido hidden" data-id="4"><img
+                                                th:src="@{/img/amex.png}"></a>
+                                        <a href="javascript:void(0);" class="cc-elegido hidden" data-id="5"><img
+                                                th:src="@{/img/diners-club.png}"></a>
+                                        <a href="javascript:void(0);" class="cc-elegido hidden" data-id="6"><img
+                                                th:src="@{/img/discover.png}"></a>
+                                    </div>
+                                </div>
+                                <h4 class="title-icon-ver title-cuentas-bancarias">CUENTAS BANCARIAS
+                                    <i rel="tooltip" data-placement="bottom"
+                                       data-original-title="Ver las cuentas registradas"
+                                       onclick="verCuentasBancariasNoOps();"></i>
+                                </h4>
+                                <div class="form-group hidden" id="divNotaFinal">
+                                    <label>Nota</label>
+                                    <p id="NotaFinal"></p>
+                                </div>
+                                <input type="hidden" id="HshTrainerId" th:value="${hshTrainerId}">
+                            </form>
+                        </div>
+                        <button class="btn btn-default btn-black" type="button" id="btnGuardarGeneral">FINALIZAR
+                            REGISTRO
+                        </button>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+</section>
+</div>
+<!-- MODALS -->
+<script th:inline="javascript">
+    const body = document.querySelector('body');
+</script>
+<th:block th:insert="public/modals-trainer :: fg-modals-p-trainer"></th:block>
+<footer th:replace="html-commons/p/footer :: fg-footer"></footer>
+<th:block th:insert="html-commons/p/js :: fg-js"></th:block>
+<script th:src="@{/js/hashids.min.js}+'?'+${version}"></script>
+<script async="" defer=""
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPnQe-1f0b5KmTQXUMED0_n9-Vx3Y4ixc&amp;callback=initMap"
+        type="text/javascript"></script>
+<script th:inline="javascript">
+    let $perfil = {};
+    const tabService = document.getElementById('service');
+    const btnGuardarGeneral = document.getElementById('btnGuardarGeneral');
+    let ccBancarias = [];
+    let servicios = [];
+    let selServicioId = -1;
 
 
-      (function () {
-          tabService.addEventListener('click', clickListenerTabService);
-          btnGuardarGeneral.addEventListener('click', preGuardarGeneralEmpresa);
-          init();
-      })();
+    (function () {
+        tabService.addEventListener('click', clickListenerTabService);
+        btnGuardarGeneral.addEventListener('click', preGuardarGeneralEmpresa);
+        init();
+    })();
 
-      function clickListenerTabService(e) {
-          const input = e.target;
-          const clases = input.classList;
-          if (clases.contains('servicio')) {
-              const id = input.getAttribute('data-id');
-              selServicioId = Number(id);
-              const svcFocus = tabService.querySelector('.svc-focus');
-              svcFocus != undefined ? svcFocus.classList.remove('svc-focus') : "";
-              clases.add('svc-focus');
-              mostrarDetalleServicio(selServicioId);
-          } else if (clases.contains('cc-bancaria')) {
-              const inputBancoId = document.getElementById('ModalCuentaBancoId');
-              const ccId = Number(input.getAttribute('data-id'));
-              inputBancoId.value = ccId;
-              const d = ccBancarias.find(e => e.bancoId === ccId);
-              $('#myModalCC').modal('show');
-              const dC = document.getElementById('CuentaBancariaUnica');
-              dC.querySelector('.cc-nom-banco').textContent = banks.find(b=>b.id===d.bancoId).nombre;
-              dC.querySelector('.cc-titular').textContent = d.titular;
-              dC.querySelector('.cc-td').textContent = d.titularTipoDoc;
-              dC.querySelector('.cc-nd').textContent = d.titularNumDoc;
-              dC.querySelector('.cc-cs').textContent = d.numeroSoles;
-              dC.querySelector('.cc-cd').textContent = d.numeroDolares;
-              dC.querySelector('.cc-cis').textContent = d.interbancarioSoles;
-              dC.querySelector('.cc-cid').textContent = d.interbancarioDolares;
-          } else if(clases.contains('tarifa-svc')) {
-              let padre = {};
-              if(input.tagName === "IMG" || input.tagName === "H6"){
-                  padre = input.parentElement.parentElement;
-              } else if(input.tagName === "A"){
-                  padre = input.parentElement;
-              }
-              const svcFocus = tabService.querySelector('.tarifa-svc-pick');
-              svcFocus != undefined ? svcFocus.classList.remove('tarifa-svc-pick') : "";
-              padre.classList.add('tarifa-svc-pick');
-              mostrarDetalleTarifaSvc(Number(padre.getAttribute('data-id')));
-          }
-      }
+    function clickListenerTabService(e) {
+        const input = e.target;
+        const clases = input.classList;
+        if (clases.contains('servicio')) {
+            const id = input.getAttribute('data-id');
+            selServicioId = Number(id);
+            const svcFocus = tabService.querySelector('.svc-focus');
+            svcFocus != undefined ? svcFocus.classList.remove('svc-focus') : "";
+            clases.add('svc-focus');
+            mostrarDetalleServicio(selServicioId);
+        } else if (clases.contains('cc-bancaria')) {
+            const inputBancoId = document.getElementById('ModalCuentaBancoId');
+            const ccId = Number(input.getAttribute('data-id'));
+            inputBancoId.value = ccId;
+            const d = ccBancarias.find(e => e.bancoId === ccId);
+            $('#myModalCC').modal('show');
+            const dC = document.getElementById('CuentaBancariaUnica');
+            dC.querySelector('.cc-nom-banco').textContent = banks.find(b => b.id === d.bancoId).nombre;
+            dC.querySelector('.cc-titular').textContent = d.titular;
+            dC.querySelector('.cc-td').textContent = d.titularTipoDoc;
+            dC.querySelector('.cc-nd').textContent = d.titularNumDoc;
+            dC.querySelector('.cc-cs').textContent = d.numeroSoles;
+            dC.querySelector('.cc-cd').textContent = d.numeroDolares;
+            dC.querySelector('.cc-cis').textContent = d.interbancarioSoles;
+            dC.querySelector('.cc-cid').textContent = d.interbancarioDolares;
+        } else if (clases.contains('tarifa-svc')) {
+            let padre = {};
+            if (input.tagName === "IMG" || input.tagName === "H6") {
+                padre = input.parentElement.parentElement;
+            } else if (input.tagName === "A") {
+                padre = input.parentElement;
+            }
+            const svcFocus = tabService.querySelector('.tarifa-svc-pick');
+            svcFocus != undefined ? svcFocus.classList.remove('tarifa-svc-pick') : "";
+            padre.classList.add('tarifa-svc-pick');
+            mostrarDetalleTarifaSvc(Number(padre.getAttribute('data-id')));
+        }
+    }
 
-      function mostrarDetalleTarifaSvc(tarifaId){
-          const t = servicios.find(v => v.id === selServicioId).tarifarios.find((t, ix)=>ix === tarifaId);
-          document.querySelector('#NombreTarifario').textContent = t.nombre;
-          document.querySelector('#FrecuenciaPaquete').textContent = t.frecuencia;
-          document.querySelector('#txtCantidadPersonas').value = t.personas;
-          document.querySelector('#txtCantidadMeses').value = t.meses;
-          document.querySelector('#txtCantidadSesiones').value = t.sesiones;
-          document.querySelector('#PrecioPaquete').value = (t.monedaId === 1 ? 'S/. ' : '$ ')+ parseFloat(t.precio).toFixed(2);
-      }
+    function mostrarDetalleTarifaSvc(tarifaId) {
+        const t = servicios.find(v => v.id === selServicioId).tarifarios.find((t, ix) => ix === tarifaId);
+        document.querySelector('#NombreTarifario').textContent = t.nombre;
+        document.querySelector('#FrecuenciaPaquete').textContent = t.frecuencia;
+        document.querySelector('#txtCantidadPersonas').value = t.personas;
+        document.querySelector('#txtCantidadMeses').value = t.meses;
+        document.querySelector('#txtCantidadSesiones').value = t.sesiones;
+        document.querySelector('#PrecioPaquete').value = (t.monedaId === 1 ? 'S/. ' : '$ ') + parseFloat(t.precio).toFixed(2);
+    }
 
-      function mostrarDetalleServicio(servicioId){
-          const svc = servicios.find(e=>e.id===servicioId);
-          document.querySelector('#DescripcionServicio').innerHTML = svc.descripcion.replace(/\r?\n/g, '<br />');
-          const infoAdicional = document.getElementById('InfoAdicional');
-          infoAdicional.innerHTML = svc.infoAdicional ? svc.infoAdicional.replace(/\r?\n/g, '<br />') : infoAdicional.parentElement.classList.add('hidden');
-          if(svc.infoAdicional){
-              infoAdicional.parentElement.classList.remove('hidden');
-          }
-          setIncluyeDelServicio(svc.incluye);
-          setFileTermCond(svc);
-          setTarifarios(svc.tarifarios);
-      }
+    function mostrarDetalleServicio(servicioId) {
+        const svc = servicios.find(e => e.id === servicioId);
+        document.querySelector('#DescripcionServicio').innerHTML = svc.descripcion.replace(/\r?\n/g, '<br />');
+        const infoAdicional = document.getElementById('InfoAdicional');
+        infoAdicional.innerHTML = svc.infoAdicional ? svc.infoAdicional.replace(/\r?\n/g, '<br />') : infoAdicional.parentElement.classList.add('hidden');
+        if (svc.infoAdicional) {
+            infoAdicional.parentElement.classList.remove('hidden');
+        }
+        setIncluyeDelServicio(svc.incluye);
+        setFileTermCond(svc);
+        setTarifarios(svc.tarifarios);
+    }
 
-      function setFileTermCond(svc){
-          if(svc.tycFile){
-              document.getElementById('EnlaceTYC').classList.remove('hidden');
-              const doc = document.createElement('embed');
-              doc.type = "application/pdf";
-              doc.style = "width: 100%; height: 100%";
-              doc.src = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+$perfil.id+"/"+svc.tycFile;
-              document.getElementById('TYC').innerHTML = "";
-              document.getElementById('TYC').appendChild(doc);
-          } else {
-              document.getElementById('EnlaceTYC').classList.add('hidden');
-          }
-      }
+    function setFileTermCond(svc) {
+        if (svc.tycFile) {
+            document.getElementById('EnlaceTYC').classList.remove('hidden');
+            const doc = document.createElement('embed');
+            doc.type = "application/pdf";
+            doc.style = "width: 100%; height: 100%";
+            doc.src = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/' + $perfil.id + "/" + svc.tycFile;
+            document.getElementById('TYC').innerHTML = "";
+            document.getElementById('TYC').appendChild(doc);
+        } else {
+            document.getElementById('EnlaceTYC').classList.add('hidden');
+        }
+    }
 
-      function setTarifarios(tarifarios){
-          const dt = document.getElementById('Tarifarios');
-          dt.innerHTML = "";
-          if(!tarifarios.length){
-              document.querySelector('#contentTarifario').classList.add('hidden');
-              document.querySelector('#CabeceraTarifarios').classList.add('hidden');
-          }else{
-              document.querySelector('#contentTarifario').classList.remove('hidden');
-              document.querySelector('#CabeceraTarifarios').classList.remove('hidden');
-          }
-          tarifarios.forEach((t,ix)=>{
-              t.id = ix;
-              dt.appendChild(
-                  htmlStringToElement(`${putTarifario(t.id, t.nombre)}`));
-          })
-      }
+    function setTarifarios(tarifarios) {
+        const dt = document.getElementById('Tarifarios');
+        dt.innerHTML = "";
+        if (!tarifarios.length) {
+            document.querySelector('#contentTarifario').classList.add('hidden');
+            document.querySelector('#CabeceraTarifarios').classList.add('hidden');
+        } else {
+            document.querySelector('#contentTarifario').classList.remove('hidden');
+            document.querySelector('#CabeceraTarifarios').classList.remove('hidden');
+        }
+        tarifarios.forEach((t, ix) => {
+            t.id = ix;
+            dt.appendChild(
+                htmlStringToElement(`${putTarifario(t.id, t.nombre)}`));
+        })
+    }
 
-      function putTarifario(id, nombre){
-          setTimeout(()=>{
-              $(tabService.querySelector(`#Tarifarios a.edit[data-id="${id}"]`)).tooltip();
-          }, 500);
-          return `<div class="col-md-3 col-xs-4 mg-bt-10" data-id="${id}">
+    function putTarifario(id, nombre) {
+        setTimeout(() => {
+            $(tabService.querySelector(`#Tarifarios a.edit[data-id="${id}"]`)).tooltip();
+        }, 500);
+        return `<div class="col-md-3 col-xs-4 mg-bt-10" data-id="${id}">
                         <a href="javascript:void(0)" class="tarifa-svc">
                             <img class="tarifa-svc" src="${_ctx}img/purchase.svg"/>
                             <h6 class="tarifa-svc">${nombre}</h6>
                         </a>
                     </div>`
-      }
+    }
 
-      function setIncluyeDelServicio(incluidos){
-          incluidos = incluidos.split("|");
-          const mainIncluidos = document.querySelector('#IncluyeServicio');
-          mainIncluidos.innerHTML = "";
-          incluidos.forEach(e=>{
-              mainIncluidos.appendChild(htmlStringToElement(`<li>${e.replace(/\r?\n/g, '\n')}</li>`));
-          });
-      }
+    function setIncluyeDelServicio(incluidos) {
+        incluidos = incluidos.split("|");
+        const mainIncluidos = document.querySelector('#IncluyeServicio');
+        mainIncluidos.innerHTML = "";
+        incluidos.forEach(e => {
+            mainIncluidos.appendChild(htmlStringToElement(`<li>${e.replace(/\r?\n/g, '\n')}</li>`));
+        });
+    }
 
-      function init(){
+    function init() {
         instanceAllTooltip();
         getTrainer();
         checkFrom();
         setEstilosParaModalGaleria();
-      }
+    }
 
-      function checkFrom(){
+    function checkFrom() {
         disabledForm('frm_contacto');
-      }
+    }
 
-      function checkTab(){
-          const tabHref = window.location.href.substring(window.location.href.indexOf("#"));
-          if(!tabHref.includes('http')){
-              const e = document.querySelector(`li a[href="${tabHref}"]`);
-              if(e != null){
+    function checkTab() {
+        const tabHref = window.location.href.substring(window.location.href.indexOf("#"));
+        if (!tabHref.includes('http')) {
+            const e = document.querySelector(`li a[href="${tabHref}"]`);
+            if (e != null) {
                 e.click();
-                  setTimeout(() => {
-                      $(window).scrollTop(100);
-                  }, 501);
-              }
-          }
-      }
+                setTimeout(() => {
+                    $(window).scrollTop(100);
+                }, 501);
+            }
+        }
+    }
 
-      function aprobacionFinalTrainer(e){
-          e.preventDefault();
-          const hshId = document.getElementById('HshTrainerId').value;
-          const correo = $perfil.correo;
-          $.ajax({
-              type: 'POST',
-              contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-              url: _ctx + 'p/trainer/ultima-aprobacion/'+hshId+'/'+correo,
-              dataType: "json",
-              blockLoading: true,
-              success: function (data, textStatus) {
-                  if (textStatus == "success") {
-                      reqSuccess(data);
-                      document.querySelector('.div-aprobacion').classList.add('hidden');
-                  }
-              },
-              error: function (xhr) {
-                  exception(xhr);
-              },
-              complete: function () {
-              }
-          });
-      }
+    function aprobacionFinalTrainer(e) {
+        e.preventDefault();
+        const hshId = document.getElementById('HshTrainerId').value;
+        const correo = $perfil.correo;
+        $.ajax({
+            type: 'POST',
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            url: _ctx + 'p/trainer/ultima-aprobacion/' + hshId + '/' + correo,
+            dataType: "json",
+            blockLoading: true,
+            success: function (data, textStatus) {
+                if (textStatus == "success") {
+                    reqSuccess(data);
+                    document.querySelector('.div-aprobacion').classList.add('hidden');
+                }
+            },
+            error: function (xhr) {
+                exception(xhr);
+            },
+            complete: function () {
+            }
+        });
+    }
 
-      function enviarInfoACorregir(){
-          const obj = {};
-          const hshTrainerId = document.getElementById('HshTrainerId').value;
-          obj.hshTrainerId = hshTrainerId;
-          obj.correo = $perfil.correo;
-          obj.obs = document.getElementById('Obs').value;
+    function enviarInfoACorregir() {
+        const obj = {};
+        const hshTrainerId = document.getElementById('HshTrainerId').value;
+        obj.hshTrainerId = hshTrainerId;
+        obj.correo = $perfil.correo;
+        obj.obs = document.getElementById('Obs').value;
 
-          $.ajax({
-              type: 'GET',
-              url: _ctx + 'p/trainer/perfil/observaciones',
-              dataType: "json",
-              data: obj,
-              blockLoading: true,
-              success: function (data, textStatus) {
-                  if (textStatus == "success") {
-                      reqSuccess(data);
-                      document.querySelector('.div-aprobacion').classList.add('hidden');
-                  }
-              },
-              error: function (xhr) {
-                  exception(xhr);
-              },
-              complete: function () {
-              }
-          });
-      }
+        $.ajax({
+            type: 'GET',
+            url: _ctx + 'p/trainer/perfil/observaciones',
+            dataType: "json",
+            data: obj,
+            blockLoading: true,
+            success: function (data, textStatus) {
+                if (textStatus == "success") {
+                    reqSuccess(data);
+                    document.querySelector('.div-aprobacion').classList.add('hidden');
+                }
+            },
+            error: function (xhr) {
+                exception(xhr);
+            },
+            complete: function () {
+            }
+        });
+    }
 
-      function getTrainer(){
+    function getTrainer() {
         const hshTrainerId = document.getElementById('HshTrainerId').value;
         $.ajax({
-          type: 'GET',
-          url: _ctx + 'p/trainer/get/sec/'+hshTrainerId,
-          dataType: 'json',
-          blockLoading: false,
-          success: function (res) {
-            $perfil = res;
-            recrearPerfil(res);
-            getServiciosAsync(res.id, res.tipoTrainerId);
-            checkTab();
-          }, error: (xhr) => {
-             if(xhr.status == 404){
-                 window.location.href = _ctx+"p/recurso-no-encontrado";
-             }
-             exception(xhr);
-          }, complete: () => {
-          }
+            type: 'GET',
+            url: _ctx + 'p/trainer/get/sec/' + hshTrainerId,
+            dataType: 'json',
+            blockLoading: false,
+            success: function (res) {
+                $perfil = res;
+                recrearPerfil(res);
+                getServiciosAsync(res.id, res.tipoTrainerId);
+                checkTab();
+            }, error: (xhr) => {
+                if (xhr.status == 404) {
+                    window.location.href = _ctx + "p/recurso-no-encontrado";
+                }
+                exception(xhr);
+            }, complete: () => {
+            }
         })
-      }
+    }
 
-      function getServiciosAsync(trainerId, ttId){
-          let mainUrl = _ctx+'p/trainer/get/servicios/'+ trainerId + '?tipoTrainerId='+ttId;
+    function getServiciosAsync(trainerId, ttId) {
+        let mainUrl = _ctx + 'p/trainer/get/servicios/' + trainerId + '?tipoTrainerId=' + ttId;
 
-          $.ajax({
-              type: 'GET',
-              url: mainUrl,
-              dataType: 'json',
-              noOne: true,
-              success: function (res) {
-                  res = res.servicios;
-                  res.forEach(e => {
-                    if(e.tarifarios) {
+        $.ajax({
+            type: 'GET',
+            url: mainUrl,
+            dataType: 'json',
+            noOne: true,
+            success: function (res) {
+                res = res.servicios;
+                res.forEach(e => {
+                    if (e.tarifarios) {
                         e.tarifarios = JSON.parse(e.tarifarios);
                     }
-                  })
-                  servicios = res;
-                  reconstruirServicios(servicios);
-                  reconstruirTarifario(servicios[0].tarifarios);
-                  setFileTermCond(servicios[0]);
-                  if($('#Tarifarios .tarifa-svc')[0]){
-                      $('#Tarifarios .tarifa-svc')[0].click();
-                  }
-              }, error: (xhr) => {
-                  if (xhr.status == 404) {
-                      window.location.href = _ctx + "p/recurso-no-encontrado";
-                  }
-                  exception(xhr);
-              }, complete: () => {
-              }
-          })
-      }
+                })
+                servicios = res;
+                reconstruirServicios(servicios);
+                reconstruirTarifario(servicios[0].tarifarios);
+                setFileTermCond(servicios[0]);
+                if ($('#Tarifarios .tarifa-svc')[0]) {
+                    $('#Tarifarios .tarifa-svc')[0].click();
+                }
+            }, error: (xhr) => {
+                if (xhr.status == 404) {
+                    window.location.href = _ctx + "p/recurso-no-encontrado";
+                }
+                exception(xhr);
+            }, complete: () => {
+            }
+        })
+    }
 
-      function checkTabStaff(staffGaleria, id, ttId){
-        if(ttId == 1){
+    function checkTabStaff(staffGaleria, id, ttId) {
+        if (ttId == 1) {
             return;
         }
-          document.querySelector('.nav-tabs a[href="#staff"]').parentElement.classList.remove('hidden');
+        document.querySelector('.nav-tabs a[href="#staff"]').parentElement.classList.remove('hidden');
 
-        if(staffGaleria){
+        if (staffGaleria) {
             const divStaffs = document.getElementById('Staffs');
             const s = staffGaleria;
-            s.split("|").forEach(e=>{
+            s.split("|").forEach(e => {
                 const imgAndNom = e.split(",");
                 //Esta cadena no representa nada en backend, solo es un artificio:
                 //vXBwA0END3zjlNmLk5mZKebwbNwLX2veM9aVPdGoq6PEg2d76GZAlDz1jpO5Bx7R
@@ -576,32 +601,32 @@
                                             </li>
             `));
         }
-      }
+    }
 
-      function recrearPerfil(t){
+    function recrearPerfil(t) {
         const ttId = t.tipoTrainerId;
         checkTabStaff(t.staffGaleria, t.id, ttId);
 
-        document.querySelector('#ImagenPerfil img').src = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+t.id+"/"+t.nomImgPerfil;
+        document.querySelector('#ImagenPerfil img').src = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/' + t.id + "/" + t.nomImgPerfil;
         document.querySelector('#Acerca').innerHTML = t.acerca.replace(/\r?\n/g, '<br />');
         let idiomas = t.idiomas.split("|");
-        document.querySelector('#Idiomas').appendChild(htmlStringToElement('<ul class="list-description">'+idiomas.map(e=>`<li><p>${_idiomas.find(i=>i.cd===e).nombre}</p></li>`).join('')+'</ul>'));
+        document.querySelector('#Idiomas').appendChild(htmlStringToElement('<ul class="list-description">' + idiomas.map(e => `<li><p>${_idiomas.find(i => i.cd === e).nombre}</p></li>`).join('') + '</ul>'));
         document.querySelector('#Sexo').textContent = t.sexo === 1 ? 'Masculino' : 'Femenino';
         document.querySelector('#MetodoTrabajo').innerHTML = t.metodoTrabajo.replace(/\r?\n/g, '<br />');
         document.querySelector('#CentroTrabajo').innerHTML = t.centroTrabajo;
         let res = document.querySelector('#Resultados');
         reconstruirLista(res, t.resultados);
         let niveles = t.niveles.split("|");
-        document.querySelector('#Niveles').appendChild(htmlStringToElement('<ul class="list-description">'+niveles.map(e=>`<li><p>${_niveles.find(i=>i.cd===e).nombre}</p></li>`).join('')+'</ul>'));
-        if(ttId !== 3){
+        document.querySelector('#Niveles').appendChild(htmlStringToElement('<ul class="list-description">' + niveles.map(e => `<li><p>${_niveles.find(i => i.cd === e).nombre}</p></li>`).join('') + '</ul>'));
+        if (ttId !== 3) {
             mostrarMediosPago(t.mediosPago, t.cuentas);
         }
         let formsTrabajo = t.formasTrabajo.split("|");
-        document.querySelector('#FormasTrabajo').appendChild(htmlStringToElement('<ul class="list-description">'+formsTrabajo.map(e=>`<li><p>${_forsTrabajo.find(i=>i.cd===e).nombre}</p></li>`).join('')+'</ul>'));
+        document.querySelector('#FormasTrabajo').appendChild(htmlStringToElement('<ul class="list-description">' + formsTrabajo.map(e => `<li><p>${_forsTrabajo.find(i => i.cd === e).nombre}</p></li>`).join('') + '</ul>'));
         let disciplinas = document.querySelector('#Disciplinas');
         reconstruirLista(disciplinas, t.disciplinas);
 
-        if(ttId === TipoTrainer.PARTICULAR || ttId === TipoTrainer.DE_EMPRESA){
+        if (ttId === TipoTrainer.PARTICULAR || ttId === TipoTrainer.DE_EMPRESA) {
             document.querySelector('#NombreFull').textContent = t.nombreCompleto;
             document.querySelector('#Especialidad').textContent = t.especialidad;
             let est = document.querySelector('#Estudios');
@@ -610,7 +635,7 @@
             reconstruirLista(exp, t.experiencias);
             let espc = document.querySelector('#Especialidades');
             reconstruirLista(espc, t.especialidades);
-        }else{
+        } else {
             document.querySelector('#NombreFull').textContent = t.nombreCompleto.substr(0, t.nombreCompleto.indexOf(" xxx"));
             document.querySelector('#dvEspecialidad').classList.add('hidden');
             document.querySelector('#dvEstudios').classList.add('hidden');
@@ -619,70 +644,70 @@
             document.querySelector('#txtSexo').classList.add('hidden');
         }
 
-        if(t.horario){
+        if (t.horario) {
             document.querySelector('#Horario').textContent = t.horario;
-        }else{
+        } else {
             document.querySelector('#dvHorario').classList.add('hidden');
         }
 
         selServicioId = 0;
         checkMapaAndGaleria(t);
         checkRedesAndNota(t);
-      }
+    }
 
-      function checkMapaAndGaleria(t){
-          const baseSrc = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+t.id+"/";
-          if(t.miniGaleria != null && t.miniGaleria.trim().length>0){
-              document.getElementById('lblGaleriaFotos').classList.remove('hidden');
-              poblarCarusel(t.miniGaleria.split("|"), 'ImgsGaleria', baseSrc, true);
-          }
+    function checkMapaAndGaleria(t) {
+        const baseSrc = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/' + t.id + "/";
+        if (t.miniGaleria != null && t.miniGaleria.trim().length > 0) {
+            document.getElementById('lblGaleriaFotos').classList.remove('hidden');
+            poblarCarusel(t.miniGaleria.split("|"), 'ImgsGaleria', baseSrc, true);
+        }
 
-          if(t.mapCoordenadas != null && t.mapCoordenadas.trim().length>0){
-              document.getElementById('lblRangoMapa').classList.remove('hidden');
-              setTimeout(() => {
-                  const allCord = t.mapCoordenadas.split(",");
-                  const lat = Number(allCord[0].substr(1));
-                  const lng = Number(allCord[1].slice(0, -1));
-                  new google.maps.Circle({
-                      strokeColor: '#57ff0e',
-                      strokeOpacity: 0.8,
-                      strokeWeight: 2,
-                      fillColor: '#8ee2ff',
-                      fillOpacity: 0.35,
-                      map: map,
-                      center: {lat: lat, lng: lng},
-                      radius: Number(t.mapCircleRadio)
-                  });
-                  map.panTo(new google.maps.LatLng(lat, lng));
-              }, 1000);
-          }
-      }
+        if (t.mapCoordenadas != null && t.mapCoordenadas.trim().length > 0) {
+            document.getElementById('lblRangoMapa').classList.remove('hidden');
+            setTimeout(() => {
+                const allCord = t.mapCoordenadas.split(",");
+                const lat = Number(allCord[0].substr(1));
+                const lng = Number(allCord[1].slice(0, -1));
+                new google.maps.Circle({
+                    strokeColor: '#57ff0e',
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                    fillColor: '#8ee2ff',
+                    fillOpacity: 0.35,
+                    map: map,
+                    center: {lat: lat, lng: lng},
+                    radius: Number(t.mapCircleRadio)
+                });
+                map.panTo(new google.maps.LatLng(lat, lng));
+            }, 1000);
+        }
+    }
 
-      function reconstruirLista(e, stringArr){
-          if(stringArr){
-              stringArr.split("|").forEach(v => e.appendChild(htmlStringToElement(`<li><p>${v.trim()}</p></li>`)));
-          }else{
+    function reconstruirLista(e, stringArr) {
+        if (stringArr) {
+            stringArr.split("|").forEach(v => e.appendChild(htmlStringToElement(`<li><p>${v.trim()}</p></li>`)));
+        } else {
             //
-          }
-      }
+        }
+    }
 
-      function reconstruirServicios(servicios){
-          const dvServicios = document.getElementById('NomServicios');
-          dvServicios.innerHTML = servicios.map((e, ix) => `<label class="servicio ${ix===0 ? 'svc-focus':''}" data-id="${e.id}">${e.nombre}</label>`).join('');
-          const fSs = servicios[0];
-          document.getElementById('DescripcionServicio').innerHTML =  fSs.descripcion.replace(/\r?\n/g, '<br />');
-          const dvIncServicio = document.getElementById('IncluyeServicio');
-          dvIncServicio.innerHTML = fSs.incluye.split("|").map((e) => `<li>${e}</li>`).join('');
-          const infoAdicional = document.getElementById('InfoAdicional');
-          infoAdicional.innerHTML = servicios[0].infoAdicional ? servicios[0].infoAdicional.replace(/\r?\n/g, '<br />') : infoAdicional.parentElement.classList.add('hidden');
-          selServicioId = fSs.id;
-      }
+    function reconstruirServicios(servicios) {
+        const dvServicios = document.getElementById('NomServicios');
+        dvServicios.innerHTML = servicios.map((e, ix) => `<label class="servicio ${ix === 0 ? 'svc-focus' : ''}" data-id="${e.id}">${e.nombre}</label>`).join('');
+        const fSs = servicios[0];
+        document.getElementById('DescripcionServicio').innerHTML = fSs.descripcion.replace(/\r?\n/g, '<br />');
+        const dvIncServicio = document.getElementById('IncluyeServicio');
+        dvIncServicio.innerHTML = fSs.incluye.split("|").map((e) => `<li>${e}</li>`).join('');
+        const infoAdicional = document.getElementById('InfoAdicional');
+        infoAdicional.innerHTML = servicios[0].infoAdicional ? servicios[0].infoAdicional.replace(/\r?\n/g, '<br />') : infoAdicional.parentElement.classList.add('hidden');
+        selServicioId = fSs.id;
+    }
 
-      function reconstruirCuentaBanco(cuentas){
-          cuentas = JSON.parse(cuentas);
-          if(cuentas.length>0){
-              const pc = cuentas[0];
-              document.getElementById('CuentaBanco').appendChild(htmlStringToElement(`<table class="table">
+    function reconstruirCuentaBanco(cuentas) {
+        cuentas = JSON.parse(cuentas);
+        if (cuentas.length > 0) {
+            const pc = cuentas[0];
+            document.getElementById('CuentaBanco').appendChild(htmlStringToElement(`<table class="table">
                                       <thead>
                                       <tr>
                                           <th>MONEDA</th>
@@ -708,7 +733,7 @@
                                       </tr>
                                       <tr>
                                           <td><strong>Banco</strong></td>
-                                          <td>${banks.find(e=>e.id==pc.bancoId).nombre}</td>
+                                          <td>${banks.find(e => e.id == pc.bancoId).nombre}</td>
                                           <td></td>
                                       </tr>
                                       <tr>
@@ -719,148 +744,151 @@
                                       </tbody>
                                   </table>
           `));
-          }
-      }
+        }
+    }
 
-      function reconstruirTarifario(tarifas){
-          tarifas.forEach((t, ix)=>{
-                        t.id = ix;
-                        document.getElementById('Tarifarios').appendChild(htmlStringToElement(`
+    function reconstruirTarifario(tarifas) {
+        tarifas.forEach((t, ix) => {
+            t.id = ix;
+            document.getElementById('Tarifarios').appendChild(htmlStringToElement(`
                             <div class="col-md-3 col-xs-4 mg-bt-10" data-id="${t.id}">
                                 <a href="javascript:void(0)" class="tarifa-svc">
                                     <img class="tarifa-svc" src="${_ctx}img/purchase.svg"/>
                                     <h6 class="tarifa-svc">${t.nombre}</h6>
                                 </a>
-                            </div>`))});
-      }
+                            </div>`))
+        });
+    }
 
-      function mostrarMediosPago(mediosPago, cuentas){
-          //Pasando las cuentas al aray que posteriormente será usado para poblar el modal de cuentas
-          if(cuentas){
-              const ccs = JSON.parse(cuentas);
-              if(ccs.length){
-                  //Importante para que en el modal no aparezca el ícono imagen de eliminar
-                  ccs[0].noDelete = true;
-                  ccBancarias = ccs;
-              } else {
-                  document.querySelector('.title-cuentas-bancarias').classList.add('hidden');
-              }
-          }
+    function mostrarMediosPago(mediosPago, cuentas) {
+        //Pasando las cuentas al aray que posteriormente será usado para poblar el modal de cuentas
+        if (cuentas) {
+            const ccs = JSON.parse(cuentas);
+            if (ccs.length) {
+                //Importante para que en el modal no aparezca el ícono imagen de eliminar
+                ccs[0].noDelete = true;
+                ccBancarias = ccs;
+            } else {
+                document.querySelector('.title-cuentas-bancarias').classList.add('hidden');
+            }
+        }
 
-          if(!mediosPago){
-              document.querySelector('.title-metodo-pago').classList.add('hidden');
-              return;
-          }
-          const ccs = mediosPago.split("|");
-          ccs.forEach(id=>{
-              tabService.querySelector('.cc-elegido[data-id="'+id+'"]').classList.remove('hidden');
-          });
-      }
+        if (!mediosPago) {
+            document.querySelector('.title-metodo-pago').classList.add('hidden');
+            return;
+        }
+        const ccs = mediosPago.split("|");
+        ccs.forEach(id => {
+            tabService.querySelector('.cc-elegido[data-id="' + id + '"]').classList.remove('hidden');
+        });
+    }
 
-      function irARegistrosTrainer() {
+    function irARegistrosTrainer() {
         const arrUrl = window.location.href.replace("#staff", "").split("/");
-        window.location.href = _ctx + "p/trainer/empresa/agregar/sub/" + arrUrl[arrUrl.length - 1] + "/"+ arrUrl[arrUrl.length - 2];
-      }
+        window.location.href = _ctx + "p/trainer/empresa/agregar/sub/" + arrUrl[arrUrl.length - 1] + "/" + arrUrl[arrUrl.length - 2];
+    }
 
-      function preGuardarGeneralEmpresa(){
-          checkHasTrainers().then((cant)=>{
-              if(Number(cant) === 0){
-                  $.smallBox({color: 'alert', content:
-                          '<span><i class="fa fa-exclamation-circle fa-fw"></i>' +
-                          'No puede enviar su ficha a revisión ya que usted aún no ha registrado a ningún colaborador,' +
-                          ' para que pueda registrar a uno por favor seleccion el ícono ' +
-                          '<i class="fa fa-arrow-circle-right fa-fw" style="color: #17a2b8;"></i>' +
-                          ' que se encuentra debajo de su foto de perfil. Gracias</span>',
-                            timeout: 12000});
-                  return;
-              }
-              $.SmartMessageBox({
-                  title: "<i class='fa fa-exclamation-triangle fa-fw' style='color:yellow;'></i> <b>RUNFIT</b>",
-                  content: "<div class='font-md' style='font-size: 1.5em'>" +
-                      "¿Desea finalizar el registro de sus asesores y enviar su perfil a una última aprobación? Por el contrario, " +
-                      "en caso aún le falte registrar nuevos entrenadores seleccione 'NO'.</div>",
-                  buttons: '[NO][SI]'
-              }, function (ButtonPressed) {
-                  if(ButtonPressed == 'SI'){
-                      enviarPerfilEmpresaFull();
-                  }else{
+    function preGuardarGeneralEmpresa() {
+        checkHasTrainers().then((cant) => {
+            if (Number(cant) === 0) {
+                $.smallBox({
+                    color: 'alert', content:
+                        '<span><i class="fa fa-exclamation-circle fa-fw"></i>' +
+                        'No puede enviar su ficha a revisión ya que usted aún no ha registrado a ningún colaborador,' +
+                        ' para que pueda registrar a uno por favor seleccion el ícono ' +
+                        '<i class="fa fa-arrow-circle-right fa-fw" style="color: #17a2b8;"></i>' +
+                        ' que se encuentra debajo de su foto de perfil. Gracias</span>',
+                    timeout: 12000
+                });
+                return;
+            }
+            $.SmartMessageBox({
+                title: "<i class='fa fa-exclamation-triangle fa-fw' style='color:yellow;'></i> <b>RUNFIT</b>",
+                content: "<div class='font-md' style='font-size: 1.5em'>" +
+                    "¿Desea finalizar el registro de sus asesores y enviar su perfil a una última aprobación? Por el contrario, " +
+                    "en caso aún le falte registrar nuevos entrenadores seleccione 'NO'.</div>",
+                buttons: '[NO][SI]'
+            }, function (ButtonPressed) {
+                if (ButtonPressed == 'SI') {
+                    enviarPerfilEmpresaFull();
+                } else {
 
-                  }
-              });
-          })
+                }
+            });
+        })
 
-      }
+    }
 
-      async function checkHasTrainers(){
-          const arrUrl = window.location.href.replace("#staff", "").split("/");
-          const hsh = arrUrl[arrUrl.length - 1];
+    async function checkHasTrainers() {
+        const arrUrl = window.location.href.replace("#staff", "").split("/");
+        const hsh = arrUrl[arrUrl.length - 1];
 
-          return new Promise((res, rej)=>{
-              $('#btnGuardarGeneral').attr('disabled', true);
-              $('#btnGuardarGeneral').html('Cargando...<i class="fa fa-spinner fa-spin fa-fw"></i>');
-              $.ajax({
-                  type: 'GET',
-                  contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-                  url: _ctx + 'p/trainer/empresa/check/total/colaboradores/'+hsh,
-                  dataType: "json",
-                  blockLoading: false,
-                  noOne: true,
-                  success: function (data) {
-                      res(data.res);
-                  },
-                  error: function (xhr) {
-                      exception(xhr);
-                      rej(xhr);
-                  },
-                  complete: function () {
-                      $('#btnGuardarGeneral').attr('disabled', false);
-                      $('#btnGuardarGeneral').text('FINALIZAR REGISTRO');
-                  }
-              });
-          })
-      }
+        return new Promise((res, rej) => {
+            $('#btnGuardarGeneral').attr('disabled', true);
+            $('#btnGuardarGeneral').html('Cargando...<i class="fa fa-spinner fa-spin fa-fw"></i>');
+            $.ajax({
+                type: 'GET',
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                url: _ctx + 'p/trainer/empresa/check/total/colaboradores/' + hsh,
+                dataType: "json",
+                blockLoading: false,
+                noOne: true,
+                success: function (data) {
+                    res(data.res);
+                },
+                error: function (xhr) {
+                    exception(xhr);
+                    rej(xhr);
+                },
+                complete: function () {
+                    $('#btnGuardarGeneral').attr('disabled', false);
+                    $('#btnGuardarGeneral').text('FINALIZAR REGISTRO');
+                }
+            });
+        })
+    }
 
-      function enviarPerfilEmpresaFull(){
-          const arrUrl = window.location.href.replace("#staff", "").split("/");
-          const hsh = arrUrl[arrUrl.length - 1];
-          const data = {};
-          //xxx es comodin para el campo apellido en los trainers tipo empresa
-          data.nombre = $perfil.nombreCompleto.replace("xxx","").trim();
-          data.correo = $perfil.correo;
-          data.imgPerfil = $perfil.nomImgPerfil;
-          $.ajax({
-              type: 'POST',
-              contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-              url: _ctx + 'p/trainer/empresa/enviar/'+hsh,
-              data: data,
-              dataType: "json",
-              blockLoading: true,
-              success: function (data) {
-                  if(data.res){
-                      setTimeout(()=>{
-                          $.SmartMessageBox({
-                              title: "<i class='fa fa-exclamation-triangle fa-fw' style='color:yellow;'></i> <b>RUNFIT</b>",
-                              content: "<div class='font-md' style='font-size: 1.5em'>" +
-                                  data.res+"</div>",
-                              buttons: '[OK]'
-                          }, function (ButtonPressed) {
-                              if(ButtonPressed == 'OK'){
-                                  window.location.href = _ctx+"login";
-                              } else {
+    function enviarPerfilEmpresaFull() {
+        const arrUrl = window.location.href.replace("#staff", "").split("/");
+        const hsh = arrUrl[arrUrl.length - 1];
+        const data = {};
+        //xxx es comodin para el campo apellido en los trainers tipo empresa
+        data.nombre = $perfil.nombreCompleto.replace("xxx", "").trim();
+        data.correo = $perfil.correo;
+        data.imgPerfil = $perfil.nomImgPerfil;
+        $.ajax({
+            type: 'POST',
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            url: _ctx + 'p/trainer/empresa/enviar/' + hsh,
+            data: data,
+            dataType: "json",
+            blockLoading: true,
+            success: function (data) {
+                if (data.res) {
+                    setTimeout(() => {
+                        $.SmartMessageBox({
+                            title: "<i class='fa fa-exclamation-triangle fa-fw' style='color:yellow;'></i> <b>RUNFIT</b>",
+                            content: "<div class='font-md' style='font-size: 1.5em'>" +
+                                data.res + "</div>",
+                            buttons: '[OK]'
+                        }, function (ButtonPressed) {
+                            if (ButtonPressed == 'OK') {
+                                window.location.href = _ctx + "login";
+                            } else {
 
-                              }
-                          });
-                      }, 1000);
-                  }
-              },
-              error: function (xhr) {
-                  exception(xhr);
-              },
-              complete: function () {
-              }
-          });
-      }
+                            }
+                        });
+                    }, 1000);
+                }
+            },
+            error: function (xhr) {
+                exception(xhr);
+            },
+            complete: function () {
+            }
+        });
+    }
 
-    </script>
-  </body>
+</script>
+</body>
 </html>
