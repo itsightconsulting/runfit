@@ -45,6 +45,8 @@ const fFinMacro = document.querySelector('#MacroFechaFin');
 const bgBarMainGraph = ["#ed8989c7","#4fd46bc4","#87ceebbd","#519da4a6"];
 const bgMantaIntensidad = ["gold", "gray", "skyblue", "gray"];
 
+
+
 $(function () {
     init();
 })
@@ -96,14 +98,10 @@ function init(){
     Array.from(distAtletaRdBtn.querySelectorAll('.chkDistancia')).forEach(v=>v.addEventListener('change', MacroCiclo.instanciarKilometrajeBase));
     fInitMacro.addEventListener('change', FichaSet.setTotalSemanas);
     fFinMacro.addEventListener('change', FichaSet.setTotalSemanas);
-
-   // console.log("momo",Number(document.querySelector('#DistanciaRutina input:checked').value));
-
-
     setFechaActual(document.querySelectorAll('input[type="date"]'));
-    setTimeout(() => {
-        obtenerKilometrajeBaseBD(Number(document.querySelector('#DistanciaRutina input:checked').value), Number(document.querySelector('#NivelAtleta input:checked').value));
-    }, 1100);
+    /*   setTimeout(() => {
+           obtenerKilometrajeBaseBD(Number(document.querySelector('#DistanciaRutina input:checked').value), Number(document.querySelector('#NivelAtleta input:checked').value));
+       }, 1100); */
 }
 
 function instanciarTooltips(){
@@ -121,7 +119,11 @@ function instanciarDatosFitnessCliente(){
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
         url: _ctx + 'gestion/cliente-fitness/obtener/secundario/'+ getParamFromURL('rn'),
         dataType: "json",
+        blockLoading: false,
         success: function (data, textStatus) {
+
+
+
             if (textStatus == "success") {
                 if (data == "-9") {
                     $.smallBox({
@@ -197,7 +199,6 @@ function actualizarPorcentajesKilometrajeBD(porcentajes, e){
 }
 
 function obtenerKilometrajeBaseBD(distancia, nivel){
-
     const o  = {};
     o.distancia = distancia;
     o.nivelAtleta = nivel;
@@ -220,6 +221,9 @@ function obtenerKilometrajeBaseBD(distancia, nivel){
 }
 
 function principalesEventosTabFichaTecnica(e){
+
+
+
     const input = e.target;
     const clases = input.classList;
 
@@ -249,6 +253,7 @@ function principalesEventosTabFichaTecnica(e){
         document.querySelector('#PorcentajesIntensidad').classList.toggle('hidden');
         clases.toggle('hidden');
     }else if(clases.contains('periodizacion-calc')) {
+
         input.select();
     }else if(clases.contains('velocidad-calc')) {
         input.select();
@@ -262,17 +267,23 @@ function principalesEventosFocusOutTabFichaTecnica(e){
     const input = e.target;
     const clases = input.classList;
 
+
+
     if(clases.contains('periodizacion-calc')){
         CalcProyecciones.calcular(input, 1);
+
     }
     else if(clases.contains('velocidad-calc')){
         CalcProyecciones.calcular(input, 2);
+
     }
     else if(clases.contains('cadencia-calc')){
         CalcProyecciones.calcular(input, 3);
+
     }
     else if(clases.contains('tcs-calc')){
         CalcProyecciones.calcular(input, 4);
+
     }
     else if(clases.contains('tiempo-control')){
 
@@ -280,6 +291,7 @@ function principalesEventosFocusOutTabFichaTecnica(e){
     else if(clases.contains('factor-desentrenamiento')){
 
     }
+
 }
 
 function guardarRutina(rutina){
@@ -300,7 +312,7 @@ function guardarRutina(rutina){
         success: function (data) {
             const resWithErrors = getResponseCodeWithErrors(data);
             resWithErrors != false ? notificacionesRutinaSegunResponseCode(resWithErrors.code, RutinaParsers.obtenerErroresValidacion(resWithErrors.errors)) : notificacionesRutinaSegunResponseCode(data);
-            data == "-1" ? window.location.href = _ctx + 'rutina/edicion?key=' + id + '&rn=' + rn + datosAsURI: setTimeout(()=>$('#bot1-Msg1').click());//res.id para el caso = redFitnessId;
+            data == "-1" ? window.location.href = _ctx + 'rutina/editor?key=' + id + '&rn=' + rn + datosAsURI: setTimeout(()=>$('#bot1-Msg1').click());//res.id para el caso = redFitnessId;
         },
         error: function (xhr) {
             exception(xhr);

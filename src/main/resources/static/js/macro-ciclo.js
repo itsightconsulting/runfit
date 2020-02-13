@@ -3,9 +3,6 @@
 Ficha = (function(){
     return {
         instanciar: (ficha)=>{
-
-            console.log("ficha" , ficha);
-
             const comps =JSON.parse(ficha.competencias);
             const condicionAnatomica = JSON.parse(ficha.condicionAnatomica);
             $fechasCompetencia = comps.map(v=>{return {nombre: v.nombre, prioridad: v.prioridad, fecha: parseFromStringToDate2(v.fecha)}}).sort((a, b)=>{return a.fecha - b.fecha;});
@@ -26,7 +23,6 @@ Ficha = (function(){
             Calc.setRestantes();
             //Recreando tabla de listado de competencias
             tbCompetencias.appendChild(FichaSeccion.newListadoCompetencias(comps));//global variable
-
         },
     }
 })();
@@ -35,11 +31,15 @@ FichaGet = (function(){
     return {
         obtenerMaximaFechaCompeticiones: (fechas)=>{
             let maxFecha  = fechas[0].fecha;
+            if(!maxFecha){
+                return new Date();
+            }
             fechas.forEach((v,i)=>{
                 if(i != 0){
                     maxFecha = v.fecha.getTime() > maxFecha.getTime() ? v.fecha : maxFecha;
                 }
-            })
+            });
+
             return maxFecha;
         },
         obtenerNivelAtleta:()=>{
@@ -56,7 +56,7 @@ FichaGet = (function(){
             basico.numSem = Number(document.querySelector('#MacroTotalSemanas').textContent);
             basico.periodizacion = Array.from(proyecciones.querySelectorAll('.periodizacion-calc[data-type="2"]')).map(v=>{if(v.value>0) return Number(v.value)});
             basico.distribucionPorcentaje = Array.from(proyecciones.querySelectorAll('.periodizacion-calc[data-type="1"]')).map(v=>{if(v.value>0) return Number(v.value)/100;});
-            basico.distancia =  Number(document.querySelector('#DistanciaRutina input:checked').value);
+            basico.distancia = Number(document.querySelector('#DistanciaRutina input:checked').value);
             basico.nivelAtleta = Number(document.querySelector('#NivelAtleta input:checked').value);
             basico.fechaInicio = document.querySelector('#MacroFechaInicio').value;
             basico.fechaFin = document.querySelector('#MacroFechaFin').value;
@@ -114,6 +114,7 @@ FichaSet = (function(){
             document.querySelectorAll('#DistanciaRutina input').forEach(v=>{v.value == maxDistancia ? v.checked=true : '';})
         },
         setTotalSemanas: () => {
+
             const fechaInicio = parseFromStringToDate($('#MacroFechaInicio').val());
             const fechaFin = parseFromStringToDate($('#MacroFechaFin').val());
             const totDias = moment(fechaFin).diff(fechaInicio, 'days') + 1;
@@ -122,7 +123,7 @@ FichaSet = (function(){
             MacroValidacion.cleanDistribucion();
         },
         instanciarDatosFicha: (ficha)=>{
-            const comps = JSON.parse(ficha.competencias);
+            const comps = ficha.competencias;
             $fechasCompetencia = comps.map(v=>{return {nombre: v.nombre, prioridad: v.prioridad, fecha: parseFromStringToDate2(v.fecha)}}).sort((a, b)=>{return a.fecha - b.fecha;});
             document.querySelector('#Nombres').value = atob(getParamFromURL("nm"));
             document.querySelector('#ApellidoPaterno').value = atob(getParamFromURL("nm"));
@@ -253,10 +254,10 @@ FichaDOMQueries = (function(){
 MacroCiclo = (function(){
     return {
         comprobar: (e)=>{
-            if(MacroValidacion.principal() && MacroValidacion.basicos()) {
+            if( MacroValidacion.principal() && MacroValidacion.basicos() && $('#frm_registro').valid() ) {
 
                 if(e != null)
-                blockButton(e.target);
+                    blockButton(e.target);
 
                 const contenedorMK = document.querySelector('#PorcentajesKilometraje');//metricas de kilometraje
                 const contenedorMK2 = document.querySelector('#PorcentajesIntensidad');//metricas de kilometraje
@@ -281,15 +282,15 @@ MacroCiclo = (function(){
                     //Filtrando porcentajes
                     const porcentajesTrainer = new Array(cantPeriodos +1);//+1 por el periodo de transito
                     for(let i=0; i<porcentajesTrainer.length;i++){
-                            if (i != 3){
-                                if ($baseAfterComprobacion.periodizacion[i] != undefined){
-                                    porcentajesTrainer[i] = porcentajes.porcKiloTipos[i].semanas[$baseAfterComprobacion.periodizacion[i] - 2];
-                                }
-                                //Explicacion(-2)
-                                // - Uno es por que el indice de todo array comienza en 0
-                                // - El último -uno es porque por regla de negocio cada periodo debe tener como mínimo 2 semanas entonces en base de datos se ha guardado como indice 0 la semana 2, indice 1 la semana 3 y así... por ello para evitar un arrayindexoutofboundsexception se resta - 2
-                            }else
-                                porcentajesTrainer[i] = MacroCicloGet.obtenerPorcentajePT($baseAfterComprobacion.distancia);
+                        if (i != 3){
+                            if ($baseAfterComprobacion.periodizacion[i] != undefined){
+                                porcentajesTrainer[i] = porcentajes.porcKiloTipos[i].semanas[$baseAfterComprobacion.periodizacion[i] - 2];
+                            }
+                            //Explicacion(-2)
+                            // - Uno es por que el indice de todo array comienza en 0
+                            // - El último -uno es porque por regla de negocio cada periodo debe tener como mínimo 2 semanas entonces en base de datos se ha guardado como indice 0 la semana 2, indice 1 la semana 3 y así... por ello para evitar un arrayindexoutofboundsexception se resta - 2
+                        }else
+                            porcentajesTrainer[i] = MacroCicloGet.obtenerPorcentajePT($baseAfterComprobacion.distancia);
                     }
                     contenedorMK.appendChild(htmlStringToElement(MacroCiclo.mostrarPorcentajesKilo($baseAfterComprobacion, porcentajesTrainer, cantPeriodos)));
                     contenedorMK2.appendChild(htmlStringToElement(MacroCiclo.mostrarPorcentajesIntensidad($baseAfterComprobacion, porcentajesTrainer)));
@@ -395,10 +396,6 @@ MacroCiclo = (function(){
         },
         instanciarInformacionTemporada: (base)=>{
             //base.periodizacion.push(base.distancia == 10 ? 1 : base.distancia == 21 ? 2 : 3);//42: 3 semanas;
-
-            console.log("aaa");
-            console.log(base);
-
             const allKms = Array.from(document.querySelectorAll('#PorcentajesKilometraje label.kms')).map(v=>{return Number(v.textContent)});
             const sumKms = allKms.reduce((a,b)=>{return a+b});
             const kmsParts = base.periodizacion.map((v)=>{
@@ -409,10 +406,14 @@ MacroCiclo = (function(){
             kiloTotal.querySelector('h1').textContent = parseFloat(sumKms).toFixed(1);
             kiloTotal.querySelector('span').textContent = base.numSem+" semanas";
             document.querySelectorAll('#InicialMacro .dist-etapa').forEach((v,i)=>{
+
+                console.log(kmsParts[i]);
                 if(base.periodizacion[i] != undefined) {
                     const kmsEsp = parseFloat(kmsParts[i].reduce((a, b) => {
                         return a + b
                     }))
+
+                    console.log(kmsEsp);
                     v.querySelector('h1').textContent = kmsEsp.toFixed(1);
                     v.querySelector('span').textContent = base.periodizacion[i] + " semanas";
                     base.porcentajesKms.push(((kmsEsp * 100) / sumKms).toFixed(2));
@@ -424,12 +425,9 @@ MacroCiclo = (function(){
         },
         instanciarInformacionTemporadaPost: ()=>{
             const base = FichaGet.obtenerBase();
-
-            console.log(base);
             base.periodizacion.push(MacroCicloGet.obtenerAdicionalSemsPT(base.distancia));
 
             const allKms = $ruConsolidado.dtGrafico.map(({kms})=>kms);
-
             const sumKms = allKms.reduce((a,b)=>{return a+b});
             const kmsParts = base.periodizacion.map((v)=>{
                 return allKms.splice(0, v);//Cada vez el arreglo va perdiendo elementos y por eso siempre hacemos que se corte desde 0
@@ -439,7 +437,6 @@ MacroCiclo = (function(){
             kiloTotal.querySelector('h1').textContent = parseFloat(sumKms).toFixed(1);
             kiloTotal.querySelector('span').textContent = base.numSem+" semanas";
             document.querySelectorAll('#InicialMacro .dist-etapa').forEach((v,i)=>{
-
                 if(base.periodizacion[i] != undefined) {
                     const kmsEsp = parseFloat(kmsParts[i].reduce((a, b) => {
                         return a + b
@@ -456,7 +453,6 @@ MacroCiclo = (function(){
 
             $slideType = 3;//Para el  correcto funcionamiento del regulador de intensidades/vel
             $('.slider').slider();
-
             $("div.slider-horizontal > div.slider-track").css("background-color","#1acd49");
             $("#TotalPeriodizacion1").parent().addClass("state-success");
             $("#TotalVelocidad1").parent().addClass("state-success");
@@ -622,13 +618,14 @@ MacroCiclo = (function(){
                     r.matrizMejoraCadencia = consolidado.matrizMejoraCadencia;
                     r.matrizMejoraTcs = consolidado.matrizMejoraTcs;
                     r.matrizMejoraLonPaso = consolidado.matrizMejoraLonPaso;
-
                     r.dtGrafico = MCGraficoData.paraTemporada($baseAfterComprobacion).map(v=>{return {kms: v.kms, color: v.color, percInts: v.perc, imgIcon: v.bullet != undefined ? v.bullet.substr(1) : undefined}});
                     for(let i=0; i<cantSemExcedentes;i++){
                         const iBase = r.dtGrafico.length - cantSemExcedentes;
                         r.dtGrafico[iBase+i].percInts = r.control.intensidades[iBase+i];
                     }
                     guardarRutina(r);
+                    //   guardarRutina(r, intervalEffect);
+
                 }
             }else{
                 $.smallBox({color: "alert", content: "Primero debes generar el macro..."});
@@ -782,39 +779,9 @@ MacroValidacion = (function(){
             t44.parentElement.classList.remove('state-success');
         },
         formulario: ()=>{
-            $.validator.addMethod('validos', function (value, element, param) {//segundos
-                return param.includes(Number(value));
-            }, '> Valor inválido');
 
-            $.validator.addMethod('csTiempo', function (value, element, param) {//segundos
-                return value.toSeconds() > param.toSeconds();
-            }, '> {0}');
 
-            $.validator.addMethod("eqGreaterThanToday",
-                function(value) {
-                    if (!/Invalid|NaN/.test(new Date(value))) {
-                        return parseFromStringToDate(value) >= new Date().setHours(0, 0, 0, 0);
-                    }
-                    return isNaN(value) && isNaN($(value).val());
-                },'Debe ser mayor o igual a la fecha de hoy');
-
-            $.validator.addMethod("greaterThanDate",
-                function(value, element, params) {
-                    if (!/Invalid|NaN/.test(new Date(value))) {
-                        return new Date(value) > new Date($(params).val());
-                    }
-                    return isNaN(value) && isNaN($(params).val())
-                        || (Number(value) > Number($(params).val()));
-                }, 'Debe ser mayor a la fecha inicio');
-
-            $.validator.addMethod("miniumDifference",
-                function(value, element, params) {
-                    if (!/Invalid|NaN/.test(new Date(value))) {
-                        return moment(parseFromStringToDate(value)).diff(parseFromStringToDate($(params).val()), 'days') > 40;//7 weeks
-                    }
-                    return isNaN(value) && isNaN($(params).val())
-                        || (Number(value) > Number($(params).val()));
-                }, 'Rutinas mínimas de 6 semanas, es por ello que se requiere una fecha mayor');
+            const arrayDay = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
 
             $("#frm_registro").validate({
                 highlight: function (element) {
@@ -828,101 +795,173 @@ MacroValidacion = (function(){
                 rules: {
                     FrecuenciaCardiacaMinima: {
                         required: true,
-                        min: 0,
-                        maxlength: 3,
+                        min: 40,
+                        max: 130,
+                        rangelength:[2  ,3],
+                        digits: true
                     },
                     FrecuenciaCardiacaMaxima: {
                         required: true,
-                        min: 0,
+                        min: 100,
+                        max: 220,
                         maxlength: 3,
                     },
                     NivelAtleta : {
-                        required: true,
+                        required: true
                     },
                     DistanciaRutina : {
-                        required: true,
+                        required: true
                     },
                     MacroFechaInicio: {
                         required: true,
-                        eqGreaterThanToday: true,
+                        greaterThanDate: new Date(),
+                        isSpecificDay : 1
+
                     },
                     MacroFechaFin: {
                         required: true,
-                        miniumDifference: "#MacroFechaInicio",
-                        greaterThanDate: "#MacroFechaInicio",
+                        minimumDifference: function(){
+                            return  $('#MacroFechaInicio').val()
+                        },
+                        maximumDifference: function(){
+                            return  $('#MacroFechaInicio').val()
+                        },
+                        lessThanDate:  function(){
+                            return addYearstoDate(new Date(),2);
+                        },
+                        isSpecificDay : 0
                     },
                     DistanciaControl: {
                         required: true,
-                        validos: [2, 4, 10, 21, 42],
+
                     },
                     TiempoControl: {
                         required: true,
-                        csTiempo: "00:01:30",
+                        greaterThanSeconds: function(){
+                            return $('#DistanciaControl').val() == "2" ? "00:05:00" : $('#DistanciaControl').val() == "4" ? "00:10:00" : $('#DistanciaControl').val() == "10" ? "00:25:00" : $('#DistanciaControl').val() == "21" ? "01:04:00" : "02:05:00";
+                        }
                     },
                     CadenciaControl: {
                         required: true,
-                        min: 1,
+                        min: 50,
+                        max: 300
                     },
                     TcsControl: {
                         required: true,
-                        min: 1
+                        min: 110,
+                        max: 400
                     },
                     FactorDesentrenamientoControl: {
                         required: true,
                         min: 1,
+                        max: 100
                     },
                     TiempoDesentrControl: {
-                        required: true,
-                        csTiempo: function(){
-                            return $('#TiempoControl').val();
-                        },
-
+                        required: true
                     },
                     DistanciaCompetencia: {
                         required: true,
-                        validos: [10, 21, 42],
                     },
                     TiempoCompetencia: {
                         required: true,
-                        csTiempo: function(){
-                            return $('#DistanciaCompetencia').val() == "10" ? "00:25:00" : $('#DistanciaCompetencia').val() == "21" ? "01:04:21" : "02:00:10";
+                        greaterThanSeconds: function(){
+                            return $('#DistanciaCompetencia').val() == "10" ? "00:25:00" : $('#DistanciaCompetencia').val() == "21" ? "01:04:00" : "02:05:00";
                         },
                     },
                     CadenciaCompetencia: {
                         required: true,
-                        min: 0,
+                        min: 0
                     },
                     TcsCompetencia: {
                         required: true,
-                        min: 0,
+                        min: 0
                     },
-                    FactorMejoria: {
-                        required: true,
-                        min: 0.00001,
+                    TotalPeriodizacion1: {
+                        required:true,
+                        min: 100,
+                        max: 100
+                    },
+                    TotalVelocidad1: {
+                        required:true,
+                        min: 100,
+                        max: 100
+                    },
+                    TotalCadencia1: {
+                        required:true,
+                        min: 100,
+                        max: 100
+                    },
+                    TotalTcs1: {
+                        required:true,
+                        min: 100,
+                        max: 100
+                    } ,
+                    TotalPeriodizacion2: {
+                        min:  function(){
+                            return parseInt($('#MacroTotalSemanas').text());
+                        },
+                        max:  function(){
+                            return parseInt($('#MacroTotalSemanas').text());
+                        }
+                    },
+                    TotalVelocidad2: {
+                        min:  function(){
+                            return parseInt($('#MacroTotalSemanas').text());
+                        },
+                        max:  function(){
+                            return parseInt($('#MacroTotalSemanas').text());
+                        }
+                    },
+                    TotalCadencia2: {
+                        min:  function(){
+                            return parseInt($('#MacroTotalSemanas').text());
+                        },
+                        max:  function(){
+                            return parseInt($('#MacroTotalSemanas').text());
+                        }
+                    },
+                    TotalTcs2: {
+                        min:  function(){
+                            return parseInt($('#MacroTotalSemanas').text());
+                        },
+                        max:  function(){
+                            return parseInt($('#MacroTotalSemanas').text());
+                        }
                     }
                 },
                 messages: {
                     FrecuenciaCardiacaMinima: {
                         required: "El campo es obligatorio",
-                        min: $.validator.format("Valor mínimo 0"),
+                        min: $.validator.format("Valor mínimo {0}"),
+                        max: $.validator.format("Valor máximo {0}"),
                         maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres.")
                     },
                     FrecuenciaCardiacaMaxima: {
                         required: "El campo es obligatorio",
-                        min: $.validator.format("Valor mínimo 0"),
+                        min: $.validator.format("Valor mínimo {0}"),
+                        max: $.validator.format("Valor máximo {0}"),
                         maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres.")
                     },
                     NivelAtleta : {
                         required: "El campo es obligatorio",
                     },
                     DistanciaRutina : {
-                        required: "El campo es obligatorio",
+                        required: "El campo es obligatorio"
                     },
                     MacroFechaInicio: {
                         required: "El campo es obligatorio",
+                        greaterThanSeconds: "prueba",
+                        greaterThanDate : "Ingrese una fecha igual o mayor a la de hoy",
+                        isSpecificDay : function (e) {
+                            return "Se requiere una fecha que corresponda al día " + arrayDay[e];
+                        }
                     },
                     MacroFechaFin: {
                         required: "El campo es obligatorio",
+                        isSpecificDay : function (e) {
+                            return "Se requiere una fecha que corresponda al día " + arrayDay[e];
+                        }
+
                     },
                     DistanciaControl: {
                         required: "El campo es obligatorio",
@@ -932,11 +971,11 @@ MacroValidacion = (function(){
                     },
                     CadenciaControl: {
                         required: "El campo es obligatorio",
-                        min: "Mínimo valor {0}",
+                        min: "Mínimo valor {0}"
                     },
                     TcsControl: {
                         required: "El campo es obligatorio",
-                        min: "Mínimo valor {0}",
+                        min: "Mínimo valor {0}"
                     },
                     FactorDesentrenamientoControl: {
                         required: "El campo es obligatorio",
@@ -949,7 +988,7 @@ MacroValidacion = (function(){
                         required: "El campo es obligatorio",
                     },
                     TiempoCompetencia: {
-                        required: "El campo es obligatorio",
+                        required: "El campo es obligatorio"
                     },
                     CadenciaCompetencia: {
                         required: "El campo es obligatorio",
@@ -962,6 +1001,38 @@ MacroValidacion = (function(){
                     FactorMejoria: {
                         required: "El campo es obligatorio",
                         min: "Mínimo valor {0}",
+                    },
+                    TotalPeriodizacion1: {
+                        min: "Total debe ser {0}%",
+                        max: "Total debe ser {0}%"
+                    },
+                    TotalVelocidad1: {
+                        min: "Total debe ser {0}%",
+                        max: "Total debe ser {0}%"
+                    },
+                    TotalCadencia1: {
+                        min: "Total debe ser {0}%",
+                        max: "Total debe ser {0}%"
+                    },
+                    TotalTcs1: {
+                        min: "Total debe ser {0}%",
+                        max: "Total debe ser {0}%"
+                    },
+                    TotalPeriodizacion2: {
+                        min: "Total debe ser {0}",
+                        max: "Total debe ser {0}"
+                    },
+                    TotalVelocidad2: {
+                        min: "Total debe ser {0}",
+                        max: "Total debe ser {0}"
+                    },
+                    TotalCadencia2: {
+                        min: "Total debe ser {0}",
+                        max: "Total debe ser {0}"
+                    },
+                    TotalTcs2: {
+                        min: "Total debe ser {0}",
+                        max: "Total debe ser {0}"
                     }
                 },
                 submitHandler: function () {
@@ -995,7 +1066,7 @@ MacroSeccion = (function(){
                          <div class="col col-md-11 col-sm-11">
                             <div class="container-fluid text-align-center margin-o-bottom-10-w-bb">
                                 ${mVC.map((v,i)=>{
-                                    return `${i==0?'<div class="col-md-6 col-sm-6 padding-bottom-5">':''}<div class="col col-md-3 col-sm-3">
+                return `${i==0?'<div class="col-md-6 col-sm-6 padding-bottom-5">':''}<div class="col col-md-3 col-sm-3">
                                         <div>
                                             <span class="padding-5 text-align-left">
                                             <input type="text" class="slider metrica slider-success" value="" data-slider-min="0" 
@@ -1004,17 +1075,17 @@ MacroSeccion = (function(){
                                                                 data-slider-handle="round" data-slider-tooltip="hide" data-index="${i+1}"/>
                                             </span>
                                         </div></div>${i==3?'</div><div class="col-md-6 col-sm-6 padding-bottom-5">':''}${i==7?'</div>':''}`;
-                                }).join('')}
+            }).join('')}
                             </div>
                          </div>`;
             if(($rutina.totalSemanas-semsTransito) <=12)
                 return htmlStringToElement(`<div style="margin-right: 10px;">
                     ${mVC[0].ind.map((v,i)=>{
-                        return `<div class="col col-md-1 col-sm-1 sems-o-mes-det-veloc"><div class="container-fluid text-align-center margin-o-bottom-10-w-bb"> <div class="padding-bottom-5 hd-column">${'S '+ (i+1)}</div> </div> </div> <div class="col col-md-11 col-sm-11"> <div class="container-fluid text-align-center margin-o-bottom-10-w-bb">
+                    return `<div class="col col-md-1 col-sm-1 sems-o-mes-det-veloc"><div class="container-fluid text-align-center margin-o-bottom-10-w-bb"> <div class="padding-bottom-5 hd-column">${'S '+ (i+1)}</div> </div> </div> <div class="col col-md-11 col-sm-11"> <div class="container-fluid text-align-center margin-o-bottom-10-w-bb">
                                     ${mVC.map((v,ii)=>{
-                            return `${ii==0?'<div class="col-md-6 col-sm-6 padding-bottom-5">':''}<div class="col col-md-3 col-sm-3 dt-ix${ii+1}">${v.ind[i]}</div>${ii==3?'</div><div class="col-md-6 col-sm-6 padding-bottom-5">':''}${ii==7?'</div>':''}`;
-                        }).join('')}</div></div>`;
-                    }).join('')}${rgs}</div>`);
+                        return `${ii==0?'<div class="col-md-6 col-sm-6 padding-bottom-5">':''}<div class="col col-md-3 col-sm-3 dt-ix${ii+1}">${v.ind[i]}</div>${ii==3?'</div><div class="col-md-6 col-sm-6 padding-bottom-5">':''}${ii==7?'</div>':''}`;
+                    }).join('')}</div></div>`;
+                }).join('')}${rgs}</div>`);
             else
                 return htmlStringToElement(`<div style="margin-right: 10px;">
                     ${mVC[0].ind.map((v,i)=>{
@@ -1025,25 +1096,29 @@ MacroSeccion = (function(){
                 }).join('')}${rgs}</div>`);
         },
         velocidadesByDistancia: (mVC)=>{
+
             //Calculando el porcentaje de mejora de velocidad y seteandolo
             document.querySelector('#PorcMejoraVel').textContent = parseNumberToDecimal((((((mVC[7].indicadores[0].p.toSeconds())*42)/((mVC[7].indicadores[(mVC[7].indicadores.length)-1].p.toSeconds())*42)))-1)*100,1) + " %";
 
             if($baseAfterComprobacion.numSem <=12)
                 return htmlStringToElement(`<div style="margin-right: 10px;">
                     ${mVC[0].indicadores.map((v,i)=>{
-                        return `<div class="col col-md-1 col-sm-1 sems-o-mes-det-veloc"><div class="container-fluid text-align-center margin-o-bottom-10-w-bb"> <div class="padding-bottom-5 hd-column">${'S '+ (i+1)}</div> </div> </div> <div class="col col-md-11 col-sm-11"> <div class="container-fluid text-align-center margin-o-bottom-10-w-bb">
+                    return `<div class="col col-md-1 col-sm-1 sems-o-mes-det-veloc"><div class="container-fluid text-align-center margin-o-bottom-10-w-bb"> <div class="padding-bottom-5 hd-column">${'S '+ (i+1)}</div> </div> </div> <div class="col col-md-11 col-sm-11"> <div class="container-fluid text-align-center margin-o-bottom-10-w-bb">
                                 ${mVC.map((v,ii)=>{
-                                    return `${ii==0?'<div class="col-md-6 col-sm-6 padding-bottom-5">':''}<div class="col col-md-3 col-sm-3">${v.indicadores[i].p}</div>${ii==3?'</div><div class="col-md-6 col-sm-6 padding-bottom-5">':''}${ii==7?'</div>':''}`;
-                                }).join('')}</div></div>`;
-                    }).join('')}</div>`);
+                        return `${ii==0?'<div class="col-md-6 col-sm-6 padding-bottom-5">':''}<div class="col col-md-3 col-sm-3">${v.indicadores[i].p}</div>${ii==3?'</div><div class="col-md-6 col-sm-6 padding-bottom-5">':''}${ii==7?'</div>':''}`;
+                    }).join('')}</div></div>`;
+                }).join('')}</div>`);
             else
                 return htmlStringToElement(`<div style="margin-right: 10px;">
                     ${mVC[0].indicadores.map((v,i)=>{
-                        return (i+1)%4 == 0 ?`<div class="col col-md-1 col-sm-1 sems-o-mes-det-veloc"><div class="container-fluid text-align-center margin-o-bottom-10-w-bb"> <div class="padding-bottom-5 hd-column">${'M '+(i+1)/4}</div> </div> </div> <div class="col col-md-11 col-sm-11"> <div class="container-fluid text-align-center margin-o-bottom-10-w-bb">
+                    return (i+1)%4 == 0 ?`<div class="col col-md-1 col-sm-1 sems-o-mes-det-veloc"><div class="container-fluid text-align-center margin-o-bottom-10-w-bb"> <div class="padding-bottom-5 hd-column">${'M '+(i+1)/4}</div> </div> </div> <div class="col col-md-11 col-sm-11"> <div class="container-fluid text-align-center margin-o-bottom-10-w-bb">
                                 ${mVC.map((v,ii)=>{
-                                    return (i+1)%4 == 0 ?`${ii==0?'<div class="col-md-6 col-sm-6 padding-bottom-5">':''}<div class="col col-md-3 col-sm-3">${v.indicadores[i].p}</div>${ii==3?'</div><div class="col-md-6 col-sm-6 padding-bottom-5">':''}${ii==7?'</div>':''}`:'';
-                                }).join('')}</div></div>`:'';
-                    }).join('')}</div>`);
+                        return (i+1)%4 == 0 ?`${ii==0?'<div class="col-md-6 col-sm-6 padding-bottom-5">':''}<div class="col col-md-3 col-sm-3">${v.indicadores[i].p}</div>${ii==3?'</div><div class="col-md-6 col-sm-6 padding-bottom-5">':''}${ii==7?'</div>':''}`:'';
+                    }).join('')}</div></div>`:'';
+                }).join('')}</div>`);
+
+
+
         },
         cadencia2: (metricas)=>{
             const porcMejora = parseNumberToDecimal(((((metricas[metricas.length - 1]) / metricas[0])-1)*100), 1) + " %";
@@ -1184,11 +1259,9 @@ MCGraficoData = (function(){
     }
 })();
 MCGrafico = (function(){
-
-
     return {
-      temporada: (data)=>{
-          data = data.map(v=>{return {kms: v.kms, color: v.color, perc: v.perc, bullet: v.bullet, avance: v.avance}});
+        temporada: (data)=>{
+            data = data.map(v=>{return {kms: v.kms, color: v.color, perc: v.perc, bullet: v.bullet, avance: v.avance}});
             const avances =  data.filter(v=>{//Provisional
                 return (v.avance != undefined)
             }).map(({avance})=>avance);
@@ -1900,8 +1973,6 @@ FichaSeeder = (function(){
             document.querySelector('#CadenciaControl').value = 174;
             factorDesentrenamientoControl.value = 3;
             document.querySelector('#TcsControl').value = 182;
-
-
             document.querySelector('#TiempoCompetencia').value = "04:10:00";
             document.querySelector('#CadenciaCompetencia').value = 185;
             document.querySelector('#TiempoDesentrControl').value =  String(tiempoControl.value.toSeconds() + (Number(tiempoControl.value.toSeconds()) * Number(factorDesentrenamientoControl.value).toPercentage())).toHHMMSSM();
@@ -1916,6 +1987,7 @@ CalcProyecciones = (function(){
             if(!input.hasAttribute('readonly')) {
                 const valor = input.value;
                 const tipo = input.getAttribute('data-type');
+
                 if (MacroValidacion.onEdicionProyecciones(input, valor, tipo, tipoProyeccion)) {
                     const ix = Number(input.getAttribute('data-index'));
                     const contProyecciones = FichaDOMQueries.getProyecciones();
@@ -1950,6 +2022,7 @@ CalcProyecciones = (function(){
 
                     eleTot1.value = roundNumber(tot1, 0);
                     eleTot2.value = roundNumber(tot2, 0);
+
                     if(tot1 == 100){
                         eleTot1.parentElement.classList.add('state-success');
                         eleTot1.parentElement.classList.remove('state-error');
@@ -2003,6 +2076,7 @@ CalcProyecciones = (function(){
             const estadisticas = CalcProyecciones.informacionSemanas();
             if(cant == estadisticas.semanas) return 100;
             let situacion = estadisticas.tipoCalculo;
+
             if (situacion == 1) {
                 if(index == 3){
                     --cant;

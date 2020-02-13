@@ -35,7 +35,7 @@ public class ViewConstant {
     public static final String MAIN_TRAINER_RUTINA_PLANTILLA = "gestion/trainer/rutina_plantilla";
     public static final String MAIN_TRAINER_RED = "gestion/trainer/red_fitness";
     public static final String MAIN_RUTINA_CLIENTE_EDICION = "gestion/trainer/rutina_edicion";
-    public static final String MAIN_TRAINER_NR_PRE_ASIGNAR = "gestion/trainer/pre_asignar_rutina_dev";
+    public static final String MAIN_TRAINER_NR_PRE_ASIGNAR = "gestion/trainer/pre_asignar_rutina";
     public static final String MAIN_PLANES = "portal/planes";
     public static final String MAIN_MINI_PLANTILLA = "gestion/mini_plantilla";
 

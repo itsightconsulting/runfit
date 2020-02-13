@@ -43,4 +43,17 @@ public interface ConfiguracionClienteRepository extends JpaRepository<Configurac
             "            as text) as jsonb))\n" +
             "WHERE cliente_id = :cliId", nativeQuery = true)
     void updateNotificacionChatById(Integer cliId, Integer sustractOrPlusNumber);
+
+    @Modifying
+    @Query(value = "UPDATE configuracion_cliente\n" +
+            "SET parametros = jsonb_set(parametros, CAST('{6,\"valor\"}' as text[]), CAST(\n" +
+            "        CAST(\n" +
+            "            case when (CAST(COALESCE(NULLIF(parametros -> 6 ->> 'valor', ''), '0') as int) + :sustractOrPlusNumber) < 0 THEN 0 ELSE\n" +
+            "                (CAST(COALESCE(NULLIF(parametros -> 6 ->> 'valor', ''), '0') as int) + :sustractOrPlusNumber)\n" +
+            "            END\n" +
+            "            as text) as jsonb))\n" +
+            "WHERE cliente_id = :cliId", nativeQuery = true)
+    void updateNotificacionRutinasTotById(Integer cliId, Integer sustractOrPlusNumber);
+
+
 }
