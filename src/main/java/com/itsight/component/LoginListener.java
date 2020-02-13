@@ -62,40 +62,44 @@ public class LoginListener implements ApplicationListener<InteractiveAuthenticat
             Integer id = Integer.parseInt(usernameAndId[1]);
             UsuGenDTO usu;
             session.setAttribute("id", id);
-            if(login.getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_TRAINER"))){
+            if (login.getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_TRAINER"))) {
                 trainerService.actualizarFechaUltimoAcceso(new Date(), id);
                 usu = trainerService.getForCookieById(id);
-            } else if(login.getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))){
+            } else if (login.getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
                 usu = administradorService.getForCookieById(id);
                 administradorService.actualizarFechaUltimoAcceso(new Date(), id);
-            } else if(login.getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_GUEST"))) {
+            } else if (login.getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_GUEST"))) {
                 usu = visitanteService.getForCookieById(id);
             } else {//ROLE RUNNER
                 usu = clienteService.getForCookieById(id);
                 clienteService.actualizarFechaUltimoAcceso(new Date(), id);
 
                 String favRutId = configuracionClienteService.obtenerByIdAndClave(id, FAV_RUTINA_ID.name());
-                if(favRutId != null && !favRutId.equals("")){
+                if (favRutId != null && !favRutId.equals("")) {
                     response.addCookie(
                             createCookie(GLL_FAV_RUTINA.name(),
-                            Parseador.getEncodeHash32Id(
-                                        "rf-gallcoks",
-                                                Integer.parseInt(configuracionClienteService.obtenerByIdAndClave(id, FAV_RUTINA_ID.name())))));
+                                    Parseador.getEncodeHash32Id(
+                                            "rf-gallcoks",
+                                            Integer.parseInt(configuracionClienteService.obtenerByIdAndClave(id, FAV_RUTINA_ID.name())))));
                 } else {
                     response.addCookie(createCookie(GLL_FAV_RUTINA.name(), ""));
                 }
                 List<ConfiguracionClienteDTO> lstConfCli = configuracionClienteProcedureInvoker.getAllById(id);
-                lstConfCli.forEach(e->{
-                    if(e.getNombre().equals(CONTROL_ENTRENAMIENTO.name())) {
+                lstConfCli.forEach(e -> {
+                    if (e.getNombre().equals(CONTROL_ENTRENAMIENTO.name())) {
                         response.addCookie(createCookie(GLL_CONTROL_ENTRENAMIENTO.name(), e.getValor()));
                     }
 
-                    if(e.getNombre().equals(CONTROL_REP_VIDEO.name())){
+                    if (e.getNombre().equals(CONTROL_REP_VIDEO.name())) {
                         response.addCookie(createCookie(GLL_CONTROL_REP_VIDEO.name(), e.getValor()));
                     }
 
-                    if(e.getNombre().equals(NOTIFICACION_CHAT.name())){
+                    if (e.getNombre().equals(NOTIFICACION_CHAT.name())) {
                         response.addCookie(createCookie(GLL_NOTIFICACION_CHAT.name(), e.getValor()));
+                    }
+
+                    if (e.getNombre().equals(TOTAL_RUTINAS_ACTIVAS.name())) {
+                        response.addCookie(createCookie(GLL_TOTAL_RUTINAS_ACTIVAS.name(), e.getValor()));
                     }
                 });
             }
@@ -105,18 +109,18 @@ public class LoginListener implements ApplicationListener<InteractiveAuthenticat
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             //Generando cookies
-            if(usu == null){
+            if (usu == null) {
                 response.addCookie(createCookie(GLL_NOMBRE_COMPLETO.name(), new String(Base64.getEncoder().encode(username.getBytes()))));
             } else {
                 String fullName = usu.getNombres() + " " + usu.getApellidos();
                 response.addCookie(createCookie(GLL_NOMBRE_COMPLETO.name(), new String(Base64.getEncoder().encode(fullName.getBytes()))));
-                if(!usu.getUuidFp().equals("")){
+                if (!usu.getUuidFp().equals("")) {
                     response.addCookie(createCookie(GLL_IMG_PERFIL.name(), id + "/" + usu.getUuidFp() + usu.getExtFp()));
                 } else {
                     response.addCookie(createCookie(GLL_IMG_PERFIL.name(), ""));
                 }
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

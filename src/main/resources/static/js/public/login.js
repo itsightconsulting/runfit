@@ -9,26 +9,24 @@ const btnNuevo = document.getElementById('btn-nuevo');
     init();
 })();
 
-function init(){
+function init() {
     eventos();
-    mostrarMensajeErrorLogin(error);
 }
 
 
-
-function eventos(){
-    if(btnRecuperar){//Iniciar recuperación password
+function eventos() {
+    if (btnRecuperar) {//Iniciar recuperación password
         btnRecuperar.addEventListener('click', preSendFormRecuperacion);
     }
-    if(btnCambiar){//Finalizar recuperación password con el cambio
+    if (btnCambiar) {//Finalizar recuperación password con el cambio
         btnCambiar.addEventListener('click', preSendFormCambiar);
     }
 
-    if(btnRegistrar){//Finalizar recuperación password con el cambio
+    if (btnRegistrar) {//Finalizar recuperación password con el cambio
         btnRegistrar.addEventListener('click', registro);
     }
 
-    if(btnNuevo){// Disparar validaciones en formulario de registro
+    if (btnNuevo) {// Disparar validaciones en formulario de registro
 
         btnNuevo.addEventListener('click', validacionFormularioVisitante);
     }
@@ -39,45 +37,44 @@ function eventos(){
 }
 
 
-
-function bodyFocusOutEventListener(e){
+function bodyFocusOutEventListener(e) {
     const input = e.target;
-    if(input.tagName === "INPUT"){
-        if(input.type==="text"){
+    if (input.tagName === "INPUT") {
+        if (input.type === "text") {
             input.value = input.value.trim();
         }
     }
-    if(input.tagName === "TEXTAREA"){
+    if (input.tagName === "TEXTAREA") {
         input.value = input.value.trim();
     }
 }
 
-function bodyKeyupEventListener(e){
+function bodyKeyupEventListener(e) {
     const input = e.target;
-    if(input.tagName === "INPUT"){
-        if(input.type==="text" || input.type==="number"){
-            if(input.nextElementSibling){
+    if (input.tagName === "INPUT") {
+        if (input.type === "text" || input.type === "number") {
+            if (input.nextElementSibling) {
                 input.nextElementSibling.remove();
             }
         }
     }
 }
 
-function preSendFormRecuperacion(){
-    if(!$(formRecuperacion).valid()){
+function preSendFormRecuperacion() {
+    if (!$(formRecuperacion).valid()) {
         return;
     }
     sendFormRecuperacion();
 }
 
-function preSendFormCambiar(){
-    if(!$(formRecuperacion).valid()){
+function preSendFormCambiar() {
+    if (!$(formRecuperacion).valid()) {
         return;
     }
     sendFormCambiar();
 }
 
-function sendFormRecuperacion(){
+function sendFormRecuperacion() {
     const username = document.getElementById('username');
     const params = {username: $(username).val()};
 
@@ -90,14 +87,14 @@ function sendFormRecuperacion(){
         data: params,
         success: function () {
             $('.actions').addClass('hidden');
-            setTimeout(()=>{
+            setTimeout(() => {
                 $.SmartMessageBox({
                     title: "<i style='color: #a8fa00'> RUNFIT</i>",
                     content: "" +
                         "<br/><i style='font-size: 1.2em;'>Se le ha enviado un correo al e-mail asociado a esta cuenta. Por favor revise su bandeja para continuar con los próximos pasos</i><br/>",
                     buttons: '[SALIR]'
                 }, function (ButtonPressed) {
-                    if(ButtonPressed){
+                    if (ButtonPressed) {
                         window.location.href = _ctx + "login";
                     }
                 })
@@ -111,14 +108,14 @@ function sendFormRecuperacion(){
     });
 }
 
-function sendFormCambiar(){
+function sendFormCambiar() {
 
     const arrUrl = window.location.pathname.split("/");
-    const hshId = arrUrl[arrUrl.length-1];
+    const hshId = arrUrl[arrUrl.length - 1];
     const passwordRe = $('#NuevaPasswordRe')[0];
 
     const params = {
-        nuevaPassword: $(   '#NuevaPassword').val(),
+        nuevaPassword: $('#NuevaPassword').val(),
         nuevaPasswordRe: $(passwordRe).val(),
         userId: hshId,
         schema: new URLSearchParams(window.location.search).get('sc')
@@ -132,14 +129,14 @@ function sendFormCambiar(){
         data: params,
         success: function (data) {
             $('.actions').addClass('hidden');
-            setTimeout(()=>{
+            setTimeout(() => {
                 $.SmartMessageBox({
                     title: "<i style='color: #a8fa00'> RUNFIT</i>",
                     content: "" +
                         "<br/><i style='font-size: 1.2em;'>Su contraseña se ha actualizado satisfactoriamente</i><br/>",
                     buttons: '[IR AL LOGIN]'
                 }, function (ButtonPressed) {
-                    if(ButtonPressed){
+                    if (ButtonPressed) {
                         window.location.href = _ctx + "login";
                     }
                 })
@@ -154,7 +151,7 @@ function sendFormCambiar(){
 }
 
 
-function goRegister(){
+function goRegister() {
 
     $(".login-sesion-alt").fadeOut();
     $(".login-register-alt").fadeIn();
@@ -172,14 +169,14 @@ function goLogin() {
 
 }
 
-function customErrorHandler(xhr, input){
+function customErrorHandler(xhr, input) {
     const messageError = xhr.responseJSON.message;
     const sibling = input.nextElementSibling;
-    if(sibling){
-        if(sibling.tagName === "EM"){
+    if (sibling) {
+        if (sibling.tagName === "EM") {
             sibling.innerText = messageError;
         }
-    } else{
+    } else {
         const em = document.createElement('em');
         em.innerText = messageError;
         em.classList.remove('help-block');
@@ -189,7 +186,6 @@ function customErrorHandler(xhr, input){
 }
 
 function registro() {
-
 
 
     if ($("#register-form").valid()) {
@@ -205,13 +201,13 @@ function registro() {
         $.ajax({
             type: 'POST',
             contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-            url: _ctx+'p/visitante/registro',
+            url: _ctx + 'p/visitante/registro',
             dataType: "json",
             blockLoading: true,
             data: params,
             success: function (data, textStatus) {
 
-                setTimeout(()=>{
+                setTimeout(() => {
                     $('.actions').addClass('hidden');
                     $.SmartMessageBox({
                         title: "<i style='color: #a8fa00'> RUNFIT</i>",
@@ -219,7 +215,7 @@ function registro() {
                             "<br/><i style='font-size: 1.2em;'>Se le ha enviado un correo al e-mail asociado a esta cuenta. Por favor revise su bandeja para culminar el registro</i><br/>",
                         buttons: '[SALIR]'
                     }, function (ButtonPressed) {
-                        if(ButtonPressed){
+                        if (ButtonPressed) {
                             window.location.href = _ctx + "login";
                         }
                     })
@@ -229,14 +225,14 @@ function registro() {
 
                 const mensaje = xhr.responseJSON.message;
 
-                $('#divSmallBoxes').css('z-index','100000');
+                $('#divSmallBoxes').css('z-index', '100000');
 
 
                 $.smallBox({
                     title: "RUNFIT",
-                    content: '<p>'+mensaje+'</p>',
+                    content: '<p>' + mensaje + '</p>',
                     timeout: 4500,
-                    color:  '#cc4d4d',
+                    color: '#cc4d4d',
                     icon: "fa fa-exclamation-circle"
                 })
 
@@ -247,11 +243,10 @@ function registro() {
         });
 
 
-
     }
 }
 
-function validacionFormularioVisitante(){
+function validacionFormularioVisitante() {
 
     $("#register-form").validate({
         // Rules for form validation}
@@ -268,7 +263,7 @@ function validacionFormularioVisitante(){
             Nombres: {
                 required: true,
                 rangelength: [1, 30],
-                lettersonly:true
+                lettersonly: true
             },
             Apellidos: {
                 required: true,
@@ -278,7 +273,7 @@ function validacionFormularioVisitante(){
             Correo: {
                 required: true,
                 rangelength: [7, 30],
-                emailValid:true
+                emailValid: true
             },
             PasswordRegister: {
                 required: true,
@@ -292,7 +287,7 @@ function validacionFormularioVisitante(){
         },
         // Messages for form validation
         messages: {
-            PasswordConfirmation : {
+            PasswordConfirmation: {
                 equalTo: 'Repite la misma contraseña'
             }
         },
@@ -302,7 +297,6 @@ function validacionFormularioVisitante(){
         }
     });
 }
-
 
 
 function getFormData($form) {

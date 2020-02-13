@@ -46,6 +46,8 @@ public class ClienteFullController {
     @Value("${main.repository}")
     private String mainRoute;
 
+
+
     @Autowired
     public ClienteFullController(SemanaService semanaService, RutinaService rutinaService, RedFitnessService redFitnessService,
                                  MiniPlantillaService miniPlantillaService, DiaRutinarioService diaRutinarioService,

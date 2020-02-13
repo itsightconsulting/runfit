@@ -2,251 +2,295 @@
 <html lang="en-us"
       xmlns:th="http://www.thymeleaf.org"
       th:with="version = ${#servletContext.getAttribute('version')}">
-  <head>
-      <title>Mis clientes</title>
-      <th:block th:insert="html-commons/in/meta :: fg-meta"></th:block>
-      <th:block th:insert="html-commons/in/css  :: fg-css"></th:block>
+<head>
+    <title>Mis clientes</title>
+    <th:block th:insert="html-commons/in/meta :: fg-meta"></th:block>
+    <th:block th:insert="html-commons/in/css  :: fg-css"></th:block>
     <link rel="stylesheet" type="text/css" th:href="@{/css/public/owl.carousel.min.css}+'?'+${version}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/jquery.fancybox.min.css}+'?'+${version}">
     <style>
-      #indicadorCirculo1,#indicadorCirculo3 {
-        color: #d6ff58 !important;
-      }
+        #indicadorCirculo1, #indicadorCirculo3 {
+            color: #d6ff58 !important;
+        }
 
-      #indicadorCirculo2,#indicadorCirculo4 {
-        color: #cf3239 !important;
-      }
+        #indicadorCirculo2, #indicadorCirculo4 {
+            color: #cf3239 !important;
+        }
 
-      .calendar-num-sem {
-        position: absolute;
-        left: -40px;
-        color: #71a21a;
-        font-style: normal;
-        font-size: 0.6em;
-        font-family: GothamHTF-Light;
-      }
+        .calendar-num-sem {
+            position: absolute;
+            left: -40px;
+            color: #71a21a;
+            font-style: normal;
+            font-size: 0.6em;
+            font-family: GothamHTF-Light;
+        }
 
-      .ele-plus, .ele-less{
-        cursor: pointer;
-      }
+        .ele-plus, .ele-less {
+            cursor: pointer;
+        }
 
     </style>
-  </head>
-  <body>
-    <th:block th:insert="html-commons/in/left-panel::fg-menu-desk"></th:block>
-    <th:block th:insert="html-commons/in/left-panel::fg-menu-mob"></th:block>
-    <div id="main-content">
-      <div id="wrapper">
+</head>
+<body>
+<th:block th:insert="html-commons/in/left-panel::fg-menu-desk"></th:block>
+<th:block th:insert="html-commons/in/left-panel::fg-menu-mob"></th:block>
+<div id="main-content">
+    <div id="wrapper">
         <div class="container">
-          <header>
-            <div class="text-center">
-              <button class="navbar-toggle only_mobile" onclick="showMenuMobile()"><img class="svg" th:src="@{/img/iconos/icon_hamburger.svg}"></button><a class="only_mobile" th:href="@{/bienvenido}"><img class="logo" th:src="@{/img/logo.png}" alt=""></a>
-              <h4 class="user">
-                <img class="svg" th:src="@{/img/iconos/icon_perfil.svg}"><span class="user-full-name"></span><span id="TipoRutina">&nbsp</span></h4>
-            </div>
-          </header>
-          <ul class="nav nav-tabs">
-            <li class="active"><a data-toggle="tab" href="#diario"><img class="svg" data-tab="diario" src="img/iconos/icon_calendar-diario.svg"></a></li>
-            <li><a data-toggle="tab" href="#semanal"><img class="svg" data-tab="semanal" src="img/iconos/ss.svg"></a></li>
-            <li><a data-toggle="tab" href="#mensual"><img class="svg" data-tab="mensual" src="img/iconos/icon_calendar-mensual.svg"></a></li>
-          </ul>
-          <div class="tab-content rutina-cli">
-            <div class="tab-pane fade in active" id="diario">
-              <h4 class="text-center">Semana <span id="NumSemana"></span> - <span id="MesSemana">Augustus</span></h4>
-              <div class="panel-group" id="panel_days">
-                <!--PANEL DAYS-->
-              </div>
-              <hr>
-              <div class="clearfix"></div>
-              <div class="row">
-                  <div class="col-md-8 text-center">
-                    <div class="ritmos_pulsos row">
-                      <div class="col-xs-5">
-                        <h3 class="title_graphic no_margin_top"><img rel="tooltip" title="prueba" class="svg" src="img/iconos/icon_ayuda.svg">PULSOS<img class="red svg" src="img/iconos/icon_heart.svg"></h3>
-                        <table class="pulsos ps-dia" id="Pulsos">
-                          <thead>
-                            <tr>
-                              <th width="30%"></th>
-                              <th width="35%"><img class="svg" src="img/iconos/icon_menos.svg"></th>
-                              <td></td>
-                              <th width="35%"><img class="svg" src="img/iconos/icon_mas.svg"></th>
-                            </tr>
-                          </thead>
-                          <tbody>
-
-                          </tbody>
-                        </table>
-                      </div>
-                      <div class="col-xs-1"></div>
-                      <div class="col-xs-6 col-ritmos">
-                        <h3 class="title_graphic no_margin_top"><div class="svg-wrap" rel="tooltip" title="prueba"><img class="svg" src="img/iconos/icon_ayuda.svg"></div>RITMOS<img class="blue svg" src="img/iconos/icon_ritmo-tiempo.svg"></h3>
-                        <table class="ritmos rs-dia" id="Ritmos">
-                          <thead>
-                            <tr>
-                              <th></th>
-                              <th><img class="svg" src="img/iconos/icon_menos.svg"></th>
-                              <th></th>
-                              <th><img class="svg" src="img/iconos/icon_mas.svg"></th>
-                            </tr>
-                          </thead>
-                          <tbody>
-
-                          </tbody>
-                        </table>
-                      </div>
+            <header>
+                <div class="text-center">
+                    <button class="navbar-toggle only_mobile" onclick="showMenuMobile()"><img class="svg"
+                                                                                              th:src="@{/img/iconos/icon_hamburger.svg}">
+                    </button>
+                    <a class="only_mobile" th:href="@{/bienvenido}"><img class="logo" th:src="@{/img/logo.png}" alt=""></a>
+                    <h4 class="user">
+                        <img class="svg" th:src="@{/img/iconos/icon_perfil.svg}"><span
+                            class="user-full-name"></span><span id="TipoRutina">&nbsp</span></h4>
+                </div>
+            </header>
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#diario"><img class="svg" data-tab="diario"
+                                                                            src="img/iconos/icon_calendar-diario.svg"></a>
+                </li>
+                <li><a data-toggle="tab" href="#semanal"><img class="svg" data-tab="semanal"
+                                                              src="img/iconos/ss.svg"></a></li>
+                <li><a data-toggle="tab" href="#mensual"><img class="svg" data-tab="mensual"
+                                                              src="img/iconos/icon_calendar-mensual.svg"></a></li>
+            </ul>
+            <div class="tab-content rutina-cli">
+                <div class="tab-pane fade in active" id="diario">
+                    <h4 class="text-center">Semana <span id="NumSemana"></span> - <span id="MesSemana">Augustus</span>
+                    </h4>
+                    <div class="panel-group" id="panel_days">
+                        <!--PANEL DAYS-->
                     </div>
                     <hr>
                     <div class="clearfix"></div>
                     <div class="row">
-                      <div class="col col-md-6 col-xs-6">
-                        <h3 class="title_graphic no_margin_top"><img class="svg" src="img/iconos/icon_ayuda.svg">CUMPLIMIENTO</h3>
-                        <input data-thickness="0.06" data-fgColorMid="#d6ff58" data-fgColorEnd="#d6ff58" data-width="56%" data-height="142" id="indicadorCirculo1" type="text" value="0" class="dial dayAvance"/>
-                      </div>
-                      <div class="col col-md-6 col-xs-6">
-                        <h3 class="title_graphic no_margin_top"><img class="svg" src="img/iconos/icon_ayuda.svg">KM<i>RESTANTE</i></h3>
-                        <input data-thickness="0.06" data-fgcolor="#cf3239" data-width="56%" data-height="142" id="indicadorCirculo2" type="text" value="0" class="dial dayAvance"/>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="datos_semanales ds-vista-dia">
+                        <div class="col-md-8 text-center">
+                            <div class="ritmos_pulsos row">
+                                <div class="col-xs-5">
+                                    <h3 class="title_graphic no_margin_top"><img rel="tooltip" title="prueba"
+                                                                                 class="svg"
+                                                                                 src="img/iconos/icon_ayuda.svg">PULSOS<img
+                                            class="red svg" src="img/iconos/icon_heart.svg"></h3>
+                                    <table class="pulsos ps-dia" id="Pulsos">
+                                        <thead>
+                                        <tr>
+                                            <th width="30%"></th>
+                                            <th width="35%"><img class="svg" src="img/iconos/icon_menos.svg"></th>
+                                            <td></td>
+                                            <th width="35%"><img class="svg" src="img/iconos/icon_mas.svg"></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
 
-                    </div>
-                  </div>
-              </div>
-              <div class="clearfix">
-              </div>
-              <hr>
-              <h3 class="title_section">ritmos y tiempos proyectados</h3>
-              <section class="ritmos_tiempo row rt-dia">
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-xs-1"></div>
+                                <div class="col-xs-6 col-ritmos">
+                                    <h3 class="title_graphic no_margin_top">
+                                        <div class="svg-wrap" rel="tooltip" title="prueba"><img class="svg"
+                                                                                                src="img/iconos/icon_ayuda.svg">
+                                        </div>
+                                        RITMOS<img class="blue svg" src="img/iconos/icon_ritmo-tiempo.svg"></h3>
+                                    <table class="ritmos rs-dia" id="Ritmos">
+                                        <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th><img class="svg" src="img/iconos/icon_menos.svg"></th>
+                                            <th></th>
+                                            <th><img class="svg" src="img/iconos/icon_mas.svg"></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
 
-              </section>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="clearfix"></div>
+                            <div class="row">
+                                <div class="col col-md-6 col-xs-6">
+                                    <h3 class="title_graphic no_margin_top"><img class="svg"
+                                                                                 src="img/iconos/icon_ayuda.svg">CUMPLIMIENTO
+                                    </h3>
+                                    <input data-thickness="0.06" data-fgColorMid="#d6ff58" data-fgColorEnd="#d6ff58"
+                                           data-width="56%" data-height="142" id="indicadorCirculo1" type="text"
+                                           value="0" class="dial dayAvance"/>
+                                </div>
+                                <div class="col col-md-6 col-xs-6">
+                                    <h3 class="title_graphic no_margin_top"><img class="svg"
+                                                                                 src="img/iconos/icon_ayuda.svg">KM<i>RESTANTE</i>
+                                    </h3>
+                                    <input data-thickness="0.06" data-fgcolor="#cf3239" data-width="56%"
+                                           data-height="142" id="indicadorCirculo2" type="text" value="0"
+                                           class="dial dayAvance"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="datos_semanales ds-vista-dia">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                    </div>
+                    <hr>
+                    <h3 class="title_section">ritmos y tiempos proyectados</h3>
+                    <section class="ritmos_tiempo row rt-dia">
+
+                    </section>
+                </div>
+                <div class="tab-pane fade" id="semanal">
+                    <h2 class="title_carousel no_margin_top" id="weekMonth">semana3 - <span>enero</span></h2>
+                    <div class="owl-carousel" id="carousel-semanal">
+                        <!--ITEMS CAROUSEL-->
+
+                        <!-- END ITEMS CAROUSEL -->
+                    </div>
+                    <div class="slider-container">
+                        <input class="range-slider" type="range" id="range" value="0" name="range" min="0" step="1"
+                               max="4">
+                    </div>
+                    <div id="ElementosDia">
+                        <!-- ELEMENTOS FROM VISTA SEMANA-->
+                    </div>
+                    <hr>
+                    <div class="col-md-8 no_padding">
+                        <div class="ritmos_pulsos row">
+                            <div class="col-xs-5">
+                                <h3 class="title_graphic"><img class="svg" src="img/iconos/icon_ayuda.svg">PULSOS<img
+                                        class="red svg" src="img/iconos/icon_heart.svg"></h3>
+                                <table class="pulsos ps-semana">
+                                    <thead>
+                                    <tr>
+                                        <th width="20%"></th>
+                                        <th width="35%"><img class="svg" src="img/iconos/icon_menos.svg"></th>
+                                        <th width="10%"></th>
+                                        <th width="35%"><img class="svg" src="img/iconos/icon_mas.svg"></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-xs-1"></div>
+                            <div class="col-xs-6">
+                                <h3 class="title_graphic"><img class="svg" src="img/iconos/icon_ayuda.svg">RITMOS<img
+                                        class="blue svg" src="img/iconos/icon_ritmo-tiempo.svg"></h3>
+                                <table class="ritmos rs-semana">
+                                    <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th><img class="svg" src="img/iconos/icon_menos.svg"></th>
+                                        <th></th>
+                                        <th><img class="svg" src="img/iconos/icon_mas.svg"></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="datos_semanales ds-vista-semana">
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <hr>
+                    <h3 class="title_section">ritmos y tiempos proyectados</h3>
+                    <section class="ritmos_tiempo row rt-semana">
+                    </section>
+                </div>
+                <div class="tab-pane fade" id="mensual">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="datepicker_inline">
+                                <!-- DATETIMEPICKER-->
+                            </div>
+                            <hr>
+                            <div class="ritmos_pulsos row">
+                                <br>
+                                <div class="col-xs-5">
+                                    <h3 class="title_graphic"><img class="svg"
+                                                                   src="img/iconos/icon_ayuda.svg">PULSOS<img
+                                            class="red svg" src="img/iconos/icon_heart.svg"></h3>
+                                    <table class="pulsos ps-mes">
+                                        <thead>
+                                        <tr>
+                                            <th width="30%"></th>
+                                            <th width="35%"><img class="svg" src="img/iconos/icon_menos.svg"></th>
+                                            <th></th>
+                                            <th width="35%"><img class="svg" src="img/iconos/icon_mas.svg"></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-xs-1"></div>
+                                <div class="col-xs-6">
+                                    <h3 class="title_graphic"><img class="svg"
+                                                                   src="img/iconos/icon_ayuda.svg">RITMOS<img
+                                            class="blue svg" src="img/iconos/icon_ritmo-tiempo.svg"></h3>
+                                    <table class="ritmos rs-mes">
+                                        <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th><img class="svg" src="img/iconos/icon_menos.svg"></th>
+                                            <th></th>
+                                            <th><img class="svg" src="img/iconos/icon_mas.svg"></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="datos_semanales ds-vista-mes">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <hr>
+                    <h3 class="title_section">ritmos y tiempos proyectados</h3>
+                    <section class="ritmos_tiempo row rt-mes">
+
+                    </section>
+                </div>
             </div>
-            <div class="tab-pane fade" id="semanal">
-              <h2 class="title_carousel no_margin_top" id="weekMonth">semana3 - <span>enero</span></h2>
-              <div class="owl-carousel" id="carousel-semanal">
-                  <!--ITEMS CAROUSEL-->
-
-                  <!-- END ITEMS CAROUSEL -->
-              </div>
-              <div class="slider-container">
-                <input class="range-slider" type="range" id="range" value="0" name="range" min="0" step="1" max="4">
-              </div>
-              <div id="ElementosDia">
-                <!-- ELEMENTOS FROM VISTA SEMANA-->
-              </div>
-              <hr>
-              <div class="col-md-8 no_padding">
-                <div class="ritmos_pulsos row">
-                  <div class="col-xs-5">
-                    <h3 class="title_graphic"><img class="svg" src="img/iconos/icon_ayuda.svg">PULSOS<img class="red svg" src="img/iconos/icon_heart.svg"></h3>
-                    <table class="pulsos ps-semana">
-                      <thead>
-                        <tr>
-                          <th width="20%"></th>
-                          <th width="35%"><img class="svg" src="img/iconos/icon_menos.svg"></th>
-                            <th width="10%"></th>
-                          <th width="35%"><img class="svg" src="img/iconos/icon_mas.svg"></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                      </tbody>
-                    </table>
-                  </div>
-                  <div class="col-xs-1"></div>
-                  <div class="col-xs-6">
-                    <h3 class="title_graphic"><img class="svg" src="img/iconos/icon_ayuda.svg">RITMOS<img class="blue svg" src="img/iconos/icon_ritmo-tiempo.svg"></h3>
-                    <table class="ritmos rs-semana">
-                      <thead>
-                        <tr>
-                          <th></th>
-                          <th><img class="svg" src="img/iconos/icon_menos.svg"></th>
-                            <th></th>
-                          <th><img class="svg" src="img/iconos/icon_mas.svg"></th>
-                        </tr>
-                      </thead>
-                      <tbody></tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="datos_semanales ds-vista-semana">
-                </div>
-              </div>
-              <div class="clearfix"></div>
-              <hr>
-              <h3 class="title_section">ritmos y tiempos proyectados</h3>
-              <section class="ritmos_tiempo row rt-semana">
-              </section>
-            </div>
-            <div class="tab-pane fade" id="mensual">
-              <div class="row">
-                <div class="col-md-8">
-                  <div class="datepicker_inline">
-                    <!-- DATETIMEPICKER-->
-                  </div>
-                  <hr>
-                  <div class="ritmos_pulsos row">
-                    <br>
-                    <div class="col-xs-5">
-                      <h3 class="title_graphic"><img class="svg" src="img/iconos/icon_ayuda.svg">PULSOS<img class="red svg" src="img/iconos/icon_heart.svg"></h3>
-                      <table class="pulsos ps-mes">
-                        <thead>
-                          <tr>
-                            <th width="30%"></th>
-                            <th width="35%"><img class="svg" src="img/iconos/icon_menos.svg"></th>
-                            <th></th>
-                            <th width="35%"><img class="svg" src="img/iconos/icon_mas.svg"></th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                      </table>
+            <div class="wildcard-message" style="color: #fff;display: none;
+    text-transform: uppercase;
+    font-family: GothamHTF-Bold;"><h3 class="text-center">Estamos trabajando en tu <strong style="color: #a8fa00">super
+                plan</strong> pronto
+                lo recibirás... 😉</h3>
+                <div class="row">
+                    <div class="col col-md-12" style="margin-top: 30px">
+                        <img src="https://www.justpodium.com/biblioteca/prendas-compresion-68-blog-235.jpg" width="100%"
+                             height="100%" style="border-radius: 20px;-webkit-transform: scaleX(-1);
+  transform: scaleX(-1);">
                     </div>
-                    <div class="col-xs-1"></div>
-                    <div class="col-xs-6">
-                      <h3 class="title_graphic"><img class="svg" src="img/iconos/icon_ayuda.svg">RITMOS<img class="blue svg" src="img/iconos/icon_ritmo-tiempo.svg"></h3>
-                      <table class="ritmos rs-mes">
-                        <thead>
-                          <tr>
-                            <th></th>
-                            <th><img class="svg" src="img/iconos/icon_menos.svg"></th>
-                            <th></th>
-                            <th><img class="svg" src="img/iconos/icon_mas.svg"></th>
-                          </tr>
-                        </thead>
-                        <tbody>
-
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
                 </div>
-                <div class="col-md-4">
-                  <div class="datos_semanales ds-vista-mes">
-
-                  </div>
-                </div>
-              </div>
-              <div class="clearfix"></div>
-              <hr>
-              <h3 class="title_section">ritmos y tiempos proyectados</h3>
-              <section class="ritmos_tiempo row rt-mes">
-
-              </section>
             </div>
-          </div>
         </div>
-      </div>
     </div>
+</div>
 
-    <th:block th:insert="html-commons/in/js :: fg-js"></th:block>
-    <script th:src="@{/js/plugin/moment/moment.min.js}+'?'+${version}"></script>
-    <script th:src="@{/js/plugin/bootstrap-timepicker/bootstrap-timepicker.min.js}+'?'+${version}"></script>
-    <!-- CUSTOM NOTIFICATION -->
-    <script th:src="@{/js/jquery.knob.js}+'?'+${version}"></script>
-    <script th:src="@{/js/rf-cli-rutina.js}+'?'+${version}"></script>
-    <script th:src="@{/js/dennys-workout/rf-cli-inicio.js}+'?'+${version}"></script>
-  </body>
+<th:block th:insert="html-commons/in/js :: fg-js"></th:block>
+<script th:src="@{/js/plugin/moment/moment.min.js}+'?'+${version}"></script>
+<script th:src="@{/js/plugin/bootstrap-timepicker/bootstrap-timepicker.min.js}+'?'+${version}"></script>
+<!-- CUSTOM NOTIFICATION -->
+<script th:src="@{/js/jquery.knob.js}+'?'+${version}"></script>
+<script th:src="@{/js/rf-cli-rutina.js}+'?'+${version}"></script>
+<script th:src="@{/js/dennys-workout/rf-cli-inicio.js}+'?'+${version}"></script>
+</body>
 </html>

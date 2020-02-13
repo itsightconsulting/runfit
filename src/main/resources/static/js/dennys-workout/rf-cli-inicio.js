@@ -73,7 +73,7 @@ function init(){
         modalEventos();*/
     }).catch((err)=>{
         console.log(err);
-        $.smallBox({color: '#79722b', content: 'Usted aún no cuenta con alguna rutina'});
+        sinRutina()
     });
     eventTab();
     pulsosRitmos();
@@ -477,10 +477,7 @@ async function getDatosDeLaUltimaRutina(){
             success: function (data, textStatus) {
                 resolve(data);
                 if (data.totalSemanas === 0) {
-                    $.smallBox({
-                        content: "<span><i class='fa fa-exclamation-circle fa-fw'></i> ¡Usted aún no cuenta con alguna rutina asignada!</span>",
-                        timeout: 10000
-                    });
+                    sinRutina()
                     return;
                 }
                 if (textStatus == "success") {
@@ -523,4 +520,11 @@ function getSemanaIndice(fechaInicio, fechaFin){
     }
     $gSemanaIx = weekIndex;
     return weekIndex;
+}
+
+function sinRutina(){
+    document.querySelector('.rutina-cli').classList.add('hidden');
+    $(document.querySelector('.wildcard-message')).show(300);
+    document.querySelector('.nav-tabs').style.visibility = 'hidden';
+
 }
