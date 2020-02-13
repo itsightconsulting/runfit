@@ -39,9 +39,7 @@
 
 
        <section id="consolidado">
-
-
-          <div class="container">
+          <div class="container" style="padding-top: 0px;">
             <div class="consolidado-title">
                 <th:block>
                     <input id="InpClienteId" type="hidden" th:value="${clienteId}"/>
@@ -303,7 +301,7 @@
                 <hr>
               <div id="dvCumplimiento">
                   <h3 class="metric-title"> CUMPLIMIENTO  DEL PROGRAMA <span>  </span></h3>
-                  <div class="container-fluid">
+                  <div class="container-fluid" id="dvCumplimientoContent">
                       <div class="col-md-12">
                             <div class="dv-checks">
                               <ul class="checks text-center" style="display: block;">
@@ -355,7 +353,7 @@
               <hr>
               <div id="dvEsfuerzo">
                   <h3 class="metric-title"> PERCEPCIÓN DE ESFUERZO <span>  </span> </h3>
-                  <div class="container-fluid">
+                  <div class="container-fluid" id="contentDvEsfuerzo">
                       <div class="col-md-12">
                          <div class="dv-checks">
                             <ul class="checks text-center" style="display: block;">

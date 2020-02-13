@@ -380,8 +380,6 @@ function updateRutinaNotificaciones() {
         }
         rutinaHref.classList.add('notif');
         rutinaHref.style.setProperty("--content", `'${notificacionRutina}'`);
-    } else {
-        rutinaHref.classList.remove('notif');
     }
 }
 

@@ -201,11 +201,8 @@ public class TrainerController extends BaseController{
     }
 
     @GetMapping(value = "/consolidado-cliente/obtener")
-    public @ResponseBody String getKeyConsolidadoCliente( @RequestParam int  cliId,  HttpSession session){
-
-        String clienteKey = Parseador.getEncodeHash32Id("rf-rutina", cliId);
-
-        return clienteKey;
+    public @ResponseBody String getKeyConsolidadoCliente( @RequestParam int  cliId){
+        return Parseador.getEncodeHash32Id("rf-rutina", cliId);
     }
 
     @GetMapping(value = "/servicio/top/obtener")

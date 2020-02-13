@@ -31,7 +31,11 @@ import static com.itsight.util.Enums.ResponseCode.REGISTRO;
 
 @Controller
 @RequestMapping("/gestion/mini-rutina")
-@PreAuthorize("hasRole('DG')")//Sección única para Dennys Gorina
+@PreAuthorize("hasRole('DG')")
+/*
+ * description: Rutinario no entra en la primera versión de Runfit
+ * Sección única para Dennys Gorina
+ */
 public class MiniRutinaController {
 
     private MiniRutinaService miniRutinaService;

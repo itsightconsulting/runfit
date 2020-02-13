@@ -15,14 +15,12 @@ class Rutina {
     }
 
     init(primeraSemana) {
-
         this.semanas[0] = new Semana(primeraSemana);
         this.mostrarSemana(this.semanas[0], 0);
         this.completarFechasSemanas(false);
     }
 
     initEspecifico(semana, num){
-
         this.semanas[num] = new Semana(semana);
         this.mostrarSemana(this.semanas[num], num);
         this.completarFechasSemanas(true, num);
