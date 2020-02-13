@@ -118,8 +118,6 @@ $(function () {
 
             result.dias = $dias;
 
-            //console.log(JSON.stringify(result));
-            //console.log($('#dayAvance').val().replace("%",""));
             GuardarAvanceSemanal(JSON.stringify(result),$('#dayAvance').val().replace("%",""));
             CalcularGraficos($('#dayAvance').val().replace("%",""));
         });
@@ -212,7 +210,6 @@ function getSemanas(id) {
                     });
                     semanas.sort(function(a, b){return a.id - b.id});
                     $rutina.semanas = semanas;
-                    console.log(semanas);
                 }
             }
         },

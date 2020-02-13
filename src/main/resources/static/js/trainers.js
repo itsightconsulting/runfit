@@ -195,8 +195,6 @@ function carouselCategoriaPlantilla() {
         $("input").on("change", function(e) {
           e.preventDefault();
           console.log(inputType.val());
-          // console.log(e.item.index);
-          // FIGURE OUT HOW TO GET CAROUSEL INDEX
          
           $('.owl-carousel').trigger('to.owl.carousel', [inputType.val(),1,true]);
       
@@ -257,8 +255,6 @@ function carouselSubCategoriaPlantilla() {
         $("input").on("change", function(e) {
             e.preventDefault();
             console.log(inputType.val());
-            // console.log(e.item.index);
-            // FIGURE OUT HOW TO GET CAROUSEL INDEX
 
             $('.owl-carousel').trigger('to.owl.carousel', [inputType.val(),1,true]);
 

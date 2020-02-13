@@ -33,7 +33,7 @@ function obtenerRutinaConsolidado(rutinaId) {
         body.clienteId = document.getElementById('InpClienteId').value;
     }
 
-    let hrefFinal = "";
+    let hrefFinal;
 
     if (body.clienteId) {//Ruta para entrenadores from red fitness listado
         hrefFinal = _ctx + "cliente/rutina/consolidado/obtener/by";
@@ -83,9 +83,8 @@ function obtenerRutinaConsolidado(rutinaId) {
             }
         }
         , error: (xhr) => {
+            exception(xhr);
         }, complete: () => {
-            /*
-            */
         }
     });
 

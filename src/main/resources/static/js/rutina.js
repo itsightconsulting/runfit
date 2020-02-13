@@ -27,8 +27,6 @@ class Rutina {
     }
 
     initEspecificoDesdeRutina(num){
-
-        console.log("xs",num);
         this.mostrarSemana(this.semanas[num], num);
         this.completarFechasSemanas(true, num);
     }
@@ -1991,37 +1989,6 @@ SubEleOpc = (function(){
                 iconoMedia.remove();
                 eliminarMediaSubElementoBD(ixs.numSem, ixs.diaIndex, (eleIndex = i), (subEleIndex = k), TipoElemento.VIDEO);
             }
-        },
-        agregarMediaToSubElemento: (ixs, input)=>{
-            console.log('deprecated...SubEleOpc.agregarMediaToSubElemento');
-            /*const assetsElemento = input.parentElement;
-            const iconoOpc = assetsElemento.querySelector('.sub-ele-ops');
-            const iconoMedia = assetsElemento.querySelector('.rf-media');
-
-            let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs), i=0, k=0;
-            while((tempElemento = tempElemento.previousElementSibling) != null) i++;
-            let tempSubEle = RutinaDOMQueries.getSubElementoByIxs(ixs)
-            while((tempSubEle = tempSubEle.previousElementSibling) != null) k++;
-            if($tipoMedia == TipoElemento.AUDIO){
-                RutinaSet.setSubElementoMediaAudio(ixs.numSem, ixs.diaIndex, (eleIndex=i), (subEleIndex=k), $mediaAudio);
-                //Primer if para actualizar
-                if(iconoMedia != undefined && (iconoMedia.className.includes('fa-play') || iconoMedia.className.includes('fa-pause'))){
-                    iconoMedia.setAttribute('data-media', $mediaAudio);
-                }else{//Para registrar
-                    iconoOpc.insertAdjacentHTML('beforebegin', RutinaElementoHTML.iconoAudio($mediaAudio));
-                }
-                eliminarMediaSubElementoBD(ixs.numSem, ixs.diaIndex, (eleIndex = i), (subEleIndex = k), TipoElemento.AUDIO);
-                $mediaAudio = '';
-            }else if ($tipoMedia == TipoElemento.VIDEO) {
-                RutinaSet.setSubElementoMediaVideo(ixs.numSem, ixs.diaIndex, (eleIndex=i), (subEleIndex=k), $mediaVideo);
-                if(iconoMedia != undefined && iconoMedia.className.includes('fa-video-camera')){//Primer if para actualizar
-                    iconoMedia.setAttribute('data-media', $mediaVideo);
-                }else{//Para registrar
-                    iconoOpc.insertAdjacentHTML('beforebegin', RutinaElementoHTML.iconoVideo($mediaVideo));
-                }
-                eliminarMediaSubElementoBD(ixs.numSem, ixs.diaIndex, (eleIndex = i), (subEleIndex = k), TipoElemento.VIDEO);
-                $mediaVideo = '';
-            }*/
         },
         agregarMediaToSubElemento2: (ixs, input)=>{
             const assetsElemento = input.parentElement;

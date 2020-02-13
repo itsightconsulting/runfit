@@ -34,7 +34,7 @@ public class Enums {
         }
     }
 
-    public enum EstadoPlan{
+    public enum EstadoPlan {
         SIN_PLAN(1),
         EN_REVISION(2),
         POR_ENVIAR(3),
@@ -43,29 +43,33 @@ public class Enums {
 
         final int id;
 
-        EstadoPlan(int id){
+        EstadoPlan(int id) {
             this.id = id;
         }
 
-        public int get(){
+        public int get() {
             return id;
         }
     }
 
-    public enum TipoMedia{
+    public enum TipoMedia {
         AUDIO(1),
         VIDEO(2),
         TEXTO(3);
 
         final int id;
 
-        TipoMedia(int id){this.id = id;}
+        TipoMedia(int id) {
+            this.id = id;
+        }
 
-        public int get(){return id;}
+        public int get() {
+            return id;
+        }
 
     }
 
-    public enum TipoRutina{
+    public enum TipoRutina {
         RUNNING(1),
         GENERAL(2),
         TRIATLON(3),
@@ -74,53 +78,52 @@ public class Enums {
 
         final int id;
 
-        TipoRutina(int id){
+        TipoRutina(int id) {
             this.id = id;
         }
 
-        public int get(){
+        public int get() {
             return id;
         }
     }
 
-    public enum TipoTrainer{
+    public enum TipoTrainer {
         PARTICULAR(1),
         EMPRESA(2),
         PARA_EMPRESA(3);
 
         final int id;
 
-        TipoTrainer(int id){
+        TipoTrainer(int id) {
             this.id = id;
         }
 
-        public int get(){
+        public int get() {
             return id;
         }
     }
 
 
-
-    public enum Decision{
+    public enum Decision {
         DESAPROBADO(0),
         APROBADO(1);
 
         final int id;
 
-        Decision(int id){
+        Decision(int id) {
             this.id = id;
         }
 
-        public int get(){
+        public int get() {
             return id;
         }
     }
 
-    public enum TipoUsuario{
+    public enum TipoUsuario {
         FIXORDER, ADMINISTRADOR, ENTRENADOR, CLIENTE
     }
 
-    public enum Mail{
+    public enum Mail {
         POSTULACION_TRAINER(1),
         POSTULANTE_TRAINER_CONFIRMAR_CORREO(2),
         NUEVO_CLIENTE(3),
@@ -137,30 +140,31 @@ public class Enums {
 
         final int id;
 
-        Mail(int id){
+        Mail(int id) {
             this.id = id;
         }
 
-        public int get(){
+        public int get() {
             return id;
         }
     }
 
-    public enum Error{
+    public enum Error {
+        ATLETA_SIN_RUTINA("El atleta aún no cuenta con alguna rutina"),
         ARCHIVO_EXCEDE_MAX_PERMITIDO("El archivo que ha intentado subir excede al límite permitido, por favor suba un archivo menor o igual a %s");
 
         final String msg;
 
-        Error(String msg){
+        Error(String msg) {
             this.msg = msg;
         }
 
-        public String get(){
+        public String get() {
             return msg;
         }
     }
 
-    public enum Msg{
+    public enum Msg {
         REGISTRO_EXITOSO("Se ha registrado correctamente"),
         CORREO_REPETIDO("El correo ingresado ya se encuentra registrado en nuestra base de datos"),
         POSTULACION_BLOQUEADA("Usted no puede volver a postular hasta después de la fecha: %s debido a que su última postulación fue rechazada"),
@@ -212,46 +216,50 @@ public class Enums {
 
         final String msg;
 
-        Msg(String msg){
+        Msg(String msg) {
             this.msg = msg;
         }
 
-        public String get(){
+        public String get() {
             return msg;
         }
     }
 
-    public enum MsgPeticion{
+    public enum MsgPeticion {
         FICHA_RUNNER("Estimado asesor, en esta ocasión quisiera que use la ficha de runner ya que es la disciplina en la que quiero mejorar. Gracias."),
         FICHA_GENERAL("Estimado asesor, en esta ocasión quisiera que use la ficha general. Gracias.");
         final String msg;
 
-        MsgPeticion(String msg){
+        MsgPeticion(String msg) {
             this.msg = msg;
         }
 
-        public String get(){
+        public String get() {
             return msg;
         }
     }
 
-    public enum FileExt{
+    public enum FileExt {
         JPEG(".jpg"),
         PDF(".pdf"),
         WEBM(".webm");
 
         final String id;
 
-        FileExt(String id){this.id = id;}
+        FileExt(String id) {
+            this.id = id;
+        }
 
-        public String get(){return id;}
+        public String get() {
+            return id;
+        }
     }
 
-    public enum CfsCliente{
-        CONTROL_REP_VIDEO, FAV_RUTINA_ID, FAV_TRAINER_ID,FAVS_POST_TRAINER, CONTROL_ENTRENAMIENTO, NOTIFICACION_CHAT, TOTAL_RUTINAS_ACTIVAS
+    public enum CfsCliente {
+        CONTROL_REP_VIDEO, FAV_RUTINA_ID, FAV_TRAINER_ID, FAVS_POST_TRAINER, CONTROL_ENTRENAMIENTO, NOTIFICACION_CHAT, TOTAL_RUTINAS_ACTIVAS
     }
 
-    public enum Galletas{
+    public enum Galletas {
         GLL_NOMBRE_COMPLETO, GLL_IMG_PERFIL, GLL_CONTROL_ENTRENAMIENTO, GLL_CONTROL_REP_VIDEO, GLL_FAV_RUTINA, GLL_NOTIFICACION_CHAT, GLL_TOTAL_RUTINAS_ACTIVAS
     }
 }

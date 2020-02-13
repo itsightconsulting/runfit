@@ -378,7 +378,6 @@
 
     function preTemporadaCliente(cliId){
 
-       console.log("entrooo");
         $.ajax({
             type: 'GET',
             url: _ctx+'gestion/trainer/consolidado-cliente/obtener?cliId='+cliId,
@@ -386,8 +385,8 @@
             success: (r)=>{
                   window.location.href = _ctx + "cliente/rutina/consolidado/ver?key="+r;
             },
-            error: (x)=>{
-              console.log("uuu",x);
+            error: (xhr)=>{
+                exception(xhr)
             },
             complete: ()=>{
 
@@ -972,9 +971,6 @@
 
 
     function verHistorialRutina(redFitnessId, clienteId, nombreCompleto,fechaNacimiento){
-
-
-      console.log("sdd",atob(fechaNacimiento));
        window.location.href = _ctx+'gestion/trainer/red/historial_rutina?key='+ getHash32Id('rf-rutina', redFitnessId) + '&rn='+ getHash16Id('rf-rutina', clienteId) +'&nm=' + nombreCompleto + '&fn='+fechaNacimiento;
     }
 

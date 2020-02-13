@@ -10,36 +10,43 @@
         .pricing-table {
             margin-top: 0px;
         }
+
         .pricing-table {
             margin-top: 30px;
             margin-bottom: 30px;
         }
+
         .pricing-table .pricing-table-item {
             border-bottom: 0px;
         }
+
         .pricing-table .item-header {
             background-color: #696969;
             color: #ffffff;
             text-align: center;
             line-height: 50px;
         }
+
         h2, .header-two {
             font-family: Helvetica, Arial, sans-serif;
             font-size: 19px;
             line-height: 1.3;
             text-transform: uppercase;
         }
+
         .pricing-table .item-cta-block {
             background-color: #D3D3D3;
             padding: 30px;
             text-align: center;
             position: relative;
         }
+
         .pricing-table .block-price {
             color: #000000;
             font-size: 45px;
             font-family: "Trebuchet MS", Arial, sans-serif;
         }
+
         .pricing-table .block-sub-text {
             text-transform: uppercase;
             font-size: 15px;
@@ -47,16 +54,20 @@
             line-height: 26px;
             margin-bottom: 10px;
         }
+
         .pricing-table .pricing-toggle-holder {
             display: none;
         }
+
         .pricing-table .pricing-toggle-holder button {
             padding-left: 0;
             padding-right: 0;
         }
+
         .item-cta-block .button.orange-button {
             display: inline-block;
         }
+
         button.orange-button, input[type="button"].orange-button, input[type="reset"].orange-button, input[type="submit"].orange-button, a.button.orange-button {
             background-color: #d2282e;
             color: #ffffff;
@@ -66,11 +77,13 @@
             transition: all .75s;
             margin-bottom: 6px;
         }
+
         button .glyphicon-menu-right, input[type="button"] .glyphicon-menu-right, input[type="reset"] .glyphicon-menu-right, input[type="submit"] .glyphicon-menu-right, a.button .glyphicon-menu-right {
             top: -1px;
             margin-left: 5px;
             font-size: 9px;
         }
+
         .pricing-table .item-details-block {
             background-color: #f7f7f7;
             padding: 38px 30px;
@@ -78,14 +91,17 @@
             border-right: 1px solid #ccc;
             border-bottom: 1px solid #ccc;
         }
+
         .pricing-table .plus-header {
             text-align: center;
             font-size: 18px;
             font-family: "Trebuchet MS", Arial, sans-serif;
         }
+
         .pricing-table .separator {
             margin-bottom: 38px;
         }
+
         .separator {
             background-color: #d2282e;
             height: 3px;
@@ -100,6 +116,7 @@
             margin: 0;
             padding: 0;
         }
+
         .pricing-table .item-details-block ul li {
             line-height: 2;
         }
@@ -107,9 +124,11 @@
         .separator-type, .title-type, .intro-type, .content-type .intro-type p {
             position: relative;
         }
+
         .intro-type .container {
             padding: 107px 0px 102px 0px !important;
         }
+
         .company-heading h1 {
             margin-bottom: 40px;
             line-height: 80px;
@@ -117,18 +136,22 @@
             font-weight: 700 !important;
             text-align: center;
         }
+
         .seo-header, .product-header, .intro-type .container h1.white, .company-heading h1 {
             font-weight: 100 !important;
             text-transform: capitalize;
             font-size: 55px;
             margin-bottom: 20px;
         }
+
         .parallax {
             background-attachment: inherit !important;
         }
+
         .parallax {
             background-attachment: inherit !important;
         }
+
         .parallax {
             background-attachment: inherit !important;
             background-repeat: repeat;
@@ -186,7 +209,7 @@
 
     });
 
-    function ListarPlanes(){
+    function ListarPlanes() {
         $.ajax({
             type: 'GET',
             contentType: "application/x-www-form-urlencoded; charset=UTF-8",
@@ -194,44 +217,44 @@
             dataType: "json",
             success: function (data, textStatus) {
                 if (textStatus == "success") {
-                   if(data != null) {
-                        console.log(data);
-                       var $div = $("#divPlanes");
-                       $.each(data, function (i, item) {
-                           var descripcion = item.descripcion == null ? "" : item.descripcion;
-                           var div = '<div class="col-sm-4 pricing-container">\
+                    if (data != null) {
+                        var $div = $("#divPlanes");
+                        $.each(data, function (i, item) {
+                            var descripcion = item.descripcion == null ? "" : item.descripcion;
+                            var div = '<div class="col-sm-4 pricing-container">\
                        <div class="pricing-table-item">\
-                       <h2 class="item-header">'+ item.nombre + '</h2>\
+                       <h2 class="item-header">' + item.nombre + '</h2>\
                        <div class="item-cta-block" style="height: 213px;">\
-                       <div id="js_block-price1" class="block-price currency-container" style="display: inline-block;" data-country="usd">S/ '+ item.precioSoles +'</div>\
-                       <div class="block-sub-text"><div id="js_block-price2" class="currency-container" style="display: none;" data-country="cad">USD</div> '+ item.cantidadMeses + '  Mes</div>\
+                       <div id="js_block-price1" class="block-price currency-container" style="display: inline-block;" data-country="usd">S/ ' + item.precioSoles + '</div>\
+                       <div class="block-sub-text"><div id="js_block-price2" class="currency-container" style="display: none;" data-country="cad">USD</div> ' + item.cantidadMeses + '  Mes</div>\
                        <div class="pricing-toggle-holder">\
                        <button class="pricing-toggle">\
                        <span class="pricing-toggle-open">See Standard Features <span class="glyphicon glyphicon-plus"></span></span>\
                        <span class="pricing-toggle-close">Hide Standard Features <span class="glyphicon glyphicon-minus"></span></span>\
                        </button>\
                        </div>\
-                       <a class="button orange-button outbound" href="javascript:EjecutarPlan(' + item.id + ')" target="_blank">Comprar plan '+ item.nombre + '</a>\
+                       <a class="button orange-button outbound" href="javascript:EjecutarPlan(' + item.id + ')" target="_blank">Comprar plan ' + item.nombre + '</a>\
                        </div>\
                        <div class="item-details-block">\
                        <div class="plus-header">El plan incluye:</div>\
                        <div class="separator"></div>\
                        <ul>\
-                       <li><i class="fa fa-check" aria-hidden="true"></i> '+ descripcion + ' </li>\
+                       <li><i class="fa fa-check" aria-hidden="true"></i> ' + descripcion + ' </li>\
                        </ul>\
                        </div>\
                        </div>\
                        </div>'
-                           $div.append(div);
-                       });
+                            $div.append(div);
+                        });
 
-                   }
+                    }
                 }
             },
             error: function (xhr) {
                 exception(xhr);
             },
-            complete: function () {}
+            complete: function () {
+            }
         });
     }
 
@@ -239,31 +262,30 @@
         bootbox.setLocale("es");
         bootbox.confirm("¿Estás seguro que deseas <strong>comprar el PLAN </strong> seleccionado?",
             function (result) {
-            if (result) {
-                var params = new Object();
-                params.id = id;
+                if (result) {
+                    var params = new Object();
+                    params.id = id;
 
-                $("#load_pace").show();
-                $.ajax({
-                    type: 'POST',
-                    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-                    url: _ctx + 'gestion/plan/comprarPlan',
-                    dataType: "json",
-                    data: params,
-                    success: function (data, textStatus) {
-                        if (textStatus == "success") {
-                            console.log(data);
-                            bootbox.alert("Plan Comprado");
+                    $("#load_pace").show();
+                    $.ajax({
+                        type: 'POST',
+                        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                        url: _ctx + 'gestion/plan/comprarPlan',
+                        dataType: "json",
+                        data: params,
+                        success: function (data, textStatus) {
+                            if (textStatus == "success") {
+                                bootbox.alert("Plan Comprado");
+                            }
+                        },
+                        error: function (xhr) {
+                            exception(xhr);
+                        },
+                        complete: function () {
                         }
-                    },
-                    error: function (xhr) {
-                        exception(xhr);
-                    },
-                    complete: function () {
-                    }
-                });
-            }
-        });
+                    });
+                }
+            });
     }
 
 

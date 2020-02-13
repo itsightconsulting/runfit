@@ -1,251 +1,259 @@
 <!DOCTYPE html>
 <html lang="en-us"
       xmlns:th="http://www.thymeleaf.org"
-      th:with="version = ${#servletContext.getAttribute('version')}">  <head>
+      th:with="version = ${#servletContext.getAttribute('version')}">
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-   <title> Videoteca </title>
-   <th:block th:insert="html-commons/in/meta :: fg-meta"></th:block>
-   <th:block th:insert="html-commons/in/css  :: fg-css"></th:block>
+    <title> Videoteca </title>
+    <th:block th:insert="html-commons/in/meta :: fg-meta"></th:block>
+    <th:block th:insert="html-commons/in/css  :: fg-css"></th:block>
     <link rel="stylesheet" type="text/css" th:href="@{/css/public/owl.carousel.min.css}+'?'+${version}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/jquery.fancybox.min.css}+'?'+${version}">
-  </head>
-  <body>
-  <th:block th:insert="html-commons/in/left-panel::fg-menu-desk"></th:block>
-  <th:block th:insert="html-commons/in/left-panel::fg-menu-mob"></th:block>
+</head>
+<body>
+<th:block th:insert="html-commons/in/left-panel::fg-menu-desk"></th:block>
+<th:block th:insert="html-commons/in/left-panel::fg-menu-mob"></th:block>
 
 
-
-    <div id="main-content">
-      <div id="wrapper">
+<div id="main-content">
+    <div id="wrapper">
         <div class="container">
-          <header>
-            <div class="text-center">
-              <button class="navbar-toggle only_mobile" onclick="showMenuMobile()"><img class="svg" src="/img/iconos/icon_programas.svg"></button><a class="only_mobile" href="../../../../../../../Downloads/clientes/dist/index.html"><img class="logo" src="/img/logo.png" alt=""/></a>
-              <h4 class="user">
-                <img class="svg" th:src="@{/img/iconos/icon_perfil.svg}"><span class="user-full-name"></span><span id="TipoRutina">&nbsp</span></h4>
-            </div>
-          </header>
+            <header>
+                <div class="text-center">
+                    <button class="navbar-toggle only_mobile" onclick="showMenuMobile()"><img class="svg"
+                                                                                              src="/img/iconos/icon_programas.svg">
+                    </button>
+                    <a class="only_mobile" href="../../../../../../../Downloads/clientes/dist/index.html"><img
+                            class="logo" src="/img/logo.png" alt=""/></a>
+                    <h4 class="user">
+                        <img class="svg" th:src="@{/img/iconos/icon_perfil.svg}"><span
+                            class="user-full-name"></span><span id="TipoRutina">&nbsp</span></h4>
+                </div>
+            </header>
         </div>
         <div class="content-videoteca">
-          <h4 class="text-center">mi videoteca</h4>
-          <div class="owl-carousel" id="videoteca-carousel">
-          </div>
+            <h4 class="text-center">mi videoteca</h4>
+            <div class="owl-carousel" id="videoteca-carousel">
+            </div>
         </div>
         <div class="container">
-          <div class="slider-container">
-            <input class="range-slider" type="range" id="range" value="0" name="range" min="0" step="1" max="4">
-          </div>
-          <section class="favoritos">
-            <h4 class="text-left" ><img class="svg" src="/img/iconos/icon_heart.svg">mis favoritos
-              <div class="input-group">
-                <input class="form-control" type="text" id="inpBuscadorFav">
-                <div class="input-group-btn">
-                  <button class="btn btn-default" type="submit">BUSCAR</button>
+            <div class="slider-container">
+                <input class="range-slider" type="range" id="range" value="0" name="range" min="0" step="1" max="4">
+            </div>
+            <section class="favoritos">
+                <h4 class="text-left"><img class="svg" src="/img/iconos/icon_heart.svg">mis favoritos
+                    <div class="input-group">
+                        <input class="form-control" type="text" id="inpBuscadorFav">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" type="submit">BUSCAR</button>
+                        </div>
+                    </div>
+                </h4>
+                <div class="resultado_material">
+                    <ul class="row">
+
+                    </ul>
                 </div>
-              </div>
-            </h4>
-            <div class="resultado_material">
-              <ul class="row">
+                <div class="text-center" id="iconArrowMoreFav">
+                    <a data-toggle="collapse" data-target="#moreFav"><img class="svg moreview arrow"
+                                                                          src="/img/iconos/icon_flecha2.svg"></a></div>
+                <div class="collapse" id="moreFav">
+                    <div class="resultado_material">
+                        <ul class="row">
 
-              </ul>
-            </div>
-            <div class="text-center" id="iconArrowMoreFav">
-            <a data-toggle="collapse" data-target="#moreFav"><img class="svg moreview arrow" src="/img/iconos/icon_flecha2.svg"></a></div>
-            <div class="collapse" id="moreFav">
-              <div class="resultado_material">
-                <ul class="row">
-
-                </ul>
-              </div>
-            </div>
-            <div class="clearfix"></div>
-            <hr>
-          </section>
-          <section class="busqueda">
-            <h4 class="text-left" id="grupoVideoTitle"> <span > estiramientos</span> <!-- <img class="svg" src="/img/iconos/icon_flecha2.svg"> -->
-              <div class="input-group">
-                <input class="form-control" type="text" id="inpBuscador">
-                <div class="input-group-btn">
-                  <button class="btn btn-default" type="submit">BUSCAR</button>
+                        </ul>
+                    </div>
                 </div>
-              </div>
-            </h4>
-            <div class="resultado_material">
-              <ul class="row">
+                <div class="clearfix"></div>
+                <hr>
+            </section>
+            <section class="busqueda">
+                <h4 class="text-left" id="grupoVideoTitle"><span> estiramientos</span>
+                    <!-- <img class="svg" src="/img/iconos/icon_flecha2.svg"> -->
+                    <div class="input-group">
+                        <input class="form-control" type="text" id="inpBuscador">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" type="submit">BUSCAR</button>
+                        </div>
+                    </div>
+                </h4>
+                <div class="resultado_material">
+                    <ul class="row">
 
-              </ul>
-            </div>
-          </section>
+                    </ul>
+                </div>
+            </section>
         </div>
-        <div style ="height:100px;" class="footer">  </div>
-      </div>
+        <div style="height:100px;" class="footer"></div>
     </div>
+</div>
 
-    <th:block th:insert="html-commons/in/js :: fg-js"></th:block>
+<th:block th:insert="html-commons/in/js :: fg-js"></th:block>
 
-  </body>
+</body>
 </html>
 
 <script>
 
-  const dvCarousel = document.getElementById('videoteca-carousel');
-  const urlAwsGrupoVideo = 'https://s3-us-west-2.amazonaws.com/rf-media-rutina/grupo-video';
-  const urlAwsVideo ='https://rf-media-rutina.s3-us-west-2.amazonaws.com/video';
-  const ulVideosGrupo = document.querySelector('section.busqueda .resultado_material ul');
-  const ulFavoritosGrupo = document.querySelector('section.favoritos .resultado_material ul');
-  const dvArrowMoreFav = document.querySelector('section.favoritos #iconArrowMoreFav ');
-  const dvMoreFav = document.querySelector('section.favoritos #moreFav');
-  const dvGrupoVideo = document.querySelector('section.busqueda .resultado_material');
-  const dvResultadoFavoritos = document.querySelector('section.favoritos .resultado_material');
-  const ulOtrosFavoritosGrupo = document.querySelector('section.favoritos #moreFav ul');
-  const inpBuscador = document.getElementById('inpBuscador');
-  const inpBuscadorFav = document.getElementById('inpBuscadorFav');
+    const dvCarousel = document.getElementById('videoteca-carousel');
+    const urlAwsGrupoVideo = 'https://s3-us-west-2.amazonaws.com/rf-media-rutina/grupo-video';
+    const urlAwsVideo = 'https://rf-media-rutina.s3-us-west-2.amazonaws.com/video';
+    const ulVideosGrupo = document.querySelector('section.busqueda .resultado_material ul');
+    const ulFavoritosGrupo = document.querySelector('section.favoritos .resultado_material ul');
+    const dvArrowMoreFav = document.querySelector('section.favoritos #iconArrowMoreFav ');
+    const dvMoreFav = document.querySelector('section.favoritos #moreFav');
+    const dvGrupoVideo = document.querySelector('section.busqueda .resultado_material');
+    const dvResultadoFavoritos = document.querySelector('section.favoritos .resultado_material');
+    const ulOtrosFavoritosGrupo = document.querySelector('section.favoritos #moreFav ul');
+    const inpBuscador = document.getElementById('inpBuscador');
+    const inpBuscadorFav = document.getElementById('inpBuscadorFav');
 
-  let currentVideosxGrupo;
-  const favIcon = document.querySelectorAll('.fav');
-  let currentFavoritos;
-  const initLimit = 6;
-  const initOffset = 0;
-  let currentGrupoVideoId = 1;
-  let totalRows = 0;
-  let queryParams = resetPagination();
-  const body = document.querySelector('body');
-  function resetPagination(){
-    return {
-      limit: initLimit,
-      offset: initOffset
-    };
-  }
+    let currentVideosxGrupo;
+    const favIcon = document.querySelectorAll('.fav');
+    let currentFavoritos;
+    const initLimit = 6;
+    const initOffset = 0;
+    let currentGrupoVideoId = 1;
+    let totalRows = 0;
+    let queryParams = resetPagination();
+    const body = document.querySelector('body');
 
-  $(function(){
-      onInit();
+    function resetPagination() {
+        return {
+            limit: initLimit,
+            offset: initOffset
+        };
+    }
+
+    $(function () {
+        onInit();
     })
 
-    function onInit(){
+    function onInit() {
 
-       obtenerVideosFavoritos();
-       obtenerGrupoVideos();
-   //  obtenerVideosxGrupo(0) //tipo 0 => Nuevo grupo video
-   //  $(dvCarousel).on('click', '.item', grupoVideoClickEvent);
-       inpBuscador.addEventListener("input", buscadorEvent);
-      inpBuscadorFav.addEventListener("input", buscadorFavEvent);
+        obtenerVideosFavoritos();
+        obtenerGrupoVideos();
+        //  obtenerVideosxGrupo(0) //tipo 0 => Nuevo grupo video
+        //  $(dvCarousel).on('click', '.item', grupoVideoClickEvent);
+        inpBuscador.addEventListener("input", buscadorEvent);
+        inpBuscadorFav.addEventListener("input", buscadorFavEvent);
 
-      $(dvCarousel).on('changed.owl.carousel', seleccionGrupoEvent);
-      $(body).on('click','.fav',favoritoEvent);
-
-    }
-
-    function obtenerGrupoVideos(){
-
-     $.ajax({
-      type: 'GET',
-      contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-      url: _ctx + 'gestion/grupo-video/obtenerListado/0/1',
-      dataType : 'json',
-      blockLoading: false,
-      noOne: true,
-      success : (result) => {
-
-        poblarCarouselCategorias(result);
-        $('.range-slider').prop('max', result.length - 1);
-      },
-      error: (xhr) =>{
-
-
-      },
-      complete : () =>{
-
-      }
-     })
+        $(dvCarousel).on('changed.owl.carousel', seleccionGrupoEvent);
+        $(body).on('click', '.fav', favoritoEvent);
 
     }
 
-    function obtenerVideosxGrupo(tipo){
-      $.ajax({
-        type: 'GET',
-        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-        url: _ctx + 'gestion/video/obtenerListado/dinamico',
-        data: {
-              flag : null,
-              nombre :  '',
-              catVideoId : null,
-              subCatVideoId : null,
-              grupoVideoId : currentGrupoVideoId,
-              limit : queryParams.limit,
-              offset : queryParams.offset
-        },
-        blockLoading: true,
-        noOne: false,
-        dataType : 'json',
-        success :  (result) => {
-            const data = result.rows;
-            totalRows = result.total;
-            poblarDvVideosxGrupo(data);
+    function obtenerGrupoVideos() {
 
-            if(tipo === 1){  //tipo 1 -paginacion
-              data.forEach(  e => currentVideosxGrupo.push(e));
-            }else{  //tipo 0 - cambio de categoria
-              currentVideosxGrupo = data;
+        $.ajax({
+            type: 'GET',
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            url: _ctx + 'gestion/grupo-video/obtenerListado/0/1',
+            dataType: 'json',
+            blockLoading: false,
+            noOne: true,
+            success: (result) => {
+
+                poblarCarouselCategorias(result);
+                $('.range-slider').prop('max', result.length - 1);
+            },
+            error: (xhr) => {
+
+
+            },
+            complete: () => {
+
             }
-        },
-        error: (xhr) =>{
-          exception(xhr);
-        },
-        complete : () =>{
-        }
-      })
+        })
+
     }
 
-  function obtenerVideosFavoritos(){
+    function obtenerVideosxGrupo(tipo) {
+        $.ajax({
+            type: 'GET',
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            url: _ctx + 'gestion/video/obtenerListado/dinamico',
+            data: {
+                flag: null,
+                nombre: '',
+                catVideoId: null,
+                subCatVideoId: null,
+                grupoVideoId: currentGrupoVideoId,
+                limit: queryParams.limit,
+                offset: queryParams.offset
+            },
+            blockLoading: true,
+            noOne: false,
+            dataType: 'json',
+            success: (result) => {
+                const data = result.rows;
+                totalRows = result.total;
+                poblarDvVideosxGrupo(data);
 
-    $.ajax({
-      type: 'GET',
-      contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-      url: _ctx + 'gestion/video/obtener/favoritos',
-      dataType : 'json',
-      blockLoading: false,
-      noOne: true,
-      success :  (result) => {
-        currentFavoritos = result;
-        poblarDvVideosFavoritosxCliente(result);
-      },
-      error: (xhr) =>{
-      },
-      complete : () =>{
-      }
-    })
-  }
+                if (tipo === 1) {  //tipo 1 -paginacion
+                    data.forEach(e => currentVideosxGrupo.push(e));
+                } else {  //tipo 0 - cambio de categoria
+                    currentVideosxGrupo = data;
+                }
+            },
+            error: (xhr) => {
+                exception(xhr);
+            },
+            complete: () => {
+            }
+        })
+    }
+
+    function obtenerVideosFavoritos() {
+
+        $.ajax({
+            type: 'GET',
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            url: _ctx + 'gestion/video/obtener/favoritos',
+            dataType: 'json',
+            blockLoading: false,
+            noOne: true,
+            success: (result) => {
+                currentFavoritos = result;
+                poblarDvVideosFavoritosxCliente(result);
+            },
+            error: (xhr) => {
+            },
+            complete: () => {
+            }
+        })
+    }
 
 
-  function poblarCarouselCategorias(data){
+    function poblarCarouselCategorias(data) {
 
-      let grupoVideoElements='';
+        let grupoVideoElements = '';
 
-      data.forEach( function(element){
+        data.forEach(function (element) {
 
-        grupoVideoElements += ` <div class="item" data-grupo-id="${element.id}"  style="background :url(${urlAwsGrupoVideo}/${element.id}/${element.rutaWeb}) no-repeat center;">
+            grupoVideoElements += ` <div class="item" data-grupo-id="${element.id}"  style="background :url(${urlAwsGrupoVideo}/${element.id}/${element.rutaWeb}) no-repeat center;">
                                      <div class="title">${element.nombre}</div>
                                    </div>`;
 
-      });
+        });
 
-      $(dvCarousel).trigger('replace.owl.carousel', grupoVideoElements).trigger('refresh.owl.carousel');
+        $(dvCarousel).trigger('replace.owl.carousel', grupoVideoElements).trigger('refresh.owl.carousel');
     }
 
 
-    function poblarDvVideosxGrupo(dataVideos){
+    function poblarDvVideosxGrupo(dataVideos) {
 
 
-      let favoritosId  = currentFavoritos.map( e => e.id);
+        let favoritosId = currentFavoritos.map(e => e.id);
 
-      dataVideos.forEach( function(element){
-        const thumbnail = element.thumbnail ?
-                `https://s3-us-west-2.amazonaws.com/rf-media-rutina/video/${element.id + "/" + element.thumbnail+ ".jpg"}` :
+        dataVideos.forEach(function (element) {
+            const thumbnail = element.thumbnail ?
+                `https://s3-us-west-2.amazonaws.com/rf-media-rutina/video/${element.id + "/" + element.thumbnail + ".jpg"}` :
                 "";
-        const setThumbnailStyle = thumbnail ? `style="background: url(${thumbnail})"` : "";
-        if(favoritosId.includes(element.id)){
-          const videoElement = htmlStringToElement(`
+            const setThumbnailStyle = thumbnail ? `style="background: url(${thumbnail})"` : "";
+            if (favoritosId.includes(element.id)) {
+                const videoElement = htmlStringToElement(`
                                  <li class="col-md-4 col-sm-6 col-xs-6">
                                     <div class="card">
                                       <div class="video" ${setThumbnailStyle}><a data-fancybox="galleryGrupo" href="${urlAwsVideo}/${element.id}/${element.uuid}.mp4"><img class="svg" src="/img/iconos/icon_play.svg"></a></div>
@@ -257,9 +265,9 @@
                                     </div>
                                  </li>
                              `);
-          ulVideosGrupo.appendChild(videoElement);
-        }else{
-          const videoElement = htmlStringToElement(`
+                ulVideosGrupo.appendChild(videoElement);
+            } else {
+                const videoElement = htmlStringToElement(`
                                  <li class="col-md-4 col-sm-6 col-xs-6">
                                     <div class="card">
                                       <div class="video" ${setThumbnailStyle}><a data-fancybox="galleryGrupo" href="${urlAwsVideo}/${element.id}/${element.uuid}.mp4"><img class="svg" src="/img/iconos/icon_play.svg"></a></div>
@@ -269,39 +277,37 @@
                                     </div>
                                  </li>
                              `);
-          ulVideosGrupo.appendChild(videoElement);
-        }
-      })
+                ulVideosGrupo.appendChild(videoElement);
+            }
+        })
 
-     svgFillEvent();
+        svgFillEvent();
 
     }
 
-  function poblarDvVideosFavoritosxCliente(dataVideos){
+    function poblarDvVideosFavoritosxCliente(dataVideos) {
+        console.log(dataVideos.length);
+
+        ulFavoritosGrupo.innerHTML = "";
+        ulOtrosFavoritosGrupo.innerHTML = "";
+
+        $('section.favoritos p').text("");
+        if (dataVideos.length > 0) {
+            const videosFav = dataVideos.reverse();
+            dvMoreFav.style.display = '';
 
 
-    console.log(dataVideos.length);
-
-    ulFavoritosGrupo.innerHTML ="";
-    ulOtrosFavoritosGrupo.innerHTML ="";
-
-    $('section.favoritos p').text("");
-    if(dataVideos.length > 0){
-      const videosFav =  dataVideos.reverse();
-      dvMoreFav.style.display = '';
-
-
-      if(dataVideos.length <= 3){
-        dvArrowMoreFav.style.display = 'none';
-      }else{
-        dvArrowMoreFav.style.display = 'block';
-      }
-      dataVideos.forEach( function(element,index){
-        const thumbnail = element.thumbnail ?
-                `https://s3-us-west-2.amazonaws.com/rf-media-rutina/video/${element.id + "/" + element.thumbnail + ".jpg"}` :
-                "";
-        const setThumbnailStyle = thumbnail ? `style="background: url(${thumbnail})"` : "";
-        const videoElement = htmlStringToElement(`
+            if (dataVideos.length <= 3) {
+                dvArrowMoreFav.style.display = 'none';
+            } else {
+                dvArrowMoreFav.style.display = 'block';
+            }
+            dataVideos.forEach(function (element, index) {
+                const thumbnail = element.thumbnail ?
+                    `https://s3-us-west-2.amazonaws.com/rf-media-rutina/video/${element.id + "/" + element.thumbnail + ".jpg"}` :
+                    "";
+                const setThumbnailStyle = thumbnail ? `style="background: url(${thumbnail})"` : "";
+                const videoElement = htmlStringToElement(`
                                  <li class="col-md-4 col-sm-6 col-xs-6">
                                     <div class="card">
                                       <div class="video" ${setThumbnailStyle}><a data-fancybox="galleryFavoritos" href="${urlAwsVideo}/${element.id}/${element.uuid}.mp4"><img class="svg" src="/img/iconos/icon_play.svg"></a></div>
@@ -312,219 +318,217 @@
                                  </li>
                              `);
 
-        if (index <= 2) {
-          ulFavoritosGrupo.appendChild(videoElement);
-        }  else {
-          ulOtrosFavoritosGrupo.appendChild(videoElement);
-        }})
-    }else{
-      dvArrowMoreFav.style.display = 'none';
-      dvMoreFav.style.display = 'none';
-      const mensaje = htmlStringToElement(`<p class="text-center" style="color:#ffffff">No cuenta aún con videos favoritos </p>`)
-      dvResultadoFavoritos.appendChild(mensaje);
+                if (index <= 2) {
+                    ulFavoritosGrupo.appendChild(videoElement);
+                } else {
+                    ulOtrosFavoritosGrupo.appendChild(videoElement);
+                }
+            })
+        } else {
+            dvArrowMoreFav.style.display = 'none';
+            dvMoreFav.style.display = 'none';
+            const mensaje = htmlStringToElement(`<p class="text-center" style="color:#ffffff">No cuenta aún con videos favoritos </p>`)
+            dvResultadoFavoritos.appendChild(mensaje);
+        }
+
+        svgFillEvent();
     }
 
-    svgFillEvent();
-  }
+    function grupoVideoClickEvent(e) {
 
-  function grupoVideoClickEvent(e){
+        const input = e.target;
+        const parentInputClasses = input.parentElement.classList // apunta al elemento div en el que cual owl carousel aloja el item
 
-    const input = e.target;
-    const parentInputClasses = input.parentElement.classList // apunta al elemento div en el que cual owl carousel aloja el item
+        if (parentInputClasses.contains('center')) {
+            const grupoVideoId = input.getAttribute("data-grupo-id");
+            currentGrupoVideoId = grupoVideoId;
+            ulVideosGrupo.innerHTML = "";
+            obtenerVideosxGrupo(0);
+        }
 
-    if(parentInputClasses.contains('center')){
-      const grupoVideoId = input.getAttribute("data-grupo-id");
-      currentGrupoVideoId = grupoVideoId;
-      ulVideosGrupo.innerHTML ="";
-      obtenerVideosxGrupo(0);
     }
 
-  }
+    function buscadorEvent(filterInp) {
 
-  function buscadorEvent(filterInp){
+        if (filterInp.data) {
+            let filterText = inpBuscador.value.toUpperCase();
+            const filteredData = currentVideosxGrupo.filter((el) => el.nombre.toUpperCase().indexOf(filterText) > -1);
+            ulVideosGrupo.innerHTML = "";
 
-    if(filterInp.data) {
-      let filterText = inpBuscador.value.toUpperCase();
-      const filteredData = currentVideosxGrupo.filter( (el) => el.nombre.toUpperCase().indexOf(filterText) > -1);
-      ulVideosGrupo.innerHTML ="";
-
-      if(filteredData.length > 0) {
-        poblarDvVideosxGrupo(filteredData);
-      }else{
-        const mensajeNoResultado = $(dvGrupoVideo).find('.mensaje-no-resultados')[0];
-        !mensajeNoResultado ?  '' : $(mensajeNoResultado).remove()
-        const mensaje = htmlStringToElement(`<p class="text-center mensaje-no-resultados" style="color:#ffffff">No se encontraron resultados para su búsqueda</p>`)
-        dvGrupoVideo.appendChild(mensaje);
-      }
-    }else{
-      ulVideosGrupo.innerHTML ="";
-      poblarDvVideosxGrupo(currentVideosxGrupo);
+            if (filteredData.length > 0) {
+                poblarDvVideosxGrupo(filteredData);
+            } else {
+                const mensajeNoResultado = $(dvGrupoVideo).find('.mensaje-no-resultados')[0];
+                !mensajeNoResultado ? '' : $(mensajeNoResultado).remove()
+                const mensaje = htmlStringToElement(`<p class="text-center mensaje-no-resultados" style="color:#ffffff">No se encontraron resultados para su búsqueda</p>`)
+                dvGrupoVideo.appendChild(mensaje);
+            }
+        } else {
+            ulVideosGrupo.innerHTML = "";
+            poblarDvVideosxGrupo(currentVideosxGrupo);
+        }
     }
-  }
 
 
-  function buscadorFavEvent(filterInp){
+    function buscadorFavEvent(filterInp) {
 
-    if(filterInp.data) {
-      let filterText = inpBuscadorFav.value.toUpperCase();
-      const filteredData = currentFavoritos.filter( (el) => el.nombre.toUpperCase().indexOf(filterText) > -1);
-      ulFavoritosGrupo.innerHTML ="";
-      ulOtrosFavoritosGrupo.innerHTML ="";
+        if (filterInp.data) {
+            let filterText = inpBuscadorFav.value.toUpperCase();
+            const filteredData = currentFavoritos.filter((el) => el.nombre.toUpperCase().indexOf(filterText) > -1);
+            ulFavoritosGrupo.innerHTML = "";
+            ulOtrosFavoritosGrupo.innerHTML = "";
 
-       if(filteredData.length > 0) {
-         poblarDvVideosFavoritosxCliente(filteredData);
-       }else{
-         dvArrowMoreFav.style.display = 'none';
-         dvMoreFav.style.display = 'none';
-         const mensajeNoResultado = $(dvResultadoFavoritos).find('.mensaje-no-resultados')[0];
-         !mensajeNoResultado ?  '' : $(mensajeNoResultado).remove()
-         const mensaje = htmlStringToElement(`<p class="text-center mensaje-no-resultados" style="color:#ffffff">No se encontraron resultados para su búsqueda</p>`)
-         dvResultadoFavoritos.appendChild(mensaje);
-       }
+            if (filteredData.length > 0) {
+                poblarDvVideosFavoritosxCliente(filteredData);
+            } else {
+                dvArrowMoreFav.style.display = 'none';
+                dvMoreFav.style.display = 'none';
+                const mensajeNoResultado = $(dvResultadoFavoritos).find('.mensaje-no-resultados')[0];
+                !mensajeNoResultado ? '' : $(mensajeNoResultado).remove()
+                const mensaje = htmlStringToElement(`<p class="text-center mensaje-no-resultados" style="color:#ffffff">No se encontraron resultados para su búsqueda</p>`)
+                dvResultadoFavoritos.appendChild(mensaje);
+            }
 
-    }else{
-      ulFavoritosGrupo.innerHTML ="";
-      ulOtrosFavoritosGrupo.innerHTML ="";
-      poblarDvVideosFavoritosxCliente(currentFavoritos);
+        } else {
+            ulFavoritosGrupo.innerHTML = "";
+            ulOtrosFavoritosGrupo.innerHTML = "";
+            poblarDvVideosFavoritosxCliente(currentFavoritos);
+        }
     }
-  }
 
 
-  function agregarVideoAFavoritos(videoId){
+    function agregarVideoAFavoritos(videoId) {
 
 
-    $.ajax({
-      type: 'POST',
-      contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-      url: _ctx + 'gestion/video/agregar-favorito',
-      data: { vidId: Number(videoId)},
-      dataType : 'json',
-      blockLoading: true,
-      noOne: false,
-      success :  (result) => {
-        //poblarDvVideosFavoritosxCliente(result);
-        //currentVideosxGrupo = result;
-      },
-      error: (xhr) =>{
-      },
-      complete : () =>{
-      }
-    })
-  }
+        $.ajax({
+            type: 'POST',
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            url: _ctx + 'gestion/video/agregar-favorito',
+            data: {vidId: Number(videoId)},
+            dataType: 'json',
+            blockLoading: true,
+            noOne: false,
+            success: (result) => {
+                //poblarDvVideosFavoritosxCliente(result);
+                //currentVideosxGrupo = result;
+            },
+            error: (xhr) => {
+            },
+            complete: () => {
+            }
+        })
+    }
 
-  function quitarVideoDeFavoritos(videoId){
+    function quitarVideoDeFavoritos(videoId) {
 
+        $.ajax({
+            type: 'DELETE',
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            url: _ctx + 'gestion/video/eliminar-favorito',
+            data: {vidId: Number(videoId)},
+            dataType: 'json',
+            blockLoading: true,
+            noOne: false,
+            success: (result) => {
+                console.log(result);
+                //poblarDvVideosxGrupo(result);
+                //currentVideosxGrupo = result;
+            },
+            error: (xhr) => {
+            },
+            complete: () => {
+            }
+        })
+    }
 
-    $.ajax({
-      type: 'DELETE',
-      contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-      url: _ctx + 'gestion/video/eliminar-favorito',
-      data: { vidId: Number(videoId)},
-      dataType : 'json',
-      blockLoading: true,
-      noOne: false,
-      success :  (result) => {
-        console.log(result);
-        //poblarDvVideosxGrupo(result);
-        //currentVideosxGrupo = result;
-      },
-      error: (xhr) =>{
-      },
-      complete : () =>{
-      }
-    })
-  }
+    function svgFillEvent() {
 
-    function svgFillEvent(){
+        $('img[src$=".svg"]').each(function () {
+            let $img = $(this);
+            let imgURL = $img.attr('src');
+            let attributes = $img.prop("attributes");
 
-    $('img[src$=".svg"]').each(function() {
-      let $img = $(this);
-      let imgURL = $img.attr('src');
-      let attributes = $img.prop("attributes");
+            $.get(imgURL, function (data) {
+                // Get the SVG tag, ignore the rest
+                let $svg = jQuery(data).find('svg');
 
-      $.get(imgURL, function(data) {
-        // Get the SVG tag, ignore the rest
-        let $svg = jQuery(data).find('svg');
+                // Remove any invalid XML tags
+                $svg = $svg.removeAttr('xmlns:a');
 
-        // Remove any invalid XML tags
-        $svg = $svg.removeAttr('xmlns:a');
+                // Loop through IMG attributes and apply on SVG
+                $.each(attributes, function () {
+                    $svg.attr(this.name, this.value);
+                });
 
-        // Loop through IMG attributes and apply on SVG
-        $.each(attributes, function() {
-          $svg.attr(this.name, this.value);
+                // Replace IMG with SVG
+                $img.replaceWith($svg);
+            }, 'xml');
+
         });
+    }
 
-        // Replace IMG with SVG
-        $img.replaceWith($svg);
-      }, 'xml');
+    function favoritoEvent(e) {
+        const favElement = e.currentTarget;
+        const videoId = (favElement.getAttribute('data-video-id'));
+        const favClasses = favElement.classList;
 
-    });
-  }
+        if (favClasses.contains('selected')) {
+            favElement.classList.remove('selected');
+            quitarVideoDeFavoritos(videoId);
+            const index = currentFavoritos.findIndex(e => e.id === Number(videoId));
 
-   function favoritoEvent(e){
-      const favElement = e.currentTarget;
-      const videoId = (favElement.getAttribute('data-video-id'));
-      const favClasses = favElement.classList;
-
-     if(favClasses.contains('selected')){
-       favElement.classList.remove('selected');
-       quitarVideoDeFavoritos(videoId);
-       const index = currentFavoritos.findIndex( e => e.id === Number(videoId));
-
-       index > -1 ? currentFavoritos.splice(index, 1) : null;
+            index > -1 ? currentFavoritos.splice(index, 1) : null;
 
 
-     }else{
-       console.log(favElement);
-       favElement.classList.add('selected');
-        const videoInfo = currentVideosxGrupo.find( e  => e.id === Number(videoId));
-        currentFavoritos.push(videoInfo);
-       agregarVideoAFavoritos(videoId);
-     }
-      poblarDvVideosFavoritosxCliente(currentFavoritos);
+        } else {
+            console.log(favElement);
+            favElement.classList.add('selected');
+            const videoInfo = currentVideosxGrupo.find(e => e.id === Number(videoId));
+            currentFavoritos.push(videoInfo);
+            agregarVideoAFavoritos(videoId);
+        }
+        poblarDvVideosFavoritosxCliente(currentFavoritos);
 
-      //
-      ulVideosGrupo.innerHTML = '';
-      poblarDvVideosxGrupo(currentVideosxGrupo)
+        //
+        ulVideosGrupo.innerHTML = '';
+        poblarDvVideosxGrupo(currentVideosxGrupo)
 
     }
 
-    function scrollEventBusquedaAutomatica(){
-      const footHeight = document.querySelector('.footer').clientHeight;
+    function scrollEventBusquedaAutomatica() {
+        const footHeight = document.querySelector('.footer').clientHeight;
 
-      $(window).scroll(function() {
-        if($(window).scrollTop() + $(window).height() > $(document).height() - footHeight) {
+        $(window).scroll(function () {
+            if ($(window).scrollTop() + $(window).height() > $(document).height() - footHeight) {
 
-          if(totalRows> queryParams.offset + queryParams.limit){
-              queryParams.offset = queryParams.offset + queryParams.limit;
-              const tipo = 1  // tipo 0 cambio de categoria tipo 1 misma categoria paginacion
-              obtenerVideosxGrupo(tipo);
-          }
+                if (totalRows > queryParams.offset + queryParams.limit) {
+                    queryParams.offset = queryParams.offset + queryParams.limit;
+                    const tipo = 1  // tipo 0 cambio de categoria tipo 1 misma categoria paginacion
+                    obtenerVideosxGrupo(tipo);
+                }
+
+            }
+        });
+    }
+
+
+    function seleccionGrupoEvent(event) {
+
+
+        const grupoSeleccionado = document.querySelectorAll('.item')[event.item.index];
+
+        if (grupoSeleccionado) {
+            const grupoVideoId = grupoSeleccionado.getAttribute('data-grupo-id');
+            currentGrupoVideoId = grupoVideoId;
+            ulVideosGrupo.innerHTML = "";
+            obtenerVideosxGrupo(0); // tipo O => nuevo grupo de video
+            const titulo = document.querySelector('#grupoVideoTitle span ');
+            titulo.textContent = grupoSeleccionado.firstElementChild.textContent;
 
         }
-      });
-    }
-
-
-
-    function seleccionGrupoEvent(event){
-
-
-      const grupoSeleccionado  = document.querySelectorAll('.item')[event.item.index];
-
-      if(grupoSeleccionado){
-        const grupoVideoId = grupoSeleccionado.getAttribute('data-grupo-id');
-        currentGrupoVideoId = grupoVideoId;
-        ulVideosGrupo.innerHTML ="";
-        obtenerVideosxGrupo(0); // tipo O => nuevo grupo de video
-       const titulo = document.querySelector('#grupoVideoTitle span ');
-       titulo.textContent = grupoSeleccionado.firstElementChild.textContent;
-
-      }
 
 
     }
-
 
 
 </script>

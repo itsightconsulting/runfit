@@ -1,7 +1,7 @@
-﻿BaseCalculo = (function(){
+﻿BaseCalculo = (function () {
     return {
         //C154:O155
-        oficialesMedidasKms : [
+        oficialesMedidasKms: [
             {dist: 50, medida: 50.000},
             {dist: 42, medida: 42.195},
             {dist: 21, medida: 21.098},
@@ -85,63 +85,82 @@
 })();
 
 //RITMOS PARA SESIONES DE ENTRENAMIENTO SEGÚN ZONA CARDIACA (en min/km)
-RitmosSZC = (function(){
+RitmosSZC = (function () {
     return {
-        getMetricasZonasCardiacas: ()=>{
+        getMetricasZonasCardiacas: () => {
             const base = FichaGet.obtenerBase();
-            base.periodizacion = base.periodizacion.filter(v=>{return v>0});
-            base.distribucionPorcentaje = base.distribucionPorcentaje.filter(v=>{return v>0});
+            base.periodizacion = base.periodizacion.filter(v => {
+                return v > 0
+            });
+            base.distribucionPorcentaje = base.distribucionPorcentaje.filter(v => {
+                return v > 0
+            });
             const paramInit = RitmosSZC.getParametroInicial().toSeconds();
             const paramComp = RitmosSZC.getParametroCompetencia().toSeconds();
             const metricasBase = RitmosSZC.getMetricasBaseZonasCardiacas();
             const margen = paramInit - paramComp;
             const porcentajes = base.distribucionPorcentaje;
             const factorPrimerElemento = BaseCalculo.factorZonasCardiacas[1].factor;
-            const factorUltimoElemento = BaseCalculo.factorZonasCardiacas[BaseCalculo.factorZonasCardiacas.length-2].factor;
+            const factorUltimoElemento = BaseCalculo.factorZonasCardiacas[BaseCalculo.factorZonasCardiacas.length - 2].factor;
             const matriz = [];
 
-            base.periodizacion.filter(v=>{return v > 0});
+            base.periodizacion.filter(v => {
+                return v > 0
+            });
             //Temp por conveniencia ya que tiene 7 elementos el array
             let ix1 = 0;//Se usa cuando el recorrido del segundo forEach se encuentra en indice 0
-            metricasBase.forEach((v,fix, k)=>{
-                matriz.push({nombre: "Z"+(fix+1), pMin: metricasBase[fix].min, pMax: metricasBase[fix].max, indicadores: []});
+            metricasBase.forEach((v, fix, k) => {
+                matriz.push({
+                    nombre: "Z" + (fix + 1),
+                    pMin: metricasBase[fix].min,
+                    pMax: metricasBase[fix].max,
+                    indicadores: []
+                });
                 let ix2 = -1;//Se inicia con -1 pues se autoincrementa nada más entrar al for y es donde se regulariza(0)
-                base.periodizacion.forEach((p,six)=>{
-                    for(let i=0; i<p; i++){ix2++;
-                        if(i==0 && six==0){
-                            if(fix == 0)
-                                matriz[fix].indicadores.push({max: String(factorPrimerElemento * paramInit).toHHMMSSM(), preciso: Math.round(factorPrimerElemento * paramInit)});//+1 desde el inicio
-                            else if(fix == k.length-1)
+                base.periodizacion.forEach((p, six) => {
+                    for (let i = 0; i < p; i++) {
+                        ix2++;
+                        if (i == 0 && six == 0) {
+                            if (fix == 0)
+                                matriz[fix].indicadores.push({
+                                    max: String(factorPrimerElemento * paramInit).toHHMMSSM(),
+                                    preciso: Math.round(factorPrimerElemento * paramInit)
+                                });//+1 desde el inicio
+                            else if (fix == k.length - 1)
                                 matriz[fix].indicadores.push({min: String(factorUltimoElemento * paramInit).toHHMMSSM()});//No es necesario preciso porque el dato siempre es fijo|-1 desde el final(se resta 2 por el comienzo del index en 0)
-                            else{
-                                matriz[fix].indicadores.push({min: String(BaseCalculo.factorZonasCardiacas[ix1].factor * paramInit).toHHMMSSM(),
-                                    max: String(BaseCalculo.factorZonasCardiacas[ix1+1].factor * paramInit).toHHMMSSM(),
-                                    preMin:  Math.round(BaseCalculo.factorZonasCardiacas[ix1].factor * paramInit),
-                                    preMax:  Math.round(BaseCalculo.factorZonasCardiacas[ix1+1].factor * paramInit)});
-                                ix1+=2;
+                            else {
+                                matriz[fix].indicadores.push({
+                                    min: String(BaseCalculo.factorZonasCardiacas[ix1].factor * paramInit).toHHMMSSM(),
+                                    max: String(BaseCalculo.factorZonasCardiacas[ix1 + 1].factor * paramInit).toHHMMSSM(),
+                                    preMin: Math.round(BaseCalculo.factorZonasCardiacas[ix1].factor * paramInit),
+                                    preMax: Math.round(BaseCalculo.factorZonasCardiacas[ix1 + 1].factor * paramInit)
+                                });
+                                ix1 += 2;
                             }
-                        }else{
+                        } else {
                             let anterior;
-                            if(fix == 0){
+                            if (fix == 0) {
                                 anterior = matriz[fix].indicadores[ix2 - 1].preciso;
-                                const x1 = porcentajes[six]/p;
+                                const x1 = porcentajes[six] / p;
                                 const x2 = factorPrimerElemento;
                                 const precisoValor = (anterior - ((margen * x2) * x1));
                                 const valor = String(precisoValor).toHHMMSSM();
                                 matriz[fix].indicadores.push({max: valor, preciso: precisoValor});
-                            } else if(fix == k.length-1){
+                            } else if (fix == k.length - 1) {
                                 anterior = matriz[fix].indicadores[ix2 - 1].min;
                                 matriz[fix].indicadores.push({min: anterior});
                             } else {
                                 const anteriorMin = matriz[fix].indicadores[ix2 - 1].preMin;
                                 const anteriorMax = matriz[fix].indicadores[ix2 - 1].preMax;
-                                const precisoValor =  factorPrimerElemento;
-                                const v1 = String((anteriorMin - ((margen) * precisoValor) * ((porcentajes[six]))/p)).toHHMMSSM();
+                                const precisoValor = factorPrimerElemento;
+                                const v1 = String((anteriorMin - ((margen) * precisoValor) * ((porcentajes[six])) / p)).toHHMMSSM();
                                 //const v1 = String((ref1 - ((margen) * BaseCalculo.factorZonasCardiacas[BaseCalculo.factorZonasCardiacas.length-2].factor) * (((porcentajes[six])/100))/p)).toHHMMSSM();
-                                const v2 = String((anteriorMax - ((margen) * factorPrimerElemento) * ((porcentajes[six]))/p)).toHHMMSSM();
-                                matriz[fix].indicadores.push({min: v1, max: v2,
-                                    preMin: (anteriorMin - ((margen) * precisoValor) * (((porcentajes[six])/100))/p),
-                                    preMax: (anteriorMax - ((margen) * factorPrimerElemento) * ((porcentajes[six]))/p)});
+                                const v2 = String((anteriorMax - ((margen) * factorPrimerElemento) * ((porcentajes[six])) / p)).toHHMMSSM();
+                                matriz[fix].indicadores.push({
+                                    min: v1, max: v2,
+                                    preMin: (anteriorMin - ((margen) * precisoValor) * (((porcentajes[six]) / 100)) / p),
+                                    preMax: (anteriorMax - ((margen) * factorPrimerElemento) * ((porcentajes[six])) / p)
+                                });
                             }
                         }
                     }
@@ -149,123 +168,143 @@ RitmosSZC = (function(){
             })
             return matriz;
         },
-        getParametroInicial: ()=>{//REF MACRO!F161
+        getParametroInicial: () => {//REF MACRO!F161
             const disControl = document.querySelector('#DistanciaControl').value;
-            const metrosDisControl = BaseCalculo.oficialesMedidasKms.filter(v=>{return v.dist == disControl})[0].medida * 1000;
+            const metrosDisControl = BaseCalculo.oficialesMedidasKms.filter(v => {
+                return v.dist == disControl
+            })[0].medida * 1000;
             const tiempoControl = document.querySelector('#TiempoDesentrControl').value.toSeconds();
             return RitmosSZC.getTiempoPorKilometro(metrosDisControl, tiempoControl);
         },
-        getParametroCompetencia: ()=>{//REF MACRO!J161
+        getParametroCompetencia: () => {//REF MACRO!J161
             const disControl = document.querySelector('#DistanciaCompetencia').value;
-            const metrosDisCompetencia = BaseCalculo.oficialesMedidasKms.filter(v=>{return v.dist == disControl})[0].medida * 1000;
+            const metrosDisCompetencia = BaseCalculo.oficialesMedidasKms.filter(v => {
+                return v.dist == disControl
+            })[0].medida * 1000;
             const tiempoCompetencia = document.querySelector('#TiempoCompetencia').value.toSeconds();
             return RitmosSZC.getTiempoPorKilometro(metrosDisCompetencia, tiempoCompetencia);
         },
-        getTiempoPorKilometro: (metros, tiempo)=>{
+        getTiempoPorKilometro: (metros, tiempo) => {
             const factorManual = 1.03//REF MACRO!E162
-            const vo2max = (0.8+0.1894393 * Math.exp(-0.012778 * tiempo / 60)+0.2989558* Math.exp(-0.1932605*tiempo / 60));//REF T.D!D9
-            const p1 = (metros/tiempo) * 60;
-            const p2 = Math.pow((metros/tiempo) * 60, 2);
-            const vdot = roundNumber(((-4.6 + 0.182258 * (p1) + 0.000104 *p2)/(vo2max)), 1);
-            const millas = (1/(29.54 + 5.000663 * (vdot*0.88) - 0.007546 * Math.pow((vdot*0.88),2))*1609.344*60);
+            const vo2max = (0.8 + 0.1894393 * Math.exp(-0.012778 * tiempo / 60) + 0.2989558 * Math.exp(-0.1932605 * tiempo / 60));//REF T.D!D9
+            const p1 = (metros / tiempo) * 60;
+            const p2 = Math.pow((metros / tiempo) * 60, 2);
+            const vdot = roundNumber(((-4.6 + 0.182258 * (p1) + 0.000104 * p2) / (vo2max)), 1);
+            const millas = (1 / (29.54 + 5.000663 * (vdot * 0.88) - 0.007546 * Math.pow((vdot * 0.88), 2)) * 1609.344 * 60);
             return String((millas * 0.621371192) * factorManual).toHHMMSSM();//tiempo por kilometro
         },
-        getMetricasBaseZonasCardiacas: ()=>{
+        getMetricasBaseZonasCardiacas: () => {
             const fcm = Number(document.querySelector('#FrecuenciaCardiacaMaxima').value);
             const fcmin = Number(document.querySelector('#FrecuenciaCardiacaMinima').value);
             const diff = fcm - fcmin;
-            return BaseCalculo.porcentajesZonaCardiaca.map(v=>{
+            return BaseCalculo.porcentajesZonaCardiaca.map(v => {
                 return {min: Math.round((diff * v.min) + fcmin), max: Math.round((diff * v.max) + fcmin)};
             })
         },
     }
 })();
 //RITMOS PARA SESIONES DE VELOCIDAD Y DE COMPETENCIA
-RitmosSVYC = (function(){
+RitmosSVYC = (function () {
     return {
-        getMetricasVelocidades: ()=>{// PARCIALES PARA SESIONES DE VELOCIDAD Y RITMOS DE COMPETENCIA(REF: MACRO -> C39)
+        getMetricasVelocidades: () => {// PARCIALES PARA SESIONES DE VELOCIDAD Y RITMOS DE COMPETENCIA(REF: MACRO -> C39)
             const base = JSON.parse(JSON.stringify(FichaGet.obtenerBase()));
             const proyecciones = FichaDOMQueries.getProyecciones();
             //Reemplazando de distribución de kilometraje a distribución fijada en mejora de velocidades
-            base.distribucionPorcentaje = Array.from(proyecciones.querySelectorAll('.velocidad-calc[data-type="1"]')).map(v=>{return Number(v.value)/100;});
+            base.distribucionPorcentaje = Array.from(proyecciones.querySelectorAll('.velocidad-calc[data-type="1"]')).map(v => {
+                return Number(v.value) / 100;
+            });
             const factorDesentrenamientoControl = document.querySelector('#TiempoDesentrControl').value.toSeconds();
             const distanciaControl = Number(document.querySelector('#DistanciaControl').value);
-            const medidaDisControl = BaseCalculo.oficialesMedidasKms.filter(v=>{return distanciaControl == v.dist})[0].medida;
-            const factorRitmoCompetencia = BaseCalculo.factorRitmosCompetenciaByNivel[Number(document.querySelector('#NivelAtleta input:checked').value)-1].factor;
+            const medidaDisControl = BaseCalculo.oficialesMedidasKms.filter(v => {
+                return distanciaControl == v.dist
+            })[0].medida;
+            const factorRitmoCompetencia = BaseCalculo.factorRitmosCompetenciaByNivel[Number(document.querySelector('#NivelAtleta input:checked').value) - 1].factor;
             const tiempoCompetencia = document.querySelector('#TiempoCompetencia').value.toSeconds();
 
             const metricasBase = BaseCalculo.ofMetricasBase;
 
-            const factorDistanciaCompetencia = BaseCalculo.oficialesMedidasKms.filter(v=>{return Number(document.querySelector('#DistanciaCompetencia').value) == v.dist})[0].medida;
+            const factorDistanciaCompetencia = BaseCalculo.oficialesMedidasKms.filter(v => {
+                return Number(document.querySelector('#DistanciaCompetencia').value) == v.dist
+            })[0].medida;
             const matriz = [];
 
             let ix1 = 0;
-            metricasBase.forEach((v, fix)=>{
+            metricasBase.forEach((v, fix) => {
                 const factorBase = v.factor;
-                const medDisBase = BaseCalculo.oficialesMedidasKms.filter(v=>{return factorBase == v.dist})[0].dist;
-                const factorDistanciaRelativo = BaseCalculo.factorVelocidadByKms.filter(v=>{return medDisBase == v.dist})[0].factor;
+                const medDisBase = BaseCalculo.oficialesMedidasKms.filter(v => {
+                    return factorBase == v.dist
+                })[0].dist;
+                const factorDistanciaRelativo = BaseCalculo.factorVelocidadByKms.filter(v => {
+                    return medDisBase == v.dist
+                })[0].factor;
                 matriz.push({nombre: v.n, indicadores: []});
-                base.periodizacion.forEach((p, six)=>{
-                    for(let i=0; i<p; i++){
-                        if(ix1==0){
-                            const parcial = (factorDesentrenamientoControl * Math.pow((factorBase/medidaDisControl) * (factorRitmoCompetencia), factorDistanciaRelativo) / factorBase * (Number(v.factor) > 0.4 ? 1 : factorBase));
-                            matriz[fix].indicadores.push({p: String(parcial).toHHMMSSM(),preciso: parcial})
-                        }else{
-                            const parcial = matriz[fix].indicadores[ix1-1].preciso - (Number(v.factor) > 0.8 ? 1 : medDisBase) * base.distribucionPorcentaje[six] / base.periodizacion[six] * (factorDesentrenamientoControl * Math.pow((medDisBase/medidaDisControl) * (factorRitmoCompetencia), factorDistanciaRelativo) / medDisBase - tiempoCompetencia * (Math.pow(medDisBase / factorDistanciaCompetencia, factorDistanciaRelativo)) / medDisBase);
-                            matriz[fix].indicadores.push({p: String(parcial).toHHMMSSM(),preciso: parcial})
+                base.periodizacion.forEach((p, six) => {
+                    for (let i = 0; i < p; i++) {
+                        if (ix1 == 0) {
+                            const parcial = (factorDesentrenamientoControl * Math.pow((factorBase / medidaDisControl) * (factorRitmoCompetencia), factorDistanciaRelativo) / factorBase * (Number(v.factor) > 0.4 ? 1 : factorBase));
+                            matriz[fix].indicadores.push({p: String(parcial).toHHMMSSM(), preciso: parcial})
+                        } else {
+                            const parcial = matriz[fix].indicadores[ix1 - 1].preciso - (Number(v.factor) > 0.8 ? 1 : medDisBase) * base.distribucionPorcentaje[six] / base.periodizacion[six] * (factorDesentrenamientoControl * Math.pow((medDisBase / medidaDisControl) * (factorRitmoCompetencia), factorDistanciaRelativo) / medDisBase - tiempoCompetencia * (Math.pow(medDisBase / factorDistanciaCompetencia, factorDistanciaRelativo)) / medDisBase);
+                            matriz[fix].indicadores.push({p: String(parcial).toHHMMSSM(), preciso: parcial})
                         }
                         ix1++;
                     }
                 })
 
-                ix1=0;
+                ix1 = 0;
             })
             return matriz;
         }
     }
 })();
 
-Calc = (function(){
+Calc = (function () {
     return {
-        setRestantes: ()=>{
+        setRestantes: () => {
             try {
                 const tiempoDesentrControl = document.querySelector('#TiempoDesentrControl').value.toSeconds();
                 const eleDistancia = document.querySelector('#DistanciaCompetencia');
                 let disCompetencia;
-                if(!eleDistancia.value){
+                if (!eleDistancia.value) {
                     eleDistancia.selectedIndex = 1;
                 }
                 disCompetencia = Number(eleDistancia.value);
 
-                const medidaDisCompetencia = BaseCalculo.oficialesMedidasKms.filter(v=>{return disCompetencia == v.dist})[0].medida;
+                const medidaDisCompetencia = BaseCalculo.oficialesMedidasKms.filter(v => {
+                    return disCompetencia == v.dist
+                })[0].medida;
                 const distanciaControl = Number(document.querySelector('#DistanciaControl').value);
-                const medidaDisControl = BaseCalculo.oficialesMedidasKms.filter(v=>{return distanciaControl == v.dist})[0].medida;
-                const factorRitmoCompetencia = BaseCalculo.factorRitmosCompetenciaByNivel[Number(document.querySelector('#NivelAtleta input:checked').value)-1].factor;
-                const factorDisCompetencia = BaseCalculo.factorVelocidadByKms.filter(v=>{return disCompetencia == v.dist})[0].factor;
+                const medidaDisControl = BaseCalculo.oficialesMedidasKms.filter(v => {
+                    return distanciaControl == v.dist
+                })[0].medida;
+                const factorRitmoCompetencia = BaseCalculo.factorRitmosCompetenciaByNivel[Number(document.querySelector('#NivelAtleta input:checked').value) - 1].factor;
+                const factorDisCompetencia = BaseCalculo.factorVelocidadByKms.filter(v => {
+                    return disCompetencia == v.dist
+                })[0].factor;
                 const cadencia = Number(document.querySelector('#CadenciaControl').value);
-                $('#RitmoCompetenciaActual').val(String(tiempoDesentrControl * Math.pow((medidaDisCompetencia/medidaDisControl) * (factorRitmoCompetencia), factorDisCompetencia) / medidaDisCompetencia).toHHMMSSM());
-                $('#RitmoXKilometro').val(String(document.querySelector('#TiempoCompetencia').value.toSeconds()/medidaDisCompetencia).toHHMMSSM());
-                $('#LongitudPasoCA').val(((3600*24*1000)/(String($('#RitmoCompetenciaActual').val()).toSeconds()*24*60*cadencia)).toFixed(2));
-                $('#PasoSubida').val(String(Number($('#RitmoXKilometro').val().toSeconds())+15).toHHMMSSM());
+                $('#RitmoCompetenciaActual').val(String(tiempoDesentrControl * Math.pow((medidaDisCompetencia / medidaDisControl) * (factorRitmoCompetencia), factorDisCompetencia) / medidaDisCompetencia).toHHMMSSM());
+                $('#RitmoXKilometro').val(String(document.querySelector('#TiempoCompetencia').value.toSeconds() / medidaDisCompetencia).toHHMMSSM());
+                $('#LongitudPasoCA').val(((3600 * 24 * 1000) / (String($('#RitmoCompetenciaActual').val()).toSeconds() * 24 * 60 * cadencia)).toFixed(2));
+                $('#PasoSubida').val(String(Number($('#RitmoXKilometro').val().toSeconds()) + 15).toHHMMSSM());
                 $('#PasoPlano').val(String(Number($('#RitmoXKilometro').val().toSeconds())).toHHMMSSM());
-                $('#PasoBajada').val(String(Number($('#RitmoXKilometro').val().toSeconds())-15).toHHMMSSM());
-            }catch (e) {
+                $('#PasoBajada').val(String(Number($('#RitmoXKilometro').val().toSeconds()) - 15).toHHMMSSM());
+            } catch (e) {
                 console.log(e);
             }
         },
-        getDistribucionTiempoPlanificado: (base)=>{
+        getDistribucionTiempoPlanificado: (base) => {
             const meta = document.querySelector('#RitmoXKilometro').value.toSeconds();
             const inicial = document.querySelector('#RitmoCompetenciaActual').value.toSeconds();
-            const margen =  inicial - meta;
+            const margen = inicial - meta;
             const finales = [];
             let it = 0;
-            base.periodizacion.forEach((v,i)=>{
-                for(let k=0; k<v; k++){
-                    if(it == 0){
+            base.periodizacion.forEach((v, i) => {
+                for (let k = 0; k < v; k++) {
+                    if (it == 0) {
                         finales.push({factor: String(inicial).toHHMMSSM(), preciso: Math.round(inicial)})
                     } else {
-                        const preciso = finales[it-1].preciso;
-                        const x1 = base.distribucionPorcentaje[i]/v;
+                        const preciso = finales[it - 1].preciso;
+                        const x1 = base.distribucionPorcentaje[i] / v;
                         const final = preciso - margen * x1;
                         finales.push({factor: String(final).toHHMMSSM(), preciso: final})
                     }
@@ -274,17 +313,20 @@ Calc = (function(){
             });
             return finales;
         },
-        getRitmosEntrenamientoAerobico: (ritmoAerobicoActual, ritmoAerobicoPreComp, base)=>{
+        getRitmosEntrenamientoAerobico: (ritmoAerobicoActual, ritmoAerobicoPreComp, base) => {
             let ritmoBase = ritmoAerobicoActual - ritmoAerobicoPreComp;
             const arrRitmos = [];
             let it = 0;
-            base.periodizacion.forEach((v,i)=>{
-                for(let k=0; k<v; k++){
-                    if(it == 0){
-                        arrRitmos.push({factor: String(ritmoAerobicoActual).toHHMMSSM(), preciso: Math.round(ritmoAerobicoActual)})
+            base.periodizacion.forEach((v, i) => {
+                for (let k = 0; k < v; k++) {
+                    if (it == 0) {
+                        arrRitmos.push({
+                            factor: String(ritmoAerobicoActual).toHHMMSSM(),
+                            preciso: Math.round(ritmoAerobicoActual)
+                        })
                     } else {
-                        const preciso = arrRitmos[it-1].preciso;
-                        const x1 = base.distribucionPorcentaje[i]/v;
+                        const preciso = arrRitmos[it - 1].preciso;
+                        const x1 = base.distribucionPorcentaje[i] / v;
                         const final = preciso - ritmoBase * x1;
                         arrRitmos.push({factor: String(final).toHHMMSSM(), preciso: final})
                     }
@@ -293,20 +335,22 @@ Calc = (function(){
             });
             return arrRitmos;
         },
-        getRitmosCadenciaCompetencia: (cadActual, cadCompetencia, base)=>{
+        getRitmosCadenciaCompetencia: (cadActual, cadCompetencia, base) => {
             const cBase = JSON.parse(JSON.stringify(base));
             //Reemplazando de distribución de kilometraje a distribución fijada en mejora de cadencia
-            cBase.distribucionPorcentaje = Array.from(FichaDOMQueries.getProyecciones().querySelectorAll('.cadencia-calc[data-type="1"]')).map(v=>{return Number(v.value)/100;});
-            let ritmoBase = cadCompetencia - cadActual ;
+            cBase.distribucionPorcentaje = Array.from(FichaDOMQueries.getProyecciones().querySelectorAll('.cadencia-calc[data-type="1"]')).map(v => {
+                return Number(v.value) / 100;
+            });
+            let ritmoBase = cadCompetencia - cadActual;
             const arrRitmos = [];
             let it = 0;
-            cBase.periodizacion.forEach((v,i)=>{
-                for(let k=0; k<v; k++){
-                    if(it == 0){
+            cBase.periodizacion.forEach((v, i) => {
+                for (let k = 0; k < v; k++) {
+                    if (it == 0) {
                         arrRitmos.push({factor: Math.round(cadActual), preciso: Math.round(cadActual)})
                     } else {
-                        const anterior = arrRitmos[it-1].preciso;
-                        const x1 = cBase.distribucionPorcentaje[i]/v;
+                        const anterior = arrRitmos[it - 1].preciso;
+                        const x1 = cBase.distribucionPorcentaje[i] / v;
                         const final = anterior + ritmoBase * x1;
                         arrRitmos.push({factor: Math.round(final), preciso: final})
                     }
@@ -315,25 +359,27 @@ Calc = (function(){
             });
             return arrRitmos;
         },
-        getLongitudesDePaso: (ritmosCompetencia, ritmosCadencia)=>{
-            return ritmosCompetencia.map((v,i)=>{
-                return roundNumber(1000/((ritmosCompetencia[i].preciso/60)*ritmosCadencia[i].preciso),2);
+        getLongitudesDePaso: (ritmosCompetencia, ritmosCadencia) => {
+            return ritmosCompetencia.map((v, i) => {
+                return roundNumber(1000 / ((ritmosCompetencia[i].preciso / 60) * ritmosCadencia[i].preciso), 2);
             })
         },
-        getTCSs: (tcsActual, tcsCompetencia, base)=>{
+        getTCSs: (tcsActual, tcsCompetencia, base) => {
             const cBase = JSON.parse(JSON.stringify(base));
             //Reemplazando de distribución de kilometraje a distribución fijada en mejora de TCS
-            cBase.distribucionPorcentaje = Array.from(FichaDOMQueries.getProyecciones().querySelectorAll('.tcs-calc[data-type="1"]')).map(v=>{return Number(v.value)/100;});
-            let tcsBase = tcsCompetencia - tcsActual ;
+            cBase.distribucionPorcentaje = Array.from(FichaDOMQueries.getProyecciones().querySelectorAll('.tcs-calc[data-type="1"]')).map(v => {
+                return Number(v.value) / 100;
+            });
+            let tcsBase = tcsCompetencia - tcsActual;
             const tcss = [];
             let it = 0;
-            cBase.periodizacion.forEach((v,i)=>{
-                for(let k=0; k<v; k++){
-                    if(it == 0){
+            cBase.periodizacion.forEach((v, i) => {
+                for (let k = 0; k < v; k++) {
+                    if (it == 0) {
                         tcss.push({factor: Math.round(tcsActual), preciso: Math.round(tcsActual)})
                     } else {
-                        const anterior = tcss[it-1].preciso;
-                        const x1 = cBase.distribucionPorcentaje[i]/v;
+                        const anterior = tcss[it - 1].preciso;
+                        const x1 = cBase.distribucionPorcentaje[i] / v;
                         const final = anterior + tcsBase * x1;
                         tcss.push({factor: Math.round(final), preciso: final})
                     }
@@ -342,7 +388,7 @@ Calc = (function(){
             });
             return tcss;
         },
-        getRitmosAerobicos: ()=>{
+        getRitmosAerobicos: () => {
             const MZC = RitmosSZC.getMetricasZonasCardiacas();
             const Z3 = MZC[2].indicadores;//Se utiliza la zona de intensidad Z3 siempre
             const ZELength = Z3.length - 1;
@@ -353,11 +399,11 @@ Calc = (function(){
             //Se evalua extremos
             const ZEMaxFinal1 = FZ3Max.toSeconds() > LZ3Max.toSeconds() ? FZ3Max : LZ3Max;
             const ZEMinFinal1 = FZ3Min.toSeconds() > LZ3Min.toSeconds() ? FZ3Min : LZ3Min;
-1
+            1
             const ZEMaxFinal2 = FZ3Max.toSeconds() < LZ3Max.toSeconds() ? FZ3Max : LZ3Max;
             const ZEMinFinal2 = FZ3Min.toSeconds() < LZ3Min.toSeconds() ? FZ3Min : LZ3Min;
 
-            const ritmoAerobicoActual = ((ZEMaxFinal1.toSeconds() + ZEMinFinal1.toSeconds())/2);
+            const ritmoAerobicoActual = ((ZEMaxFinal1.toSeconds() + ZEMinFinal1.toSeconds()) / 2);
             const ritmoAerobicoPreComp = ((ZEMaxFinal2.toSeconds() + ZEMinFinal2.toSeconds()) / 2);
 
             $('#RitmoAerobicoActual').val(String(ritmoAerobicoActual).toHHMMSSM());//Siempre va ser Z3 == index 2
@@ -365,7 +411,7 @@ Calc = (function(){
 
             return {actual: ritmoAerobicoActual, preCompetitivo: ritmoAerobicoPreComp};
         },
-        getFactorMejoria: (metricasVelocidades, base)=>{
+        getFactorMejoria: (metricasVelocidades, base) => {
 
             const ixMV = base.distancia == 10 ? 4 : base.distancia == 15 ? 5 : base.distancia == 21 ? 6 : 7;
 
@@ -375,12 +421,12 @@ Calc = (function(){
 })();
 
 function roundNumber(num, scale) {
-    if(!("" + num).includes("e")) {
-        return +(Math.round(num + "e+" + scale)  + "e-" + scale);
+    if (!("" + num).includes("e")) {
+        return +(Math.round(num + "e+" + scale) + "e-" + scale);
     } else {
         var arr = ("" + num).split("e");
         var sig = ""
-        if(+arr[1] + scale > 0) {
+        if (+arr[1] + scale > 0) {
             sig = "+";
         }
         return +(Math.round(+arr[0] + "e" + sig + (+arr[1] + scale)) + "e-" + scale);

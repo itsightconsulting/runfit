@@ -228,8 +228,6 @@ function obtenerTotalClientesServicioxTrainer(){
     let url = perfil === 1 ? "gestion/trainer/servicio/total/obtener"
         :  "gestion/cliente/servicio/trainer/total/obtener?id="+id;
 
-    console.log("c",url);
-
     $.ajax({
         type: "GET",
         url: _ctx + url,
@@ -2339,8 +2337,6 @@ function setDataServicioDistrSexo(data, graphGeneralData){
 
 
 function graficoServiciosUsados(  totalServicios, dataServicio){
-
-    console.log("a" , totalServicios, "b" , dataServicio);
 
     let porcentajes = dataServicio.map( e => Math.round((e.qtyClientes/totalServicios)*100));
     let suma = porcentajes.reduce(  (a,b) => a+b);
