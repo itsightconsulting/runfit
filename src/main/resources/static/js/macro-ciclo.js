@@ -19,7 +19,7 @@ Ficha = (function(){
             $('#Imc').text(ficha.imc);
             FichaSet.nivelAtleta(ficha.nivel);
             FichaSet.setMaximoDistanciaCompetencia(comps);
-            FichaSeeder.instanciarValoresDemo();
+            FichaSeeder.isntanciarValores(ficha);
             Calc.setRestantes();
             //Recreando tabla de listado de competencias
             tbCompetencias.appendChild(FichaSeccion.newListadoCompetencias(comps));//global variable
@@ -71,13 +71,14 @@ FichaSeccion = (function(){
         newListadoCompetencias : (comp)=>{
             comp = comp.sort((a, b) => parseFromStringToDate(b.fecha).getTime() - parseFromStringToDate(a.fecha).getTime());
             return htmlStringToElement('<tbody>'+comp.map((v,i) => {
+                const prioridad = v.prioridad == 1 ? "Baja" : v.prioridad == 2 ? "Media" : "Alta"
                 return `<tr>
                             <td class="pt-3-half">${i+1}</td>
-                            <td class="padding-7">${v.fecha}</td>
+                            <td class="padding-7">${v.fecha.split(" ")[0]}</td>
                             <td class="padding-7">${v.distancia}</td>
                             <td class="padding-7">${v.nombre}</td>
                             <td class="padding-7">${v.tiempoObjetivo}</td>
-                            <td class="padding-7">${v.prioridad == 1 ? '<span class="label label-success text-align-center">Prioritario</span>' : '<span class="label label-default text-align-center">Secundario</span>'}</td>
+                            <td class="padding-7"><span class="label label-success text-align-center">${prioridad}</span></td>
                          </tr>`
             }).join('')+'</tbody>');
             return comp;
@@ -1965,17 +1966,24 @@ MacroCicloGet = (function(){
 
 FichaSeeder = (function(){
     return {
-        instanciarValoresDemo: ()=>{
-            const tiempoControl = document.querySelector('#TiempoControl');
-            const factorDesentrenamientoControl = document.querySelector('#FactorDesentrenamientoControl');
-            document.querySelector('#DistanciaControl').value = 4;
-            tiempoControl.value = "00:21:00";
+        isntanciarValores: (ficha) =>{
+            console.log(ficha);
+            const competencias = JSON.parse(ficha.competencias)
+            const maxComp = Math.max.apply(Math, competencias.map(e=> timeStringtoSeconds(e.tiempoObjetivo)));
+            const flComp = competencias.find(c=>c.tiempoObjetivo === String(maxComp).toHHMMSS());
+            const timepoDisControl = JSON.parse(ficha.tiempoDistancia);
+            const distancias = Object.keys(timepoDisControl).map((e, ix)=>{return {dis: e, tiempo: timepoDisControl[e]}});
+            const distancia = distancias.find(d=>d.tiempo !== "").dis;
+            const flTiempoControl = distancias.find(d=>d.tiempo !== "").tiempo;
+            document.querySelector('#TiempoControl').value = flTiempoControl;
+            document.querySelector('#TiempoCompetencia').value = flComp.tiempoObjetivo;
+            document.querySelector('#DistanciaControl').value = distancia;
+
+            //Remove(Temporales)
             document.querySelector('#CadenciaControl').value = 174;
-            factorDesentrenamientoControl.value = 3;
             document.querySelector('#TcsControl').value = 182;
-            document.querySelector('#TiempoCompetencia').value = "04:10:00";
             document.querySelector('#CadenciaCompetencia').value = 185;
-            document.querySelector('#TiempoDesentrControl').value =  String(tiempoControl.value.toSeconds() + (Number(tiempoControl.value.toSeconds()) * Number(factorDesentrenamientoControl.value).toPercentage())).toHHMMSSM();
+            // document.querySelector('#TiempoDesentrControl').value =  String(flTiempoControl.toSeconds() + (Number(.value.toSeconds()) * Number(factorDesentrenamientoControl.value).toPercentage())).toHHMMSSM();
             document.querySelector('#TcsCompetencia').value = 191;
         }
     }

@@ -148,6 +148,7 @@ function instanciarDatosFitnessCliente(){
 
 async function instanciarPorcentajesKilometraje(distancia){
     return new Promise((res, rej)=>{
+        debugger
         if($antPorcKilo.length == 2 && $antPorcKilo[0] == distancia)
             res($antPorcKilo[1]);
         else
@@ -156,6 +157,8 @@ async function instanciarPorcentajesKilometraje(distancia){
                 contentType: "application/x-www-form-urlencoded; charset=UTF-8",
                 url: _ctx + 'calculo/porcentajes-kilo/obtener/'+distancia,
                 dataType: "json",
+                blockLoading: false,
+                noOne: true,
                 success: function (data, textStatus) {
                     if (textStatus == "success") {
                         notificacionesRutinaSegunResponseCode(data);

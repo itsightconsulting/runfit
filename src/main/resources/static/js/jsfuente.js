@@ -655,6 +655,14 @@ function setFechaActual(array) {
     });
 }
 
+function timeStringtoSeconds(time) {
+
+    const a = time.split(':');
+    const seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
+
+    return seconds;
+}
+
 function dateToArrayFormat(d) {
     return `${d.getFullYear()}-${d.getMonth()}-${(d.getDate())}`.split("-");
 }
