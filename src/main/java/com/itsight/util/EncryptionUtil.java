@@ -18,27 +18,27 @@ public class EncryptionUtil {
 	public static final String ALGORITHM = "RSA";
 	public static final String PRIVATE_KEY = "private.key";
 	public static final String AES_KEY = "key.txt";
-	public static final String AES_VECTOR = "vector.txt";	
-	public static String PRIVATE_KEY_FILE = "";
-	public static String PUBLIC_KEY_FILE = "";
-	public static String AES_KEY_FILE = "";
-	public static String AES_VECTOR_FILE = "";
+	public static final String AES_VECTOR = "vector.txt";
+	public static String PRIVATE_KEY_FILE = "C:\\Users\\ITSIGHT\\IdeaProjects\\runfit\\src\\main\\resources\\private.key";
+	public static String PUBLIC_KEY_FILE = "C:\\Users\\ITSIGHT\\IdeaProjects\\runfit\\src\\main\\resources\\private.key";
+	public static String AES_KEY_FILE = "C:\\Users\\ITSIGHT\\IdeaProjects\\runfit\\src\\main\\resources\\key.txt";
+	public static String AES_VECTOR_FILE = "C:\\Users\\ITSIGHT\\IdeaProjects\\runfit\\src\\main\\resources\\vector.txt";
 
 	@SuppressWarnings("resource")
 	public static String encrypt(String value) {
-		
+
 		ObjectInputStream inputStream;
 		String key = getKey();
 		byte[] cipherTextKey = Base64.getDecoder().decode(key);
 		String initVector = getVector();
 		byte[] cipherTextVector = Base64.getDecoder().decode(initVector);
-		
+
 		try {
 			inputStream = new ObjectInputStream(new FileInputStream(PRIVATE_KEY_FILE));
 			final PrivateKey privateKey = (PrivateKey) inputStream.readObject();
 			final String plainKey = decrypt(cipherTextKey, privateKey);
-			final String plainVector = decrypt(cipherTextVector, privateKey);			
-			
+			final String plainVector = decrypt(cipherTextVector, privateKey);
+
 			IvParameterSpec iv = new IvParameterSpec(plainVector.getBytes("UTF-8"));
 			SecretKeySpec skeySpec = new SecretKeySpec(plainKey.getBytes("UTF-8"), "AES");
 
@@ -76,8 +76,8 @@ public class EncryptionUtil {
 
 			final PrivateKey privateKey = (PrivateKey) inputStream.readObject();
 			final String plainKey = decrypt(cipherTextKey, privateKey);
-			final String plainVector = decrypt(cipherTextVector, privateKey);			
-			
+			final String plainVector = decrypt(cipherTextVector, privateKey);
+
 			System.out.println("ENCRIPTAR- KEY: " + plainKey);
             System.out.println("ENCRIPTAR- VECTOR: " + plainVector);
 			
@@ -102,26 +102,26 @@ public class EncryptionUtil {
 		byte[] cipherTextKey = Base64.getDecoder().decode(key);
 		String initVector = getVector_();
 		byte[] cipherTextVector = Base64.getDecoder().decode(initVector);
-		
+
 		try {
-			
+
 			ClassLoader CLDR = this.getClass().getClassLoader();
 			InputStream opcion1 = CLDR.getResourceAsStream(PRIVATE_KEY);
-			
+
 			if (opcion1 != null) {
 				inputStream = new ObjectInputStream(opcion1);
 			} else {
 				opcion1 = CLDR.getResourceAsStream(PRIVATE_KEY);
 				inputStream = new ObjectInputStream(opcion1);
 			}
-			
+
 			final PrivateKey privateKey = (PrivateKey) inputStream.readObject();
 			final String plainKey = decrypt(cipherTextKey, privateKey);
 			final String plainVector = decrypt(cipherTextVector, privateKey);
-			
+
 			System.out.println("ENCRIPTAR- KEY: " + plainKey);
             System.out.println("ENCRIPTAR- VECTOR: " + plainVector);
-			
+
 			IvParameterSpec iv = new IvParameterSpec(plainVector.getBytes());
 			SecretKeySpec skeySpec = new SecretKeySpec(plainKey.getBytes(), "AES");
 			
@@ -263,18 +263,6 @@ public class EncryptionUtil {
 		return false;
 	}
 
-	public static byte[] encrypt(String text, PublicKey key) {
-		byte[] cipherText = null;
-		try {
-			final Cipher cipher = Cipher.getInstance(ALGORITHM);
-			cipher.init(Cipher.ENCRYPT_MODE, key);
-			cipherText = cipher.doFinal(text.getBytes());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return cipherText;
-	}
-
 	public static String decrypt(byte[] text, PrivateKey key) {
 		byte[] dectyptedText = null;
 		try {
@@ -286,53 +274,5 @@ public class EncryptionUtil {
 		}
 
 		return new String(dectyptedText);
-	}
-	
-	@SuppressWarnings("resource")
-	public static void init(String vectorAES, String llaveAES) {
-		if (!areKeysPresent()) {
-			generateKey();
-		}
-		
-		try {
-			ObjectInputStream inputStream = null;
-			File encryptedVector = new File(AES_VECTOR_FILE);
-			File encryptedKey = new File(AES_KEY_FILE);
-			
-			if (encryptedVector.getParentFile() != null) {
-				encryptedVector.getParentFile().mkdirs();
-			}
-			encryptedVector.createNewFile();
-
-			if (encryptedKey.getParentFile() != null) {
-				encryptedKey.getParentFile().mkdirs();
-			}
-			encryptedKey.createNewFile();
-			
-			inputStream = new ObjectInputStream(new FileInputStream(PUBLIC_KEY_FILE));
-			final PublicKey publicKeyVector = (PublicKey) inputStream.readObject();
-			final byte[] cipherTextVector = encrypt(vectorAES, publicKeyVector);
-			String cipherTextB64Vector = null;
-			
-//			cipherTextB64Vector = org.apache.commons.codec.binary.Base64.encodeBase64String(cipherTextVector);
-			
-			cipherTextB64Vector = Base64.getEncoder().encodeToString(cipherTextVector);
-
-			ObjectOutputStream writeVector = new ObjectOutputStream(new FileOutputStream(encryptedVector));
-			writeVector.writeObject(cipherTextB64Vector);
-			writeVector.close();
-						
-			inputStream = new ObjectInputStream(new FileInputStream(PUBLIC_KEY_FILE));
-			final PublicKey publicKeyKey = (PublicKey) inputStream.readObject();
-			final byte[] cipherTextKey = encrypt(llaveAES, publicKeyKey);
-			String cipherTextB64Key = null;
-			cipherTextB64Key = Base64.getEncoder().encodeToString(cipherTextKey);
-			
-			ObjectOutputStream writeKey = new ObjectOutputStream(new FileOutputStream(encryptedKey));
-			writeKey.writeObject(cipherTextB64Key);
-			writeKey.close();			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 }

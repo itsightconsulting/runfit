@@ -8,7 +8,6 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 @SpringBootApplication
 public class WorkoutApplication extends SpringBootServletInitializer {
 
-
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
         // TODO Auto-generated method stub
